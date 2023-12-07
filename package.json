@@ -1,0 +1,35 @@
+{
+  "name": "i-cathfish",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --once --driver-package meteortesting:mocha"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.154.0",
+    "@aws-sdk/signature-v4-crt": "^3.118.0",
+    "@babel/runtime": "^7.17.9",
+    "@ckeditor/ckeditor5-editor-decoupled": "^40.1.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2",
+    "datatables.net-dt": "^1.13.6",
+    "datatables.net-responsive-dt": "^2.5.0",
+    "html2pdf.js": "^0.10.1",
+    "intl": "^1.2.5",
+    "jquery": "^3.6.0",
+    "meteor-node-stubs": "^1.2.1",
+    "moment": "^2.29.4",
+    "moment-weekday-calc": "^1.1.4",
+    "mongodb": "^6.2.0",
+    "mup": "^1.5.10",
+    "papaparse": "^5.4.1",
+    "pdf-viewer": "^0.8.1",
+    "simpl-schema": "^3.4.1",
+    "sweetalert2": "^11.9.0",
+    "underscore": "^1.13.6",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0"
+  }
+}

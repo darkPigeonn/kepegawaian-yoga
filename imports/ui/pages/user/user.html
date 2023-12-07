@@ -1,0 +1,71 @@
+<template name="listUser">
+    <div class="container">
+        <div class="mt-5">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/createUser" class="btn btn-primary">+ Tambah</a>
+            </div>
+        </div>
+        <div class="d-lg-block">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Roles</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataListUser}}
+                    <tr>
+                        <td> {{nomorUrut @index}}</td>
+                        <td> {{username}} </td>
+                        <td> {{dataListUser.emails}} </td>
+                        {{#each i in dataListUser.emails}}
+                            <td> {{dataListUser.emails}} </td>
+                        {{/each}}
+                        <!-- <td>
+                            <a href="/employees/edit/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                            </a>
+                            <a href="/employees/detail/{{_id}}">
+                                <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                            </a>
+                            <a href="/employees/remove/{{_id}}">
+                                <button class="btn btn-danger" type="button" id="btn_delete"
+                                    data-id="{{_id}}">Delete</button>
+                            </a>
+                        </td> -->
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="createUser">
+    <form style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+        <div class="form-group mb-2">
+            <label>Username</label>
+            <input type="text" id="input_username" style="width: 20vw" class="form-control" required><br>
+            <label>Password</label>
+            <input type="text" id="input_password" style="width: 20vw" class="form-control" required><br>
+            <label>Nama Lengkap</label>
+            <input type="text" id="input_fullname" style="width: 20vw" class="form-control" required><br>
+            <label>Roles</label>
+            <select id="input_roles" class="form-control" style="width: 20vw;">
+                <option value="resepsionis">Resepsionis</option>
+                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                <option value="bidang">Bidang</option>
+                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                <option value="dewan-pengurus">Dewan Pengurus</option>
+                <option value="pengurus-inti">Pengurus Inti</option>
+                <option value="administrasi-umum">Administrasi Umum</option>
+            </select>
+            <br>
+            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_user">Simpan</button>
+        </div>
+    </form>
+</template>

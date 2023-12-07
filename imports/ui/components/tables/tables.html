@@ -1,0 +1,52 @@
+<template name="table1">
+  <div class="">
+    <div class="d-none d-lg-block">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Tanggal Pakan</th>
+            <th scope="col">Jenis Pakan</th>
+            <th scope="col">Jumlah Pakan</th>
+            <th scope="col">Harga Pakan</th>
+            <th scope="col">Total Pengeluaran Pakan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data}}
+          <tr>
+            <td>
+              {{@index}}
+            </td>
+            <td>
+              {{formatHRDate feedDate}}
+            </td>
+            <td>
+              {{fc_label feedCategory}}
+            </td>
+            <td>
+              {{feedAmount}}
+            </td>
+            <td>
+              {{formatRp feedPrices}}
+            </td>
+            <td>
+              {{formatRp total}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="d-lg-none">
+      {{#each data}}
+      <div class="card mb-2">
+        <div class="card-body">
+          <h5 class="card-title">{{formatHRDate feedDate}}</h5>
+          <p class="card-text">{{fc_label feedCategory}} | {{feedAmount}} | {{formatRp total}}</p>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</template>

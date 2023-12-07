@@ -1,0 +1,126 @@
+<template name="departement_page">
+    <div class="container">
+        <div class="mt-5">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/departements/create" class="btn btn-primary">+ Tambah</a>   
+            </div>
+        </div>
+        <div class="d-lg-block">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama</th>
+                  <th scope="col">Deskripsi</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each departements}}
+                <tr>
+                    <td> {{nomorUrut @index}}</td>
+                    <td style="text-transform: capitalize;"> {{name}} </td>
+                    <td style="text-transform: capitalize;"> {{description}} </td>
+                    <td>
+                        <a href="/departements/edit/{{_id}}">
+                            <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                        </a>
+                        <a href="/departements/detail/{{_id}}">
+                            <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="departement_create">
+    <form style="display: flex; justify-content: center; align-items: center; height: 40vh;">
+        <div class="form-group mb-2">
+            <label>Nama Departemen Baru</label>
+            <input type="text" id="input_departement" style="width: 20vw;" class="form-control" required/><br>
+            <label>Description</label>
+            <input type="text" id="input_description" style="width: 20vw;" class="form-control" required/><br>
+            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_departement">Simpan</button>
+        </div>
+    </form>
+</template>
+
+<template name="departement_edit">
+    <form style="display: flex; justify-content: center; align-items: center; height: 40vh;">
+        <div class="form-group mb-2">
+            <label>Nama Departemen Baru</label>
+            <input type="text" id="input_name" style="width: 20vw" class="form-control" value={{departement.name}}><br>
+            <label>Description</label>
+            <input type="text" id="input_description" style="width: 20vw" class="form-control" value={{departement.description}}><br>
+            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_departement">Simpan</button>
+        </div>
+    </form>
+</template>
+
+<template name="departement_detail">
+    <div class="panel">
+        <div class="panel-body bio-graph-info border border-5; round rounded-3">
+            <h2>Biodata Departement</h2><br>
+            <div class="row">
+                <div class="bio-row">
+                    <p><span>Nama </span>: {{departement.name}}</p>
+                </div>
+                <div class="bio-row">
+                    <p><span>Deskripsi </span>: {{departement.description}}</p>
+                </div>
+            </div>
+        </div>
+        {{#each departement.member}}
+            <div class="panel-body bio-graph-info">
+                <h2>Data Pegawai</h2><br>
+                <div class="row">
+                    <div class="bio-row">
+                        <p><span>Nama </span>: {{full_name}}</p>
+                    </div>
+                    <div class="bio-row">
+                        <p><span>Job Position </span>: {{job_position}}</p>
+                    </div>
+                </div>
+                <a href="/employees/detail/{{_id}}" class="btn btn-primary">Detail Pegawai</a>
+            </div>
+        {{/each}}
+    </div>
+
+    <style scoped>
+        body {
+        color: #797979;
+        background: #f1f2f7;
+        font-family: 'Open Sans', sans-serif;
+        padding: 0px !important;
+        margin: 0px !important;
+        font-size: 13px;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-font-smoothing: antialiased;
+        }
+    
+        .bio-row {
+            width: 50%;
+            float: left;
+            margin-bottom: 10px;
+            padding:0 15px;
+        }
+        
+        .bio-row p span {
+            width: 100px;
+            display: inline-block;
+        }
+        
+        .bio-chart, .bio-desk {
+            float: left;
+        }
+    </style>
+</template>
+
+<template name="departement_anggota">
+    tester
+</template>

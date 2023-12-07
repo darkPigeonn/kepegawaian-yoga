@@ -1,0 +1,31 @@
+<template name="card">
+  <section>
+    <a href="/batch/detail/{{id}}">
+      <div class="card bg-light shadow text-dark border-primary">
+        <div class="card-body">
+          <h5 class="card-title">Batch {{name}}</h5>
+          <p class="card-text">Jumlah Indukan: {{amountBS}}</p>
+          <p class="card-text">Tanggal Mulai: {{formatHRDate startDate}}</p>
+        </div>
+      </div>
+    </a>
+  </section>
+  <style scoped>
+    a {
+      text-decoration: none;
+    }
+  </style>
+</template>
+<template name="cardFullWidth">
+  <section>
+    <div class="col-md-12 col-12">
+      <div class="card bg-light shadow text-dark border-primary">
+        <div class="card-body">
+          <h5 class="card-title">Batch {{name}}</h5>
+          <p class="card-text">Jumlah Indukan: {{amountBS}}</p>
+          <p class="card-text">Tanggal Mulai: {{formatHRDate startDate}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

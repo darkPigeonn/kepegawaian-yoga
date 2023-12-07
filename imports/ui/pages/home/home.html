@@ -1,0 +1,149 @@
+<template name="App_home">
+  <style>
+    /* Style the content */
+    .content {
+      /* margin-left: 260px; */
+      /* padding: 20px; */
+      width: 100%;
+    }
+
+    /* Style the header */
+    .header {
+      /* background-color: #0045a7;
+      color: white;
+      padding: 5px;
+      margin-bottom: 10px; */
+    }
+    .nav-item i {
+        font-size: 24px;
+        margin-right: 10px; 
+    }
+
+    .employees-section {
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+
+    .employees-title {
+        font-size: 36px;
+    }
+
+    .move-down {
+        margin-top: 10px;
+    }
+    .btn-more {
+        background-color: white;
+        color: #6666FF;
+        font-weight: bold;
+    }
+
+    .btn-employee-transfer {
+        background-color: transparent;
+        color: #6666FF;
+        font-weight: bold;
+    }
+    .btn-add-employee {
+      background-color: #6666FF;
+      color: white;
+      font-weight: bold;
+    }
+</style>
+
+<!-- Employees Section -->
+<div class="container-fluid employees-section">
+  <div class="container">
+      <div class="row">
+          <div class="col-6">
+              <span class="employees-title">Pegawai</span>
+          </div>
+          <div class="col-6 text-right">
+              <!-- <button type="button" class="btn btn-secondary dropdown-toggle move-down btn-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Lainnya
+              </button>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Dropdown Action 1</a>
+                  <a class="dropdown-item" href="#">Dropdown Action 2</a>
+              </div> -->
+              <button type="button" class="btn btn-secondary move-down btn-employee-transfer">Transfer Pegawai</button>
+              <div class="btn-group">
+                  <a href="/employees/create">
+                    <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
+                      Tambah Pegawai
+                    </button>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="border rounded p-3 mt-2"> <!-- Add border and rounding styles -->
+        <div class="row">
+          <div class="col-2">
+            <p>Ringkasan Periode</p>
+            <h4>{{bulanPeriode}}</h4>
+          </div>
+          <div class="col-2">
+            <p>Total Pegawai</p>
+            <h4>{{employees.length}}</h4>
+          </div>
+          <div class="col-2">
+            <p>Pegawai Baru</p>
+            <h4>{{employeesMasuk.length}}</h4>
+          </div>
+          <div class="col-2 position-relative">
+            <div style="border-right: 1px solid #000; height: 100%; position: absolute; top: 0; right: 0;"></div>
+            <p>Pegawai Keluar</p>
+            <h4>{{employeesKeluar.length}}</h4>
+          </div>
+          <div class="col-4 d-flex align-items-center">
+            <a href="#"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
+            <a href="#"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="content">
+    <hr>
+    <div class="container">
+      <div class="row">
+        <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
+          <thead>
+              <tr>
+                  <th>Nama Karyawan</th>
+                  <th>Posisi Pekerjaan</th>
+                  <th>Status Karyawan</th>
+                  <th>Tanggal Masuk</th>
+                  <th>Tanggal Keluar</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+            {{#each employees}}
+              <tr>
+                <td>
+                  <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;"> 
+                  {{full_name}}
+                </td>
+                <td> {{job_position}} </td>
+                <td> {{employment_status}} </td>
+                <td> {{formatHRDate start_date}} </td>
+                <td> - </td>
+                <td> <a href="#">Actions</a></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</template>

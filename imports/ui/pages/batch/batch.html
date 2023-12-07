@@ -1,0 +1,106 @@
+<template name="batch_page">
+  <div class="container">
+    <div class="mt-5">
+      <div class="d-flex justify-content-end mb-2">
+        <a href="/batch/create" class="btn btn-primary">+ Tambah</a>
+      </div>
+      {{#each batchs}}
+      {{> cardFullWidth _id=_id name=name amountBS=amountBroodStock startDate=startDate}}
+      {{/each}}
+    </div>
+  </div>
+
+  <style scoped>
+    a {
+      text-decoration: none;
+    }
+  </style>
+</template>
+
+<template name="batch_create">
+  <div class="container">
+    <div class="title-page">
+      <h3> Buat Batch Baru </h3>
+    </div>
+    <form>
+      <div class="form-group mb-2">
+        <label>Nama </label>
+        <input type="text" id="input_name" class="form-control" />
+      </div>
+      <div class="form-group mb-2">
+        <label>Tanggal Pemijahan </label>
+        <input type="date" id="input_startDate" class="form-control" />
+      </div>
+      <div class="form-group mb-2">
+        <label>Jumlah induk (pasang) </label>
+        <input type="number" id="input_amountBroodStock" class="form-control" />
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="button" id="btn_save">Simpan</button>
+      </div>
+
+    </form>
+  </div>
+</template>
+
+
+<template name="batch_detail">
+  <div class="container">
+    <div class="d-flex flex-column">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Batch {{batch.name}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Jumlah Induk : {{batch.amountBroodStock}}</h6>
+          <p class="card-text">Tanggal pemijahan : {{formatHRDate batch.startDate}}</p>
+          <button class="btn btn-primary">Status : Aktif</button>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary btn-add-feed my-2" milik="{{viewMode}}">
+          {{#if equals viewMode '1'}}
+          + Tambah Pakan
+          {{else}}
+          Daftar Pakan
+          {{/if}}
+        </button>
+      </div> <!-- list pemberian pakan -->
+
+      {{#if equals viewMode '1'}}
+      <div class="page-list-feed">
+        <h4>Daftar Pemberian Pakan</h4>
+        {{> table1 data=batch.feedsDetails}}
+      </div>
+      {{else}}
+      <h3>Input Pakan</h3>
+      <form>
+        <div class="form-group mb-2">
+          <div class="form-group mb-2">
+            <label>Tanggal Pakan </label>
+            <input type="date" id="input_feedDate" class="form-control" />
+          </div>
+          <label>Pakan </label>
+          <select class="form-control" id="input_feedCategory">
+            <option value="fc-1">Cacing Sutra</option>
+            <option value="fc-2">Pengli</option>
+            <option value="fc-3">PF-500</option>
+          </select>
+        </div>
+        <div class="form-group mb-2">
+          <label>Jumlah Pakan </label>
+          <input type="number" id="input_feedAmount" class="form-control" />
+        </div>
+        <div class="form-group mb-2">
+          <label>Harga Pakan </label>
+          <input type="number" id="input_feedPrices" class="form-control" />
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button" id="btn_save">Simpan</button>
+        </div>
+
+      </form>
+      {{/if}}
+    </div>
+  </div>
+</template>
