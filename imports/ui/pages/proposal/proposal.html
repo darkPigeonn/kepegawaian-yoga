@@ -136,10 +136,57 @@
                     {{/each}}
                 </tbody>
             </table>
+            <h3 class="page-title">Riwayat Proposal</h3>
+            <table class="table table-bordered center">
+                <thead style="text-align: center;">
+                    <th>
+                        Nama Proposal
+                    </th>
+                    <th>
+                        Tanggal Pembuatan
+                    </th>
+                    <th>
+                        Pembuat
+                    </th>
+                    <th>
+                        Posisi
+                    </th>
+                    <th>
+                        Keterangan
+                    </th>
+                    <th>
+                        Aksi
+                    </th>
+                </thead>
+
+                <tbody>
+                    {{#each dataProposalHistory}}
+                    <tr>
+                        <td>
+                            {{name}}
+                        </td>
+                        <td>
+                            {{formatHRDate createdAt}}
+                        </td>
+                        <td>
+                            {{createdByName}}
+                        </td>
+                        <td>
+                            {{setJabatanFormat currentJabatan}}
+                        </td>
+                        <td>
+                            <!-- {{statusDetail currentState.status}} {{review.userName}} -->
+                            {{statusDetail status}}
+                        </td>
+                        <td>
+                            <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </section>
     </div>
-    <!-- {{> disposisiModalInput}}
-    {{> rejectModalInput}} -->
     {{/if}}
 </template>
 
@@ -584,6 +631,175 @@
 
     </div>
 
+
+</template>
+
+<template name="viewProposal">
+    <div class="row">
+
+        <div class="col-md-12">
+            {{#if proposalData.note}}
+                <h4>Catatan</h4>
+                <div class="form mb-9" style="margin-bottom: 50px; background-color: red;padding: 12px;">
+                    {{#each proposalData.note}}
+                    <span style="color: white;">{{noteByName}} : </span>
+                    <span style="padding: 30px;color: white;">{{note}}</span>
+                    {{/each}}
+                </div>
+            {{/if}}
+            <div id="test" style="background-color: white;">
+                <page>
+                    <page_header>
+                        <table class="page-header" width="100%"
+                            style="border-bottom: 5px solid #000; font-family: serif;padding : 2px">
+                            <tr>
+                                <td>
+                                    <img src="/assets/img/logo-imavi.png" width="140px">
+                                </td>
+                                <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
+                                    <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
+                                    <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <h4 class="page-title">
+                            <b>
+                                {{proposalData.name}} <br>
+                            </b>
+                        </h4>
+                    </page_header>
+
+                    <content style="color: black">
+                        <section>
+
+                        </section>
+                    </content>
+                </page>
+
+                <body style="font-family: 'Times New Roman', serif; color: black;">
+                    <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
+
+                        <div>
+                            <h5>
+                                I. LATAR BELAKANG
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.backgroundsDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                II. TUJUAN KEGIATAN
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.purposeDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                III. WAKTU DAN TEMPAT PELAKSANAAN
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.timeline}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                IV. PENGELOLAAN DANA
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.fundingRequirementDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                V. PENUTUP
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.closeDescription}}}
+                            </div>
+                        </div>
+                        <section style="break-inside: avoid; page-break-inside: avoid;">
+                            <!-- <table style="font-family: serif;width: 100%;">
+                                <tr>
+                                    <td style="text-align: center;">
+
+                                    </td>
+                                    <td style="text-align: center;">
+                                        Surabaya, {{formatHRDate proposalData.createdAt}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center;">
+
+                                    </td>
+                                    <td style="text-align: center;">
+                                        Kepala Sekolah
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="height: 40px;">
+
+                                    </td>
+                                    <td style="height: 40px;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center;">
+
+                                    </td>
+                                    <td style="text-align: center;">
+                                        {{headMaster.fullname}}
+                                    </td>
+                                </tr>
+
+                            </table> -->
+
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    Mengetahui,
+                                    <br>
+                                    Koordinator
+                                    <br><br><br>
+                                    <!-- {{generalManager.fullname}} -->
+                                    nama
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    Surabaya,{{formatHRDate proposalData.updateAt}}
+                                    <br>
+                                    Staff 
+                                    <!-- {{getDivisionName proposalData.divisionId}} -->
+                                    <br><br><br>
+                                    nama
+                                    <!-- {{getChief proposalData.divisionId}} -->
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    Menyetujui,
+                                    <br>
+                                    Pimpinan
+                                    <br><br><br>
+                                    <!-- {{praeses.fullname}} -->
+                                    nama pimpinan
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                </body>
+            </div>
+        </div>
+
+    </div>
 
 </template>
 

@@ -8,11 +8,11 @@ import _, { result } from 'underscore'
 Meteor.methods({
   "proposal.createKosong"(){
     const thisUser = Meteor.users.findOne({_id: this.userId});
-    console.log(thisUser);
+    // console.log(thisUser);
     return Proposals.insert({
       status: -1,
       createdBy: thisUser._id,
-      craetedAt: new Date(),
+      createdAt: new Date(),
       partners: thisUser.partners,
     });
   },
@@ -29,7 +29,7 @@ Meteor.methods({
   },
   "myProposals"() {
     const thisUser = Meteor.users.findOne({_id: this.userId});
-    console.log(thisUser);
+    // console.log(thisUser);
     const data = Proposals.find({
       createdBy: thisUser._id,
     }).fetch();
@@ -154,7 +154,7 @@ Meteor.methods({
         },
       ];
     }
-    console.log("Data",data.status);
+    // console.log("Data",data.status);
     return Proposals.update(
       {
         _id: data.id,
@@ -204,11 +204,11 @@ Meteor.methods({
     check(data, Object);
     const thisUser = Meteor.users.findOne({_id: this.userId});
     const role = thisUser.roles;
-    console.log(role);
+    // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
-    console.log(dataProposalByID);
+    // console.log(dataProposalByID);
     const alur = dataProposalByID.alur;
-    console.log(alur);
+    // console.log(alur);
     // return;
     const note = {
       note: data.dispositionContent,
@@ -282,11 +282,11 @@ Meteor.methods({
     check(data, Object);
     const thisUser = Meteor.users.findOne({_id: this.userId});
     const role = thisUser.roles;
-    console.log(role);
+    // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
-    console.log(dataProposalByID);
+    // console.log(dataProposalByID);
     const alur = dataProposalByID.alur;
-    console.log(alur);
+    // console.log(alur);
     // return;
     const note = {
       note: data.dispositionContent,
@@ -330,7 +330,7 @@ Meteor.methods({
   async "update.revisionProposal"(data) {
     //('hai');
     check(data, Object);
-    console.log(data);
+    // console.log(data);
     const currentUser = Meteor.user();
     const role = currentUser.roles;
     const note = {
@@ -338,7 +338,7 @@ Meteor.methods({
       noteBy: currentUser._id,
       noteByName: currentUser.fullname,
     };
-    console.log(note);
+    // console.log(note);
 
     await Proposals.update(
       {
@@ -365,11 +365,11 @@ Meteor.methods({
     // console.log(dataUser.roles);
     const roleUser = dataUser.roles;
     const alur = dataProposalByID.alur;
-    console.log(roleUser, alur);
+    // console.log(roleUser, alur);
     // console.log(dataReview);
     for (let index = 0; index < alur.length; index++) {
         const element = alur[index];
-        console.log(element.order, element.jabatan);
+        // console.log(element.order, element.jabatan);
         //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
         if(roleUser == element.jabatan){
             return Proposals.update({_id: data.letterId, "alur.jabatan":element.jabatan},
@@ -388,7 +388,7 @@ Meteor.methods({
     const thisProposal = Proposals.findOne({
       _id: data.proposalId,
     });
-    console.log(thisProposal);
+    // console.log(thisProposal);
     //cek diposisi
     const checkValue = isEmptyData(thisProposal);
     if (checkValue) {
@@ -397,7 +397,7 @@ Meteor.methods({
     const dataUser = Meteor.users.findOne({_id:idUser});
     const roleUser = dataUser.roles;
     const alur = thisProposal.alur;
-    console.log(alur);
+    // console.log(alur);
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
       const alurNext = alur[index+1];
@@ -442,6 +442,24 @@ Meteor.methods({
     const data = Meteor.users.findOne({_id:id});
     // console.log(data);
     return data.roles;
-},
+  },
+
+  "employee.getFullName"(id){
+    const data = Meteor.users.findOne({_id:id});
+    return data.fullname;
+  },
+
+  "proposal.getHistoryByPengisi"(nama){
+    const data = Proposals.find({"note.noteByName": nama}).fetch();
+    const pembuat = data[0].createdBy;
+    const thisUser = Meteor.users.findOne({_id: pembuat});
+    const dataFilter = data.filter((x) => {
+        return x.note.find((y) => y.note.length && y.noteByName == nama)
+    }).map((x) => {
+      x.createdByName = thisUser.fullname
+      return x
+    });
+    return dataFilter
+  },
 
 });

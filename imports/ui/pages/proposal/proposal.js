@@ -20,6 +20,8 @@ Template.listProposals.onCreated(function () {
     self.proposalsRejected = new ReactiveVar();
     self.schools = new ReactiveVar();
     self.selectedSchools = new ReactiveVar();
+    self.dataLogin = new ReactiveVar();
+    self.dataProposalHistory = new ReactiveVar();
 
     //-------//
     self.myProposals = new ReactiveVar();
@@ -54,6 +56,30 @@ Template.listProposals.onCreated(function () {
             self.getProposals.set(result);
         }
     });
+
+    const userId = Meteor.userId();
+    // console.log(userId);
+    if(userId){
+      Meteor.call("employee.getFullName", userId, function (error, result) { 
+        if(result){
+          const dataLogin = result;
+          self.dataLogin.set(dataLogin);
+        //   console.log(dataLogin);
+          Meteor.call("proposal.getHistoryByPengisi", dataLogin, function (error, result) {
+            if(result){
+              self.dataProposalHistory.set(result)
+              console.log(result);
+            }
+            else{
+              console.log(error);
+            }
+          })
+        }
+        else{
+          console.log(error);
+        }
+      })
+    }
 
 });
 Template.listProposals.helpers({
@@ -216,6 +242,12 @@ Template.listProposals.helpers({
         } else {
             return proposals;
         }
+    },
+    dataLogin(){
+        return Template.instance().dataLogin.get();
+    },
+    dataProposalHistory(){
+        return Template.instance().dataProposalHistory.get();
     }
 
 });
@@ -993,6 +1025,78 @@ Template.previewProposal.events({
             }
         })
     }
+});
+
+Template.viewProposal.onCreated(function () {
+    const self = this;
+
+    self.proposalId = new ReactiveVar();
+    self.formSubmit = new ReactiveVar(0);
+    self.jabatanLogin = new ReactiveVar();
+    self.jabatanPembuat = new ReactiveVar();
+    const id = FlowRouter.current().params._id;
+    self.proposalData = new ReactiveVar();
+    const thisUser = Meteor.userId();
+    console.log(thisUser);
+    Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
+        if(result){
+            const hasil = result[0];
+            console.log(hasil);
+            self.jabatanLogin.set(hasil);
+        }
+        else{
+            console.log(error);
+        }
+    })
+    Meteor.call('getProposalById', id, function (error, result) {
+        if (result) {
+            self.proposalData.set(result)
+            console.log(result.createdBy);
+            // Meteor.call('employee.getDataUserProposal', result.createdBy, function (error, result) {
+            //     if(result){
+            //         const hasil = result[0];
+            //         console.log(hasil);
+            //         self.jabatanPembuat.set(hasil);
+            //     }
+            //     else{
+            //         console.log(error);
+            //     }
+            // })
+        }
+        else {
+            console.log(error);
+        }
+    });
+
+});
+
+Template.viewProposal.helpers({
+    proposalData: function () {
+        return Template.instance().proposalData.get();
+    },
+    formSubmit: function () {
+        return Template.instance().formSubmit.get();
+    },
+    statusRevisi: function () {
+        const data = Template.instance().letterData.get();
+        const approval1 = data.approval1;
+        const approval2 = data.approval2;
+
+        let statusRevisi = 1;
+        if (approval2.status == 1) {
+            statusRevisi = 0;
+        }
+        return statusRevisi;
+    },
+    // jabatanLogin(){
+    //     return Template.instance().jabatanLogin.get();
+    // },
+    // jabatanPembuat(){
+    //     return Template.instance().jabatanPembuat.get();
+    // },
+    // isPodo(){
+    //     return Template.instance().jabatanPembuat.get() == Template.instance().jabatanLogin.get();
+    // }
 });
 
 Template.printProposal.onCreated(function () {

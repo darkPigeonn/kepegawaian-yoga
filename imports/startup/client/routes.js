@@ -265,6 +265,13 @@ FlowRouter.route("/proposal/preview/:_id", {
   }
 });
 
+FlowRouter.route("/proposal/view/:_id", {
+  name: "viewProposal",
+  action(){
+    this.render("App_body", "viewProposal")
+  }
+});
+
 FlowRouter.route("/proposal/print/:_id", {
   name: "printProposal",
   action(){
