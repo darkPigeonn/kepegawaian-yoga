@@ -46,10 +46,10 @@
                             <a href="/employees/detail/{{_id}}">
                                 <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                             </a>
-                            <a href="/employees/remove/{{_id}}">
+                            <!-- <a href="/employees/remove/{{_id}}"> -->
                                 <button class="btn btn-danger" type="button" id="btn_delete"
                                     data-id="{{_id}}">Delete</button>
-                            </a>
+                            <!-- </a> -->
                         </td>
                     </tr>
                     {{/each}}
@@ -296,7 +296,7 @@
                     <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                 </div>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px;"></div>
+            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
             <div class="bagianItems">
                 <ul class="nav flex-column">
                     <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
@@ -325,12 +325,12 @@
                                 type="button" value="Kontak Darurat" class="nav-link"></a></li>
                 </ul>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin: 10px 20px;"></div>
+            <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
             <div style="overflow: auto; height: 100%; width: 100%;">
                 <div class="contentBawah">
                     <div class="personalData" style=" display: flex;">
                         <div class="tulisanPersonalData">
-                            <p style="color: black; font-weight: bold; font-size: 28px;">Data Pribadi</p>
+                            <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi</p>
                         </div>
                         <div class="isiPersonalData table-responsive">
                             <table>
@@ -374,13 +374,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="gap" style="border: 1px solid gray; margin: 10px 20px;"></div>
+                <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
                 <div class="contentBawah-1">
                     <div class="personalData" style=" display: flex;">
                         <div class="tulisanPersonalData">
-                            <p style="color: black; font-weight: bold; font-size: 28px;">Identitas dan Alamat</p>
+                            <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan Alamat</p>
                         </div>
-                        <div class="isiPersonalData">
+                        <div class="isiPersonalData table-responsive">
                             <table>
                                 <tr style="padding-bottom: 20px; padding-top: 20px;">
                                     <td style="padding:0px 15px 20px 15px; width: 150px;">Nomor ID</td>
@@ -560,7 +560,7 @@
                     <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                 </div>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px;"></div>
+            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
             <div class="bagianItems">
                 <ul class="nav flex-column">
                     <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
@@ -589,14 +589,14 @@
                                 type="button" value="Kontak Darurat" class="nav-link"></a></li>
                 </ul>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin: 10px 20px;"></div>
+            <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
             <div style="overflow: auto; height: 100%; width: 100%;">
                 <div class="contentBawah">
                     <div class="personalData" style=" display: flex;">
                         <div class="tulisanPersonalData">
                             <p style="color: black; font-weight: bold; font-size: 28px;">Pendidikan</p>
                         </div>
-                        <div class="isiPersonalData">
+                        <div class="isiPersonalData table-responsive">
                             <table>
                                 <tr>
                                     <td style="padding:0 15px 20px 15px;">Pendidikan Tertinggi</td>
@@ -624,7 +624,7 @@
                         <div class="tulisanPersonalData">
                             <p style="color: black; font-weight: bold; font-size: 28px;">Status Pegawai</p>
                         </div>
-                        <div class="isiPersonalData">
+                        <div class="isiPersonalData table-responsive">
                             <table>
                                 <tr>
                                     <td style="padding:0 15px 20px 15px;">Posisi Pekerjaan</td>
@@ -752,7 +752,7 @@
             height: auto;
             background-color: white;
             padding: 1rem;
-            /* overflow: auto; */
+            overflow: auto;
             flex: 1;
         }
 
@@ -760,7 +760,7 @@
             height: auto;
             background-color: white;
             padding: 1rem;
-            /* overflow: auto; */
+            overflow: auto;
             flex: 1;
         }
 
@@ -884,14 +884,14 @@
                                 type="button" value="Kontak Darurat" class="nav-link active"></a></li>
                 </ul>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin: 10px 20px;"></div>
+            <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
             <div style="overflow: auto; height: 100%; width: 100%;">
                 <div class="contentBawah">
                     <div class="personalData" style=" display: flex;">
                         <div class="tulisanPersonalData">
                             <p style="color: black; font-weight: bold; font-size: 28px;">Kontak Darurat</p>
                         </div>
-                        <div class="isiPersonalData">
+                        <div class="isiPersonalData table-responsive">
                             <table>
                                 <tr>
                                     <td style="padding:0 15px 20px 15px;">Nama Kontak</td>

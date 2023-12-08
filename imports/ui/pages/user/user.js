@@ -28,47 +28,91 @@ Template.listUser.helpers({
     dataListUser(){
         return Template.instance().dataListUser.get();
     }
+});
+
+Template.listUser.events({
+  "click #btn_delete"(e, t){
+    e.preventDefault();
+
+    const id = e.target.getAttribute('data-id');
+    Swal.fire({
+      title: "Konfirmasi Delete",
+      text: "Apakah anda yakin melakukan delete pegawai ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        Meteor.call('user.remove', id, function (error, result) {
+          if(result){
+            // alert("Delete Sukses");
+            Swal.fire({
+              title: "Berhasil",
+              text: "Delete berhasil",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed){
+                location.reload();
+              }
+            });
+          }else{
+            Swal.fire({
+              title: "Gagal",
+              text: "Delete gagal",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            console.log(error);
+          }
+        });
+      }
+    })
+    
+    // console.log(id);
+  }
 })
 
 Template.createUser.events({
-    "click #btn_save_user"(e, t){
-        console.log("masuk");
-        const username = $("#input_username").val();
-        const password = $("#input_password").val();
-        const role = $("#input_roles").val();
-        const fullname = $("#input_fullname").val();
+  "click #btn_save_user"(e, t){
+    console.log("masuk");
+    const username = $("#input_username").val();
+    const password = $("#input_password").val();
+    const role = $("#input_roles").val();
+    const fullname = $("#input_fullname").val();
 
-        const dataSend = {
-            username,
-            password,
-            fullname,
-            role
-        };
+    const dataSend = {
+        username,
+        password,
+        fullname,
+        role
+    };
 
-        Meteor.call("users.createAppMeteor", dataSend, function (error ,result) { 
-            if (result) {
-                // alert("Sukses");
-                Swal.fire({
-                  title: "Berhasil",
-                  text: "Data berhasil dimasukkan",
-                  showConfirmButton: true,
-                  allowOutsideClick: true,
-                }).then((result) => {
-                  if(result.isConfirmed) {
-                    location.reload();
-                  }
-                });
-                // location.reload();
-              } else {
-                Swal.fire({
-                  title: "Gagal",
-                  text: "Data gagal dimasukkan, cek kembali data yang dimasukkan",
-                  showConfirmButton: true,
-                  allowOutsideClick: true,
-                });
-                // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
-                console.log(error);
+    Meteor.call("users.createAppMeteor", dataSend, function (error ,result) { 
+        if (result) {
+            // alert("Sukses");
+            Swal.fire({
+              title: "Berhasil",
+              text: "Data berhasil dimasukkan",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed) {
+                location.reload();
               }
-        })
-    }
+            });
+            // location.reload();
+          } else {
+            Swal.fire({
+              title: "Gagal",
+              text: "Data gagal dimasukkan, cek kembali data yang dimasukkan",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
+            console.log(error);
+          }
+    })
+  },
 })

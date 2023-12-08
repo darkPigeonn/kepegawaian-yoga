@@ -1,5 +1,6 @@
 <template name="listUser">
     <div class="container">
+        <h1>Daftar User</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/createUser" class="btn btn-primary">+ Tambah</a>
@@ -12,6 +13,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Username</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Nama Lengkap</th>
                         <th scope="col">Roles</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -25,19 +27,14 @@
                         {{#each i in emails}}
                             <td> {{i.address}} </td>
                         {{/each}}
+                        <td> {{fullname}} </td>
                         <td> {{roles}} </td>
-                        <!-- <td>
-                            <a href="/employees/edit/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
-                            </a>
-                            <a href="/employees/detail/{{_id}}">
-                                <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
-                            </a>
-                            <a href="/employees/remove/{{_id}}">
+                        <td>
+                            <!-- <a href="/user/remove/{{_id}}"> -->
                                 <button class="btn btn-danger" type="button" id="btn_delete"
                                     data-id="{{_id}}">Delete</button>
-                            </a>
-                        </td> -->
+                            <!-- </a> -->
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -47,7 +44,8 @@
 </template>
 
 <template name="createUser">
-    <form class="d-flex justify-content-center align-items-center vh-100">
+    <h1>Tambah User</h1>
+    <form class="d-flex justify-content-center align-items-center vh-50">
         <div class="form-group mb-2">
             <label for="input_username">Username</label>
             <input type="text" id="input_username" class="form-control" style="max-width: auto;" required><br>

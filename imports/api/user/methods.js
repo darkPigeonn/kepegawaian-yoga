@@ -44,4 +44,9 @@ Meteor.methods({
         // console.log(_id);
         return true;
     },
+
+    "user.remove"(id){
+        check(id, String);
+        return Meteor.users.remove({_id: id});
+      },
 })
