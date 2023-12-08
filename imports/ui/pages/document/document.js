@@ -24,7 +24,7 @@ Template.list_document.onCreated(function() {
         if(result){
           const dataRole = result[0];
           self.jabatanLogin.set(dataRole);
-          // console.log(dataRole);
+          console.log(dataRole);
           Meteor.call("document.getDocumentByRoles", dataRole, function (error, result){
             // console.log(roleLogin);
             if(result){

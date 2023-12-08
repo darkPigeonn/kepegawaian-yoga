@@ -63,90 +63,92 @@
                             {{/if}}
 
                             <li class=" list-group-item">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            {{#if equals viewMode 0}}
-                                            <td>
-                                                Nama
-                                            </td>
-
-                                            {{/if}}
-
-                                            {{#if equals viewMode 1}}
-                                            <td>
-                                                Nama
-                                            </td>
-                                            <td>
-                                                Tanggal
-                                            </td>
-                                            {{/if}}
-
-                                            <td>
-                                                Jam Masuk
-                                            </td>
-                                            <td>
-                                                Jam Pulang
-                                            </td>
-                                            <td>
-                                                Jam Kerja
-                                            </td>
-                                            {{#if equals viewMode 0}}
-                                            <td>
-                                                Aksi
-                                            </td>
-                                            {{/if}}
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {{#each presensi}}
-                                        <tr>
-                                            {{#if equals viewMode 0}}
-                                            <td>
-                                                <div class="column">
-                                                    {{ fullName }}
-                                                    <p>
-                                                        {{ jabatan }}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            {{/if}}
-
-                                            {{#if equals viewMode 1}}
-                                            <td>
-                                                {{fullName}}
-                                            </td>
-                                            <td>
-                                                {{ formatHRDate checkIn}}
-                                            </td>
-                                            {{/if}}
-
-                                            <td>
-                                                {{ formatTime checkIn }}
-                                            </td>
-                                            <td>
-                                                {{#if checkOut}}
-                                                {{ formatTime checkOut }}
-                                                {{ else }}
-                                                -
-                                                {{/if}}
-                                            </td>
-                                            <td>
-                                                {{ formatTotalTimeWorking checkIn checkOut }}
-                                            </td>
-                                            <td>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
                                                 {{#if equals viewMode 0}}
-                                                <button id="detailsView" milik="{{ userId }}"
-                                                    class="btn btn-primary btn-sm"><i class="fa fa-eye"
-                                                        milik="{{ userId }}"></i></button>
+                                                <td>
+                                                    Nama
+                                                </td>
+    
                                                 {{/if}}
-                                                {{#if isWfh}}
-                                                <a href="detailWfh/{{toMeteorId _id}}" class="btn btn-primary">WFH</a>
+    
+                                                {{#if equals viewMode 1}}
+                                                <td>
+                                                    Nama
+                                                </td>
+                                                <td>
+                                                    Tanggal
+                                                </td>
                                                 {{/if}}
-                                            </td>
-                                        </tr> {{/each}} </tbody>
-                                </table>
+    
+                                                <td>
+                                                    Jam Masuk
+                                                </td>
+                                                <td>
+                                                    Jam Pulang
+                                                </td>
+                                                <td>
+                                                    Jam Kerja
+                                                </td>
+                                                {{#if equals viewMode 0}}
+                                                <td>
+                                                    Aksi
+                                                </td>
+                                                {{/if}}
+                                            </tr>
+                                        </thead>
+    
+                                        <tbody>
+                                            {{#each presensi}}
+                                            <tr>
+                                                {{#if equals viewMode 0}}
+                                                <td>
+                                                    <div class="column">
+                                                        {{ fullName }}
+                                                        <p>
+                                                            {{ jabatan }}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                {{/if}}
+    
+                                                {{#if equals viewMode 1}}
+                                                <td>
+                                                    {{fullName}}
+                                                </td>
+                                                <td>
+                                                    {{ formatHRDate checkIn}}
+                                                </td>
+                                                {{/if}}
+    
+                                                <td>
+                                                    {{ formatTime checkIn }}
+                                                </td>
+                                                <td>
+                                                    {{#if checkOut}}
+                                                    {{ formatTime checkOut }}
+                                                    {{ else }}
+                                                    -
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{ formatTotalTimeWorking checkIn checkOut }}
+                                                </td>
+                                                <td>
+                                                    {{#if equals viewMode 0}}
+                                                    <button id="detailsView" milik="{{ userId }}"
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-eye"
+                                                            milik="{{ userId }}"></i></button>
+                                                    {{/if}}
+                                                    {{#if isWfh}}
+                                                    <a href="detailWfh/{{toMeteorId _id}}" class="btn btn-primary">WFH</a>
+                                                    {{/if}}
+                                                </td>
+                                            </tr> {{/each}} </tbody>
+                                    </table>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -235,63 +237,65 @@
                             {{/if}}
                             <li class="list-group-item">
                                 <!-- {{> financeListItem}} -->
-                                <table class="table table-bordered" id="table-rekap">
-                                    <thead>
-                                        <tr>
-                                            <td>
-                                                Nama
-                                            </td>
-                                            <td>
-                                                Unit
-                                            </td>
-                                            {{#if equals viewMode 1}}
-                                            <td>
-                                                Tanggal
-                                            </td>
-                                            {{/if}}
-
-                                            <td>
-                                                Total Hari Kerja
-                                            </td>
-                                            <td>
-                                                Total Tidak Masuk Kerja
-                                            </td>
-                                            <td>
-                                                Telat
-                                            </td>
-
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {{#each dataRekap.details}}
-                                        <tr>
-
-                                            <td>
-                                                <div class="column">
-                                                    {{capitalizeWord fullName }}
-                                                    {{ jabatan }}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ unit }}
-                                            </td>
-
-
-                                            <td>
-                                                {{ totalPresensi }}
-                                            </td>
-                                            <td>
-                                                {{ dafOf }}
-                                            </td>
-                                            <td>
-                                                {{totalLate}}
-                                            </td>
-
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="table-rekap">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Nama
+                                                </td>
+                                                <td>
+                                                    Unit
+                                                </td>
+                                                {{#if equals viewMode 1}}
+                                                <td>
+                                                    Tanggal
+                                                </td>
+                                                {{/if}}
+    
+                                                <td>
+                                                    Total Hari Kerja
+                                                </td>
+                                                <td>
+                                                    Total Tidak Masuk Kerja
+                                                </td>
+                                                <td>
+                                                    Telat
+                                                </td>
+    
+                                            </tr>
+                                        </thead>
+    
+                                        <tbody>
+                                            {{#each dataRekap.details}}
+                                            <tr>
+    
+                                                <td>
+                                                    <div class="column">
+                                                        {{capitalizeWord fullName }}
+                                                        {{ jabatan }}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {{ unit }}
+                                                </td>
+    
+    
+                                                <td>
+                                                    {{ totalPresensi }}
+                                                </td>
+                                                <td>
+                                                    {{ dafOf }}
+                                                </td>
+                                                <td>
+                                                    {{totalLate}}
+                                                </td>
+    
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </li>
                         </ul>
 
@@ -323,68 +327,70 @@
         }
     </style>
     <button id="cetak-rekap" class="btn btn-primary">Cetak Rekap</button>
-    <table class="table table-bordered" id="table-rekap">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="table-rekap">
 
-        <thead style="display:table-header-group;">
-            <tr>
-                <td>
-                    Nama
-                </td>
-                <td>
-                    Unit
-                </td>
-                <td>
-                    Jabatan
-                </td>
-                <td>
-                    Total Hari Kerja
-                </td>
-                <td>
-                    Total Tidak Masuk Kerja
-                </td>
-                <td>
-                    Telat
-                </td>
-                <td>
-                    Tanggal Telat
-                </td>
-
-            </tr>
-        </thead>
-
-        <tbody>
-            {{#each dataRekap}}
-            <tr>
-
-                <td>
-                    {{capitalizeWord fullName }}
-                </td>
-                <td>
-                    {{ unit }}
-                </td>
-                <td>
-                    {{ jabatan }}
-                </td>
-                <td>
-                    {{ totalPresensi }}
-                </td>
-                <td>
-                    {{ dafOf }}
-                </td>
-
-                <td>
-                    {{totalLate}}
-                </td>
-                <td>
-                    {{#each timeStamps}}
-                    {{ timeStamp}} ,
-                    {{/each}}
-                </td>
-
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+            <thead style="display:table-header-group;">
+                <tr>
+                    <td>
+                        Nama
+                    </td>
+                    <td>
+                        Unit
+                    </td>
+                    <td>
+                        Jabatan
+                    </td>
+                    <td>
+                        Total Hari Kerja
+                    </td>
+                    <td>
+                        Total Tidak Masuk Kerja
+                    </td>
+                    <td>
+                        Telat
+                    </td>
+                    <td>
+                        Tanggal Telat
+                    </td>
+    
+                </tr>
+            </thead>
+    
+            <tbody>
+                {{#each dataRekap}}
+                <tr>
+    
+                    <td>
+                        {{capitalizeWord fullName }}
+                    </td>
+                    <td>
+                        {{ unit }}
+                    </td>
+                    <td>
+                        {{ jabatan }}
+                    </td>
+                    <td>
+                        {{ totalPresensi }}
+                    </td>
+                    <td>
+                        {{ dafOf }}
+                    </td>
+    
+                    <td>
+                        {{totalLate}}
+                    </td>
+                    <td>
+                        {{#each timeStamps}}
+                        {{ timeStamp}} ,
+                        {{/each}}
+                    </td>
+    
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <template name="historyAttendance">
@@ -438,56 +444,58 @@
                             </li>
                             <li class="list-group-item">
                                 <!-- {{> financeListItem}} -->
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <td>
-                                                Nama
-                                            </td>
-                                            <td>
-                                                Total Hari Kerja
-                                            </td>
-                                            <td>
-                                                Total Tidak Masuk Kerja
-                                            </td>
-                                            <td>
-                                                Telat
-                                            </td>
-                                            {{#if equals viewMode 0}}
-                                            <td>
-                                                Aksi
-                                            </td>
-                                            {{/if}}
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {{#each dataRekap.details}}
-                                        <tr>
-                                            <td>
-                                                {{capitalizeWord fullName }} <br> {{jabatan}}
-                                            </td>
-                                            <td>
-                                                {{ totalPresensi }} Hari
-                                            </td>
-                                            <td>
-                                                {{ dafOf }} Hari
-                                            </td>
-                                            <td>
-                                                {{ totalLate }}
-                                            </td>
-                                            {{#if equals viewMode 0}}
-                                            <td>
-
-                                                <a href="/cetak-rekap-individu/{{currentMonth}}/{{userId}}"
-                                                    target="_blank" class="btn btn-primary btn-sm"><i
-                                                        class="fa fa-eye"></i></a>
-                                            </td>
-                                            {{/if}}
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Nama
+                                                </td>
+                                                <td>
+                                                    Total Hari Kerja
+                                                </td>
+                                                <td>
+                                                    Total Tidak Masuk Kerja
+                                                </td>
+                                                <td>
+                                                    Telat
+                                                </td>
+                                                {{#if equals viewMode 0}}
+                                                <td>
+                                                    Aksi
+                                                </td>
+                                                {{/if}}
+                                            </tr>
+                                        </thead>
+    
+                                        <tbody>
+                                            {{#each dataRekap.details}}
+                                            <tr>
+                                                <td>
+                                                    {{capitalizeWord fullName }} <br> {{jabatan}}
+                                                </td>
+                                                <td>
+                                                    {{ totalPresensi }} Hari
+                                                </td>
+                                                <td>
+                                                    {{ dafOf }} Hari
+                                                </td>
+                                                <td>
+                                                    {{ totalLate }}
+                                                </td>
+                                                {{#if equals viewMode 0}}
+                                                <td>
+    
+                                                    <a href="/cetak-rekap-individu/{{currentMonth}}/{{userId}}"
+                                                        target="_blank" class="btn btn-primary btn-sm"><i
+                                                            class="fa fa-eye"></i></a>
+                                                </td>
+                                                {{/if}}
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </li>
                         </ul>
 
@@ -522,7 +530,7 @@
         }
     </style>
     <button id="cetak-rekap" class="btn btn-primary">Cetak Rekap</button>
-    <div id="table-rekap">
+    <div id="table-rekap table-responsive">
         <table class="table summary-table text-center">
             <tbody>
                 <tr>
@@ -559,66 +567,68 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
+            <table class="table table-bordered">
 
-            <thead style="display:table-header-group;">
-                <tr>
-
-                    <td>
-                        Tanggal
-                    </td>
-                    <td>
-                        Jam Masuk
-                    </td>
-                    <td>
-                        Scan Masuk
-                    </td>
-                    <td>
-                        Jam Keluar
-                    </td>
-                    <td>
-                        Scan Keluar
-                    </td>
-                    <td>
-                        Keterangan
-                    </td>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                {{#each dataRekap.details}}
-                <tr>
-
-
-                    <td>
-                        {{formatHRDate checkIn }}
-                    </td>
-                    <td>
-                        {{clockInSet }}
-                    </td>
-                    <td>
-                        {{formatTime checkIn }}
-                    </td>
-                    <td>
-                        {{clockInSet }}
-                    </td>
-                    <td>
-                        {{formatTime checkOut }}
-                    </td>
-                    <td>
-                        {{#if isLate}}
-                        Terlambat
-                        {{else}}
-                        -
-                        {{/if}}
-                    </td>
-
-
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                <thead style="display:table-header-group;">
+                    <tr>
+    
+                        <td>
+                            Tanggal
+                        </td>
+                        <td>
+                            Jam Masuk
+                        </td>
+                        <td>
+                            Scan Masuk
+                        </td>
+                        <td>
+                            Jam Keluar
+                        </td>
+                        <td>
+                            Scan Keluar
+                        </td>
+                        <td>
+                            Keterangan
+                        </td>
+    
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    {{#each dataRekap.details}}
+                    <tr>
+    
+    
+                        <td>
+                            {{formatHRDate checkIn }}
+                        </td>
+                        <td>
+                            {{clockInSet }}
+                        </td>
+                        <td>
+                            {{formatTime checkIn }}
+                        </td>
+                        <td>
+                            {{clockInSet }}
+                        </td>
+                        <td>
+                            {{formatTime checkOut }}
+                        </td>
+                        <td>
+                            {{#if isLate}}
+                            Terlambat
+                            {{else}}
+                            -
+                            {{/if}}
+                        </td>
+    
+    
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -634,83 +644,86 @@
 
                                 <h4>{{ detailWfh.fullName }} - {{ detailWfh.jabatan }} </h4>
                                 <img alt="No Image Found" id="profile" src="test" height="300" width="300" />
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            Jam Masuk
-                                        </td>
-
-                                        <td>
-                                            {{formatTime detailWfh.checkIn}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Jam Keluar
-                                        </td>
-
-                                        <td>
-                                            {{formatTime detailWfh.checkOut}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lokasi Presensi Masuk
-                                        </td>
-
-                                        <td>
-                                            {{detailWfh.detailCheckIn.locationNote}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Keterangan
-                                        </td>
-
-                                        <td>
-                                            {{detailWfh.detailCheckIn.note}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Foto Presensi Masuk
-                                        </td>
-
-                                        <td>
-                                            <img width="150" src="{{detailWfh.detailCheckIn.images}}" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lokasi Presensi Keluar
-                                        </td>
-
-                                        <td>
-                                            {{detailWfh.detailCheckOut.locationNote}}
-                                            <a class="btn btn-primary"
-                                                href="https://maps.google.com/?q={{ detailWfh.detailCheckOut.location.latitude }},{{ detailWfh.detailCheckOut.location.longitude }}"
-                                                target="_blank"><i class="fa fa-map"></i> Lihat di Google Map</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Keterangan Presensi Keluar
-                                        </td>
-
-                                        <td>
-                                            {{detailWfh.detailCheckOut.note}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Foto Presensi Keluar
-                                        </td>
-
-                                        <td>
-                                            <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
-                                        </td>
-                                    </tr>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                Jam Masuk
+                                            </td>
+    
+                                            <td>
+                                                {{formatTime detailWfh.checkIn}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Jam Keluar
+                                            </td>
+    
+                                            <td>
+                                                {{formatTime detailWfh.checkOut}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Lokasi Presensi Masuk
+                                            </td>
+    
+                                            <td>
+                                                {{detailWfh.detailCheckIn.locationNote}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Keterangan
+                                            </td>
+    
+                                            <td>
+                                                {{detailWfh.detailCheckIn.note}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Foto Presensi Masuk
+                                            </td>
+    
+                                            <td>
+                                                <img width="150" src="{{detailWfh.detailCheckIn.images}}" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Lokasi Presensi Keluar
+                                            </td>
+    
+                                            <td>
+                                                {{detailWfh.detailCheckOut.locationNote}}
+                                                <a class="btn btn-primary"
+                                                    href="https://maps.google.com/?q={{ detailWfh.detailCheckOut.location.latitude }},{{ detailWfh.detailCheckOut.location.longitude }}"
+                                                    target="_blank"><i class="fa fa-map"></i> Lihat di Google Map</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Keterangan Presensi Keluar
+                                            </td>
+    
+                                            <td>
+                                                {{detailWfh.detailCheckOut.note}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                Foto Presensi Keluar
+                                            </td>
+    
+                                            <td>
+                                                <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
 
                             </li>
                         </ul>
@@ -858,37 +871,39 @@
                             </section>
                             {{#if equals viewMode '1'}}
 
-                            <table class="table table-bordered">
-                                <thead>
-                                    <th>
-                                        No
-                                    </th>
-                                    <th>
-                                        Nama Jadwal
-                                    </th>
-                                    <th>
-                                        Aksi
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    {{#each list}}
-                                    <tr>
-                                        <td>
-                                            {{nomorUrut @index}}
-                                        </td>
-                                        <td style="width:70%">
-                                            {{name}}
-                                        </td>
-                                        <td>
-                                            <a href="/configurasi/details/{{_id}}" class="btn btn-primary btn-aksi"
-                                                milik="">Daftar Karyawan</a>
-                                            {{> modalShowEditShift dataTarget=_id label='Edit' milik=_id listDay=schedule dataEditShift=dataEditShift list=list}}
-                                            <button class="btn btn-danger btn-aksi" milik="{{_id}}" id="btn-hapus-shift">Hapus</button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>
+                                            No
+                                        </th>
+                                        <th>
+                                            Nama Jadwal
+                                        </th>
+                                        <th>
+                                            Aksi
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        {{#each list}}
+                                        <tr>
+                                            <td>
+                                                {{nomorUrut @index}}
+                                            </td>
+                                            <td style="width:70%">
+                                                {{name}}
+                                            </td>
+                                            <td>
+                                                <a href="/configurasi/details/{{_id}}" class="btn btn-primary btn-aksi"
+                                                    milik="">Daftar Karyawan</a>
+                                                {{> modalShowEditShift dataTarget=_id label='Edit' milik=_id listDay=schedule dataEditShift=dataEditShift list=list}}
+                                                <button class="btn btn-danger btn-aksi" milik="{{_id}}" id="btn-hapus-shift">Hapus</button>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
                             <li class="list-group-item">
                                 {{name}}
                             </li>
@@ -931,44 +946,44 @@
                                 </div>
                                 <button class="btn btn-primary" id="btn-add-pair">Tambah</button>
                                 <h4>Daftar Karyawan dan Jadwal</h4>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <th>Nomor</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Jadwal</th>
-                                    </thead>
-                                    <tbody>
-                                        {{#each schedulePairings}}
-                                        <tr>
-                                            <td>
-                                                {{setTableNumber @index}}
-                                            </td>
-                                            <td>
-                                                {{fullName}}
-                                            </td>
-                                            <td>
-                                                {{jabatan}}
-                                            </td>
-                                            <td>
-                                                {{#each schedules}}
-                                            <td>
-                                                {{scheduleName}}
-                                            </td>
-
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <th>Nomor</th>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            <th>Jadwal</th>
+                                        </thead>
+                                        <tbody>
+                                            {{#each schedulePairings}}
+                                            <tr>
+                                                <td>
+                                                    {{setTableNumber @index}}
+                                                </td>
+                                                <td>
+                                                    {{fullName}}
+                                                </td>
+                                                <td>
+                                                    {{jabatan}}
+                                                </td>
+                                                <td>
+                                                    {{#each schedules}}
+                                                <td>
+                                                    {{scheduleName}}
+                                                </td>
+    
+                                                {{/each}}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger" id="btn-remove" milik="{{userId}}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                             {{/each}}
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger" id="btn-remove" milik="{{userId}}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-
-
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                     <button type="submit" class="btn btn-primary" id="btn-save-pairings">Simpan</button>
@@ -976,39 +991,41 @@
                             </form>
 
                             {{else}}
-                            <table class="table table-bordered">
-                                <thead>
-                                    <th>
-                                        No
-                                    </th>
-                                    <th>
-                                        Nama Shift
-                                    </th>
-                                    <th>
-                                        Aksi
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    {{#each scheduleList}}
-                                    <tr>
-                                        <td>
-                                            {{nomorUrut @index}}
-                                        </td>
-                                        <td>
-                                            {{name}}
-                                        </td>
-
-                                        <td>
-                                            <a href="/configurasi/details/{{_id}}" class="btn btn-primary btn-aksi"
-                                                milik="">Daftar Karyawan</a>
-                                            {{> modalShowEdit dataTarget=_id label='Edit' labelSchedule=name milik=_id listDay=schedule list=list}}
-                                            <!-- {{_id}} -->
-                                            <button class="btn btn-danger btn-aksi" milik="{{_id}}" id="btn-hapus-jadwal">Hapus</button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <th>
+                                            No
+                                        </th>
+                                        <th>
+                                            Nama Shift
+                                        </th>
+                                        <th>
+                                            Aksi
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        {{#each scheduleList}}
+                                        <tr>
+                                            <td>
+                                                {{nomorUrut @index}}
+                                            </td>
+                                            <td>
+                                                {{name}}
+                                            </td>
+    
+                                            <td>
+                                                <a href="/configurasi/details/{{_id}}" class="btn btn-primary btn-aksi"
+                                                    milik="">Daftar Karyawan</a>
+                                                {{> modalShowEdit dataTarget=_id label='Edit' labelSchedule=name milik=_id listDay=schedule list=list}}
+                                                <!-- {{_id}} -->
+                                                <button class="btn btn-danger btn-aksi" milik="{{_id}}" id="btn-hapus-jadwal">Hapus</button>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
 
                             {{/if}}
                             {{/if}}
@@ -1122,32 +1139,36 @@
                         <a href="/configurasi/list">
                             <button class="btn btn-warning" id="btn-back">Kembali</button>
                         </a>
-                        <table class="table table-bordered dataTable2" id="mytable">
-                            <thead>
-                                <th>
-                                    No.
-                                </th>
-                                <th>
-                                    Nama
-                                </th>
-                            </thead>
-                            <tbody>
-                                {{#each listEmployess}}
-                                <tr>
-                                    <td>
-                                        {{nomorUrut @index}}
-                                    </td>
-                                    <td>
-                                        {{fullName}}
-                                    </td>
-                                    {{#each schedules}}
-                                    <td>{{scheduleName}}</td>
+                        <div class="table-responsive">
+                            <table class="table table-bordered dataTable2" id="mytable">
+                                <thead>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>
+                                        Nama
+                                    </th>
+                                    <th>
+                                        Jadwal
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    {{#each listEmployess}}
+                                    <tr>
+                                        <td>
+                                            {{nomorUrut @index}}
+                                        </td>
+                                        <td>
+                                            {{fullName}}
+                                        </td>
+                                        {{#each schedules}}
+                                        <td>{{scheduleName}}</td>
+                                        {{/each}}
+                                    </tr>
                                     {{/each}}
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>
@@ -1164,7 +1185,7 @@
 
                 <h4>{{ detailWfh.fullName }} - {{ detailWfh.jabatan }} </h4>
                 <img alt="No Image Found" id="profile" src="test" height="300" width="300" />
-                <table class="table">
+                <table class="table table-responsive">
                     <tr>
                         <td>
                             Jam Masuk

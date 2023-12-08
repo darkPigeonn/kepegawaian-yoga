@@ -16,7 +16,7 @@ Template.listUser.onCreated(function () {
 
     Meteor.call("users.getAll", function (error, result) {
         if (result) {
-        //   console.log(result);
+          console.log(result);
           self.dataListUser.set(result);
         } else {
           console.log(error);

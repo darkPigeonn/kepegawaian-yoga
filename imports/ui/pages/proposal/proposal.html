@@ -12,179 +12,185 @@
 
         <section class="section-surat-list">
             <h3 class="page-title">Proposal Keluar</h3>
-            <table class="table table-bordered center">
-                <thead style="text-align: center;">
-                    <th>
-                        Nama Proposal
-                    </th>
-                    <th>
-                        Tanggal Pembuatan
-                    </th>
-                    <th>
-                        Pembuat
-                    </th>
-                    <th>
-                        Posisi
-                    </th>
-                    <th>
-                        Keterangan
-                    </th>
-                    <th>
-                        Aksi
-                    </th>
-                </thead>
-
-                <tbody>
-                    {{#each myProposals}}
-                    <tr>
-                        <td>
-                            {{name}}
-                        </td>
-                        <td>
-                            {{formatHRDate createdAt}}
-                        </td>
-                        <td>
-                            {{createdByName}}
-                        </td>
-                        <td>
-                            {{setJabatanFormat currentJabatan}}
-                        </td>
-                        <td>
-                            <!-- {{statusDetail currentState.status}} {{review.userName}} -->
-                            {{statusDetail status}} {{review.userName}}
-                        </td>
-                        <td>
-                            {{#if equals status -1}}
-                            <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat"
-                                milik="{{_id}}">
-                                Edit</a>
-                            <button class="btn btn-primary" id="btn-kirim" milik="{{ _id }}">Kirim</button>
-                            {{else}}
-                                <a href="/proposal/preview/{{_id}}" class="btn btn-warning"
+            <div class="table-responsive">
+                <table class="table table-bordered center">
+                    <thead style="text-align: center;">
+                        <th>
+                            Nama Proposal
+                        </th>
+                        <th>
+                            Tanggal Pembuatan
+                        </th>
+                        <th>
+                            Pembuat
+                        </th>
+                        <th>
+                            Posisi
+                        </th>
+                        <th>
+                            Keterangan
+                        </th>
+                        <th>
+                            Aksi
+                        </th>
+                    </thead>
+    
+                    <tbody>
+                        {{#each myProposals}}
+                        <tr>
+                            <td>
+                                {{name}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{createdByName}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat currentJabatan}}
+                            </td>
+                            <td>
+                                <!-- {{statusDetail currentState.status}} {{review.userName}} -->
+                                {{statusDetail status}} {{review.userName}}
+                            </td>
+                            <td>
+                                {{#if equals status -1}}
+                                <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat"
                                     milik="{{_id}}">
-                                    Lihat</a>
-                            {{/if}}
-                            <!-- {{#if equals currentState.status 90}} -->
-                            {{#if equals status "90"}}
-                                <a href="/proposal/edit/{{_id}}" class="btn btn-primary"
+                                    Edit</a>
+                                <button class="btn btn-primary" id="btn-kirim" milik="{{ _id }}">Kirim</button>
+                                {{else}}
+                                    <a href="/proposal/preview/{{_id}}" class="btn btn-warning"
+                                        milik="{{_id}}">
+                                        Lihat</a>
+                                {{/if}}
+                                <!-- {{#if equals currentState.status 90}} -->
+                                {{#if equals status "90"}}
+                                    <a href="/proposal/edit/{{_id}}" class="btn btn-primary"
+                                        milik="{{_id}}">
+                                        Perbaiki</a>
+                                {{/if}}
+                                {{#if equals status "60"}}
+                                    <a href="/proposal/print/{{_id}}" class="btn btn-primary"
                                     milik="{{_id}}">
-                                    Perbaiki</a>
-                            {{/if}}
-                            {{#if equals status "60"}}
-                                <a href="/proposal/print/{{_id}}" class="btn btn-primary"
-                                milik="{{_id}}">
-                                Print</a>
-                            {{/if}}
-                        </td>
-
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                                    Print</a>
+                                {{/if}}
+                            </td>
+    
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
             <h3 class="page-title">Proposal Masuk</h3>
-            <table class="table table-bordered center">
-                <thead style="text-align: center;">
-                    <th>
-                        Nama Proposal
-                    </th>
-                    <th>
-                        Tanggal Pembuatan
-                    </th>
-                    <th>
-                        Pembuat
-                    </th>
-                    <th>
-                        Posisi
-                    </th>
-                    <th>
-                        Keterangan
-                    </th>
-                    <th>
-                        Aksi
-                    </th>
-                </thead>
-
-                <tbody>
-                    {{#each incomingProposals}}
-                    <tr>
-                        <td>
-                            {{name}}
-                        </td>
-                        <td>
-                            {{formatHRDate createdAt}}
-                        </td>
-                        <td>
-                            {{createdByName}}
-                        </td>
-                        <td>
-                            {{setJabatanFormat currentJabatan}}
-                        </td>
-                        <td>
-                            <!-- {{statusDetail currentState.status}} {{review.userName}} -->
-                            {{statusDetail status}}
-                        </td>
-                        <td>
-                            <!-- {{#if equals currentState.status "99"}} -->
-                            {{#if equals status "99"}}
-                             <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
-                             {{ else }}
-                             <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
-                            {{/if}}
-                        </td>
-
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered center">
+                    <thead style="text-align: center;">
+                        <th>
+                            Nama Proposal
+                        </th>
+                        <th>
+                            Tanggal Pembuatan
+                        </th>
+                        <th>
+                            Pembuat
+                        </th>
+                        <th>
+                            Posisi
+                        </th>
+                        <th>
+                            Keterangan
+                        </th>
+                        <th>
+                            Aksi
+                        </th>
+                    </thead>
+    
+                    <tbody>
+                        {{#each incomingProposals}}
+                        <tr>
+                            <td>
+                                {{name}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{createdByName}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat currentJabatan}}
+                            </td>
+                            <td>
+                                <!-- {{statusDetail currentState.status}} {{review.userName}} -->
+                                {{statusDetail status}}
+                            </td>
+                            <td>
+                                <!-- {{#if equals currentState.status "99"}} -->
+                                {{#if equals status "99"}}
+                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                 {{ else }}
+                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                {{/if}}
+                            </td>
+    
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
             <h3 class="page-title">Riwayat Proposal</h3>
-            <table class="table table-bordered center">
-                <thead style="text-align: center;">
-                    <th>
-                        Nama Proposal
-                    </th>
-                    <th>
-                        Tanggal Pembuatan
-                    </th>
-                    <th>
-                        Pembuat
-                    </th>
-                    <th>
-                        Posisi
-                    </th>
-                    <th>
-                        Keterangan
-                    </th>
-                    <th>
-                        Aksi
-                    </th>
-                </thead>
-
-                <tbody>
-                    {{#each dataProposalHistory}}
-                    <tr>
-                        <td>
-                            {{name}}
-                        </td>
-                        <td>
-                            {{formatHRDate createdAt}}
-                        </td>
-                        <td>
-                            {{createdByName}}
-                        </td>
-                        <td>
-                            {{setJabatanFormat currentJabatan}}
-                        </td>
-                        <td>
-                            <!-- {{statusDetail currentState.status}} {{review.userName}} -->
-                            {{statusDetail status}}
-                        </td>
-                        <td>
-                            <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered center">
+                    <thead style="text-align: center;">
+                        <th>
+                            Nama Proposal
+                        </th>
+                        <th>
+                            Tanggal Pembuatan
+                        </th>
+                        <th>
+                            Pembuat
+                        </th>
+                        <th>
+                            Posisi
+                        </th>
+                        <th>
+                            Keterangan
+                        </th>
+                        <th>
+                            Aksi
+                        </th>
+                    </thead>
+    
+                    <tbody>
+                        {{#each dataProposalHistory}}
+                        <tr>
+                            <td>
+                                {{name}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{createdByName}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat currentJabatan}}
+                            </td>
+                            <td>
+                                <!-- {{statusDetail currentState.status}} {{review.userName}} -->
+                                {{statusDetail status}}
+                            </td>
+                            <td>
+                                <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
     {{/if}}
@@ -314,30 +320,32 @@
         </div>
         {{#if daftarAlur}}
         <h4>Daftar Alur</h4>
-        <table class="table table-bordered">
-            <thead>
-                <th>Nomor</th>
-                <th>Jabatan</th>
-                <!-- <th>Action</th> -->
-            </thead>
-            <tbody>
-                {{#each i in daftarAlur}}
-                    <tr>
-                        <td>
-                            {{setTableNumber @index}}
-                        </td>
-                        <td>
-                            {{setJabatanFormat i}}
-                        </td>
-                        <!-- <td>
-                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td> -->
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <th>Nomor</th>
+                    <th>Jabatan</th>
+                    <!-- <th>Action</th> -->
+                </thead>
+                <tbody>
+                    {{#each i in daftarAlur}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat i}}
+                            </td>
+                            <!-- <td>
+                                <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td> -->
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
         {{/if}}
         <div class="form-actions">
             <button id="submit" class="btn btn-primary">Submit</button>

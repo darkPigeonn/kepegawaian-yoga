@@ -5,7 +5,7 @@
                 <a href="/createUser" class="btn btn-primary">+ Tambah</a>
             </div>
         </div>
-        <div class="d-lg-block">
+        <div class="d-lg-block table-responsive">
             <table class="table">
                 <thead>
                     <tr>
@@ -21,10 +21,11 @@
                     <tr>
                         <td> {{nomorUrut @index}}</td>
                         <td> {{username}} </td>
-                        <td> {{dataListUser.emails}} </td>
-                        {{#each i in dataListUser.emails}}
-                            <td> {{dataListUser.emails}} </td>
+                        <!-- <td> {{emails}} </td> -->
+                        {{#each i in emails}}
+                            <td> {{i.address}} </td>
                         {{/each}}
+                        <td> {{roles}} </td>
                         <!-- <td>
                             <a href="/employees/edit/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
@@ -46,16 +47,20 @@
 </template>
 
 <template name="createUser">
-    <form style="display: flex; justify-content: center; align-items: center; height: 60vh;">
+    <form class="d-flex justify-content-center align-items-center vh-100">
         <div class="form-group mb-2">
-            <label>Username</label>
-            <input type="text" id="input_username" style="width: 20vw" class="form-control" required><br>
-            <label>Password</label>
-            <input type="text" id="input_password" style="width: 20vw" class="form-control" required><br>
-            <label>Nama Lengkap</label>
-            <input type="text" id="input_fullname" style="width: 20vw" class="form-control" required><br>
-            <label>Roles</label>
-            <select id="input_roles" class="form-control" style="width: 20vw;">
+            <label for="input_username">Username</label>
+            <input type="text" id="input_username" class="form-control" style="max-width: auto;" required><br>
+            
+            <label for="input_password">Password</label>
+            <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
+            
+            <label for="input_fullname">Nama Lengkap</label>
+            <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" required><br>
+            
+            <label for="input_roles">Roles</label>
+            <select id="input_roles" class="form-control" style="max-width: auto;">
+                <option value="admin">Admin</option>
                 <option value="resepsionis">Resepsionis</option>
                 <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
                 <option value="bidang">Bidang</option>
@@ -64,8 +69,11 @@
                 <option value="pengurus-inti">Pengurus Inti</option>
                 <option value="administrasi-umum">Administrasi Umum</option>
             </select>
+            
             <br>
-            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_user">Simpan</button>
+            
+            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
         </div>
     </form>
+    
 </template>
