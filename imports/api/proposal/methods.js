@@ -467,7 +467,7 @@ Meteor.methods({
         x.createdByName = thisUser.fullname
         return x
       });
-      return dataFilte
+      return dataFilter
     }
     else{
       return;
