@@ -32,6 +32,13 @@ Meteor.methods({
             currentJabatan = dataAlurObject[0].jabatan
         }
 
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+          });
+        partnerCode = adminPartner.partners[0];
+
         const dataSave = {
             name: full_name,
             sumberDokumen: sumber,
@@ -40,14 +47,21 @@ Meteor.methods({
             linkPDF,
             alur: dataAlurObject,
             currentOrder,
-            currentJabatan
+            currentJabatan,
+            partner: partnerCode
         }
 
         return await Document.insert(dataSave);
     },
 
     "document.getAllDocuments"(){
-        const data = Document.find({}, {sort: {tanggal: -1}}).fetch();
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+          });
+        partnerCode = adminPartner.partners[0];
+        const data = Document.find({partner: partnerCode}, {sort: {tanggal: -1}}).fetch();
         // console.log(data);
         return data;
     },
@@ -60,13 +74,25 @@ Meteor.methods({
 
     "document.getDocumentByRoles"(role){
         // console.log(role);
-        const data = Document.find({currentJabatan: role}).fetch();
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+          });
+        partnerCode = adminPartner.partners[0];
+        const data = Document.find({currentJabatan: role, partner: partnerCode}).fetch();
         // console.log(data);
         return data;
     },
 
     "document.getHistoryByPengisi"(role){
-        const data = Document.find({"alur.jabatan": role}).fetch();
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+          });
+        partnerCode = adminPartner.partners[0];
+        const data = Document.find({"alur.jabatan": role, partner: partnerCode}).fetch();
         return data.filter((x) => {
             return x.alur.find((y) => y.analisis.length && y.jabatan == role)
         })

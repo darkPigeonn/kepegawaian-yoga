@@ -13,11 +13,17 @@ Meteor.methods({
       status: -1,
       createdBy: thisUser._id,
       createdAt: new Date(),
-      partners: thisUser.partners,
+      partners: thisUser.partners[0],
     });
   },
   async "getProposals"() {
-    const data = Proposals.find().fetch();
+    let partnerCode;
+    const thisUser = Meteor.userId();
+    const adminPartner = Meteor.users.findOne({
+      _id: thisUser,
+      });
+    partnerCode = adminPartner.partners[0];
+    const data = Proposals.find({partners: partnerCode}).fetch();
     const promise = data.map(async function (x) {  
       const thisUser = await Meteor.users.findOne({_id: x.createdBy})
       x.createdByName = thisUser.fullname
@@ -451,15 +457,21 @@ Meteor.methods({
 
   "proposal.getHistoryByPengisi"(nama){
     const data = Proposals.find({"note.noteByName": nama}).fetch();
-    const pembuat = data[0].createdBy;
-    const thisUser = Meteor.users.findOne({_id: pembuat});
-    const dataFilter = data.filter((x) => {
-        return x.note.find((y) => y.note.length && y.noteByName == nama)
-    }).map((x) => {
-      x.createdByName = thisUser.fullname
-      return x
-    });
-    return dataFilter
+    // console.log(data.length);
+    if(data.length != 0){
+      const pembuat = data[0].createdBy;
+      const thisUser = Meteor.users.findOne({_id: pembuat});
+      const dataFilter = data.filter((x) => {
+          return x.note.find((y) => y.note.length && y.noteByName == nama)
+      }).map((x) => {
+        x.createdByName = thisUser.fullname
+        return x
+      });
+      return dataFilte
+    }
+    else{
+      return;
+    }
   },
 
 });

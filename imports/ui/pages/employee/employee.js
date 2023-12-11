@@ -206,132 +206,193 @@ Template.employee_create.events({
     const golongan = $("#input_golongan").val();
     date_of_birth = new Date(date_of_birth);
     start_date = new Date(start_date);
-  // console.log(isNumber(gajiPokok));
-  // console.log(full_name);
+    // console.log(isNumber(gajiPokok));
+    // console.log(full_name);
 
-  const dataForm = $(".form-control")
-  // console.log(dataForm);
-  let cek = false;
-  for (let index = 0; index < dataForm.length; index++) {
-    let data = dataForm[index].value;
-    // console.log(data);
-    if(dataForm[index].value == ""){
-      cek = true;
-    }
-  }
-  if(cek == true){
-    Swal.fire({
-      title: "Gagal",
-      text: "Data harus diisi semua",
-      showConfirmButton: true,
-      allowOutsideClick: true,
-    });
-    return;
-  }
-
-  // console.log(base_salary, allowances, deductions);
-  // return;
-  
-  if(!isNumber(emergency_contact_phone) || !isNumber(phone_number)){
-    // console.log("gagal no telp masuk sini");
-    Swal.fire({
-      title: "Gagal",
-      text: "Nomor Telepon harus angka dan diisi",
-      showConfirmButton: true,
-      allowOutsideClick: true,
-    });
-    return;
-  }
-
-  if(!base_salary){
-    // console.log("gagal uang masuk sini");
-    // alert("Gaji pokok atau Allowance harus angka");
-    Swal.fire({
-      title: "Gagal",
-      text: "Gaji pokok atau Allowance harus angka dan diisi",
-      showConfirmButton: true,
-      allowOutsideClick: true,
-    });
-    return;
-  }
-
-  emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
-  phone_number = formatPhoneNumber(phone_number);
-
-  const file = $(`#gambar`).prop('files')
-  console.log(file);
-  const thisForm = {};
-  thisForm[gambar] = "";
-  // console.log(file[0].name);
-  if(file[0]){
-    const uploadData = {
-      fileName: file[0].name,
-      type: "image/png",
-      Body: file[0]
-    }
-    thisForm[gambar] = await uploadFiles(uploadData)
-  }
-
-  const linkGambar = thisForm[gambar];
-  // console.log(linkGambar);
-  const data = {full_name,
-    identification_number,
-    place_of_birth,
-    date_of_birth,
-    gender,
-    address,
-    phone_number,
-    email_address,
-    job_position,
-    department_unit,
-    start_date,
-    employment_status,
-    base_salary,
-    allowances,
-    deductions,
-    highest_education,
-    education_institution,
-    major_in_highest_education,
-    academic_degree,
-    previous_work_experience,
-    marital_status,
-    number_of_children,
-    emergency_contact_name,
-    emergency_contact_phone,
-    // employment_history,
-    // partnerCode,
-    linkGambar,
-    golongan
-  }  
-  Meteor.call(
-      "employee.insert",
-      data,
-      function (error, result) {
-        if (result) {
-          // alert("Sukses");
-          Swal.fire({
-            title: "Berhasil",
-            text: "Data berhasil dimasukkan",
-            showConfirmButton: true,
-            allowOutsideClick: true,
-          }).then((result) => {
-            if(result.isConfirmed) {
-              history.back();
-            }
-          });
-          // location.reload();
-        } else {
-          Swal.fire({
-            title: "Gagal",
-            text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-            showConfirmButton: true,
-            allowOutsideClick: true,
-          });
-          // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
-          console.log(error);
-        }
+    const dataForm = $(".form-control")
+    // console.log(dataForm);
+    let cek = false;
+    for (let index = 0; index < dataForm.length; index++) {
+      let data = dataForm[index].value;
+      // console.log(data);
+      if(dataForm[index].value == ""){
+        cek = true;
       }
-    );
+    }
+    if(cek == true){
+      Swal.fire({
+        title: "Gagal",
+        text: "Data harus diisi semua",
+        showConfirmButton: true,
+        allowOutsideClick: true,
+      });
+      return;
+    }
+
+    // console.log(base_salary, allowances, deductions);
+    // return;
+    
+    if(!isNumber(emergency_contact_phone) || !isNumber(phone_number)){
+      // console.log("gagal no telp masuk sini");
+      Swal.fire({
+        title: "Gagal",
+        text: "Nomor Telepon harus angka dan diisi",
+        showConfirmButton: true,
+        allowOutsideClick: true,
+      });
+      return;
+    }
+
+    if(!base_salary){
+      // console.log("gagal uang masuk sini");
+      // alert("Gaji pokok atau Allowance harus angka");
+      Swal.fire({
+        title: "Gagal",
+        text: "Gaji pokok atau Allowance harus angka dan diisi",
+        showConfirmButton: true,
+        allowOutsideClick: true,
+      });
+      return;
+    }
+
+    emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
+    phone_number = formatPhoneNumber(phone_number);
+
+    const file = $(`#gambar`).prop('files')
+    console.log(file);
+    const thisForm = {};
+    thisForm[gambar] = "";
+    // console.log(file[0].name);
+    if(file[0]){
+      const uploadData = {
+        fileName: file[0].name,
+        type: "image/png",
+        Body: file[0]
+      }
+      thisForm[gambar] = await uploadFiles(uploadData)
+    }
+
+    const linkGambar = thisForm[gambar];
+    if(!linkGambar){
+      console.log('link url tidak ada');
+    }
+    console.log(linkGambar);
+    // console.log(linkGambar);
+    const data = {full_name,
+      identification_number,
+      place_of_birth,
+      date_of_birth,
+      gender,
+      address,
+      phone_number,
+      email_address,
+      job_position,
+      department_unit,
+      start_date,
+      employment_status,
+      base_salary,
+      allowances,
+      deductions,
+      highest_education,
+      education_institution,
+      major_in_highest_education,
+      academic_degree,
+      previous_work_experience,
+      marital_status,
+      number_of_children,
+      emergency_contact_name,
+      emergency_contact_phone,
+      // employment_history,
+      // partnerCode,
+      linkGambar,
+      golongan
+    }
+    if(!linkGambar){
+      Swal.fire({
+        title: "Warning",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+        text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+      }).then((result) => {
+        if(result.isConfirmed) {
+          data.linkGambar = "";
+          Meteor.call(
+            "employee.insert",
+            data,
+            function (error, result) {
+              if (result) {
+                // alert("Sukses");
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil dimasukkan",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                }).then((result) => {
+                  if(result.isConfirmed) {
+                    history.back();
+                  }
+                });
+                // location.reload();
+              } else {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
+                console.log(error);
+              }
+            }
+          );
+        }
+      });
+    }
+    else{
+      Swal.fire({
+        title: "Warning",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+        text: "Apakah anda ingin menyimpan data pegawai ini",
+      }).then((result) => {
+        if(result.isConfirmed) {
+          Meteor.call(
+            "employee.insert",
+            data,
+            function (error, result) {
+              if (result) {
+                // alert("Sukses");
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil dimasukkan",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                }).then((result) => {
+                  if(result.isConfirmed) {
+                    history.back();
+                  }
+                });
+                // location.reload();
+              } else {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
+                console.log(error);
+              }
+            }
+          );
+        }
+      });
+    }  
+  
   },
 });
 
@@ -648,8 +709,8 @@ Template.employee_create.events({
         });
           return;
       }
-    emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
-    phone_number = formatPhoneNumber(phone_number);
+      emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
+      phone_number = formatPhoneNumber(phone_number);
 
   const file = $(`#gambar`).prop('files');
   console.log(file.length);
@@ -681,37 +742,48 @@ Template.employee_create.events({
       // employment_history,
       // partnerCode,
       golongan
-    }  
-    Meteor.call(
-      "employee.update",
-      id,
-      data,
-      function (error, result) {
-        if (result) {
-          // console.log(result);
-          // alert("Sukses");
-          Swal.fire({
-            title: "Berhasil",
-            text: "Data berhasil diupdate",
-            showConfirmButton: true,
-            allowOutsideClick: true,
-          }).then((result) => {
-            if(result.isConfirmed){
-              history.back();
+    }
+    Swal.fire({
+      title: "Warning",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+      text: "Apakah anda yakin ingin update data pegawai",
+    }).then((result) => {
+      if(result.isConfirmed){
+        Meteor.call(
+          "employee.update",
+          id,
+          data,
+          function (error, result) {
+            if (result) {
+              // console.log(result);
+              // alert("Sukses");
+              Swal.fire({
+                title: "Berhasil",
+                text: "Data berhasil diupdate",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              }).then((result) => {
+                if(result.isConfirmed){
+                  history.back();
+                }
+              });
+            } else {
+              // alert("Update employee error");
+              Swal.fire({
+                title: "Gagal",
+                text: "Data gagal diupdate",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              });
+              console.log(error);
             }
-          });
-        } else {
-          // alert("Update employee error");
-          Swal.fire({
-            title: "Gagal",
-            text: "Data gagal diupdate",
-            showConfirmButton: true,
-            allowOutsideClick: true,
-          });
-          console.log(error);
-        }
+          }
+        );
       }
-    );
+    })
   } else {
     const thisForm = {};
     thisForm[gambar] = "";
@@ -754,36 +826,91 @@ Template.employee_create.events({
         linkGambar,
         golongan
       }  
-      Meteor.call(
-        "employee.updateWithPicture",
-        id,
-        data,
-        function (error, result) {
-          if (result) {
-            // console.log(result);
-            // alert("Sukses");
-            Swal.fire({
-              title: "Berhasil",
-              text: "Data berhasil diupdate",
-              showConfirmButton: true,
-              allowOutsideClick: true,
-            }).then((result) => {
-              if(result.isConfirmed){
-                location.reload();
+      if(!linkGambar){
+        Swal.fire({
+          title: "Warning",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Iya",
+          cancelButtonText: "Tidak",
+          text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+        }).then((result) => {
+          if(result.isConfirmed) {
+            linkGambar = "";
+            Meteor.call(
+              "employee.updateWithPicture",
+              id,
+              data,
+              function (error, result) {
+                if (result) {
+                  // console.log(result);
+                  // alert("Sukses");
+                  Swal.fire({
+                    title: "Berhasil",
+                    text: "Data berhasil diupdate",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  }).then((result) => {
+                    if(result.isConfirmed){
+                      location.reload();
+                    }
+                  });
+                } else {
+                  // alert("Update employee error");
+                  Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal diupdate",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  });
+                  console.log(error);
+                }
               }
-            });
-          } else {
-            // alert("Update employee error");
-            Swal.fire({
-              title: "Gagal",
-              text: "Data gagal diupdate",
-              showConfirmButton: true,
-              allowOutsideClick: true,
-            });
-            console.log(error);
+            );
           }
-        }
-      );
+        })
+      }
+      else{
+        Swal.fire({
+          title: "Warning",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Iya",
+          cancelButtonText: "Tidak",
+          text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+        }).then((result) => {
+          Meteor.call(
+            "employee.updateWithPicture",
+            id,
+            data,
+            function (error, result) {
+              if (result) {
+                // console.log(result);
+                // alert("Sukses");
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                }).then((result) => {
+                  if(result.isConfirmed){
+                    location.reload();
+                  }
+                });
+              } else {
+                // alert("Update employee error");
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                console.log(error);
+              }
+            }
+          );
+        })
+      }
     }
   }
 
