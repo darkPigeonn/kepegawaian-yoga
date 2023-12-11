@@ -200,6 +200,13 @@ FlowRouter.route("/listUser", {
   }
 });
 
+FlowRouter.route("/createAdmin", {
+  name: "createAdmin",
+  action(){
+    this.render("App_body", "createAdmin")
+  }
+});
+
 FlowRouter.route("/createUser", {
   nama:"createUser",
   action(){

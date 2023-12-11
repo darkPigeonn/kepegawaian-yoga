@@ -13,6 +13,20 @@ import { HTTP } from 'meteor/http';
 Template.listUser.onCreated(function () { 
     const self = this;
     self.dataListUser = new ReactiveVar();
+    self.jabatanLogin = new ReactiveVar();
+    self.dataListUserSuperAdmin = new ReactiveVar();
+
+    const userId = Meteor.userId();
+    // console.log(userId);
+    if(userId){
+      Meteor.call("employee.getDataLogin", userId, function (error, result) { 
+        if(result){
+          const dataRole = result[0];
+          self.jabatanLogin.set(dataRole);
+          console.log(dataRole);
+        }
+      })
+    }
 
     Meteor.call("users.getAll", function (error, result) {
         if (result) {
@@ -22,11 +36,26 @@ Template.listUser.onCreated(function () {
           console.log(error);
         }
     });
+
+    Meteor.call("users.getAllSuperAdmin", function (error, result) {
+      if (result) {
+        console.log(result);
+        self.dataListUserSuperAdmin.set(result);
+      } else {
+        console.log(error);
+      }
+  });
 });
 
 Template.listUser.helpers({
     dataListUser(){
-        return Template.instance().dataListUser.get();
+      return Template.instance().dataListUser.get();
+    },
+    jabatanLogin(){
+      return Template.instance().jabatanLogin.get();
+    },
+    dataListUserSuperAdmin(){
+      return Template.instance().dataListUserSuperAdmin.get();
     }
 });
 
@@ -90,6 +119,49 @@ Template.createUser.events({
     };
 
     Meteor.call("users.createAppMeteor", dataSend, function (error ,result) { 
+        if (result) {
+            // alert("Sukses");
+            Swal.fire({
+              title: "Berhasil",
+              text: "Data berhasil dimasukkan",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed) {
+                location.reload();
+              }
+            });
+            // location.reload();
+          } else {
+            Swal.fire({
+              title: "Gagal",
+              text: "Data gagal dimasukkan, cek kembali data yang dimasukkan",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
+            console.log(error);
+          }
+    })
+  },
+})
+
+Template.createAdmin.events({
+  "click #btn_save_admin"(e, t){
+    console.log("masuk");
+    const username = $("#input_username").val();
+    const password = $("#input_password").val();
+    const partners = $("#input_partners").val();
+    const fullname = $("#input_fullname").val();
+
+    const dataSend = {
+        username,
+        password,
+        fullname,
+        partners
+    };
+
+    Meteor.call("users.createAppMeteorSuperAdmin", dataSend, function (error ,result) { 
         if (result) {
             // alert("Sukses");
             Swal.fire({

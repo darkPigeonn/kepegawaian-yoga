@@ -243,7 +243,7 @@ Template.employee_create.events({
     return;
   }
 
-  if(!base_salary || !allowances || !deductions){
+  if(!base_salary){
     // console.log("gagal uang masuk sini");
     // alert("Gaji pokok atau Allowance harus angka");
     Swal.fire({
@@ -629,7 +629,7 @@ Template.employee_create.events({
         return;
       }
       
-      if(!base_salary || !allowances || !deductions){
+      if(!base_salary){
           // alert("Gaji pokok atau Allowance harus angka");
           Swal.fire({
             title: "Gagal",
@@ -913,6 +913,7 @@ Template.employee_create.events({
           skipEmptyLines: true,
           complete: function(results) {
             const parsedData = results.data;
+            console.log(parsedData);
             // console.log(typeof parsedData[0].allowances);
             // console.log(parsedData[0].allowances, parsedData[0].deductions, parsedData[0].base_salary);
             
