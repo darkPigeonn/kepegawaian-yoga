@@ -41,7 +41,7 @@ Template.staffsAttendancePage.onCreated(function () {
   });
   $("#selected-date").val(new Date().toISOString().split("T")[0]);
 
-//   startSelect2();
+  // startSelect2();
 });
 Template.staffsAttendancePage.onRendered(function () {});
 
@@ -170,7 +170,7 @@ Template.rekapAttendancePage.onCreated(function () {
       console.log(error);
     }
   });
-//   startSelect2();
+  // startSelect2();
 }); 
 Template.rekapAttendancePage.helpers({
   dataRekap() {
@@ -255,7 +255,7 @@ Template.historyAttendance.onCreated(function () {
     }
   );
 
-//   startSelect2();
+  // startSelect2();
 });
 Template.historyAttendance.onRendered(function () {});
 Template.historyAttendance.helpers({
@@ -548,7 +548,7 @@ Template.configurasiList.onCreated(function () {
     }
   });
 
-//   startSelect2();
+  // startSelect2();
 });
 Template.configurasiList.helpers({
   employees() {
@@ -972,6 +972,13 @@ Template.detailWfh.helpers({
     return Template.instance().detailWfh.get();
   }
 })
+
+// startSelect2 = function () {
+//   setTimeout(() => {
+//     $(".select2").select2();
+//   }, 200);
+//   // $(".firstSelect2").select2({ width: "100%" });
+// };
 
 
 // Template.detailAttendance.onCreated(function () {

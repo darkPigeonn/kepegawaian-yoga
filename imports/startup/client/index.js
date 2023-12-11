@@ -135,11 +135,11 @@ let temp = data.replace(/\./g, ''); // merubah . jadi ""
 return parseFloat(temp);
 }
 
-// export const startSelect2 = function() {
-//   setTimeout(() => {
-//     $('.select2').select2();
-//   }, 200)
-// }
+export const startSelect2 = function() {
+  setTimeout(() => {
+    $('.select2').select2();
+  }, 200)
+}
 
 /* Tujuan:
 -Inisiasi WYSIWYG menggunakan CKEditor 5 DecoupledEditor

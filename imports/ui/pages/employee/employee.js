@@ -201,8 +201,8 @@ Template.employee_create.events({
     const number_of_children = $("#input_numberOfChildren").val();
     const emergency_contact_name = $("#input_emergencyContactName").val();
     let emergency_contact_phone = $("#input_emergencyContactPhone").val();
-    const employment_history = $("#input_employmentHistory").val();
-    const partnerCode = $("#input_partnerCode").val();
+    // const employment_history = $("#input_employmentHistory").val();
+    // const partnerCode = $("#input_partnerCode").val();
     const golongan = $("#input_golongan").val();
     date_of_birth = new Date(date_of_birth);
     start_date = new Date(start_date);
@@ -298,8 +298,8 @@ Template.employee_create.events({
     number_of_children,
     emergency_contact_name,
     emergency_contact_phone,
-    employment_history,
-    partnerCode,
+    // employment_history,
+    // partnerCode,
     linkGambar,
     golongan
   }  
@@ -597,8 +597,8 @@ Template.employee_create.events({
       const number_of_children = $("#input_numberOfChildren").val();
       const emergency_contact_name = $("#input_emergencyContactName").val();
       let emergency_contact_phone = parseInt($("#input_emergencyContactPhone").val());
-      const employment_history = $("#input_employmentHistory").val();
-      const partnerCode = $("#input_partnerCode").val();
+      // const employment_history = $("#input_employmentHistory").val();
+      // const partnerCode = $("#input_partnerCode").val();
       const golongan = $("#input_golongan").val();
       date_of_birth = new Date(date_of_birth);
       start_date = new Date(start_date);
@@ -678,8 +678,8 @@ Template.employee_create.events({
       number_of_children,
       emergency_contact_name,
       emergency_contact_phone,
-      employment_history,
-      partnerCode,
+      // employment_history,
+      // partnerCode,
       golongan
     }  
     Meteor.call(
@@ -749,8 +749,8 @@ Template.employee_create.events({
         number_of_children,
         emergency_contact_name,
         emergency_contact_phone,
-        employment_history,
-        partnerCode,
+        // employment_history,
+        // partnerCode,
         linkGambar,
         golongan
       }  
@@ -941,8 +941,8 @@ Template.employee_create.events({
                 'number_of_children',
                 'emergency_contact_name',
                 'emergency_contact_phone',
-                'employment_history',
-                'partnerCode',
+                // 'employment_history',
+                // 'partnerCode',
                 'linkGambar',
                 'golongan'
               ]
@@ -1000,8 +1000,8 @@ Template.employee_create.events({
                 'number_of_children',
                 'emergency_contact_name',
                 'emergency_contact_phone',
-                'employment_history',
-                'partnerCode',
+                // 'employment_history',
+                // 'partnerCode',
                 'linkGambar',
                 'golongan'
               ]

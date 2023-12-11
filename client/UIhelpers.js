@@ -167,3 +167,10 @@ Template.registerHelper("statusDetail", function (data) {
   }
   return status;
 });
+
+// startSelect2 = function () {
+//   setTimeout(() => {
+//     $(".select2").select2();
+//   }, 200);
+//   // $(".firstSelect2").select2({ width: "100%" });
+// };
