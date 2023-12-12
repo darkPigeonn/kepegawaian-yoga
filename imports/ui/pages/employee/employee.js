@@ -1083,8 +1083,20 @@ Template.employee_create.events({
                 }
                 arr.push(formData)
               }
-              console.log(arr);
-              t.items.set(arr);
+              const filteredArr = arr.filter(obj => {
+                if (obj.full_name === null) {
+                  Swal.fire({
+                    title: "Warning",
+                    text: "Ada data yang tidak terdapat nama lengkap sehingga tidak ditampilkan pada preview",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  });
+                  return false;
+                }
+                return true;
+              });
+              // console.log(filteredArr);
+              t.items.set(filteredArr);
             }
         })
       }
@@ -1141,31 +1153,91 @@ Template.employee_create.events({
                 }
                 arr.push(formData)
               }
+
+              let cek = false;
+              const filteredArr = arr.filter(obj => {
+                if (obj.full_name === null) {
+                  cek = true;
+                  return false;
+                }
+                return true;
+              });
+              if(cek == false){
+                Swal.fire({
+                  title: "Konfirmasi Tambah Pegawai",
+                  text: "",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Iya",
+                  cancelButtonText: "Tidak"
+                }).then((result) => {
+                  if(result.isConfirmed) {
+                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
+                      // console.log(err, res);
+                      if(result){
+                        Swal.fire({
+                          title: "Berhasil",
+                          text: "Data berhasil dimasukkan",
+                          showConfirmButton: true,
+                          allowOutsideClick: true,
+                        }).then((result) => {
+                          if(result.isConfirmed) {
+                            location.reload();
+                          }
+                        });
+                      }
+                      else{
+                        Swal.fire({
+                          title: "Gagal",
+                          text: "Data gagal dimasukkan, silahkan cek kembali bila data excel sudah terisi",
+                          showConfirmButton: true,
+                          allowOutsideClick: true,
+                        });
+                        // location.reload();
+                      }
+                    })
+                  }
+                })
+                
+              }
+              else{
+                Swal.fire({
+                  title: "Data Pegawai",
+                  text: "Ada data nama pegawai yang masih kosong, apakah anda ingin melanjutkan?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonText: "Iya",
+                  cancelButtonText: "Tidak"
+                }).then((result) => {
+                  if(result.isConfirmed) {
+                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
+                      // console.log(err, res);
+                      if(result){
+                        Swal.fire({
+                          title: "Berhasil",
+                          text: "Data berhasil dimasukkan",
+                          showConfirmButton: true,
+                          allowOutsideClick: true,
+                        }).then((result) => {
+                          if(result.isConfirmed) {
+                            location.reload();
+                          }
+                        });
+                      }
+                      else{
+                        Swal.fire({
+                          title: "Gagal",
+                          text: "Data gagal dimasukkan, silahkan cek kembali bila data excel sudah terisi",
+                          showConfirmButton: true,
+                          allowOutsideClick: true,
+                        });
+                        // location.reload();
+                      }
+                    })
+                  }
+                })
+              }
               
-              Meteor.call('employee.insertCSV', arr, function (error, result) {  
-                // console.log(err, res);
-                if(result){
-                  Swal.fire({
-                    title: "Berhasil",
-                    text: "Data berhasil dimasukkan",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                  }).then((result) => {
-                    if(result.isConfirmed) {
-                      location.reload();
-                    }
-                  });
-                }
-                else{
-                  Swal.fire({
-                    title: "Gagal",
-                    text: "Data gagal dimasukkan, silahkan cek kembali bila data excel sudah terisi",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                  });
-                  // location.reload();
-                }
-              })
             }
           
         })
