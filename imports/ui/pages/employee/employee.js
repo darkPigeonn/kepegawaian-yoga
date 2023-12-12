@@ -1175,6 +1175,35 @@ Template.employee_create.events({
                     Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
                       // console.log(err, res);
                       if(result){
+                        Meteor.call('departement.getAll', function (error, result) {
+                          if(result){
+                            // console.log(result);
+                            // console.log(filteredArr);
+                            // const notFound = filteredArr.filter(filteredArr => !result.some(result => result.name === filteredArr.departement_unit));
+                            // console.log("tidak ketemu : ", notFound);
+                            const uniqueDepartements = {};
+                            const notFound = filteredArr.filter((item) => {
+                              const isDuplicate = uniqueDepartements[item.department_unit];
+                              uniqueDepartements[item.department_unit] = true;
+                              return !isDuplicate;
+                            });
+                            console.log(notFound);
+                            for (const i of notFound) {
+                              console.log(i.department_unit);
+                              const data = {
+                                name: i.department_unit,
+                                description: "-"
+                              }
+                              Meteor.call('departement.insert', data, function (error, result) {  
+                                if(result){
+
+                                }else{
+                                  console.log(error);
+                                }
+                              })
+                            }
+                          }
+                        })
                         Swal.fire({
                           title: "Berhasil",
                           text: "Data berhasil dimasukkan",
@@ -1203,7 +1232,7 @@ Template.employee_create.events({
               else{
                 Swal.fire({
                   title: "Data Pegawai",
-                  text: "Ada data nama pegawai yang masih kosong, apakah anda ingin melanjutkan?",
+                  text: "Ada data nama pegawai yang masih kosong, apakah anda ingin melanjutkan? Data yang memiliki nama lengkap kosong tidak akan dimasukkan",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonText: "Iya",
@@ -1213,6 +1242,34 @@ Template.employee_create.events({
                     Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
                       // console.log(err, res);
                       if(result){
+                        Meteor.call('departement.getAll', function (error, result) {
+                          if(result){
+                            // console.log(result);
+                            // console.log(filteredArr)
+                            const uniqueDepartements = {};
+                            const notFound = filteredArr.filter((item) => {
+                              const isDuplicate = uniqueDepartements[item.department_unit];
+                              uniqueDepartements[item.department_unit] = true;
+                              return !isDuplicate;
+                            });
+                            console.log("filtered : ", filteredArr);
+                            console.log("tidak ketemu : ", notFound);
+                            for (const i of notFound) {
+                              console.log(i);
+                              const data = {
+                                name: i.department_unit,
+                                description: "-"
+                              }
+                              Meteor.call('departement.insert', data, function (error, result) {  
+                                if(result){
+
+                                }else{
+                                  console.log(error);
+                                }
+                              })
+                            }
+                          }
+                        })
                         Swal.fire({
                           title: "Berhasil",
                           text: "Data berhasil dimasukkan",
