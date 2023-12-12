@@ -833,7 +833,7 @@ Template.employee_create.events({
           showCancelButton: true,
           confirmButtonText: "Iya",
           cancelButtonText: "Tidak",
-          text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+          text: "Gambar gagal diupload, apakah anda ingin melanjutkan update data pegawai",
         }).then((result) => {
           if(result.isConfirmed) {
             linkGambar = "";
@@ -871,44 +871,47 @@ Template.employee_create.events({
         })
       }
       else{
+        console.log(linkGambar);
         Swal.fire({
           title: "Warning",
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "Iya",
           cancelButtonText: "Tidak",
-          text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+          text: "Apakah anda yakin ingin melakukan update data pegawai",
         }).then((result) => {
-          Meteor.call(
-            "employee.updateWithPicture",
-            id,
-            data,
-            function (error, result) {
-              if (result) {
-                // console.log(result);
-                // alert("Sukses");
-                Swal.fire({
-                  title: "Berhasil",
-                  text: "Data berhasil diupdate",
-                  showConfirmButton: true,
-                  allowOutsideClick: true,
-                }).then((result) => {
-                  if(result.isConfirmed){
-                    location.reload();
-                  }
-                });
-              } else {
-                // alert("Update employee error");
-                Swal.fire({
-                  title: "Gagal",
-                  text: "Data gagal diupdate",
-                  showConfirmButton: true,
-                  allowOutsideClick: true,
-                });
-                console.log(error);
+          if(result.isConfirmed){
+            Meteor.call(
+              "employee.updateWithPicture",
+              id,
+              data,
+              function (error, result) {
+                if (result) {
+                  // console.log(result);
+                  // alert("Sukses");
+                  Swal.fire({
+                    title: "Berhasil",
+                    text: "Data berhasil diupdate",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  }).then((result) => {
+                    if(result.isConfirmed){
+                      location.reload();
+                    }
+                  });
+                } else {
+                  // alert("Update employee error");
+                  Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal diupdate",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  });
+                  console.log(error);
+                }
               }
-            }
-          );
+            );
+          }
         })
       }
     }

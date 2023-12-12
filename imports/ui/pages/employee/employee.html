@@ -281,123 +281,154 @@
 </template>
 
 <template name="employee_detail">
-    <div class="box">
-        <div class="sidebar">
-            <div class="bagianAvatar"
-                style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                <div style="text-align: center;">
-                    <div class="gambarAvatar"
-                        style="border: 1px solid black; width: 100px; height: 100px; border-radius: 100%; margin: auto;">
-                        <img src={{employee.linkGambar}}
-                            style="width: 100px; height: 100px; border-radius: 100%; margin: auto; object-fit: cover;">
+    <div class="desktop-div">
+        <div class="box">
+            <div class="sidebar">
+                <div class="bagianAvatar"
+                    style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                    <div style="text-align: center;">
+                        <div class="gambarAvatar"
+                            style="border: 1px solid black; width: 100px; height: 100px; border-radius: 100%; margin: auto;">
+                            <img src={{employee.linkGambar}}
+                                style="width: 100px; height: 100px; border-radius: 100%; margin: auto; object-fit: cover;">
+                        </div>
+                        <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
+                        <!-- <span>-</span> -->
+                        <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                     </div>
-                    <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
-                    <!-- <span>-</span> -->
-                    <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
+                </div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="bagianItems">
+                    <!-- <ul class="nav flex-column">
+                        <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
+                                    class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
+                    </ul> -->
                 </div>
             </div>
-            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
-            <div class="bagianItems">
-                <ul class="nav flex-column">
-                    <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
-                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
-                    <!-- <li class="nav-item "><i class="fa-regular fa-money-bill-1" style="margin-left: 0;"></i> Payroll
-                    </li>
-                    <li class="nav-item"><i class="fa-solid fa-coins" style="padding-right: 3px;"></i> Finance</li>
-                    <li class="nav-item"><i class="fa-regular fa-file" style="padding-right: 9px;"></i> Files</li>
-                    <li class="nav-item"><i class="fa-solid fa-list" style="padding-right: 2px;"></i> Assets</li>
-                    <li class="nav-item"><i class="fa-solid fa-clock-rotate-left" style="padding-right: 2px;"></i>
-                        History</li> -->
-                </ul>
-            </div>
-        </div>
-        <div class="content">
-            <div class="contentAtas">
-                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/">
-                        {{employee.full_name}}</a> / <a href="/employees/detail/{{employee._id}}"> General</a></p>
-                <p style="font-size: 32px; font-weight: bold;">Personal</p>
-                <ul class="nav nav-tabs">
-                    <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
-                                value="Informasi Umum" class="nav-link active"></a></li>
-                    <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input type="button"
-                                value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
-                    <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
-                                type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                </ul>
-            </div>
-            <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
-            <div style="overflow: auto; height: 100%; width: 100%;">
-                <div class="contentBawah">
-                    <div class="personalData" style=" display: flex;">
-                        <div class="tulisanPersonalData">
-                            <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi</p>
-                        </div>
-                        <div class="isiPersonalData table-responsive">
-                            <table>
-                                <tr style="padding-bottom: 20px; padding-top: 20px;">
-                                    <td style="padding:0px 15px 20px 15px;">Nama Lengkap</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.full_name}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px; width: 150px;">Nomor Telepon</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.phone_number}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Email</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.email_address}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Kota Lahir</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.place_of_birth}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Tanggal Lahir</td>
-                                    <td style="padding:0 15px 20px 200px;">{{formatHRDate employee.date_of_birth}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Jenis Kelamin</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.gender}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Marital Status</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.marital_status}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Jumlah Anak</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.number_of_children}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Partner Kode</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.partnerCode}}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+            <div class="content">
+                <div class="contentAtas">
+                    <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/">
+                            {{employee.full_name}}</a> / <a href="/employees/detail/{{employee._id}}"> General</a></p>
+                    <p style="font-size: 32px; font-weight: bold;">Personal</p>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
+                                    value="Informasi Umum" class="nav-link active"></a></li>
+                        <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input type="button"
+                                    value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
+                        <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
+                                    type="button" value="Kontak Darurat" class="nav-link"></a></li>
+                    </ul>
                 </div>
                 <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
-                <div class="contentBawah-1">
-                    <div class="personalData" style=" display: flex;">
-                        <div class="tulisanPersonalData">
-                            <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan Alamat</p>
+                <div style="overflow: auto; height: 100%; width: 100%;">
+                    <div class="contentBawah">
+                        <div class="personalData" style=" display: flex;">
+                            <div class="tulisanPersonalData">
+                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi</p>
+                            </div>
+                            <div class="isiPersonalData table-responsive">
+                                <table>
+                                    <tr style="padding-bottom: 20px; padding-top: 20px;">
+                                        <td style="padding:0px 15px 20px 15px;">Nama Lengkap</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.full_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px; width: 150px;">Nomor Telepon</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.phone_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Email</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.email_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Kota Lahir</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.place_of_birth}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Tanggal Lahir</td>
+                                        <td style="padding:0 15px 20px 200px;">{{formatHRDate employee.date_of_birth}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Jenis Kelamin</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.gender}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Marital Status</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.marital_status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Jumlah Anak</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.number_of_children}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Partner Kode</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.partnerCode}}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                        <div class="isiPersonalData table-responsive">
-                            <table>
-                                <tr style="padding-bottom: 20px; padding-top: 20px;">
-                                    <td style="padding:0px 15px 20px 15px; width: 150px;">Nomor ID</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.identification_number}}</td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:0 15px 20px 15px;">Alamat</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.address}}</td>
-                                </tr>
-                            </table>
+                    </div>
+                    <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
+                    <div class="contentBawah-1">
+                        <div class="personalData" style=" display: flex;">
+                            <div class="tulisanPersonalData">
+                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan Alamat</p>
+                            </div>
+                            <div class="isiPersonalData table-responsive">
+                                <table>
+                                    <tr style="padding-bottom: 20px; padding-top: 20px;">
+                                        <td style="padding:0px 15px 20px 15px; width: 150px;">Nomor ID</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.identification_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 15px 20px 15px;">Alamat</td>
+                                        <td style="padding:0 15px 20px 200px;">{{employee.address}}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="mobile-div">
+        <div class="container">
+            <div class="profile-card-mobile">
+                <img src="{{employee.linkGambar}}" class="profile-picture-mobile">
+                <br><br>
+                <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
+                <br><br>
+                <div class="profile-content-mobile">
+                    <div class="content-item">
+                        <strong>Name:</strong> John Doe
+                    </div>
+                    <div class="content-item">
+                        <strong>Occupation:</strong> Web Developer
+                    </div>
+                    <div class="content-item">
+                        <strong>Location:</strong> City, Country
+                    </div>
+                    <div class="content-item">
+                        <strong>Email:</strong> john.doe@example.com
+                    </div>
+                    <div class="content-item">
+                        <strong>Interests:</strong> Coding, Reading, Traveling
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <style>
+        .mobile-div{
+            display: none;
+        }
+
+        .desktop-div{
+            display: block;
+        }
+
         .isiPersonalData>table>tr>td:nth-child(1) {
             width: 150px;
         }
@@ -501,37 +532,63 @@
             background-color: white;
         }
         @media (max-width: 768px) {
-      .box {
-        flex-direction: column;
-        height: auto;
-      }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
 
-      .sidebar {
-        border-right: none;
-      }
+            .sidebar {
+                border-right: none;
+            }
 
-      .content {
-        flex: none;
-      }
+            .content {
+                flex: none;
+            }
 
-      .contentAtas,
-      .contentBawah,
-      .contentBawah-1 {
-        height: auto;
-      }
+            .contentAtas,
+            .contentBawah,
+            .contentBawah-1 {
+                height: auto;
+            }
 
-      .bagianAvatar {
-        height: auto;
-      }
+            .bagianAvatar {
+                height: auto;
+            }
 
-      .bagianItems {
-        display: none; /* Hide the sidebar items on small screens */
-      }
+            .bagianItems {
+                display: none; /* Hide the sidebar items on small screens */
+            }
 
-      .tulisanPersonalData {
-        width: 100%;
-      }
-    }
+            .tulisanPersonalData {
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .desktop-div {
+                display: none;
+            }
+
+            .mobile-div {
+                display: block;
+            }
+            .profile-card-mobile {
+                max-width: auto;
+                max-height: auto;
+                margin: 20px auto;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                text-align: center;
+            }
+
+            .profile-picture-mobile {
+                width: 75%;
+                height: auto;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+        }
     </style>
 
     <style scoped>
