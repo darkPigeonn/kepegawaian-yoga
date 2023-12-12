@@ -566,7 +566,7 @@ Template.formProposal.onCreated(function () {
             console.log("data tidak ada");
         }
     })
-
+    startSelect2();
 
 });
 

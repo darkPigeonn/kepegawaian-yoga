@@ -126,6 +126,7 @@ Template.create_document.onCreated(function() {
     const self = this;
     self.data = new ReactiveVar();
     self.daftarAlur = new ReactiveVar([]);
+    startSelect2();
 })
 
 Template.create_document.helpers({

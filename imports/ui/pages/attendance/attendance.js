@@ -41,7 +41,7 @@ Template.staffsAttendancePage.onCreated(function () {
   });
   $("#selected-date").val(new Date().toISOString().split("T")[0]);
 
-  // startSelect2();
+  startSelect2();
 });
 Template.staffsAttendancePage.onRendered(function () {});
 
@@ -170,7 +170,7 @@ Template.rekapAttendancePage.onCreated(function () {
       console.log(error);
     }
   });
-  // startSelect2();
+  startSelect2();
 }); 
 Template.rekapAttendancePage.helpers({
   dataRekap() {
@@ -255,7 +255,7 @@ Template.historyAttendance.onCreated(function () {
     }
   );
 
-  // startSelect2();
+  startSelect2();
 });
 Template.historyAttendance.onRendered(function () {});
 Template.historyAttendance.helpers({
@@ -326,7 +326,7 @@ Template.historyAttendance.events({
       }
     );
 
-    // startSelect2();
+    startSelect2();
   },
   "click #detailsView": function (e, t) {
     const idUser = $(e.target).attr("milik");
@@ -548,7 +548,7 @@ Template.configurasiList.onCreated(function () {
     }
   });
 
-  // startSelect2();
+  startSelect2();
 });
 Template.configurasiList.helpers({
   employees() {
@@ -833,7 +833,7 @@ Template.configurasiList.events({
   },
   "click #btn-create-pairings"(e, t) {
     t.viewCreate.set(true);
-    // startSelect2();
+    startSelect2();
   },
   "click #btn-save-pairings"(e, t) {
     e.preventDefault();
@@ -973,12 +973,13 @@ Template.detailWfh.helpers({
   }
 })
 
-// startSelect2 = function () {
-//   setTimeout(() => {
-//     $(".select2").select2();
-//   }, 200);
-//   // $(".firstSelect2").select2({ width: "100%" });
-// };
+startSelect2 = function () {
+  console.log("masuk");
+  setTimeout(() => {
+    $(".select2").select2();
+  }, 200);
+  // $(".firstSelect2").select2({ width: "100%" });
+};
 
 
 // Template.detailAttendance.onCreated(function () {
