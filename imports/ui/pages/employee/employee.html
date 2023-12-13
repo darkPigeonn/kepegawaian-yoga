@@ -65,17 +65,6 @@
             <h3> Tambah Pegawai Baru </h3>
         </div>
         <br>
-        <!-- <ul class="nav nav-tabs">
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}" value="1"
-                    milik="{{viewMode}}">Informasi Umum</button></li>
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}" value="2"
-                    milik="{{viewMode}}">Pendidikan dan Pekerjaan</button></li>
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}" value="3"
-                    milik="{{viewMode}}">Kontak Darurat</button></li>
-        </ul> -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
               <button class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}" value="1"
@@ -399,21 +388,111 @@
                 <br><br>
                 <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                 <br><br>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <br>
+                <label style="font-size: larger; font-weight: bold;">Informasi Umum</label>
                 <div class="profile-content-mobile">
-                    <div class="content-item">
-                        <strong>Name:</strong> John Doe
+                    <div class="isiPersonalDataMobile">
+                        <table>
+                            <tr>
+                                <td class="tulisanKiriMobile">Nama Lengkap</td>
+                                <td class="tulisanKananMobile">{{employee.full_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Email</td>
+                                <td class="tulisanKananMobile">{{employee.email_address}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Nomor Telepon</td>
+                                <td class="tulisanKananMobile">{{employee.phone_number}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Jenis Kelamin</td>
+                                <td class="tulisanKananMobile">{{employee.gender}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Tanggal Lahir</td>
+                                <td class="tulisanKananMobile">{{formatHRDate employee.date_of_birth}}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="content-item">
-                        <strong>Occupation:</strong> Web Developer
+                </div>
+                <br>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <br>
+                <label style="font-size: larger; font-weight: bold;">Pendidikan</label>
+                <div class="profile-content-mobile">
+                    <div class="isiPersonalDataMobile">
+                        <table>
+                            <tr>
+                                <td class="tulisanKiriMobile">Pendidikan Tertinggi</td>
+                                <td class="tulisanKananMobile">{{employee.highest_education}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Tempat</td>
+                                <td class="tulisanKananMobile">{{employee.education_institution}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Major</td>
+                                <td class="tulisanKananMobile">{{employee.major_in_highest_education}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Degree</td>
+                                <td class="tulisanKananMobile">{{employee.academic_degree}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Tanggal Lahir</td>
+                                <td class="tulisanKananMobile">{{formatHRDate employee.date_of_birth}}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="content-item">
-                        <strong>Location:</strong> City, Country
+                </div>
+                <br>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <br>
+                <label style="font-size: larger; font-weight: bold;">Status Pegawai</label>
+                <div class="profile-content-mobile">
+                    <div class="isiPersonalDataMobile">
+                        <table>
+                            <tr>
+                                <td class="tulisanKiriMobile">Posisi Pekerjaan</td>
+                                <td class="tulisanKananMobile">{{employee.job_position}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Unit Departemen</td>
+                                <td class="tulisanKananMobile">{{employee.department_unit}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Tanggal Mulai</td>
+                                <td class="tulisanKananMobile">{{formatHRDate employee.start_date}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Status</td>
+                                <td class="tulisanKananMobile">{{employee.employment_status}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Gaji Pokok</td>
+                                <td class="tulisanKananMobile">{{formatRp employee.base_salary}}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="content-item">
-                        <strong>Email:</strong> john.doe@example.com
-                    </div>
-                    <div class="content-item">
-                        <strong>Interests:</strong> Coding, Reading, Traveling
+                </div>
+                <br>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <br>
+                <label style="font-size: larger; font-weight: bold;">Kontak Darurat</label>
+                <div class="profile-content-mobile">
+                    <div class="isiPersonalDataMobile">
+                        <table>
+                            <tr>
+                                <td class="tulisanKiriMobile">Nama Kontak</td>
+                                <td class="tulisanKananMobile">{{employee.emergency_contact_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tulisanKiriMobile">Nomor Kontak</td>
+                                <td class="tulisanKananMobile">{{employee.emergency_contact_phone}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -582,11 +661,37 @@
                 text-align: center;
             }
 
+            .profile-content-mobile {
+                text-align: left;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
             .profile-picture-mobile {
                 width: 75%;
                 height: auto;
                 border-top-left-radius: 10px;
                 border-top-right-radius: 10px;
+                margin-top: 5px;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+            .content-item{
+                word-break: break-all;
+            }
+            .isiPersonalData>table>tr>td:nth-child(1) {
+                width: 150px;
+            }
+            .tulisanKiriMobile {
+                width: 150px; 
+                vertical-align: top; 
+                font-weight: bold;
+            }
+            .tulisanKananMobile {
+                word-break: break-all;
+                vertical-align: top;
             }
         }
     </style>
@@ -620,15 +725,8 @@
             <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
             <div class="bagianItems">
                 <ul class="nav flex-column">
-                    <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
-                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
-                    <!-- <li class="nav-item "><i class="fa-regular fa-money-bill-1" style="margin-left: 0;"></i> Payroll
-                    </li>
-                    <li class="nav-item"><i class="fa-solid fa-coins" style="padding-right: 3px;"></i> Finance</li>
-                    <li class="nav-item"><i class="fa-regular fa-file" style="padding-right: 9px;"></i> Files</li>
-                    <li class="nav-item"><i class="fa-solid fa-list" style="padding-right: 2px;"></i> Assets</li>
-                    <li class="nav-item"><i class="fa-solid fa-clock-rotate-left" style="padding-right: 2px;"></i>
-                        History</li> -->
+                    <!-- <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
+                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li> -->
                 </ul>
             </div>
         </div>
@@ -899,15 +997,9 @@
             <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
             <div class="bagianItems">
                 <ul class="nav flex-column">
-                    <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
-                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
-                    <!-- <li class="nav-item "><i class="fa-regular fa-money-bill-1" style="margin-left: 0;"></i> Payroll
-                    </li>
-                    <li class="nav-item"><i class="fa-solid fa-coins" style="padding-right: 3px;"></i> Finance</li>
-                    <li class="nav-item"><i class="fa-regular fa-file" style="padding-right: 9px;"></i> Files</li>
-                    <li class="nav-item"><i class="fa-solid fa-list" style="padding-right: 2px;"></i> Assets</li>
-                    <li class="nav-item"><i class="fa-solid fa-clock-rotate-left" style="padding-right: 2px;"></i>
-                        History</li> -->
+                    <!-- <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
+                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li> -->
+                    
                 </ul>
             </div>
         </div>
