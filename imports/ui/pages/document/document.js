@@ -191,41 +191,54 @@ Template.create_document.events({
       }
 
       const linkFilePDF = thisForm.fileData;
-      const dataAlur = t.daftarAlur.get();
+      console.log(linkFilePDF == null);
+      if(linkFilePDF == null){
+        Swal.close();
+        Swal.fire({
+          title: "Gagal",
+          text: "Dokumen tidak terupload",
+          showConfirmButton: true,
+          allowOutsideClick: true,
+        });
+      }
+      else{
+        const dataAlur = t.daftarAlur.get();
       
-      // console.log(sumber);
-      const dataSave = {
-          full_name: full_name,
-          sumber: sumber,
-          tanggal: tanggal,
-          jenis_dokumen: jenisDokumen,
-          alur: dataAlur,
-          linkPDF: linkFilePDF
+        // console.log(sumber);
+        const dataSave = {
+            full_name: full_name,
+            sumber: sumber,
+            tanggal: tanggal,
+            jenis_dokumen: jenisDokumen,
+            alur: dataAlur,
+            linkPDF: linkFilePDF
+        }
+        
+        setTimeout(()=>{
+          Meteor.call("document.tambahDokumen", dataSave, function (error, result) {
+            Swal.close();
+            if (result) {
+                // console.log(result);
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil dimasukkan",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                history.back();
+              } else {
+                // console.log(error);
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal dimasukkan",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+          })
+        }, 4000)
       }
       
-      setTimeout(()=>{
-        Meteor.call("document.tambahDokumen", dataSave, function (error, result) {
-          Swal.close();
-          if (result) {
-              // console.log(result);
-              Swal.fire({
-                title: "Berhasil",
-                text: "Data berhasil dimasukkan",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
-              history.back();
-            } else {
-              // console.log(error);
-              Swal.fire({
-                title: "Gagal",
-                text: "Data gagal dimasukkan",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
-            }
-        })
-      }, 4000)
         
     },
     // "click #btn-remove"(e, t) {
