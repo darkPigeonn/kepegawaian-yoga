@@ -196,7 +196,7 @@ Template.create_document.events({
         Swal.close();
         Swal.fire({
           title: "Gagal",
-          text: "Dokumen tidak terupload",
+          text: "Dokumen gagal diunggah ke sistem",
           showConfirmButton: true,
           allowOutsideClick: true,
         });
