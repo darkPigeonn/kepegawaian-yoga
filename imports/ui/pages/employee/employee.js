@@ -1044,9 +1044,15 @@ Template.employee_create.events({
           complete: function(results) {
             const parsedData = results.data;
             console.log(parsedData);
-            // console.log(typeof parsedData[0].allowances);
-            // console.log(parsedData[0].allowances, parsedData[0].deductions, parsedData[0].base_salary);
-            
+            for (const i of parsedData) {
+              i.start_date = new Date(i.start_date)
+              const day = i.start_date.getDate().toString().padStart(2, '0');
+              const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
+              const year = i.start_date.getFullYear();
+              const formattedDate = `${day}/${month}/${year}`;
+              console.log(formattedDate);
+              i.start_date = formattedDate
+            }
               const data = [
                 'full_name',
                 'identification_number',

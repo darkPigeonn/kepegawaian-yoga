@@ -98,6 +98,12 @@ FlowRouter.route("/employees/detail/emergencyContact/:_id", {
     this.render("App_body", "employee_detail_emergencyContact")
   }
 });
+FlowRouter.route("/employees/soon", {
+  name: "comingSoon",
+  action(){
+    this.render("App_body", "comingSoon")
+  }
+});
 FlowRouter.route("/departements", {
   name: "departement page",
   action(){
