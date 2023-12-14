@@ -101,8 +101,8 @@
             <h4>{{employeesKeluar.length}}</h4>
           </div>
           <div class="col-md-4 d-flex align-items-center">
-            <a href="#"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
-            <a href="#"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
+            <a href="/employees/soon"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
+            <a href="/employees/soon"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
           </div>
         </div>
       </div>
@@ -123,8 +123,6 @@
                   <th>Posisi Pekerjaan</th>
                   <th>Status Karyawan</th>
                   <th>Tanggal Masuk</th>
-                  <th>Tanggal Keluar</th>
-                  <th></th>
               </tr>
           </thead>
           <tbody>
@@ -137,8 +135,6 @@
                 <td> {{job_position}} </td>
                 <td> {{employment_status}} </td>
                 <td> {{formatHRDate start_date}} </td>
-                <td> - </td>
-                <td> <a href="#">Actions</a></td>
               </tr>
             {{/each}}
           </tbody>

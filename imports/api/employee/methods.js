@@ -49,7 +49,8 @@ Meteor.methods({
     },
     "employee.remove"(id){
       check(id, String);
-      return Employee.update(id, {$set: {statusDelete: 1}});
+      const tglHapus = new Date();
+      return Employee.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
     "employee.filterByNama"(data){
       check(data, String);
