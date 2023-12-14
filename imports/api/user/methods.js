@@ -100,5 +100,24 @@ Meteor.methods({
     "user.remove"(id){
         check(id, String);
         return Meteor.users.remove({_id: id});
+    },
+
+    "users.getById"(id){
+        check(id, String);
+        return Meteor.users.findOne({ _id: id });
+    },
+
+    "users.edit"(id, dataSave){
+        check(id, String);
+        check(dataSave, Object);
+        console.log(dataSave);
+        return Meteor.users.update({ _id: id }, { $set: { username: dataSave.username, fullname: dataSave.fullname, roles: [dataSave.roles] } })
+    },
+
+    "users.editPassword"(id, password){
+        check(id, String);
+        check(password, String);
+        Accounts.setPassword(id, password);
+        return true;
     }
 })

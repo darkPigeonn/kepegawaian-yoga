@@ -214,9 +214,23 @@ FlowRouter.route("/createAdmin", {
 });
 
 FlowRouter.route("/createUser", {
-  nama:"createUser",
+  name:"createUser",
   action(){
     this.render("App_body", "createUser")
+  }
+});
+
+FlowRouter.route("/editUser/:_id", {
+  name:"editUser",
+  action(){
+    this.render("App_body", "editUser")
+  }
+});
+
+FlowRouter.route("/changePassUser/:_id", {
+  name:"changePassUser",
+  action(){
+    this.render("App_body", "changePassUser")
   }
 });
 

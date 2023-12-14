@@ -29,12 +29,12 @@ Template.listUser.onCreated(function () {
     }
 
     Meteor.call("users.getAll", function (error, result) {
-        if (result) {
-          console.log(result);
-          self.dataListUser.set(result);
-        } else {
-          console.log(error);
-        }
+      if (result) {
+        console.log(result);
+        self.dataListUser.set(result);
+      } else {
+        console.log(error);
+      }
     });
 
     Meteor.call("users.getAllSuperAdmin", function (error, result) {
@@ -196,4 +196,118 @@ Template.createAdmin.events({
           }
     })
   },
+})
+
+Template.editUser.onCreated(function () {  
+  const self = this;
+  self.dataListUser = new ReactiveVar();
+  const id = FlowRouter.getParam("_id")
+  Meteor.call("users.getById", id, function (error, result) {
+    if (result) {
+      console.log(result);
+      self.dataListUser.set(result);
+    } else {
+      console.log(error);
+    }
+  });
+})
+
+Template.editUser.helpers({
+  dataListUser(){
+    return Template.instance().dataListUser.get();
+  },
+})
+
+Template.editUser.events({
+  "click #btn_edit_user"(e, t){
+    const id = FlowRouter.getParam("_id");
+    const username = $("#input_username").val();
+    const fullname = $("#input_fullname").val();
+    const roles = $("#input_roles").val();
+    const dataSave = {
+      username,
+      fullname,
+      roles
+    }
+    Swal.fire({
+      title: "Konfirmasi Edit User",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        Meteor.call("users.edit", id, dataSave, function (error, result) {
+          if (result) {
+            console.log(result);
+            Swal.fire({
+              title: "Berhasil",
+              text: "Data berhasil diganti",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed) {
+                location.reload();
+              }
+            });
+          } else {
+            console.log(error);
+          }
+        });
+      }
+    })
+    
+  }
+})
+
+Template.changePassUser.onCreated(function () {  
+  const self = this;
+  self.dataListUser = new ReactiveVar();
+  const id = FlowRouter.getParam("_id")
+  Meteor.call("users.getById", id, function (error, result) {
+    if (result) {
+      console.log(result);
+      self.dataListUser.set(result);
+    } else {
+      console.log(error);
+    }
+  });
+});
+
+Template.changePassUser.events({
+  "click #btn_edit_user_password"(e, t){
+    const id = FlowRouter.getParam("_id");
+    const password = $("#input_password").val();
+    Swal.fire({
+      title: "Konfirmasi Edit Password User",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        Meteor.call("users.editPassword", id, password, function (error, result) {
+          console.log(result,error);
+          if (result) {
+            console.log(result);
+            Swal.fire({
+              title: "Berhasil",
+              text: "Data berhasil diganti",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed) {
+                location.reload();
+              }
+            });
+          } else {
+            console.log(error);
+          }
+        });
+      }
+    })
+    
+  }
 })
