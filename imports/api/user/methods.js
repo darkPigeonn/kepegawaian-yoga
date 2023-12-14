@@ -46,11 +46,12 @@ Meteor.methods({
                     _id: thisUser,
                 });
                 partnerCode = adminPartner.partners[0];
-                return await Meteor.users.update({ _id }, { $set: { roles: [dataSend.role], fullname: dataSend.fullname, partners: partn } })
+                return await Meteor.users.update({ _id }, { $set: { roles: [dataSend.role], fullname: dataSend.fullname, partners: [partnerCode] } })
             }
 
         } catch (error) {
             console.log(error);
+            return error;
         }
         
         // Roles.createRole(dataSend.role)

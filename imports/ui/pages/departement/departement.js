@@ -170,7 +170,7 @@ Template.departement_detail.onCreated(function () {
 
     Meteor.call("departement.getBy", id, function (error, result) {
        if(result) {
-        // console.log(result);
+        console.log(result);
         self.departement.set(result);
        } else {
         console.log(error);

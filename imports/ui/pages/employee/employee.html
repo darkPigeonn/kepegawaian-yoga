@@ -26,6 +26,7 @@
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Jabatan</th>
+                        <!-- <th scope="col">Tanggal Lahir</th> -->
                         <th scope="col">Tahun Masuk</th>
                         <th scope="col">Departement</th>
                         <th scope="col">Action</th>
@@ -37,6 +38,7 @@
                         <td> {{nomorUrut @index}}</td>
                         <td> {{full_name}} </td>
                         <td> {{job_position}} </td>
+                        <!-- <td> {{formatHRDate date_of_birth}} </td> -->
                         <td> {{formatHRDate start_date}} </td>
                         <td> {{department_unit}} </td>
                         <td>
@@ -283,7 +285,9 @@
                         </div>
                         <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
                         <!-- <span>-</span> -->
-                        <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
+                        <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun App</button>
+                        <br><br>
+                        <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun User</button>
                     </div>
                 </div>
                 <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
@@ -386,7 +390,9 @@
             <div class="profile-card-mobile">
                 <img src="{{employee.linkGambar}}" class="profile-picture-mobile">
                 <br><br>
-                <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
+                <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun App</button>
+                <br><br>
+                <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun User</button>
                 <br><br>
                 <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
                 <br>
@@ -719,7 +725,6 @@
                     </div>
                     <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
                     <!-- <span>-</span> -->
-                    <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                 </div>
             </div>
             <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
@@ -991,7 +996,6 @@
                     </div>
                     <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
                     <!-- <span>-</span> -->
-                    <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun</button>
                 </div>
             </div>
             <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
@@ -1463,6 +1467,7 @@
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
+                        <!-- <th scope="col">Tanggal Lahir</th> -->
                         <th scope="col">Jabatan</th>
                         <th scope="col">Tahun Masuk</th>
                         <th scope="col">Departement</th>
@@ -1473,6 +1478,7 @@
                     <tr>
                         <td>{{nomorUrut @index}}</td>
                         <td>{{full_name}}</td>
+                        <!-- <td>{{formatHRDate date_of_birth}}</td> -->
                         <td>{{job_position}}</td>
                         <td>{{formatHRDate start_date}}</td>
                         <td>{{department_unit}}</td>

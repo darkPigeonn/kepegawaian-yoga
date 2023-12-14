@@ -394,6 +394,40 @@ Meteor.methods({
     );
   },
 
+  async "users.createAppMeteorEmployee"(dataSend){
+    check(dataSend, Object);
+
+    console.log(dataSend);
+
+    let newAccountData = {
+        username: dataSend.username,
+        email: dataSend.username,
+        password: dataSend.password,
+    };
+    let _id;
+    try {
+        _id = Accounts.createUser(newAccountData);
+        console.log(_id);
+        if(_id){
+            let partnerCode;
+            const thisUser = Meteor.userId();
+            const adminPartner = Meteor.users.findOne({
+                _id: thisUser,
+            });
+            partnerCode = adminPartner.partners[0];
+            return await Meteor.users.update({ _id }, { $set: {roles: [], fullname: dataSend.fullname, partners: [partnerCode] } })
+        }
+
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+    
+    // Roles.createRole(dataSend.role)
+    // console.log(_id);
+    return true;
+},
+
   // "employee.getMutasi"(id){
   //   check(id, String);
   //   const data = Employee.find({status: 10, statusDelete: 0}).fetch();

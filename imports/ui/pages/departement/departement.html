@@ -62,7 +62,7 @@
 </template>
 
 <template name="departement_detail">
-    <div class="panel">
+    <!-- <div class="panel">
         <div class="panel-body bio-graph-info border border-5; round rounded-3">
             <h2>Biodata Departement</h2><br>
             <div class="row">
@@ -70,9 +70,6 @@
                     <p><span>Nama </span>: {{departement.name}}</p>
                     <p><span>Deskripsi </span>: {{departement.description}}</p>
                 </div>
-                <!-- <div class="bio-row">
-                    <p><span>Deskripsi </span>: {{departement.description}}</p>
-                </div> -->
             </div>
         </div>
         {{#each departement.member}}
@@ -89,6 +86,47 @@
                 <a href="/employees/detail/{{_id}}" class="btn btn-primary">Detail Pegawai</a>
             </div>
         {{/each}}
+    </div> -->
+
+    <div class="container">
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Nama Departemen</th>
+                  <th scope="col">Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                    <td style="text-transform: capitalize;"> {{departement.name}} </td>
+                    <td style="text-transform: capitalize;"> {{departement.description}} </td>
+                </tr>
+              </tbody>
+            </table>
+            <br>
+            <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : -</label>
+            <br><br>
+            <label style="font-weight: bold; font-size: larger; color: black;">Anggota Departemen</label>
+            <br>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Nama Pegawai</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {{#each departement.member}}
+                    <tr>
+                        <td>{{nomorUrut @index}}</td>
+                        <td style="text-transform: capitalize;"> {{full_name}} </td>
+                    </tr>
+                    {{/each}}
+                  
+                </tbody>
+              </table>
+        </div>
     </div>
 
     <style scoped>

@@ -119,7 +119,16 @@ Template.createUser.events({
     };
 
     Meteor.call("users.createAppMeteor", dataSend, function (error ,result) { 
+      console.log(error ,result);
         if (result) {
+          if(result.error == 403){
+            return Swal.fire({
+              title: "Gagal",
+              text: "Data gagal dimasukkan, username sudah ada",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+          }
             // alert("Sukses");
             Swal.fire({
               title: "Berhasil",

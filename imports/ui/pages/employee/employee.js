@@ -535,6 +535,65 @@ Template.employee_create.events({
       console.log(body);
   
     },
+    "click #btn-tambah-akun-user"(e, t){
+      console.log("masuk");
+      Swal.fire({
+        title: "Konfirmasi Tambah User Pegawai",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak"
+      }).then((result) => {
+        if(result.isConfirmed) {
+          const email = t.employee.get().email_address;
+          const fullName = t.employee.get().full_name
+          const partner = "imavi";
+          const role = [];
+      
+          const dataSend = {
+              username : email,
+              password : email,
+              fullname: fullName,
+              role
+          };
+      
+          Meteor.call("users.createAppMeteorEmployee", dataSend, function (error ,result) { 
+              if (result) {
+                  // alert("Sukses");
+                  if(result.error == 403){
+                    return Swal.fire({
+                      title: "Gagal",
+                      text: "Data gagal dimasukkan, username sudah ada",
+                      showConfirmButton: true,
+                      allowOutsideClick: true,
+                    });
+                  }
+                  Swal.fire({
+                    title: "Berhasil",
+                    text: "Data berhasil dimasukkan",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  }).then((result) => {
+                    if(result.isConfirmed) {
+                      location.reload();
+                    }
+                  });
+                  // location.reload();
+                } else {
+                  Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal dimasukkan, cek kembali data yang dimasukkan",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                  });
+                  // alert("Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya");
+                  console.log(error);
+                }
+          })
+        }
+      })   
+    },
   });
 
   Template.employee_detail_academicJob.onCreated( function () {
@@ -1044,15 +1103,21 @@ Template.employee_create.events({
           complete: function(results) {
             const parsedData = results.data;
             console.log(parsedData);
-            for (const i of parsedData) {
-              i.start_date = new Date(i.start_date)
-              const day = i.start_date.getDate().toString().padStart(2, '0');
-              const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
-              const year = i.start_date.getFullYear();
-              const formattedDate = `${day}/${month}/${year}`;
-              console.log(formattedDate);
-              i.start_date = formattedDate
-            }
+            // for (const i of parsedData) {
+            //   i.start_date = new Date(i.start_date);
+            //   i.date_of_birth = new Date(i.date_of_birth);
+            //   const day = i.start_date.getDate().toString().padStart(2, '0');
+            //   const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
+            //   const year = i.start_date.getFullYear();
+            //   const formattedDate = `${day}/${month}/${year}`;
+            //   // const dayBirth = i.date_of_birth.getDate().toString().padStart(2, '0');
+            //   // const monthBirth = (i.date_of_birth.getMonth() + 1).toString().padStart(2, '0');
+            //   // const yearBirth = i.date_of_birth.getFullYear();
+            //   // const formattedDateBirth = `${dayBirth}/${monthBirth}/${yearBirth}`;
+            //   // console.log(formattedDateBirth);
+            //   i.start_date = formattedDate
+            //   // i.date_of_birth = formattedDateBirth
+            // }
               const data = [
                 'full_name',
                 'identification_number',
@@ -1123,7 +1188,22 @@ Template.employee_create.events({
           complete: function(results) {
             const parsedData = results.data;
             // console.log(typeof parsedData[0].identification_number);
-            
+            console.log(parsedData);
+            for (const i of parsedData) {
+              i.start_date = new Date(i.start_date);
+              i.date_of_birth = new Date(i.date_of_birth);
+              const day = i.start_date.getDate().toString().padStart(2, '0');
+              const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
+              const year = i.start_date.getFullYear();
+              const formattedDate = `${day}/${month}/${year}`;
+              const dayBirth = i.date_of_birth.getDate().toString().padStart(2, '0');
+              const monthBirth = (i.date_of_birth.getMonth() + 1).toString().padStart(2, '0');
+              const yearBirth = i.date_of_birth.getFullYear();
+              const formattedDateBirth = `${dayBirth}/${monthBirth}/${yearBirth}`;
+              console.log(formattedDateBirth);
+              i.start_date = formattedDate
+              i.date_of_birth = formattedDateBirth
+            }
               const data = [
                 'full_name',
                 'identification_number',
