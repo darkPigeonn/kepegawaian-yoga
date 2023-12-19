@@ -116,6 +116,21 @@ Template.detailDocument.helpers({
   },
 });
 
+Template.detailDocument.events({
+  'load #previewDoc'(event, template) {
+    console.log('Iframe content loaded successfully');
+  },
+
+  'error #previewDoc'(event, template) {
+    Swal.fire({
+      title: "Gagal",
+      text: "Dokumen gagal di preview, silahkan refresh halaman ini",
+      showConfirmButton: true,
+      allowOutsideClick: true,
+    });
+  },
+})
+
 // Template.resepsionisDocument.helpers({
 //     dataDocument() {
 //         return Template.instance().dataDocument.get();
