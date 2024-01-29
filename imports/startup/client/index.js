@@ -4,6 +4,7 @@ import './routes.js';
 import { S3, PutObjectCommand } from "@aws-sdk/client-s3";
 import Swal from "sweetalert2";
 import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
+import moment from "moment/moment.js";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 
@@ -252,3 +253,56 @@ initMultipleEditor = async function (id,template, options) {
       console.error(error);
     });
 };
+
+class MyUploadAdapter {
+  constructor(loader) {
+    this.loader = loader;
+    // this.url = '/uploadsApi/';
+  }
+
+  upload() {
+    return this.loader.file.then(
+      (file) =>
+        new Promise((resolve, reject) => {
+          this._initListeners(file, resolve, reject);
+        })
+    );
+  }
+  async _initListeners(file, resolve, reject) {
+    const s3Client = new S3({
+      endpoint: Meteor.settings.public.s3.endpoint,
+      region: Meteor.settings.public.s3.region,
+      credentials: {
+        accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
+        secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
+      },
+    });
+    try {
+      const today = moment(new Date()).format("MMDDYYhhmmss");
+      await s3Client.send(
+        new PutObjectCommand({
+          Bucket: "imavistatic",
+          Key: file.name + "-pastoral" + today + file.name.split(".")[1],
+          Body: file,
+          ACL: "public-read",
+        })
+      );
+      resolve({
+        default:
+          "https://imavistatic.sgp1.digitaloceanspaces.com/" +
+          file.name +
+          "-pastoral" +
+          today +
+          file.name.split(".")[1],
+      });
+    } catch (err) {
+      reject();
+      console.log("Error", err);
+    }
+  }
+  abort() {
+    if (this.xhr) {
+      this.xhr.abort();
+    }
+  }
+}
