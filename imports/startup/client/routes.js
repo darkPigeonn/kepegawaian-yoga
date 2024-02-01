@@ -7,6 +7,8 @@ import "../../ui/pages/not-found/not-found.js";
 import "../../ui/pages/batch/batch.js";
 import "../../ui/pages/employee/employee.js";
 import "../../ui/pages/departement/departement.js";
+import "../../ui/pages/projects/projects.js";
+import "../../ui/pages/tasks/tasks.js";
 import "../../ui/pages/attendance/attendance.js";
 import "../../ui/pages/document/document.js";
 import "../../ui/pages/user/user.js";
@@ -44,6 +46,8 @@ FlowRouter.route("/batch/detail/:_id", {
     this.render("App_body", "batch_detail");
   },
 });
+
+// Employees
 FlowRouter.route("/employees/create", {
   name: "employee create",
   action(){
@@ -104,6 +108,8 @@ FlowRouter.route("/employees/soon", {
     this.render("App_body", "comingSoon")
   }
 });
+
+// Departments
 FlowRouter.route("/departements", {
   name: "departement page",
   action(){
@@ -135,6 +141,65 @@ FlowRouter.route("/departements/anggota/:_id", {
   }
 });
 
+// Projects
+FlowRouter.route("/projects", {
+  name: "projectPage",
+  action(){
+    this.render("App_body", "projects_page")
+  }
+});
+FlowRouter.route("/projects/create", {
+  name: "projectCreate",
+  action(){
+    this.render("App_body", "projects_create")
+  }
+});
+FlowRouter.route("/projects/edit/:_id", {
+  name: "projectEdit",
+  action(){
+    this.render("App_body", "projects_edit")
+  }
+});
+FlowRouter.route("/projects/detail/:_id", {
+  name: "projectDetail",
+  action(){
+    this.render("App_body", "projects_detail")
+  }
+});
+FlowRouter.route("/projects/detail/:_id/members", {
+  name: "projectMembers",
+  action(){
+    this.render("App_body", "projects_members")
+  }
+});
+
+// Tasks
+FlowRouter.route("/tasks/create/:_id", {
+  name: "taskCreate",
+  action(){
+    this.render("App_body", "tasks_create")
+  }
+});
+FlowRouter.route("/tasks/edit/:_id", {
+  name: "taskEdit",
+  action(){
+    this.render("App_body", "tasks_edit")
+  }
+});
+FlowRouter.route("/tasks/detail/:_id", {
+  name: "taskDetail",
+  action(){
+    this.render("App_body", "tasks_detail")
+  }
+});
+FlowRouter.route("/tasks/detail/:_id/members", {
+  name: "taskMembers",
+  action(){
+    this.render("App_body", "tasks_members")
+  }
+});
+
+// Presensi
 FlowRouter.route("/presensi", {
   name: "staffsAttendancePage",
   action(){

@@ -39,6 +39,12 @@ Meteor.methods({
       // console.log(data);
       // return data;
     },
+    "employee.getAllEmployee"(){
+      return Employee.find({status: 10, statusDelete: 0}, {sort: {createdAt: -1}}).fetch();
+    },
+    "employee.getAllEmployeeThisProject"(){
+      return Employee.find({status: 10, statusDelete: 0}, {sort: {createdAt: -1}}).fetch();
+    },
     "employee.getBy"(id){
       check(id, String);
       return Employee.findOne({ _id: id });

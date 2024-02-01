@@ -5,6 +5,8 @@ import "../../api/links/server/publications.js";
 import "../../api/batch/methods.js";
 import "../../api/employee/methods.js";
 import "../../api/departement/methods.js";
+import "../../api/projects/methods.js";
+import "../../api/tasks/methods.js";
 import "../../api/attendance/methods.js";
 import "../../api/documents/methods.js";
 import "../../api/user/methods.js";
