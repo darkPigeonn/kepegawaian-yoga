@@ -58,8 +58,81 @@
 </template>
 
 <template name="tasks_edit">
-    <div>
+    <div class="container">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary"> 
+                {{tasks.nama_project}}
+            </a> 
+            /
+            <a href="/tasks/detail/{{tasks._id}}" class="text-secondary">
+                {{tasks.nama_task}}
+            </a>
+            /
+            <a href="/tasks/edit/{{tasks._id}}">
+                Edit
+            </a>
+        </label>
+        <div class="title-page mt-3">
+            <h3>Edit Task</h3>
+        </div>
+
+        <hr class="my-3" style="border: 1px solid lightgray;">
         
+        <div class="mt-2">
+            <form>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Nama Task</label>
+                    <input type="text" id="nama_task" class="form-control" value="{{tasks.nama_task}}" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Deskripsi</label>
+                    <input type="text" id="deskripsi_task" class="form-control" value="{{tasks.deskripsi}}" />
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Deadline</label>
+                    <input type="date" id="deadline" class="form-control" value="{{dateToHTML tasks.deadline}}" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tingkat Prioritas</label>
+                    <select name="select-priority" class="select2 form-control" id="select-priority" required>
+                        {{#if equals tasks.priority "high"}}
+                            <option value="high" class="text-danger fw-bold" selected>High</option>
+                            <option value="mid" class="text-warning fw-bold">Mid</option>
+                            <option value="low" class="text-success fw-bold">Low</option>
+                        {{/if}}
+                        {{#if equals tasks.priority "mid"}}
+                            <option value="high" class="text-danger fw-bold">High</option>
+                            <option value="mid" class="text-warning fw-bold" selected>Mid</option>
+                            <option value="low" class="text-success fw-bold">Low</option>
+                        {{/if}}
+                        {{#if equals tasks.priority "low"}}
+                            <option value="high" class="text-danger fw-bold">High</option>
+                            <option value="mid" class="text-warning fw-bold">Mid</option>
+                            <option value="low" class="text-success fw-bold" selected>Low</option>
+                        {{/if}}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Member Task</label>
+                    <select name="select-member" class="select2 form-control" id="select-member" required multiple>
+                        {{#each item in tasks.project_members}}
+                            {{#if isInTaskMembers item.id}}
+                                <option value="{{ item.id }}" selected>
+                                    <b>{{ item.name }}</b> - {{ item.department_unit }}
+                                </option>
+                            {{else}}
+                                <option value="{{ item.id }}">
+                                    <b>{{ item.name }}</b> - {{ item.department_unit }}
+                                </option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 

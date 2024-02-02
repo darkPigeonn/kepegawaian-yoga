@@ -14,6 +14,22 @@ Meteor.methods({
         const getTask = Tasks.findOne({_id: id});
         const getProject = Projects.findOne({_id: getTask.id_project});
         getTask.nama_project = getProject.nama_project;
+        getTask.project_members = getProject.members;
+        
+        const updatedMembers = getTask.project_members.map((x) => {
+            const listMember = Employee.find({_id: x.id}).fetch();
+  
+            return listMember.map(member => ({
+                id: member._id,
+                name: member.full_name,
+                job_position: member.job_position,
+                start_date: member.start_date,
+                department_unit: member.department_unit,
+                employment_status: member.employment_status,
+            }));
+        });
+
+        getTask.project_members = updatedMembers;
 
         return getTask;
     },
@@ -77,9 +93,8 @@ Meteor.methods({
         return Tasks.insert(dataSave);
     },
     "tasks.update"(id, data) {
-        let {id_project, nama_task, deskripsi, deadline, priority, updatedMembers} = data
-        check(id_project, String);
-        check(nama_task, String);
+        let {nama_tasks, deskripsi, deadline, priority, updatedMembers} = data
+        check(nama_tasks, String);
         check(deskripsi, String);
         check(priority, String);
         check(updatedMembers, Array);
@@ -92,8 +107,7 @@ Meteor.methods({
         updatedBy = adminPartner.fullname;
         
         const dataSave = { 
-            id_project,
-            nama_task,
+            nama_task: nama_tasks,
             deskripsi,
             deadline,
             priority,

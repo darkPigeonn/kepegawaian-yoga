@@ -46,7 +46,7 @@ Template.tasks_create.helpers({
     },
     employee() {
         return Template.instance().employee.get();
-    }
+    },
 });
 
 Template.tasks_create.events({
@@ -82,6 +82,102 @@ Template.tasks_create.events({
                 Swal.fire({
                     title: "Berhasil",
                     text: "Berhasil Menambahkan Task",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        history.back();
+                    }
+                });
+            }else{
+                Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+                console.log(error);
+            }
+        });
+    },
+});
+
+Template.tasks_edit.onCreated(function () {
+    const self = this;
+    self.employee = new ReactiveVar();
+    self.tasks = new ReactiveVar();
+
+    const idTasks = FlowRouter.getParam("_id");
+
+    Meteor.call("tasks.getThisTask", idTasks, function (error, result) {
+      if (result) {
+        const flaten = result.project_members.flat();
+        result.project_members = flaten;
+        self.tasks.set(result);
+      } else {
+        console.log(error);
+      }
+    });
+
+    Meteor.call("employee.getAllEmployee", function (error, result) {
+        if (result) {
+            self.employee.set(result);
+        } else {
+            console.log(error);
+        }
+    });
+
+    startSelect2();
+});
+  
+Template.tasks_edit.helpers({
+    employee() {
+        return Template.instance().employee.get();
+    },
+    tasks(){
+        return Template.instance().tasks.get();
+    },
+    isInTaskMembers(employeeId) {
+        console.log(employeeId);
+        const members = Template.instance().tasks.get().members;
+        const tasks_members = members ? members.map(x => x.id) : [];
+        return tasks_members.includes(employeeId);
+    },
+});
+
+Template.tasks_edit.events({
+    "click #btn_save"(e, t){
+        e.preventDefault();
+    
+        const nama_tasks = $("#nama_task").val();
+        const deskripsi = $("#deskripsi_task").val();
+        let deadline = $("#deadline").val();
+        const priority = $("#select-priority").val();
+        const members = $("#select-member").val();
+
+        const employee = t.employee.get();
+        const idTasks = FlowRouter.getParam("_id");
+        
+        deadline = new Date(deadline);
+        
+        const updatedMembers = members.map((x) => {
+            const thisMember = employee.find((y) => y._id == x);
+
+            return {
+              id: thisMember._id,
+              name: thisMember.full_name
+            }
+        });
+        
+        const data = {
+            nama_tasks, deskripsi, deadline, priority, updatedMembers
+        }
+    
+        Meteor.call('tasks.update', idTasks, data, function (error, result) {
+            if(result){
+                Swal.fire({
+                    title: "Berhasil",
+                    text: "Berhasil Edit Task",
                     showConfirmButton: true,
                     allowOutsideClick: true,
                 }).then((result) => {
