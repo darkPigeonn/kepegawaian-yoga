@@ -974,11 +974,9 @@ Template.detailWfh.helpers({
 })
 
 startSelect2 = function () {
-  console.log("masuk");
   setTimeout(() => {
     $(".select2").select2();
-  }, 200);
-  // $(".firstSelect2").select2({ width: "100%" });
+  }, 300);
 };
 
 

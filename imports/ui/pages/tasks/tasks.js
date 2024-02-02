@@ -34,6 +34,16 @@ Template.tasks_create.onCreated(function () {
         }
     });
 
+    self[`template-field-deskripsi`] = new ReactiveVar();
+    setTimeout(() => {
+        initEditor(self, 
+            {
+                editorEl: `editor-deskripsi`, 
+                toolbarEl: `toolbar-container-deskripsi`,
+                templateField: `template-field-deskripsi`,
+            })
+    }, 300);
+
     startSelect2();
 });
   
@@ -54,9 +64,11 @@ Template.tasks_create.events({
         e.preventDefault();
     
         const nama_tasks = $("#nama_task").val();
-        const deskripsi = $("#deskripsi_task").val();
+        // const deskripsi = $("#deskripsi_task").val();
+        const deskripsi = t[`template-field-deskripsi`].get().getData();
         let deadline = $("#deadline").val();
-        const priority = $("#select-priority").val();
+        // const priority = $("#select-priority").val();
+        const priority = $('input[name=select-priority]:checked').val();
         const members = $("#select-member").val();
 
         const idProject = t.projectId.get();
@@ -76,29 +88,40 @@ Template.tasks_create.events({
         const data = {
             idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers
         }
-    
-        Meteor.call('tasks.insert', data, function (error, result) {
-            if(result){
-                Swal.fire({
-                    title: "Berhasil",
-                    text: "Berhasil Menambahkan Task",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                }).then((result) => {
-                    if(result.isConfirmed){
-                        history.back();
-                    }
-                });
-            }else{
-                Swal.fire({
-                    title: "Gagal",
-                    text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                });
-                console.log(error);
-            }
-        });
+        
+        if (deskripsi && priority) {            
+            Meteor.call('tasks.insert', data, function (error, result) {
+                if(result){
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: "Berhasil Menambahkan Task",
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                            history.back();
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        title: "Gagal",
+                        text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                    });
+                    console.log(error);
+                }
+            });
+        }
+        else{
+            Swal.fire({
+                title: "Gagal",
+                text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+            });
+            console.log(error);
+        }
     },
 });
 
@@ -127,6 +150,17 @@ Template.tasks_edit.onCreated(function () {
         }
     });
 
+    self[`template-field-deskripsi`] = new ReactiveVar();
+    setTimeout(() => {
+        initEditor(self, 
+            {
+                editorEl: `editor-deskripsi`, 
+                toolbarEl: `toolbar-container-deskripsi`,
+                templateField: `template-field-deskripsi`,
+                content: self.tasks.get().deskripsi
+            })
+    }, 300);
+
     startSelect2();
 });
   
@@ -138,7 +172,6 @@ Template.tasks_edit.helpers({
         return Template.instance().tasks.get();
     },
     isInTaskMembers(employeeId) {
-        console.log(employeeId);
         const members = Template.instance().tasks.get().members;
         const tasks_members = members ? members.map(x => x.id) : [];
         return tasks_members.includes(employeeId);
@@ -150,9 +183,12 @@ Template.tasks_edit.events({
         e.preventDefault();
     
         const nama_tasks = $("#nama_task").val();
-        const deskripsi = $("#deskripsi_task").val();
+        // const deskripsi = $("#deskripsi_task").val();
+        const deskripsi = t[`template-field-deskripsi`].get().getData()
         let deadline = $("#deadline").val();
-        const priority = $("#select-priority").val();
+        // const priority = $(".select-priority").val();
+        const priority = $('input[name=select-priority]:checked').val();
+        console.log(priority);
         const members = $("#select-member").val();
 
         const employee = t.employee.get();
@@ -172,29 +208,42 @@ Template.tasks_edit.events({
         const data = {
             nama_tasks, deskripsi, deadline, priority, updatedMembers
         }
+
+        console.log(data);
     
-        Meteor.call('tasks.update', idTasks, data, function (error, result) {
-            if(result){
-                Swal.fire({
-                    title: "Berhasil",
-                    text: "Berhasil Edit Task",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                }).then((result) => {
-                    if(result.isConfirmed){
-                        history.back();
-                    }
-                });
-            }else{
-                Swal.fire({
-                    title: "Gagal",
-                    text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-                    showConfirmButton: true,
-                    allowOutsideClick: true,
-                });
-                console.log(error);
-            }
-        });
+        if (deskripsi && priority) {            
+            Meteor.call('tasks.update', idTasks, data, function (error, result) {
+                if(result){
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: "Berhasil Edit Task",
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                    }).then((result) => {
+                        if(result.isConfirmed){
+                            history.back();
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        title: "Gagal",
+                        text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                    });
+                    console.log(error);
+                }
+            });
+        }
+        else{
+            Swal.fire({
+                title: "Gagal",
+                text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+            });
+            console.log(error);
+        }
     },
 });
 
@@ -330,3 +379,9 @@ Template.tasks_members.events({
         }
     }
 });
+
+startSelect2 = function () {
+    setTimeout(() => {
+      $(".select2").select2();
+    }, 300);
+};

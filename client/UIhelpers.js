@@ -58,6 +58,10 @@ Template.registerHelper("dateToHTML", function (context, options) {
   // return moment(context).format("DD MMMM YYYY");
 });
 
+Template.registerHelper('toHTML', function (context, options) {
+  return $("<div>").html(context).text();
+});
+
 Template.registerHelper('includes', function (a, b) {
   if(a && a.length && b) return a.includes(b);
 });

@@ -19,7 +19,7 @@ Template.projects_page.onCreated(function (){
       data: ''
     })
     self.filterMode = new ReactiveVar("1");
-
+    
     Meteor.call("projects.getAll", function (error, result) {
         if (result) {
           self.projects.set(result);
@@ -68,7 +68,10 @@ Template.projects_page.helpers({
     },
     filterMode() {
         return Template.instance().filterMode.get();
-    }
+    },
+    // toHTML(desc) {
+    //     return $("<div>").html(desc).text();
+    // }
 });
 
 Template.projects_page.events({
@@ -115,6 +118,17 @@ Template.projects_create.onCreated(function () {
         console.log(error);
       }
     });
+
+    self[`template-field-deskripsi`] = new ReactiveVar();
+    setTimeout(() => {
+        initEditor(self, 
+            {
+                editorEl: `editor-deskripsi`, 
+                toolbarEl: `toolbar-container-deskripsi`,
+                templateField: `template-field-deskripsi`,
+            })
+    }, 300);
+
     startSelect2();
 });
   
@@ -132,7 +146,8 @@ Template.projects_create.events({
         e.preventDefault();
     
         const nama_project = $("#nama_project").val();
-        const deskripsi = $("#deskripsi_project").val();
+        // const deskripsi = $("#deskripsi_project").val();
+        const deskripsi = t[`template-field-deskripsi`].get().getData();
         let tanggal_mulai = $("#tanggal_mulai").val();
         let tanggal_selesai = $("#tanggal_selesai").val();
         const status = $("#select-status").val();
@@ -216,6 +231,17 @@ Template.projects_edit.onCreated(function () {
             console.log(error);
         }
     });
+
+    self[`template-field-deskripsi`] = new ReactiveVar();
+    setTimeout(() => {
+        initEditor(self, 
+            {
+                editorEl: `editor-deskripsi`, 
+                toolbarEl: `toolbar-container-deskripsi`,
+                templateField: `template-field-deskripsi`,
+                content: self.projects.get().deskripsi
+            })
+    }, 300);
     
     startSelect2();
 });
@@ -242,7 +268,8 @@ Template.projects_edit.events({
         e.preventDefault();
     
         const nama_project = $("#nama_project").val();
-        const deskripsi = $("#deskripsi_project").val();
+        // const deskripsi = $("#deskripsi_project").val();
+        const deskripsi = t[`template-field-deskripsi`].get().getData();
         let tanggal_mulai = $("#tanggal_mulai").val();
         let tanggal_selesai = $("#tanggal_selesai").val();
         const status = $("#select-status").val();
@@ -254,48 +281,58 @@ Template.projects_edit.events({
         tanggal_mulai = new Date(tanggal_mulai);
         tanggal_selesai = new Date(tanggal_selesai);
         
-        if (tanggal_selesai > tanggal_mulai) {
-            console.log("masuk");
-            const updatedMembers = members.map((x) => {
-                const thisMember = employee.find((y) => y._id == x);
+        if (deskripsi) {            
+            if (tanggal_selesai > tanggal_mulai) {
+                console.log("masuk");
+                const updatedMembers = members.map((x) => {
+                    const thisMember = employee.find((y) => y._id == x);
+        
+                    return {
+                      id: thisMember._id,
+                      name: thisMember.full_name
+                    }
+                });
+                
+                const data = {
+                    nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers
+                }
     
-                return {
-                  id: thisMember._id,
-                  name: thisMember.full_name
-                }
-            });
-            
-            const data = {
-                nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers
+                Meteor.call('projects.update', id, data, function (error, result) {
+                    if(result){
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: "Berhasil Update Project",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                history.back();
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Gagal",
+                            text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        });
+                        console.log(error);
+                    }
+                });      
             }
-
-            Meteor.call('projects.update', id, data, function (error, result) {
-                if(result){
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: "Berhasil Update Project",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                            history.back();
-                        }
-                    });
-                }else{
-                    Swal.fire({
-                        title: "Gagal",
-                        text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    });
-                    console.log(error);
-                }
-            });      
+            else{
+                Swal.fire({
+                    title: "Gagal",
+                    text: "Tanggal selesai harus lebih besar daripada tanggal mulai",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+            }
         }
         else{
             Swal.fire({
                 title: "Gagal",
-                text: "Tanggal selesai harus lebih besar daripada tanggal mulai",
+                text: "Data gagal dimasukkan, pastikan semua data telah terisi",
                 showConfirmButton: true,
                 allowOutsideClick: true,
             });
@@ -376,7 +413,10 @@ Template.projects_detail.helpers({
     },
     filterMode() {
         return Template.instance().filterMode.get();
-    }
+    },
+    // toHTML(desc) {
+    //     return $("<div>").html(desc).text();
+    // }
 });
 
 Template.projects_detail.events({
@@ -524,5 +564,5 @@ Template.projects_members.events({
 startSelect2 = function () {
     setTimeout(() => {
       $(".select2").select2();
-    }, 200);
+    }, 300);
 };
