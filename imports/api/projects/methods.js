@@ -1,5 +1,5 @@
 import { Projects } from "./projects";
-import { Tasks } from "../tasks/tasks";
+import { Notifications } from "../notification/notification";
 import { Employee } from "../employee/employee";
 import { check } from "meteor/check";
 import moment from "moment";
@@ -41,11 +41,13 @@ Meteor.methods({
       return Employee.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
     "projects.insert"(data) {
-      let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers} = data
+      let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages} = data
       check(nama_project, String);
       check(deskripsi, String);
       check(status, String);
       check(updatedMembers, Array);
+      check(notifType, String);
+      check(messages, String);
 
       let createdBy;
       const thisUser = Meteor.userId();
@@ -65,14 +67,36 @@ Meteor.methods({
         createdBy: createdBy
       };
 
-      return Projects.insert(dataSave);
+      const idProject = Projects.insert(dataSave); 
+
+      const dataNotif = updatedMembers.map(x => {
+          let notif = {
+              member_id: x.id,
+              member_name: x.name,
+              member_email: x.email,
+          }
+
+          return notif;
+      });
+
+      const newDataSave = { 
+        id_project: idProject,
+        data: dataNotif,
+        assign_for: notifType,
+        message: messages,
+        createdAt: new Date(),
+      };
+
+      return Notifications.insert(newDataSave);
     },
     "projects.update"(id, data) {
-      let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers} = data
+      let { nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages } = data
       check(nama_project, String);
       check(deskripsi, String);
       check(status, String);
       check(updatedMembers, Array);
+      check(notifType, String);
+      check(messages, String);
       
       let updatedBy;
       const thisUser = Meteor.userId();
@@ -92,10 +116,29 @@ Meteor.methods({
         updatedBy: updatedBy
       };
     
+      const dataNotif = updatedMembers.map(x => {
+        let notif = {
+            member_id: x.id,
+            member_name: x.name,
+            member_email: x.email,
+        }
+
+        return notif;
+    });
+
+      const newDataSave = { 
+        id_project: id,
+        data: dataNotif,
+        assign_for: notifType,
+        message: messages,
+        createdAt: new Date(),
+      };
+      
+      const updateNotif = Notifications.insert(newDataSave);
+
       return Projects.update(
         { _id: id },
         { $set: dataSave }
-      );
+      );;
     },
-
 })

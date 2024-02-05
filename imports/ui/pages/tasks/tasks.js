@@ -72,6 +72,8 @@ Template.tasks_create.events({
         const members = $("#select-member").val();
 
         const idProject = t.projectId.get();
+        const notifType = 'tasks';
+        const messages = "Kamu telah di-daftarkan pada task baru, silahkan check web kepegawaian";
         const employee = t.employee.get();
         
         deadline = new Date(deadline);
@@ -81,12 +83,13 @@ Template.tasks_create.events({
 
             return {
               id: thisMember._id,
-              name: thisMember.full_name
+              name: thisMember.full_name,
+              email: thisMember.email_address
             }
         });
         
         const data = {
-            idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers
+            idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
         }
         
         if (deskripsi && priority) {            
@@ -188,10 +191,11 @@ Template.tasks_edit.events({
         let deadline = $("#deadline").val();
         // const priority = $(".select-priority").val();
         const priority = $('input[name=select-priority]:checked').val();
-        console.log(priority);
         const members = $("#select-member").val();
 
         const employee = t.employee.get();
+        const notifType = 'tasks';
+        const messages = "Kamu telah di-daftarkan pada task baru, silahkan check web kepegawaian";
         const idTasks = FlowRouter.getParam("_id");
         
         deadline = new Date(deadline);
@@ -201,15 +205,16 @@ Template.tasks_edit.events({
 
             return {
               id: thisMember._id,
-              name: thisMember.full_name
+              name: thisMember.full_name,
+              email: thisMember.email_address
             }
         });
         
         const data = {
-            nama_tasks, deskripsi, deadline, priority, updatedMembers
+            nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
         }
 
-        console.log(data);
+        // console.log(data);
     
         if (deskripsi && priority) {            
             Meteor.call('tasks.update', idTasks, data, function (error, result) {

@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { start } from "@popperjs/core";
 import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
-import { filter, result } from "underscore";
+import { each, filter, result } from "underscore";
 import { HTTP } from 'meteor/http';
 
 Template.projects_page.onCreated(function (){
@@ -154,6 +154,8 @@ Template.projects_create.events({
         const members = $("#select-member").val();
 
         const employee = t.employee.get();
+        const notifType = 'project';
+        const messages = "Kamu telah di-daftarkan pada project baru, silahkan check web kepegawaian";
         
         tanggal_mulai = new Date(tanggal_mulai);
         tanggal_selesai = new Date(tanggal_selesai);
@@ -161,16 +163,19 @@ Template.projects_create.events({
         if (tanggal_selesai > tanggal_mulai) {
             const updatedMembers = members.map((x) => {
                 const thisMember = employee.find((y) => y._id == x);
-    
+                
                 return {
                   id: thisMember._id,
-                  name: thisMember.full_name
+                  name: thisMember.full_name,
+                  email: thisMember.email_address,
                 }
             });
             
             const data = {
-                nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers
+                nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages
             }
+
+            // console.log(dataNotif);
         
             Meteor.call('projects.insert', data, function (error, result) {
                 if(result){
@@ -276,6 +281,8 @@ Template.projects_edit.events({
         const members = $("#select-member").val();
 
         const employee = t.employee.get();
+        const notifType = 'project';
+        const messages = "Kamu telah di-daftarkan pada project baru, silahkan check web kepegawaian";
         const id = FlowRouter.getParam("_id");
         
         tanggal_mulai = new Date(tanggal_mulai);
@@ -289,12 +296,13 @@ Template.projects_edit.events({
         
                     return {
                       id: thisMember._id,
-                      name: thisMember.full_name
+                      name: thisMember.full_name,
+                      email: thisMember.email_address
                     }
                 });
                 
                 const data = {
-                    nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers
+                    nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages
                 }
     
                 Meteor.call('projects.update', id, data, function (error, result) {

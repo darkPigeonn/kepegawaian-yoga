@@ -82,7 +82,6 @@ Meteor.methods({
     "employee.getEmployeeKeluar" () {
       return Employee.find({statusDelete: 1}).fetch();
     },
-
     async "employee.insert"(data) {
       let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = data
       check(full_name, String);
