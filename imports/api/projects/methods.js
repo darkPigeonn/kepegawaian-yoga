@@ -7,7 +7,25 @@ import moment from "moment";
 
 Meteor.methods({
     "projects.getAll"(){
-      return Projects.find({},{sort: {createdAt: -1}}).fetch();
+      const thisUser = Meteor.userId();
+      const relatedUser = Meteor.users.findOne({
+        _id: thisUser,
+      });
+
+      const userRoles = relatedUser.roles || [];
+      const checkRoles = ["admin", "super-admin"];
+      const isAdmin = userRoles.some(role => checkRoles.includes(role));
+
+      let findProjects = "";
+
+      if (isAdmin) {
+        findProjects = Projects.find({},{sort: {createdAt: -1}}).fetch();
+      }
+      else{
+        findProjects = Projects.find({ "members.email": relatedUser.emails[0].address },{sort: {createdAt: -1}}).fetch();
+      }
+      
+      return findProjects;
     },
     "projects.getThisProject"(id){
       check(id, String);
@@ -63,6 +81,7 @@ Meteor.methods({
         tanggal_selesai,
         status,
         members: updatedMembers,
+        id_leader: thisUser,
         createdAt: new Date(),
         createdBy: createdBy
       };

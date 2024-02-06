@@ -36,7 +36,32 @@ Meteor.methods({
     },
     "tasks.getRelatedTasks"(id){
         check(id, String);
-        return Tasks.find({id_project: id},{sort: {deadline: 1}}).fetch();
+
+        const thisUser = Meteor.userId();
+        const relatedUser = Meteor.users.findOne({
+            _id: thisUser,
+        });
+
+        const userRoles = relatedUser.roles || [];
+        const checkRoles = ["admin", "super-admin"];
+        const isAdmin = userRoles.some(role => checkRoles.includes(role));
+
+        let findTasks = "";
+
+        if (isAdmin) {
+            findTasks = Tasks.find({id_project: id},{sort: {deadline: 1}}).fetch();
+        }
+        else{
+            const checkProject = Projects.findOne({ _id: id, "members.email": relatedUser.emails[0].address },{sort: {createdAt: -1}}) || [];
+
+            // console.log(checkProject);
+
+            if (checkProject) {
+                findTasks = Tasks.find({id_project: id},{sort: {deadline: 1}}).fetch();
+            }
+        }
+
+        return findTasks;
     },
     "tasks.getAllEmployeeThisTask"(idTask){
         const thisTask = Tasks.findOne({ _id: idTask });

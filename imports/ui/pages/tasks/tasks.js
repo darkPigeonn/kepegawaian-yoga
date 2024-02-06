@@ -21,6 +21,7 @@ Template.tasks_create.onCreated(function () {
     Meteor.call("projects.getAllEmployeeThisProject", idProject, function (error, result) {
       if (result) {
         self.projectEmployee.set(result);
+        startSelect2();
       } else {
         console.log(error);
       }
@@ -44,7 +45,6 @@ Template.tasks_create.onCreated(function () {
             })
     }, 300);
 
-    startSelect2();
 });
   
 Template.tasks_create.helpers({
@@ -148,6 +148,7 @@ Template.tasks_edit.onCreated(function () {
     Meteor.call("employee.getAllEmployee", function (error, result) {
         if (result) {
             self.employee.set(result);
+            startSelect2();
         } else {
             console.log(error);
         }
@@ -164,7 +165,6 @@ Template.tasks_edit.onCreated(function () {
             })
     }, 300);
 
-    startSelect2();
 });
   
 Template.tasks_edit.helpers({
@@ -262,12 +262,12 @@ Template.tasks_detail.onCreated(function () {
     Meteor.call("tasks.getThisTask", taskId, function (error, result) {
         if (result) {
             self.tasks.set(result);
+            startSelect2();
         } else {
             console.log(error);
         }
     });
 
-    startSelect2();
 });
 
 Template.tasks_detail.helpers({

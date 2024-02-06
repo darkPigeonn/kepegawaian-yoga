@@ -22,9 +22,9 @@ Template.projects_page.onCreated(function (){
     
     Meteor.call("projects.getAll", function (error, result) {
         if (result) {
-          self.projects.set(result);
+            self.projects.set(result);
         } else {
-          console.log(error);
+            console.log(error);
         }
     });
 });
@@ -114,6 +114,7 @@ Template.projects_create.onCreated(function () {
     Meteor.call("employee.getAllEmployee", function (error, result) {
       if (result) {
         self.employee.set(result);
+        startSelect2();
       } else {
         console.log(error);
       }
@@ -129,7 +130,6 @@ Template.projects_create.onCreated(function () {
             })
     }, 300);
 
-    startSelect2();
 });
   
 Template.projects_create.helpers({
@@ -232,6 +232,7 @@ Template.projects_edit.onCreated(function () {
         if (result) {
             // console.log(result);
             self.projects.set(result);
+            startSelect2();
         } else {
             console.log(error);
         }
@@ -248,7 +249,6 @@ Template.projects_edit.onCreated(function () {
             })
     }, 300);
     
-    startSelect2();
 });
   
 Template.projects_edit.helpers({
@@ -365,7 +365,7 @@ Template.projects_detail.onCreated(function (){
     
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
-            // console.log(result);
+            console.log(result);
             self.projects.set(result);
         } else {
             console.log(error);
@@ -384,6 +384,10 @@ Template.projects_detail.onCreated(function (){
 });
 
 Template.projects_detail.helpers({
+    thisUser() {
+        console.log(Meteor.user());
+        return Meteor.user();
+    },
     projects() {
         const t = Template.instance()
         const projects = t.projects.get();

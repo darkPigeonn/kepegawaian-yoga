@@ -5,15 +5,15 @@
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
                         <a href="/projects"> 
-                            Projects
+                            Proyek
                         </a> 
                         /
                     </label>
                     <div class="d-flex justify-content-between align-middle mt-2 mb-2">
                         <div class="my-auto">
-                            <label class="mb-1" style="font-size: 32px; font-weight: bold;">All Projects</label>
+                            <label class="mb-1" style="font-size: 32px; font-weight: bold;">Semua Proyek</label>
                             <div>
-                                <label style="font-size: 17px;">Showing {{projects.length}} result</label>
+                                <label style="font-size: 17px;">Menampilkan {{projects.length}} hasil</label>
                             </div>
                         </div>
                         <div class="d-flex gap-2 my-auto">
@@ -22,7 +22,7 @@
                                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                                 </svg>
                             </button>
-                            <a href="/projects/create" class="btn btn-primary">+ Add Project</a>
+                            <a href="/projects/create" class="btn btn-primary">+ Tambah Proyek</a>
                         </div>
                     </div>
                     {{#if equals filterMode '2'}}
@@ -34,35 +34,15 @@
                         </div>
                         <div class="d-flex gap-2 mb-3">
                             <select id="input_type" class="form-select filter">
-                                <option value="nama_project">Nama Project</option>
+                                <option value="nama_project">Nama Proyek</option>
                                 <option value="status">Status</option>
                                 <option value="tanggal_mulai">Tanggal Mulai</option>
                                 <option value="tanggal_selesai">Tanggal Selesai</option>
                                 <option value="jumlah_member">Jumlah Member</option>
                             </select>
-                            <input type="text" id="input_data" class="form-control filter" placeholder="Search Projects" />
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Proyek" />
                         </div>
                     {{/if}}
-                    <!-- <div class="d-flex justify-content-between mt-3">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <a href="/projects/status/toDo">
-                                    <input type="button" value="To Do" class="nav-link active">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/projects/status/inProgress">
-                                    <input type="button" value="In Progress" class="nav-link">
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/projects/status/completed">
-                                    <input type="button" value="Completed" class="nav-link">
-                                </a>
-                            </li>
-                        </ul>
-                    </div> -->
-
                 </div>
                 <div class="containerContent">
                     <div class="row row-cols-3 mt-1">
@@ -77,7 +57,7 @@
                                                     {{toHTML deskripsi}}
                                                 </p>
                                             </div>
-                                            <div class="col d-flex justify-content-end align-middle gap-1">
+                                            <div class="col d-flex justify-content-end align-middle flex-wrap gap-1">
                                                 <div class="status">
                                                     {{#if equals status "active"}}
                                                         <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #4caf50;background-color: #e8f5e9;">
@@ -97,14 +77,14 @@
                                                 </div>
                                                 <div class="members">
                                                     <span class="rounded-4 px-2 py-1" style="font-size: 9pt; color: #ffc14d;background-color: #ffeccb;">
-                                                        {{members.length}} Members
+                                                        {{members.length}} Member
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
-                                        <div class="d-flex gap-1">
+                                        <div class="d-flex flex-wrap gap-1">
                                             <div class="time">
                                                 <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff;max-width: fit-content;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="black" class="bi bi-play-fill" viewBox="0 0 16 20">
@@ -116,6 +96,124 @@
                                             -
                                             <div class="time">
                                                 <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 16 20">
+                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                    </svg>
+                                                    {{formatHRDateShort tanggal_selesai}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a href="/projects/detail/{{_id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="mobile-div">
+        <div class="box mt-3">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        <a href="/projects"> 
+                            Proyek
+                        </a> 
+                        /
+                    </label>
+                    <div class="d-flex justify-content-between align-middle mt-2 mb-2">
+                        <div class="my-auto w-50">
+                            <label class="mb-1" style="font-size: 28px; font-weight: bold;">Semua Proyek</label>
+                            <div>
+                                <label style="font-size: 15px;">Menampilkan {{projects.length}} hasil</label>
+                            </div>
+                        </div>
+                        <div class="d-flex container-filter flex-wrap align-items-end gap-2 my-auto w-50">
+                            <button class="btn btn-sm btn-primary btn-filter" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </button>
+                            <a href="/projects/create" class="btn btn-sm btn-primary">+ Tambah Proyek</a>
+                        </div>
+                    </div>
+                    {{#if equals filterMode '2'}}
+                        <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+                        <div class="d-flex justify-content-between mt-3 my-auto pb-0">
+                            <label class="fs-5 fw-bold">
+                                Filter
+                            </label>
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <select id="input_type" class="form-select filter">
+                                <option value="nama_project">Nama Proyek</option>
+                                <option value="status">Status</option>
+                                <option value="tanggal_mulai">Tanggal Mulai</option>
+                                <option value="tanggal_selesai">Tanggal Selesai</option>
+                                <option value="jumlah_member">Jumlah Member</option>
+                            </select>
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Proyek" />
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="containerContent">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
+                        {{#each projects}}
+                            <div class="col mb-3">
+                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div class="taskContent">
+                                        <div class="row row-cols-2">
+                                            <div class="col flex-wrap">
+                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap text-title">{{nama_project}}</h5>
+                                                <p class="text-secondary fw-light limited-text word-break text-desc mb-0">
+                                                    {{toHTML deskripsi}}
+                                                </p>
+                                            </div>
+                                            <div class="col d-flex flex-column align-items-end">
+                                                <div class="status">
+                                                    {{#if equals status "active"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #4caf50;background-color: #e8f5e9;">
+                                                            Active
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals status "completed"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #2196f3;background-color: #e3f2fd;">
+                                                            Completed
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals status "on-hold"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #ff5722;background-color: #ffe0b2;">
+                                                            On-Hold
+                                                        </span>
+                                                    {{/if}}
+                                                </div>
+                                                <div class="members mt-2">
+                                                    <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                        {{members.length}} Member
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                        <div class="container-time d-flex flex-wrap gap-2 my-auto">
+                                            <div class="time">
+                                                <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff;max-width: fit-content;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="black" class="bi bi-play-fill" viewBox="0 0 16 20">
+                                                        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                                    </svg>
+                                                    {{formatHRDateShort tanggal_mulai}}
+                                                </span>
+                                            </div>
+                                            <div class="time">
+                                                <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 16 20">
                                                         <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
                                                         <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
@@ -281,6 +379,35 @@
             height: 100%;
             background-color: white;
         }
+
+        @media (max-width: 1024px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
+            }
+            .time{
+                font-size: 10pt !important;
+            }
+            .status,
+            .members{
+                font-size: 10pt;
+                width: fit-content;
+            }
+            .container-filter{
+                justify-content: flex-end;
+            }
+        }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -312,57 +439,55 @@
             .tulisanPersonalData {
                 width: 100%;
             }
+
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
+            }
+            .time{
+                font-size: 9pt !important;
+            }
+            .status,
+            .members{
+                font-size: 9pt;
+                width: fit-content;
+            }
+            .container-filter{
+                justify-content: flex-end;
+            }
         }
+
         @media only screen and (max-width: 600px) {
             .desktop-div {
                 display: none;
             }
-
             .mobile-div {
                 display: block;
             }
-            .profile-card-mobile {
-                max-width: auto;
-                max-height: auto;
-                margin: 20px auto;
-                background-color: #ffffff;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-                text-align: center;
-            }
-
-            .profile-content-mobile {
-                text-align: left;
-                margin-left: 10px;
-                margin-right: 10px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-
-            .profile-picture-mobile {
-                width: 75%;
+            .box {
+                flex-direction: column;
                 height: auto;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                margin-top: 5px;
-                word-break: break-all;
-                word-wrap: break-word;
             }
-            .content-item{
-                word-break: break-all;
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
             }
-            .isiPersonalData>table>tr>td:nth-child(1) {
-                width: 150px;
+            .text-title{
+                font-size: 12pt;
             }
-            .tulisanKiriMobile {
-                width: 150px; 
-                vertical-align: top; 
-                font-weight: bold;
+            .text-desc{
+                font-size: 9pt;
             }
-            .tulisanKananMobile {
-                word-break: break-all;
-                vertical-align: top;
+            .time{
+                font-size: 9pt !important;
+            }
+            .status,
+            .members{
+                font-size: 8pt;
+                width: fit-content;
+            }
+            .container-filter{
+                flex-direction: column;
             }
         }
     </style>
@@ -378,18 +503,18 @@
 </template>
 
 <template name="projects_create">
-    <div class="container">
+    <div class="container mt-3 mb-4">
         <label style="color: blue; margin: 0;"> 
             <a href="/projects" class="text-secondary"> 
-                Projects
+                Proyek
             </a> 
             /
             <a href="/projects/create">
-                Create
+                Tambah
             </a>
         </label>
         <div class="title-page mt-3">
-            <h3>Tambah Project Baru</h3>
+            <h3>Tambah Proyek Baru</h3>
         </div>
 
         <hr class="my-3" style="border: 1px solid lightgray;">
@@ -397,12 +522,11 @@
         <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}} mt-2">
             <form>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Nama Project</label>
+                    <label class="fw-bold">Nama Proyek</label>
                     <input type="text" id="nama_project" class="form-control" required/>
                 </div>
                 <div class="form-group mb-3">
                     <label class="fw-bold">Deskripsi</label>
-                    <!-- <input type="text" id="deskripsi_project" class="form-control" /> -->
                     <div id="toolbar-container-deskripsi"></div>
                     <div id="editor-deskripsi" class="ckeditor-content"></div>
                 </div>
@@ -415,7 +539,7 @@
                     <input type="date" id="tanggal_selesai" class="form-control" required/>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Status Project</label>
+                    <label class="fw-bold">Status Proyek</label>
                     <select name="select-status" class="select2 form-control" id="select-status" required>
                         <option value="active">Aktif</option>
                         <option value="completed">Selesai</option>
@@ -423,7 +547,7 @@
                     </select>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Member Project</label>
+                    <label class="fw-bold">Member Proyek</label>
                     <select name="select-member" class="select2 form-control" id="select-member" required multiple>
                         {{#each employee}}
                             <option value="{{ _id }}"><b>{{ full_name }}</b> - {{ department_unit }}</option>
@@ -442,7 +566,7 @@
     <div class="container">
         <label style="color: blue; margin: 0;"> 
             <a href="/projects" class="text-secondary"> 
-                Projects
+                Proyek
             </a> 
             /
             <a href="/projects/detail/{{projects._id}}">
@@ -450,22 +574,21 @@
             </a>
             /
             <a href="/projects/edit/{{projects._id}}">
-                Edit
+                Ubah
             </a>
         </label>
         <div class="title-page mt-3">
-            <h3>Edit Project</h3>
+            <h3>Ubah Proyek</h3>
         </div>
         <hr class="my-3" style="border: 1px solid lightgray;">
         <div class="mt-2">
             <form>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Nama Project</label>
+                    <label class="fw-bold">Nama Proyek</label>
                     <input type="text" id="nama_project" class="form-control" value="{{projects.nama_project}}" required/>
                 </div>
                 <div class="form-group mb-3">
                     <label class="fw-bold">Deskripsi</label>
-                    <!-- <input type="text" id="deskripsi_project" class="form-control" value="{{projects.deskripsi}}" /> -->
                     <div id="toolbar-container-deskripsi"></div>
                     <div id="editor-deskripsi" class="ckeditor-content"></div>
                 </div>
@@ -478,7 +601,7 @@
                     <input type="date" id="tanggal_selesai" class="form-control" value="{{dateToHTML projects.tanggal_selesai}}" required/>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Status Project</label>
+                    <label class="fw-bold">Status Proyek</label>
                     <select name="select-status" class="select2 form-control" id="select-status" value="{{projects.status}}" required>
                         <option value="active" selected="{{#if equals projects.status 'active'}}selected{{/if}}">Aktif</option>
                         <option value="completed" selected="{{#if equals projects.status 'completed'}}selected{{/if}}">Selesai</option>
@@ -486,7 +609,7 @@
                     </select>
                 </div>
                 <div class="form-group mb-3">
-                    <label class="fw-bold">Member Project</label>
+                    <label class="fw-bold">Member Proyek</label>
                     <select name="select-member" class="select2 form-control" id="select-member" required multiple>
                         {{#each employee}}
                             {{#if isInProjectMembers _id}}
@@ -516,7 +639,7 @@
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
                         <a href="/projects" class="text-secondary">
-                            Projects
+                            Proyek
                         </a> 
                         / 
                         <a href="/projects/detail/{{projects._id}}">
@@ -527,14 +650,16 @@
                         <div class="left-header-content">
                             <div class="d-flex gap-3">
                                 <label style="font-size: 32px; font-weight: bold;">{{capitalizeWord projects.nama_project}}</label>
-                                <div class="my-auto">
-                                    <a href="/projects/edit/{{projects._id}}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                        </svg>
-                                    </a>
-                                </div>
+                                {{#if equals thisUser._id projects.id_leader}}
+                                    <div class="my-auto">
+                                        <a href="/projects/edit/{{projects._id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                {{/if}}
                             </div>
                             <label class="text-secondary fw-normal" style="font-size: 16px;">{{toHTML projects.deskripsi}}</label>
                         </div>
@@ -565,7 +690,7 @@
                                                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
                                                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
                                                 </svg>
-                                                {{projects.members.length}} Members
+                                                {{projects.members.length}} Member
                                             </span>
                                         </a>
                                     </div>
@@ -610,18 +735,18 @@
                             </button>
     
                             <div class="my-auto">
-                                <a href="/tasks/create/{{projects._id}}" class="btn btn-primary">+ Add Tasks</a>
+                                <a href="/tasks/create/{{projects._id}}" class="btn btn-primary">+ Tambah Tugas</a>
                             </div>
                         </div>
                     </div>
                     {{#if equals filterMode '2'}}
                         <div class="d-flex gap-2 mt-2 mb-2">
                             <select id="input_type" class="form-select filter">
-                                <option value="nama_task">Nama Task</option>
+                                <option value="nama_task">Nama Tugas</option>
                                 <option value="priority">Tingkat Prioritas</option>
-                                <option value="deadline">Deadline</option>
+                                <option value="deadline">Tenggat Waktu</option>
                             </select>
-                            <input type="text" id="input_data" class="form-control filter" placeholder="Search Tasks" />
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Tugas" />
                         </div>
                     {{/if}}
                 </div>
@@ -659,7 +784,7 @@
                                                 </div>
                                                 <div class="members">
                                                     <span class="rounded-4 px-2 py-1" style="font-size: 9pt; color: #ffc14d;background-color: #ffeccb;">
-                                                        {{task.members.length}} Members
+                                                        {{task.members.length}} Member
                                                     </span>
                                                 </div>
                                             </div>
@@ -673,7 +798,188 @@
                                                         <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
                                                         <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
                                                     </svg>
-                                                    <b>In {{daysDifference task.deadline}} days</b> / {{formatHRDateShort task.deadline}}
+                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a href="/tasks/detail/{{task._id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="mobile-div">
+        <div class="box mt-3">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        <a href="/projects" class="text-secondary">
+                            Proyek
+                        </a> 
+                        / 
+                        <a href="/projects/detail/{{projects._id}}">
+                            {{projects.nama_project}}
+                        </a>
+                    </label>
+                    <div class="d-flex justify-content-between align-middle mt-3">
+                        <div class="left-header-content">
+                            <div class="d-flex gap-3">
+                                <label class="text-title fw-bold">{{capitalizeWord projects.nama_project}}</label>
+                                <div class="my-auto">
+                                    <a href="/projects/edit/{{projects._id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <label class="text-secondary text-desc fw-normal">{{toHTML projects.deskripsi}}</label>
+                        </div>
+                        <div class="right-header-content">
+                            <div class="my-auto">
+                                <div class="container-label d-flex align-items-end flex-wrap gap-2">                                
+                                    <div class="status">
+                                        {{#if equals projects.status "active"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #4caf50;background-color: #e8f5e9;">
+                                                Active
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals projects.status "completed"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #2196f3;background-color: #e3f2fd;">
+                                                Completed
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals projects.status "on-hold"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #ff5722;background-color: #ffe0b2;">
+                                                On-Hold
+                                            </span>
+                                        {{/if}}
+                                    </div>
+                                    <div class="members">
+                                        <a href="/projects/detail/{{projects._id}}/members" class="on-hover">
+                                            <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-eye" viewBox="0 0 16 20">
+                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                                                </svg>
+                                                {{projects.members.length}} Member
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end flex-wrap gap-2 mt-2 pt-1 mb-2">
+                                    <div class="time">
+                                        <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff;max-width: fit-content;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="black" class="bi bi-play-fill" viewBox="0 0 18 20">
+                                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                                            </svg>
+                                            {{formatHRDateShort projects.tanggal_mulai}}
+                                        </span>
+                                    </div>
+                                    <div class="time">
+                                        <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                            </svg>
+                                            {{formatHRDateShort projects.tanggal_selesai}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+                    <div class="d-flex {{#if equals filterMode '1'}} justify-content-end {{else}} justify-content-between {{/if}} mb-2">
+                        {{#if equals filterMode '2'}}
+                            <div class="my-auto py-auto align-middle">
+                                <label class="fs-5 fw-bold pt-1">
+                                    Filter
+                                </label>
+                            </div>
+                        {{/if}}
+                        <div class="d-flex justify-content-end gap-2 mt-2 my-auto">
+                            <button class="btn btn-sm btn-primary btn-filter" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                </svg>
+                            </button>
+    
+                            <div class="my-auto">
+                                <a href="/tasks/create/{{projects._id}}" class="btn btn-sm btn-primary">+ Tambah Tugas</a>
+                            </div>
+                        </div>
+                    </div>
+                    {{#if equals filterMode '2'}}
+                        <div class="d-flex gap-2 mt-2 mb-2">
+                            <select id="input_type" class="form-select filter">
+                                <option value="nama_task">Nama Tugas</option>
+                                <option value="priority">Tingkat Prioritas</option>
+                                <option value="deadline">Tenggat Waktu</option>
+                            </select>
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Tugas" />
+                        </div>
+                    {{/if}}
+                </div>
+                <!-- Content -->
+                <div class="containerContent">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
+                        {{#each task in tasks}}
+                            <div class="col mb-3">
+                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div class="taskContent">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title">{{task.nama_task}}</h5>
+                                                <p class="text-secondary fw-light limited-text word-break content-desc mb-0">
+                                                    {{toHTML task.deskripsi}}
+                                                </p>
+                                            </div>
+                                            <div class="col d-flex flex-column flex-wrap align-items-end">
+                                                <div class="status">
+                                                    {{#if equals task.priority "high"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "mid"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "low"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                </div>
+                                                <div class="members mt-2">
+                                                    <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                        {{task.members.length}} Member
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                        <div class="d-flex my-auto gap-1">
+                                            <div class="deadline">
+                                                <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                    </svg>
+                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
                                                 </span>
                                             </div>
                                         </div>
@@ -838,6 +1144,44 @@
             height: 100%;
             background-color: white;
         }
+
+        @media (max-width: 1040px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
+            }
+            .time{
+                font-size: 11pt !important;
+            }
+            .text-title{
+                font-size: 24pt;
+            }
+            .text-desc{
+                font-size: 12pt;
+            }
+            .status,
+            .members{
+                font-size: 10pt;
+                width: fit-content;
+            }
+            .container-label{
+                justify-content: flex-end;
+            }
+            .deadline{
+                font-size: 11pt;
+            }
+        }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -869,57 +1213,74 @@
             .tulisanPersonalData {
                 width: 100%;
             }
+            .text-title{
+                font-size: 24pt;
+            }
+            .text-desc{
+                font-size: 12pt;
+            }
+            .time{
+                font-size: 10pt !important;
+            }
+            .status,
+            .members{
+                font-size: 10pt;
+                width: fit-content;
+            }
+            .container-label{
+                justify-content: flex-end;
+            }
+            .content-title{
+                font-size: 15pt;
+            }
+            .content-desc{
+                font-size: 12pt;
+            }
+            .deadline{
+                font-size: 11pt;
+            }
         }
+
         @media only screen and (max-width: 600px) {
             .desktop-div {
                 display: none;
             }
-
             .mobile-div {
                 display: block;
             }
-            .profile-card-mobile {
-                max-width: auto;
-                max-height: auto;
-                margin: 20px auto;
-                background-color: #ffffff;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-                text-align: center;
-            }
-
-            .profile-content-mobile {
-                text-align: left;
-                margin-left: 10px;
-                margin-right: 10px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-
-            .profile-picture-mobile {
-                width: 75%;
+            .box {
+                flex-direction: column;
                 height: auto;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                margin-top: 5px;
-                word-break: break-all;
-                word-wrap: break-word;
             }
-            .content-item{
-                word-break: break-all;
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
             }
-            .isiPersonalData>table>tr>td:nth-child(1) {
-                width: 150px;
+            .deadline{
+                font-size: 9pt !important;
             }
-            .tulisanKiriMobile {
-                width: 150px; 
-                vertical-align: top; 
-                font-weight: bold;
+            .text-title{
+                font-size: 18pt;
             }
-            .tulisanKananMobile {
-                word-break: break-all;
-                vertical-align: top;
+            .text-desc{
+                font-size: 9pt;
+            }
+            .time{
+                font-size: 8pt !important;
+            }
+            .status,
+            .members{
+                font-size: 8pt;
+                width: fit-content;
+            }
+            .container-label{
+                flex-direction: column;
+            }
+            .content-title{
+                font-size: 12pt;
+            }
+            .content-desc{
+                font-size: 11pt;
             }
         }
     </style>
@@ -938,7 +1299,7 @@
     <div class="container mt-3">
         <label style="color: blue; margin: 0;"> 
             <a href="/projects" class="text-secondary">
-                Projects
+                Proyek
             </a> 
             / 
             <a href="/projects/detail/{{projects._id}}" class="text-secondary">
@@ -946,12 +1307,12 @@
             </a>
             / 
             <a href="/projects/detail/{{projects._id}}/members">
-                Members
+                Member
             </a>
         </label>
         <div class="mt-3">
             <div class="d-flex justify-content-between">
-                <h1>{{projects.nama_project}} Members</h1>
+                <h1>{{projects.nama_project}} Member</h1>
                 <div class="my-auto">
                     <button class="btn btn-sm btn-primary btn-filter" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
@@ -978,7 +1339,7 @@
                             <option value="masa_jabatan">Masa Jabatan (Tahun)</option>
                             <option value="department_unit">Departement</option>
                         </select>
-                        <input type="text" id="input_data" class="form-control filter" placeholder="Search Tasks" />
+                        <input type="text" id="input_data" class="form-control filter" placeholder="Cari Member" />
                     </div>
                 {{/if}}
             </div>
@@ -990,7 +1351,6 @@
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Jabatan</th>
-                        <!-- <th scope="col">Tanggal Lahir</th> -->
                         <th scope="col">Tahun Masuk</th>
                         <th scope="col">Departement</th>
                     </tr>
