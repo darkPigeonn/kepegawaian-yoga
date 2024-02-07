@@ -7,8 +7,8 @@ import moment from "moment";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
-    "notification.getAll"(){
-      return Notifications.find({},{sort: {createdAt: -1}}).fetch();
+    "notification.getAll"(email){
+        return Notifications.find({'data.member_email': email},{sort: {createdAt: -1}}).fetch();
     },
     "notification.insert"(data) {
         check(data, Array);

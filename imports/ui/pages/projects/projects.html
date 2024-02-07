@@ -649,7 +649,7 @@
                     <div class="d-flex justify-content-between align-middle mt-2">
                         <div class="left-header-content">
                             <div class="d-flex gap-3">
-                                <label style="font-size: 32px; font-weight: bold;">{{capitalizeWord projects.nama_project}}</label>
+                                <label style="font-size: 32px; font-weight: bold;">{{projects.nama_project}}</label>
                                 {{#if equals thisUser._id projects.id_leader}}
                                     <div class="my-auto">
                                         <a href="/projects/edit/{{projects._id}}">
@@ -833,7 +833,7 @@
                     <div class="d-flex justify-content-between align-middle mt-3">
                         <div class="left-header-content">
                             <div class="d-flex gap-3">
-                                <label class="text-title fw-bold">{{capitalizeWord projects.nama_project}}</label>
+                                <label class="text-title fw-bold">{{projects.nama_project}}</label>
                                 <div class="my-auto">
                                     <a href="/projects/edit/{{projects._id}}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">

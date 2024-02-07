@@ -104,7 +104,8 @@ Template.registerHelper("fc_label", function (a) {
   return value;
 });
 Template.registerHelper("capitalizeWord", function (a) {
-  return a.toLowerCase().replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+  let text = a.toString();
+  return text.toLowerCase().replace(/(^|\s)\S/g, (match) => match.toUpperCase());
 });
 Template.registerHelper("toMeteorId", function (context) {
   if (context && typeof context === "object") {

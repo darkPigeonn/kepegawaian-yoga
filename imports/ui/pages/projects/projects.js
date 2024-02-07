@@ -69,9 +69,6 @@ Template.projects_page.helpers({
     filterMode() {
         return Template.instance().filterMode.get();
     },
-    // toHTML(desc) {
-    //     return $("<div>").html(desc).text();
-    // }
 });
 
 Template.projects_page.events({
@@ -114,7 +111,7 @@ Template.projects_create.onCreated(function () {
     Meteor.call("employee.getAllEmployee", function (error, result) {
       if (result) {
         self.employee.set(result);
-        startSelect2();
+        // startSelect2();
       } else {
         console.log(error);
       }
@@ -130,6 +127,10 @@ Template.projects_create.onCreated(function () {
             })
     }, 300);
 
+});
+
+Template.projects_create.onRendered(function () {
+    startSelect2();
 });
   
 Template.projects_create.helpers({
@@ -174,8 +175,6 @@ Template.projects_create.events({
             const data = {
                 nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages
             }
-
-            // console.log(dataNotif);
         
             Meteor.call('projects.insert', data, function (error, result) {
                 if(result){
@@ -196,7 +195,7 @@ Template.projects_create.events({
                         showConfirmButton: true,
                         allowOutsideClick: true,
                     });
-                    console.log(error);
+                    // console.log(error);
                 }
             });      
         }
@@ -232,7 +231,7 @@ Template.projects_edit.onCreated(function () {
         if (result) {
             // console.log(result);
             self.projects.set(result);
-            startSelect2();
+            // startSelect2();
         } else {
             console.log(error);
         }
@@ -249,6 +248,10 @@ Template.projects_edit.onCreated(function () {
             })
     }, 300);
     
+});
+
+Template.projects_edit.onRendered(function () {
+    startSelect2();
 });
   
 Template.projects_edit.helpers({
@@ -273,7 +276,6 @@ Template.projects_edit.events({
         e.preventDefault();
     
         const nama_project = $("#nama_project").val();
-        // const deskripsi = $("#deskripsi_project").val();
         const deskripsi = t[`template-field-deskripsi`].get().getData();
         let tanggal_mulai = $("#tanggal_mulai").val();
         let tanggal_selesai = $("#tanggal_selesai").val();
@@ -324,7 +326,7 @@ Template.projects_edit.events({
                             showConfirmButton: true,
                             allowOutsideClick: true,
                         });
-                        console.log(error);
+                        // console.log(error);
                     }
                 });      
             }
@@ -365,7 +367,6 @@ Template.projects_detail.onCreated(function (){
     
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
-            console.log(result);
             self.projects.set(result);
         } else {
             console.log(error);
@@ -374,7 +375,6 @@ Template.projects_detail.onCreated(function (){
 
     Meteor.call("tasks.getRelatedTasks", id, function (error, result) {
         if (result) {
-            // console.log(result);
             self.tasks.set(result);
         } else {
             console.log(error);
@@ -385,7 +385,6 @@ Template.projects_detail.onCreated(function (){
 
 Template.projects_detail.helpers({
     thisUser() {
-        console.log(Meteor.user());
         return Meteor.user();
     },
     projects() {
@@ -426,9 +425,6 @@ Template.projects_detail.helpers({
     filterMode() {
         return Template.instance().filterMode.get();
     },
-    // toHTML(desc) {
-    //     return $("<div>").html(desc).text();
-    // }
 });
 
 Template.projects_detail.events({
@@ -442,9 +438,7 @@ Template.projects_detail.events({
             data
         })
     },
-    "change .filter"(e, t){
-        // e.preventDefault();
-        
+    "change .filter"(e, t){        
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -478,7 +472,6 @@ Template.projects_members.onCreated(function (){
     
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
-            // console.log(result);
             self.projects.set(result);
         } else {
             console.log(error);
@@ -553,8 +546,6 @@ Template.projects_members.events({
         })
     },
     "change .filter"(e, t){
-        // e.preventDefault();
-        
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -573,8 +564,8 @@ Template.projects_members.events({
     }
 });
 
-startSelect2 = function () {
-    setTimeout(() => {
-      $(".select2").select2();
-    }, 300);
-};
+// startSelect2 = function () {
+//     setTimeout(() => {
+//       $(".select2").select2();
+//     }, 300);
+// };

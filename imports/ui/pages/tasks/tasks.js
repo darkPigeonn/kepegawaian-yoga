@@ -10,6 +10,89 @@ import Papa, { parse } from 'papaparse';
 import { filter, result } from "underscore";
 import { HTTP } from 'meteor/http';
 
+Template.tasks_page.onCreated(function (){
+    const self = this;
+    
+    self.tasks = new ReactiveVar();
+    self.filter = new ReactiveVar({
+      type: '',
+      data: ''
+    })
+    self.filterMode = new ReactiveVar("1");
+    
+    Meteor.call("tasks.getAllUmum", function (error, result) {
+        if (result) {
+            self.tasks.set(result);
+        } else {
+            console.log(error);
+        }
+    });
+});
+
+Template.tasks_page.helpers({
+    tasks() {
+        const t = Template.instance()
+        const tasks = t.tasks.get();
+        const filter = t.filter.get()
+
+        if(tasks){
+            const result =  tasks.filter((x) => {
+                const query = filter.data.toString().toLowerCase();
+                                
+                if(filter.type == 'nama_task'){
+                    return x.nama_task.toString().toLowerCase().includes(query);
+                }
+                if(filter.type == 'priority'){
+                    return x.priority.toString().toLowerCase().includes(query);
+                }
+                if(filter.type == 'deadline'){
+                    const deadline = x.deadline;
+                    return moment(deadline).format('DD').includes(query);
+                }
+
+                return true
+            });
+            return result
+        }
+        else{
+            return []
+        }
+    },
+    filterMode() {
+        return Template.instance().filterMode.get();
+    },
+});
+
+Template.tasks_page.events({
+    "input .filter"(e, t){
+        e.preventDefault();
+        
+        const type = $("#input_type").val();
+        const data = $('#input_data').val();
+        t.filter.set({
+            type,
+            data
+        })
+    },
+    "change .filter"(e, t){        
+        const type = $("#input_type").val();
+        const data = $('#input_data').val();
+        t.filter.set({
+            type,
+            data
+        })
+    },
+    "click .btn-filter"(e, t){
+        let filterMode = t.filterMode.get();
+        if (filterMode == 1) {
+            t.filterMode.set("2");
+        }
+        else if(filterMode == 2){
+            t.filterMode.set("1");
+        }
+    }
+});
+
 Template.tasks_create.onCreated(function () {
     const self = this;
     self.projectEmployee = new ReactiveVar();
@@ -18,14 +101,15 @@ Template.tasks_create.onCreated(function () {
 
     const idProject = FlowRouter.getParam("_id");
 
-    Meteor.call("projects.getAllEmployeeThisProject", idProject, function (error, result) {
-      if (result) {
-        self.projectEmployee.set(result);
-        startSelect2();
-      } else {
-        console.log(error);
-      }
-    });
+    if (idProject != "umum") {        
+        Meteor.call("projects.getAllEmployeeThisProject", idProject, function (error, result) {
+            if (result) {
+                self.projectEmployee.set(result);
+            } else {
+                console.log(error);
+            }
+        });
+    }
 
     Meteor.call("employee.getAllEmployee", function (error, result) {
         if (result) {
@@ -34,6 +118,8 @@ Template.tasks_create.onCreated(function () {
             console.log(error);
         }
     });
+
+    // startSelect2();
 
     self[`template-field-deskripsi`] = new ReactiveVar();
     setTimeout(() => {
@@ -44,7 +130,10 @@ Template.tasks_create.onCreated(function () {
                 templateField: `template-field-deskripsi`,
             })
     }, 300);
+});
 
+Template.tasks_create.onRendered(function () {
+    startSelect2();
 });
   
 Template.tasks_create.helpers({
@@ -57,6 +146,9 @@ Template.tasks_create.helpers({
     employee() {
         return Template.instance().employee.get();
     },
+    isUmumProject(projectId) {
+        return projectId === "umum";
+    }
 });
 
 Template.tasks_create.events({
@@ -64,18 +156,17 @@ Template.tasks_create.events({
         e.preventDefault();
     
         const nama_tasks = $("#nama_task").val();
-        // const deskripsi = $("#deskripsi_task").val();
         const deskripsi = t[`template-field-deskripsi`].get().getData();
         let deadline = $("#deadline").val();
-        // const priority = $("#select-priority").val();
         const priority = $('input[name=select-priority]:checked').val();
         const members = $("#select-member").val();
-
-        const idProject = t.projectId.get();
+        
+        const idProject = t.projectId.get(); //Bisa project umum / project dengan specific id
         const notifType = 'tasks';
         const messages = "Kamu telah di-daftarkan pada task baru, silahkan check web kepegawaian";
         const employee = t.employee.get();
         
+        const dateNow = new Date();
         deadline = new Date(deadline);
         
         const updatedMembers = members.map((x) => {
@@ -92,38 +183,49 @@ Template.tasks_create.events({
             idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
         }
         
-        if (deskripsi && priority) {            
-            Meteor.call('tasks.insert', data, function (error, result) {
-                if(result){
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: "Berhasil Menambahkan Task",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                            history.back();
-                        }
-                    });
-                }else{
-                    Swal.fire({
-                        title: "Gagal",
-                        text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    });
-                    console.log(error);
-                }
-            });
+        if (deskripsi && priority) {       
+            if (dateNow < deadline) {                
+                Meteor.call('tasks.insert', data, function (error, result) {
+                    if(result){
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: "Berhasil Menambahkan Tugas",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                history.back();
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Gagal",
+                            text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        });
+                        // console.log(error);
+                    }
+                });
+            }
+            else{
+                Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal diubah, tanggal tenggat waktu harus lebih besar daripada tanggal sekarang",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+                // console.log(error);
+            }
         }
         else{
             Swal.fire({
                 title: "Gagal",
-                text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                text: "Data gagal dimasukkan, pastikan semua field sudah terisi",
                 showConfirmButton: true,
                 allowOutsideClick: true,
             });
-            console.log(error);
+            // console.log(error);
         }
     },
 });
@@ -148,7 +250,7 @@ Template.tasks_edit.onCreated(function () {
     Meteor.call("employee.getAllEmployee", function (error, result) {
         if (result) {
             self.employee.set(result);
-            startSelect2();
+            // startSelect2();
         } else {
             console.log(error);
         }
@@ -166,6 +268,10 @@ Template.tasks_edit.onCreated(function () {
     }, 300);
 
 });
+
+Template.tasks_edit.onRendered(function () {
+    startSelect2();
+});
   
 Template.tasks_edit.helpers({
     employee() {
@@ -179,6 +285,9 @@ Template.tasks_edit.helpers({
         const tasks_members = members ? members.map(x => x.id) : [];
         return tasks_members.includes(employeeId);
     },
+    isUmumProject(projectType) {
+        return projectType === "umum";
+    }
 });
 
 Template.tasks_edit.events({
@@ -186,10 +295,8 @@ Template.tasks_edit.events({
         e.preventDefault();
     
         const nama_tasks = $("#nama_task").val();
-        // const deskripsi = $("#deskripsi_task").val();
         const deskripsi = t[`template-field-deskripsi`].get().getData()
         let deadline = $("#deadline").val();
-        // const priority = $(".select-priority").val();
         const priority = $('input[name=select-priority]:checked').val();
         const members = $("#select-member").val();
 
@@ -198,6 +305,7 @@ Template.tasks_edit.events({
         const messages = "Kamu telah di-daftarkan pada task baru, silahkan check web kepegawaian";
         const idTasks = FlowRouter.getParam("_id");
         
+        const dateNow = new Date();
         deadline = new Date(deadline);
         
         const updatedMembers = members.map((x) => {
@@ -213,41 +321,50 @@ Template.tasks_edit.events({
         const data = {
             nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
         }
-
-        // console.log(data);
     
-        if (deskripsi && priority) {            
-            Meteor.call('tasks.update', idTasks, data, function (error, result) {
-                if(result){
-                    Swal.fire({
-                        title: "Berhasil",
-                        text: "Berhasil Edit Task",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                            history.back();
-                        }
-                    });
-                }else{
-                    Swal.fire({
-                        title: "Gagal",
-                        text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
-                        showConfirmButton: true,
-                        allowOutsideClick: true,
-                    });
-                    console.log(error);
-                }
-            });
+        if (deskripsi && priority) {  
+            if (dateNow < deadline) {                
+                Meteor.call('tasks.update', idTasks, data, function (error, result) {
+                    if(result){
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: "Berhasil Edit Tugas",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                history.back();
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "Gagal",
+                            text: "Data gagal diubah, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        });
+                        // console.log(error);
+                    }
+                });
+            }
+            else{
+                Swal.fire({
+                    title: "Gagal",
+                    text: "Data gagal diubah, tanggal tenggat waktu harus lebih besar daripada tanggal sekarang",
+                    showConfirmButton: true,
+                    allowOutsideClick: true,
+                });
+                // console.log(error);
+            }
         }
         else{
             Swal.fire({
                 title: "Gagal",
-                text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
+                text: "Data gagal diubah, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
                 showConfirmButton: true,
                 allowOutsideClick: true,
             });
-            console.log(error);
+            // console.log(error);
         }
     },
 });
@@ -261,13 +378,19 @@ Template.tasks_detail.onCreated(function () {
 
     Meteor.call("tasks.getThisTask", taskId, function (error, result) {
         if (result) {
+            // console.log(result);
             self.tasks.set(result);
-            startSelect2();
+            // startSelect2();
         } else {
             console.log(error);
         }
     });
 
+});
+
+
+Template.tasks_detail.onRendered( function() {
+    startSelect2();
 });
 
 Template.tasks_detail.helpers({
@@ -350,7 +473,7 @@ Template.tasks_members.helpers({
     },
     filterMode() {
         return Template.instance().filterMode.get();
-    }
+    },
 });
 
 Template.tasks_members.events({
@@ -365,8 +488,6 @@ Template.tasks_members.events({
         })
     },
     "change .filter"(e, t){
-        // e.preventDefault();
-        
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -385,8 +506,8 @@ Template.tasks_members.events({
     }
 });
 
-startSelect2 = function () {
-    setTimeout(() => {
-      $(".select2").select2();
-    }, 300);
-};
+// startSelect2 = function () {
+//     setTimeout(() => {
+//       $(".select2").select2();
+//     }, 300);
+// };

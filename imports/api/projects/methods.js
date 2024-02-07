@@ -6,25 +6,38 @@ import moment from "moment";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
-    "projects.getAll"(){
+    "projects.getAll"() {
       const thisUser = Meteor.userId();
       const relatedUser = Meteor.users.findOne({
-        _id: thisUser,
+          _id: thisUser,
       });
-
+  
       const userRoles = relatedUser.roles || [];
       const checkRoles = ["admin", "super-admin"];
       const isAdmin = userRoles.some(role => checkRoles.includes(role));
-
-      let findProjects = "";
-
+  
+      // User = creator
+      const resultTrue = Projects.find({
+          id_leader: relatedUser._id
+      }, { sort: { createdAt: -1 } }).fetch();
+  
+      // User = member dari project
+      const resultFalse = Projects.find({
+          "members.email": relatedUser.emails[0].address
+      }, { sort: { createdAt: -1 } }).fetch();
+  
+      let findProjects;
+      // Admin = lihat semua
       if (isAdmin) {
-        findProjects = Projects.find({},{sort: {createdAt: -1}}).fetch();
+          findProjects = resultTrue.concat(resultFalse);
+      } 
+      // Non admin = lihat created & assigned project
+      else {
+          findProjects = resultTrue.concat(resultFalse.filter(project => {
+            return !resultTrue.find(p => p._id === project._id);
+          }));
       }
-      else{
-        findProjects = Projects.find({ "members.email": relatedUser.emails[0].address },{sort: {createdAt: -1}}).fetch();
-      }
-      
+    
       return findProjects;
     },
     "projects.getThisProject"(id){

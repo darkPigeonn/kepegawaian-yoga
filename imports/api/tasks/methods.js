@@ -8,29 +8,52 @@ import moment from "moment";
 
 Meteor.methods({
     "tasks.getAll"(){
-        return Tasks.find({},{sort: {createdAt: -1}}).fetch();
+        return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
+    },
+    "tasks.getAllUmum"(){
+        return Tasks.find({id_project: 'umum'},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getThisTask"(id){
         check(id, String);
         const getTask = Tasks.findOne({_id: id});
-        const getProject = Projects.findOne({_id: getTask.id_project});
-        getTask.nama_project = getProject.nama_project;
-        getTask.project_members = getProject.members;
-        
-        const updatedMembers = getTask.project_members.map((x) => {
-            const listMember = Employee.find({_id: x.id}).fetch();
-  
-            return listMember.map(member => ({
-                id: member._id,
-                name: member.full_name,
-                job_position: member.job_position,
-                start_date: member.start_date,
-                department_unit: member.department_unit,
-                employment_status: member.employment_status,
-            }));
-        });
 
-        getTask.project_members = updatedMembers;
+        if (getTask.project_type != "umum") {
+            const getProject = Projects.findOne({_id: getTask.id_project});
+            getTask.nama_project = getProject.nama_project;
+            getTask.project_members = getProject.members;
+            
+            const updatedMembers = getTask.project_members.map((x) => {
+                const listMember = Employee.find({_id: x.id}).fetch();
+    
+                return listMember.map(member => ({
+                    id: member._id,
+                    name: member.full_name,
+                    job_position: member.job_position,
+                    start_date: member.start_date,
+                    department_unit: member.department_unit,
+                    employment_status: member.employment_status,
+                }));
+            });
+
+            getTask.project_members = updatedMembers;
+        }
+        else{            
+            const updatedMembers = getTask.members.map(member => {
+                const employeeData = Employee.findOne({ _id: member.id });
+                if (employeeData) {
+                    return {
+                        id: employeeData._id,
+                        name: employeeData.full_name,
+                        job_position: employeeData.job_position,
+                        start_date: employeeData.start_date,
+                        department_unit: employeeData.department_unit,
+                        employment_status: employeeData.employment_status
+                    };
+                }
+            });
+
+            getTask.project_members = updatedMembers;
+        }
 
         return getTask;
     },
@@ -106,18 +129,35 @@ Meteor.methods({
             _id: thisUser,
         });
         createdBy = adminPartner.fullname;
-        
-        const dataSave = { 
-            id_project: idProject,
-            nama_task: nama_tasks,
-            deskripsi,
-            deadline,
-            priority,
-            members: updatedMembers,
-            createdAt: new Date(),
-            createdBy: createdBy
-        };
 
+        let dataSave = "";
+
+        if (idProject != "umum") {
+            dataSave = { 
+                id_project: idProject,
+                nama_task: nama_tasks,
+                deskripsi,
+                deadline,
+                priority,
+                members: updatedMembers,
+                createdAt: new Date(),
+                createdBy: createdBy
+            };
+        }
+        else{
+            dataSave = { 
+                id_project: idProject,
+                nama_task: nama_tasks,
+                deskripsi,
+                deadline,
+                priority,
+                project_type: "umum",
+                members: updatedMembers,
+                createdAt: new Date(),
+                createdBy: createdBy
+            };
+        }
+        
         const idTask = Tasks.insert(dataSave);
 
         const dataNotif = updatedMembers.map(x => {

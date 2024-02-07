@@ -1,0 +1,62 @@
+<template name="notification_page">
+    <div class="container mt-3">
+        <div>
+            <div class="d-flex justify-content-between">
+                <h1>Notification Log</h1>
+                <div class="my-auto">
+                    <button class="btn btn-sm btn-primary btn-filter" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-2 mb-3">
+                {{#if equals filterMode '2'}}
+                    <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+                    <div class="my-auto py-auto align-middle">
+                        <label class="fs-5 fw-bold">
+                            Filter
+                        </label>
+                    </div>
+                {{/if}}
+                {{#if equals filterMode '2'}}
+                    <div class="d-flex gap-2 mb-2">
+                        <select id="input_type" class="form-select filter">
+                            <option value="full_name">Nama Member</option>
+                            <option value="job_position">Jabatan</option>
+                            <option value="start_date">Tahun Masuk</option>
+                            <option value="masa_jabatan">Masa Jabatan (Tahun)</option>
+                            <option value="department_unit">Departement</option>
+                        </select>
+                        <input type="text" id="input_data" class="form-control filter" placeholder="Cari Member" />
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Waktu</th>
+                        <th scope="col">Jam</th>
+                        <th scope="col">Pesan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each item in notification}}
+                        <tr>
+                            <td> {{nomorUrut @index}}</td>
+                            <td> Sistem </td>
+                            <td> {{formatHRDate item.createdAt}} </td>
+                            <td> {{formatTime item.createdAt}} </td>
+                            <td> {{item.message}} </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

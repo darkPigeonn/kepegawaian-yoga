@@ -7,6 +7,7 @@ import "../../ui/pages/not-found/not-found.js";
 import "../../ui/pages/batch/batch.js";
 import "../../ui/pages/employee/employee.js";
 import "../../ui/pages/departement/departement.js";
+import "../../ui/pages/notification/notification.js";
 import "../../ui/pages/projects/projects.js";
 import "../../ui/pages/tasks/tasks.js";
 import "../../ui/pages/attendance/attendance.js";
@@ -141,6 +142,14 @@ FlowRouter.route("/departements/anggota/:_id", {
   }
 });
 
+// Notification
+FlowRouter.route("/notification", {
+  name: "notificationPage",
+  action(){
+    this.render("App_body", "notification_page")
+  }
+});
+
 // Projects
 FlowRouter.route("/projects", {
   name: "projectPage",
@@ -174,6 +183,12 @@ FlowRouter.route("/projects/detail/:_id/members", {
 });
 
 // Tasks
+FlowRouter.route("/tasks", {
+  name: "taskUmum",
+  action(){
+    this.render("App_body", "tasks_page")
+  }
+});
 FlowRouter.route("/tasks/create/:_id", {
   name: "taskCreate",
   action(){

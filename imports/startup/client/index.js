@@ -139,7 +139,7 @@ return parseFloat(temp);
 export const startSelect2 = function() {
   setTimeout(() => {
     $('.select2').select2();
-  }, 200)
+  }, 300)
 }
 
 /* Tujuan:
