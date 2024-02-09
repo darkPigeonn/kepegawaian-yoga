@@ -11,7 +11,28 @@ Meteor.methods({
         return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getAllUmum"(){
-        return Tasks.find({id_project: 'umum'},{sort: {createdAt: -1}}).fetch();
+        // const thisUser = Meteor.userId();
+        // const relatedUser = Meteor.users.findOne({
+        //     _id: thisUser,
+        // });
+        
+        // const findTasks = Tasks.find({ id_project: 'umum', "members.email": relatedUser.emails[0].address}).fetch();        
+        const findTasks = Tasks.find({ id_project: 'umum'}).fetch();
+
+        const priorityOrder = { high: 0, mid: 1, low: 2 };
+        findTasks.sort((a, b) => {
+            const priorityA = priorityOrder[a.priority];
+            const priorityB = priorityOrder[b.priority];
+
+            if (priorityA !== priorityB) {
+                return priorityA - priorityB;
+            } else {
+                return a.deadline - b.deadline;
+            }
+        });
+
+        return findTasks;
+        // return Tasks.find({id_project: 'umum'},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getThisTask"(id){
         check(id, String);
@@ -72,15 +93,59 @@ Meteor.methods({
         let findTasks = "";
 
         if (isAdmin) {
-            findTasks = Tasks.find({id_project: id},{sort: {deadline: 1}}).fetch();
+            findTasks = Tasks.find({ id_project: id }).fetch();
+
+            const priorityOrder = { high: 0, mid: 1, low: 2 };
+            findTasks.sort((a, b) => {
+                const priorityA = priorityOrder[a.priority];
+                const priorityB = priorityOrder[b.priority];
+                
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                } else {
+                    return a.deadline - b.deadline;
+                }
+            });
         }
         else{
-            const checkProject = Projects.findOne({ _id: id, "members.email": relatedUser.emails[0].address },{sort: {createdAt: -1}}) || [];
+            const getProject = Projects.findOne({ _id: id, id_leader: thisUser } );
 
-            // console.log(checkProject);
+            // Is Project Leader
+            if (getProject) {                
+                findTasks = Tasks.find({ id_project: id }).fetch();
+    
+                const priorityOrder = { high: 0, mid: 1, low: 2 };
+                findTasks.sort((a, b) => {
+                    const priorityA = priorityOrder[a.priority];
+                    const priorityB = priorityOrder[b.priority];
 
-            if (checkProject) {
-                findTasks = Tasks.find({id_project: id},{sort: {deadline: 1}}).fetch();
+                    if (priorityA !== priorityB) {
+                        return priorityA - priorityB;
+                    } else {
+                        return a.deadline - b.deadline;
+                    }
+                });
+            }
+            else{
+                const checkProject = Projects.findOne({ _id: id, "members.email": relatedUser.emails[0].address },{sort: {createdAt: -1}}) || [];
+    
+                // Is Project Member
+                if (checkProject) {
+                    console.log(checkProject);
+                    findTasks = Tasks.find({ id_project: id, "members.email": relatedUser.emails[0].address }).fetch();
+    
+                    const priorityOrder = { high: 0, mid: 1, low: 2 };
+                    findTasks.sort((a, b) => {
+                        const priorityA = priorityOrder[a.priority];
+                        const priorityB = priorityOrder[b.priority];
+    
+                        if (priorityA !== priorityB) {
+                            return priorityA - priorityB;
+                        } else {
+                            return a.deadline - b.deadline;
+                        }
+                    });
+                }
             }
         }
 
@@ -140,6 +205,7 @@ Meteor.methods({
                 deadline,
                 priority,
                 members: updatedMembers,
+                id_leader: thisUser,
                 createdAt: new Date(),
                 createdBy: createdBy
             };
@@ -153,6 +219,7 @@ Meteor.methods({
                 priority,
                 project_type: "umum",
                 members: updatedMembers,
+                id_leader: thisUser,
                 createdAt: new Date(),
                 createdBy: createdBy
             };

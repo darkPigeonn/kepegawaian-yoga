@@ -46,8 +46,14 @@ Template.tasks_page.helpers({
                     return x.priority.toString().toLowerCase().includes(query);
                 }
                 if(filter.type == 'deadline'){
+                    // By Tanggal
+                    // const deadline = x.deadline;
+                    // return moment(deadline).format('DD').includes(query);
+
+                    // By sisa hari
                     const deadline = x.deadline;
-                    return moment(deadline).format('DD').includes(query);
+                    const diff = moment().diff(deadline, 'day');
+                    return diff.toString().includes(query);
                 }
 
                 return true

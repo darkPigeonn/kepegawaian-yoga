@@ -15,27 +15,58 @@ Meteor.methods({
       const userRoles = relatedUser.roles || [];
       const checkRoles = ["admin", "super-admin"];
       const isAdmin = userRoles.some(role => checkRoles.includes(role));
-  
-      // User = creator
-      const resultTrue = Projects.find({
-          id_leader: relatedUser._id
-      }, { sort: { createdAt: -1 } }).fetch();
-  
-      // User = member dari project
-      const resultFalse = Projects.find({
-          "members.email": relatedUser.emails[0].address
-      }, { sort: { createdAt: -1 } }).fetch();
-  
+
       let findProjects;
       // Admin = lihat semua
       if (isAdmin) {
-          findProjects = resultTrue.concat(resultFalse);
+        findProjects = Projects.find({}).fetch();
+
+        const priorityOrder = { active: 0, 'on-hold': 1, completed: 2 };
+        findProjects.sort((a, b) => {
+            const priorityA = priorityOrder[a.status];
+            const priorityB = priorityOrder[b.status];
+            
+            if (priorityA !== priorityB) {
+                return priorityA - priorityB;
+            } else {
+                return a.tanggal_selesai - b.tanggal_selesai;
+            }
+        });
       } 
+      
       // Non admin = lihat created & assigned project
       else {
-          findProjects = resultTrue.concat(resultFalse.filter(project => {
-            return !resultTrue.find(p => p._id === project._id);
-          }));
+        // User = creator
+        const resultTrue = Projects.find({
+          id_leader: relatedUser._id
+        }).fetch();
+
+        // User = member dari project
+        const resultFalse = Projects.find({
+          "members.email": relatedUser.emails[0].address
+        }).fetch();
+
+        const priorityOrder = { active: 0, 'on-hold': 1, completed: 2 };
+        const sortProjects = (a, b) => {
+            const priorityA = priorityOrder[a.status];
+            const priorityB = priorityOrder[b.status];
+            if (priorityA !== priorityB) {
+                return priorityA - priorityB;
+            } else {
+                return a.tanggal_selesai - b.tanggal_selesai;;
+            }
+        };
+
+        const uniqueProjects = resultFalse.filter(project => {
+            return !resultTrue.some(p => p._id === project._id);
+        });
+
+        findProjects = resultTrue.concat(uniqueProjects);
+        findProjects.sort(sortProjects);
+
+        // findProjects = resultTrue.concat(resultFalse.filter(project => {
+        //   return !resultTrue.find(p => p._id === project._id);
+        // }));
       }
     
       return findProjects;
