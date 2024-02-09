@@ -1,4 +1,5 @@
 <template name="notification_page">
+    <!-- Notification Page -->
     <div class="container mt-3">
         <div>
             <div class="d-flex justify-content-between">
@@ -23,13 +24,10 @@
                 {{#if equals filterMode '2'}}
                     <div class="d-flex gap-2 mb-2">
                         <select id="input_type" class="form-select filter">
-                            <option value="full_name">Nama Member</option>
-                            <option value="job_position">Jabatan</option>
-                            <option value="start_date">Tahun Masuk</option>
-                            <option value="masa_jabatan">Masa Jabatan (Tahun)</option>
-                            <option value="department_unit">Departement</option>
+                            <option value="pesan">Pesan</option>
+                            <option value="waktu">Waktu (Tanggal)</option>
                         </select>
-                        <input type="text" id="input_data" class="form-control filter" placeholder="Cari Member" />
+                        <input type="text" id="input_data" class="form-control filter" placeholder="Cari Notifikasi" />
                     </div>
                 {{/if}}
             </div>
