@@ -100,7 +100,7 @@ Meteor.methods({
     "projects.remove"(id){
       check(id, String);
       const tglHapus = new Date();
-      return Employee.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
+      return Projects.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
     "projects.insert"(data) {
       let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages} = data

@@ -1,6 +1,13 @@
 import Intl from "intl";
 import "intl/locale-data/jsonp/id-ID";
 import moment from "moment";
+import { Roles } from "meteor/alanning:roles";
+
+import { bakulFiles } from "../imports/api/alma-v1/db/collections-files.js";
+import { taImages } from "../imports/api/alma-v1/db/collections-files.js";
+import { profilePics } from "../imports/api/alma-v1/db/collections-files.js";
+import { rpsUploads } from "../imports/api/alma-v1/db/collections-files.js";
+import { ujianFiles } from "../imports/api/alma-v1/db/collections-files.js";
 
 Template.registerHelper("formatRp", function (context, options) {
   if (context)
@@ -58,6 +65,10 @@ Template.registerHelper("dateToHTML", function (context, options) {
   // return moment(context).format("DD MMMM YYYY");
 });
 
+Template.registerHelper("lessThan", function (a, b) {
+  return a < b;
+});
+
 Template.registerHelper('toHTML', function (context, options) {
   return $("<div>").html(context).text();
 });
@@ -66,7 +77,21 @@ Template.registerHelper('includes', function (a, b) {
   if(a && a.length && b) return a.includes(b);
 });
 
+Template.registerHelper("formatCurationStatus", function (value) {
+  if (value.curationStatus === 10) {
+    return "Menunggu Kurasi";
+  } else if (value.curationStatus === 20) {
+    return "Diterima Oleh " + value.curatorName;
+  } else {
+    return "Ditolak Oleh " + value.curatorName;
+  }
+});
 
+Template.registerHelper("checkCurationStatus", function (value) {
+  if (value.status) {
+    return (value.curationStatus == 10) ? true : false;
+  }
+})
 
 // Template.registerHelper('formatRp', function (context, options) {
 //   if (context != 0) {
@@ -180,6 +205,22 @@ Template.registerHelper("statusDetail", function (data) {
       status = "-";
   }
   return status;
+});
+
+Template.registerHelper("greaterThan", function (a, b) {
+  return a > b;
+});
+
+Template.registerHelper("greaterThanEqual", function (a, b) {
+  return parseInt(a) >= parseInt(b);
+});
+
+Template.registerHelper("isInRoles", function(roles){
+    return isInRoles(roles);
+});
+
+Template.registerHelper("isUserInRole", function (role) {
+  return Roles.userIsInRole(Meteor.user(), role);
 });
 
 // startSelect2 = function () {

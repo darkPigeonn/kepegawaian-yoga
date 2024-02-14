@@ -1,0 +1,85 @@
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check'
+import { Roles } from 'meteor/alanning:roles';
+import { HTTP } from 'meteor/http';
+import _ from 'underscore';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Events } from './events.js';
+
+
+process.env.NETLIFY_HOOKURL = Meteor.settings.NETLIFY_HOOKURL;
+process.env.NETLIFY_HOOKURL_CIM = Meteor.settings.NETLIFY_HOOKURL_CIM;
+process.env.NETLIFY_HOOKURL_CIM_MY = Meteor.settings.NETLIFY_HOOKURL_CIM_MY;
+process.env.APP_ID = Meteor.settings.APP_ID;
+process.env.APP_SECRET = Meteor.settings.APP_SECRET;
+
+Meteor.methods({
+    // 'getEvaluationList' : function(_id){
+    //     return Evaluation.findOne({
+    //       evaluateItemId: _id
+    //     })
+    // }, 
+    // 'evaluations-insert': function(data){
+    //   // const loggedInUser = Meteor.user();
+    //   // if (!loggedInUser ||
+    //   //     !Roles.userIsInRole(loggedInUser,
+    //   //                         ['admin', 'superadmin'])) {
+    //   //   throw new Meteor.Error(403, "Access denied")
+    //   // }
+    //     // checkAllowAccess(['cmsGeneralCreate'])
+    //     // checkOutletByInput(data.outlets)
+    //     return Evaluation.insert(data)
+    //   // } else {
+    //     // throw new Meteor.Error(403, "Transcript exists!")
+    // },
+    'events-getAll': function(userOutlets){
+      const $in = []
+      if(userOutlets){
+        userOutlets.forEach(element => {
+          $in.push(element)
+        });
+      }
+      return Events.find({
+        outlets: { $in }
+      }).fetch();
+    },
+    'events-insert': function(data){
+      return Events.insert(data)
+    },
+    'events-delete': function(data){
+      return Events.remove({
+        '_id': new Meteor.Collection.ObjectID(data)
+      });
+    },
+    'events-update': async function (data) {
+      const _id = new Meteor.Collection.ObjectID(data.id)
+      // checkOutletByCol(News, { _id })
+      delete data.id
+      console.log(data)
+      const updateQuery = {
+        $set: data
+      }     
+      return Events.update({ _id }, updateQuery);
+    },
+    'events-details' : function (param){
+      const detail = Events.findOne({
+        '_id': new Meteor.Collection.ObjectID(param)
+      });
+      return detail
+    },
+    // 'evaluations-update' : async function (data) {
+    //   return Evaluation.update(
+    //     {
+    //       'evaluateItemId': data.id
+    //     },
+    //     {
+    //       $set:
+    //       {
+    //         'title': data.title, 
+    //         'description': data.description, 
+    //         'questions': data.questions
+    //       }
+    //     }
+    //   );
+    // },
+})

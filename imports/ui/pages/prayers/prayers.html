@@ -1,0 +1,387 @@
+<template name="listPrayer">
+    <div class="container page page-matkul-page mt-3">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/prayers/list"> 
+                Doa
+            </a> 
+            /
+        </label>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="page-title mt-3">Doa</h3>
+            <section class="section-page-shoulders">
+                <div class="btn-group" role="group" aria-label="command control">
+                    <a class="btn btn-primary" id="buat-artikel" href="/prayers/create">
+                        <i class="fa fa-plus pe-2"></i><span>Buat Doa</span>
+                    </a>
+                    <a class="btn btn-primary" id="buat-artikel" href="/prayers/upload">
+                        <span>Upload Doa</span>
+                    </a>
+                    {{ #if isInRoles 'superadmin, vikpas' }}
+                        <button class="btn btn-danger" id="repairDate">
+                            <i class="fa fa-gears"></i> Repair Tanggal
+                        </button>
+                    {{ /if }}
+                </div>
+            </section>
+        </div>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        <section class="section-matkul-list table-responsive">
+            <h2 class="section-title mb-3">Daftar Doa</h2>
+            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Judul</th>
+                        <th style="width:20%;">Pembuat</th>
+                        <th style="width:10%;">Publish</th>
+                        <th style="width:10%;">Outlets</th>
+                        <th style="width:25%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each i in articles}}
+                        <tr class="{{#if i.status}}{{else}}table-danger{{/if}}">
+                            <td style="width:30%;">{{ i.title }}</td>
+                            <td style="width:15%;">{{ i.author }}</td>
+                            <td style="width:15%;">{{ formatHRDate i.publishDate }}</td>
+                            <td style="width:15%;">{{ i.outlets }}</td>
+                            <td style="width:25%;">
+                                <div class="d-flex align-items-center flex-wrap gap-1">
+                                    <a class="btn btn-primary btn-sm toggle-article" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
+                                        <i class="fa fa-eye text-white" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
+                                        </i>
+                                    </a>
+                                    {{#if i.status}}
+                                        <a class="btn btn-primary btn-sm toggle-featured" status="{{i.featured}}" milik="{{ toMeteorId i._id}}" value="{{i.featured}}">
+                                            <i aria-hidden="true" id="{{ toMeteorId i._id}}"
+                                                class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}"
+                                                status="{{i.featured}}" milik="{{ toMeteorId i._id}}"
+                                                value="{{i.featured}}">
+                                            </i>
+                                        </a>
+                                        <a class="btn btn-primary btn-sm btn-edit"
+                                            href="/prayers/edit/{{toMeteorId i._id}}">
+                                            <i class="fa fa-edit" milik="{{i._id}}"></i>
+                                        </a>                                        
+                                    {{/if}}
+                                    <a href="/articles/evaluation/{{toMeteorId i._id}}" class="btn btn-primary btn-sm text-white">
+                                        Evaluasi
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</template>
+
+<template name="createPrayer">
+    <div class="container page my-3">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/prayers/list" class="text-secondary"> 
+                Doa
+            </a> 
+            /
+            <a href="/prayers/create"> 
+                Tambah
+            </a> 
+        </label>
+        <h3 class="page-title mt-3">Tambah Doa</h3>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        
+        {{>formPrayer submitType=1}}
+    </div>
+
+</template>
+
+<template name="editPrayer">
+    <div class="container page my-3">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/prayers/list" class="text-secondary"> 
+                Doa
+            </a> 
+            /
+            <a href="#"> 
+                Ubah
+            </a> 
+        </label>
+        <h3 class="page-title mt-3">Ubah Doa</h3>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+
+        {{>formPrayer submitType=2}}
+    </div>
+
+</template>
+
+<template name="formPrayer">
+    <section class="">
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col form-group">
+                <label for="" class="text-left">Judul</label>
+                <input type="text" id="title" class="form-control">
+            </div>
+            <div class="col form-group">
+                <label for="" class="text-left">Slug</label>
+                <input type="text" id="slug" class="form-control">
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col form-group">            
+                <label for="" class="text-left">Author</label>
+                <input type="text" id="author" class="form-control">
+            </div>
+            <div class="col form-group">
+                <label for="" class="text-left">Penjelasan Singkat</label>
+                <input type="text" id="excerpt" class="form-control">
+            </div>
+        </div>
+
+        {{#if isInRoles 'superadmin'}}
+            <div class="form-group">
+                <label for="" class="text-left">Outlet</label>
+                <div class="row row-cols-1 row-cols-md-5">
+                    {{#each outlets}}
+                        <div class="col pb-1">
+                            <div class="form-check">
+                                <input type="checkbox" name="" class="form-check-input outlet"
+                                    style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{code}}" value="{{code}}">
+                                <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+        {{#if categories}}
+        <div class="form-group">
+            <label class="text-left">Kategori</label>
+
+            <select class="select2 form-control" id="category">
+                <option>Pilih Kategori</option>
+                {{#each categories}}
+                    <option value="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        {{/if}}
+        <div class="form-group">
+            <label class="text-left">Bahasa</label>
+
+            <select class="select2 form-control" id="select-language">
+                <option>Pilih Bahasa</option>
+                {{#each languages}}
+                    <option value="{{id}}-{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
+            <ul class="list-group">
+                {{#if pushedLanguage }}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="name">{{pushedLanguage.name}}</span>
+                  </li>
+                {{/if}}
+              </ul>
+        </div>
+        <div class="form-group">
+            <label for="">Tanggal Publish</label>
+            <input type="date" name="" class="form-control" id="publish-date">
+        </div>
+        <label for="">Isi</label>
+        <div class="form-group">
+            <div id="toolbar-container"></div>
+
+            <!-- This container will become the editable. -->
+            <div id="editor" class="ckeditor-content">
+            </div>
+        </div>
+        <div class="form-group d-flex justify-content-end mt-3">
+            <button class="btn btn-primary" id="submit-form">Post</button>
+        </div>
+    </section>
+</template>
+
+<template name="uploadPrayer">
+    <div class="page page-matkul-page container my-3">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/prayers/list" class="text-secondary"> 
+                Doa
+            </a> 
+            /
+            <a href="#"> 
+                Upload
+            </a> 
+        </label>
+        <h3 class="page-title mt-3">Upload Doa</h3>
+        <input type="file" id="input-upload" />
+        <button class="btn btn-primary" id="btn-save">
+            <span>Simpan Doa</span>
+        </button>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        <section class="section-matkul-list table-responsive">
+            <h2 class="section-title">Daftar Doa</h2>
+            <section class="section-page-shoulders mt-3">
+                <div class="btn-group" role="group" aria-label="command control">
+                </div>
+            </section>
+            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>Deskripsi Singkat</th>
+                        <th>Sumber</th>
+                        <th width="30%">Konten</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if dataUploads}}
+                        {{#each dataUploads}}
+                            <tr class="{{#if status}}table-danger{{/if}}">
+                                <td>{{ number }}</td>
+                                <td>{{ title }}</td>
+                                <td>{{ excerpt }}</td>
+                                <td>{{ sumber }}</td>
+                                <td>{{ content }}</td>
+                            </tr>
+                        {{/each}}
+                    {{/if}}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</template>
+
+<template name="listPrayersGroup">
+    <div class="page page-matkul-page container my-3">
+        <label style="color: blue; margin: 0;"> 
+            <a href="/prayers-group/list"> 
+                Grup Doa
+            </a>
+            /
+        </label>
+        <h3 class="page-title mt-3">Daftar Grup doa</h3>
+        <section class="section-page-shoulders">
+            <div class="btn-group" role="group" aria-label="command control">
+                <a class="btn btn-primary" id="buat-artikel" href="{{ pathFor route='createPrayersGroup' }}">
+                    <i class="fa fa-plus"></i><span>Buat Grup Doa</span>
+                </a>
+            </div>
+        </section>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        <section class="section-matkul-list table-responsive">
+            <h2 class="section-title">Daftar Grup Doa</h2>
+            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                <thead>
+                    <tr>
+                        <th width="30%">Nama</th>
+                        <th width="20%">Daftar Doa</th>
+                        <th>Slug</th>
+                        <th>Outlets</th>
+                        <th width="25%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each i in articles}}
+                        <tr>
+                            <td>{{ i.name }}</td>
+                            <!-- <td>{{ formatHRDate i.publishDate }}</td>
+                            <td>{{ i.outlets }}</td> -->
+                            <td>{{ formatCommaArrayOfObject i.prayers}}</td>
+                            <td>{{ i.slug }}</td>
+                            <td>{{ i.outlets }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-edit"
+                                    href="{{ pathFor route='editPrayersGroup' _id=(toMeteorId i._id) }}">
+                                    <i class="fa fa-edit" milik="{{i._id}}"></i>
+                                </a>
+                                <a class="btn btn-primary toggle-featured">
+                                    <i aria-hidden="true" id="{{ toMeteorId i._id}}"
+                                        class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}"
+                                        status="{{i.featured}}" milik="{{ toMeteorId i._id}}"
+                                        value="{{i.featured}}">
+                                    </i>
+                                </a>
+                                <a class="btn btn-primary delete-prayers" id="{{toMeteorId i._id}}">
+                                    <i class="fa fa-trash delete-prayers text-white" id="{{toMeteorId i._id}}"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+</template>
+
+<template name="createPrayersGroup">
+
+    <div class="page">
+        <h1 class="page-title">Buat Grup Doa</h1>
+        {{>formPrayersGroup submitType=1}}
+    </div>
+
+</template>
+
+<template name="editPrayersGroup">
+    <div class="page">
+        <h1 class="page-title">Edit Grup Doa</h1>
+        {{>formPrayersGroup submitType=2}}
+    </div>
+
+</template>
+
+<template name="formPrayersGroup">
+    <section class="">
+        <div class="form-group">
+            <label for="" class="text-left">Nama</label>
+            <input type="text" id="title" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="" class="text-left">Slug</label>
+            <input type="text" id="slug" class="form-control">
+        </div>
+        {{#if isInRoles 'superadmin'}}
+            <div class="form-group">
+                <label for="" class="text-left">Outlet</label>
+                {{#each outlets}}
+                    <div class="form-check">
+                        <input type="checkbox" name="" class="form-check-input outlet"
+                            style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{code}}" value="{{code}}">
+                        <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+        <div class="form-group">
+            <label class="text-left">Doa</label>
+            <select class="select2 form-control" id="select-prayers">
+                <option>Pilih Doa</option>
+                {{#each prayers}}
+                    <option value="{{toMeteorId _id}}">{{title}}</option>
+                {{/each}}
+            </select>
+        </div>
+        {{#if pushedPrayers}}
+            <div class="form-group">
+                <label for="">Daftar Doa</label>
+                <ul class="list-group">
+                {{#each pushedPrayers }}
+                    <div class="d-flex flex-row list-group-item justify-content-center align-items-center">
+                        <div class="flex-grow-1">
+                            {{ title }}
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button class="btn btn-danger delete-prayer" data-milik="{{toMeteorId _id}}"><i class="fa fa-trash" data-milik="{{_id}}"></i></button>
+                        </div>
+                    </div>     
+                {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+        <div class="form-group mt-3">
+            <button class="btn btn-primary" id="submit-form">Simpan</button>
+        </div>
+    </section>
+</template>

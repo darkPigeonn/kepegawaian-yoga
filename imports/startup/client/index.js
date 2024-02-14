@@ -3,8 +3,10 @@
 import './routes.js';
 import { S3, PutObjectCommand } from "@aws-sdk/client-s3";
 import Swal from "sweetalert2";
+import slugify from 'slugify';
 import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
 import moment from "moment/moment.js";
+import { Random } from "meteor/random";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 
@@ -21,29 +23,83 @@ isEmptyData = function (data) {
   return dataReturn;
 };
 
+// Old Version (Bawaan Kepegawaian)
+// uploadFiles = async function (uploadData) {
+//     const s3Client = new S3({
+//       endpoint: Meteor.settings.public.s3.endpoint,
+//       region: Meteor.settings.public.s3.region,
+//       credentials: {
+//         accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
+//         secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
+//       },
+//     });
+//     try {
+//       await s3Client.send(
+//         new PutObjectCommand({
+//           Bucket: "imavistatic",
+//           Key: uploadData.fileName,
+//           Body: uploadData.Body,
+//           ACL: "public-read",
+//           CacheControl: "no-cache",
+//         })
+//       );
+//       return "https://cdn.imavi.org/" + uploadData.fileName;
+//     } catch (err) {
+//       console.log("Error " + err);
+//     }
+// };
+
+// New Version (Ambil dari alma-next)
 uploadFiles = async function (uploadData) {
-    const s3Client = new S3({
-      endpoint: Meteor.settings.public.s3.endpoint,
-      region: Meteor.settings.public.s3.region,
-      credentials: {
-        accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
-        secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
-      },
-    });
-    try {
-      await s3Client.send(
-        new PutObjectCommand({
-          Bucket: "imavistatic",
-          Key: uploadData.fileName,
-          Body: uploadData.Body,
-          ACL: "public-read",
-          CacheControl: "no-cache",
-        })
-      );
-      return "https://cdn.imavi.org/" + uploadData.fileName;
-    } catch (err) {
-      console.log("Error " + err);
+  // Ini Default dari alma-next
+  // const s3Client = new S3({
+  //   endpoint: Meteor.settings.public.s3.endpoint,
+  //   region: Meteor.settings.public.s3.region,
+  //   credentials: {
+  //     accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
+  //     secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
+  //   },
+  // });
+  // Ini coba-coba
+  const s3Client = new S3({
+    endpoint: "https://sgp1.digitaloceanspaces.com/",
+    region: "sgp1",
+    credentials: {
+      accessKeyId: "JCF6N7HWI4BIHYE5QLMD",
+      secretAccessKey: "7aGiKWmNa/hy78c9SrYHPkoPwhjoSl4YGVM9PHuFL/Y"
     }
+  });
+  let fileName;
+  if (uploadData.fileLink) {
+    const identifier = uploadData.fileLink.split("-")[1].split(".")[0];
+    fileName =
+      uploadData.type +
+      "-" +
+      identifier +
+      "." +
+      uploadData.Body.name.split(".").pop();
+  } else {
+    if (uploadData.type.split("-")[0] === "parokis") {
+      fileName = uploadData.type + "." + uploadData.Body.name.split(".").pop();
+    } else {
+      fileName =
+        uploadData.type + "~" + Random.id(7) + "~" + uploadData.Body.name;
+    }
+  }
+  try {
+    const x = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: "imavistatic",
+        Key: fileName,
+        Body: uploadData.Body,
+        ACL: "public-read",
+        CacheControl: "no-cache",
+      })
+    );
+    return "https://cdn.imavi.org/" + fileName;
+  } catch (err) {
+    failAlert("Error " + err);
+  }
 };
 
 churchOperationalDays = [
@@ -80,12 +136,53 @@ function basicStyle(message, type) {
   return style;
 }
 
+// successAlert = function (message) {
+//   if (typeof message === "undefined") {
+//     message = "Berhasil!";
+//   }
+//   Swal.fire(basicStyle(message, "success"));
+// };
+
 successAlert = function (message) {
   if (typeof message === "undefined") {
     message = "Berhasil!";
   }
   Swal.fire(basicStyle(message, "success"));
 };
+(loadingAlert = function (message) {
+  Swal.fire({
+    title: "Mohon tunggu!",
+    html: message,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+      // Meteor.call("getPairings", function (error, result) {
+      //   if (error) {
+      //     Bert.alert({
+      //       title: "Error",
+      //       message: "Gagal mendapatkan daftar evaluasi",
+      //       type: "danger",
+      //       style: "growl-top-right",
+      //       icon: "fa-times",
+      //     });
+      //     Swal.close()
+      //   } else {
+      //     self.assesseesList.set(result);
+      //     console.log(result);
+      //     self.nowLoading.set(false);
+      //     Swal.close()
+      //   }
+      // });
+    },
+  });
+}),
+  (successAlertBack = function (message) {
+    if (typeof message === "undefined") {
+      message = "Berhasil!";
+    }
+    Swal.fire(basicStyle(message, "success"));
+    history.back();
+});
 
 failAlert = function (message) {
   if (typeof message === "object" && message !== null) {
@@ -306,3 +403,113 @@ class MyUploadAdapter {
     }
   }
 }
+
+confirmationAlertAsync = async function (additionalMessage) {
+  if (typeof message === "undefined") {
+    additionalMessage = "";
+  }
+  try {
+    let result = await Swal.fire({
+      title: "Konfirmasi",
+      text: "Apakah anda yakin? " + additionalMessage,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    });
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+checkValid = function (data) {
+  switch (data) {
+    case "":
+      return false;
+    case "null":
+      return false;
+    case null:
+      return false;
+    case undefined:
+      return false;
+    default:
+      return true;
+  }
+};
+
+checkSlug = async function (code, options) {
+  /*     Deskripsi :
+    Function ini akan mengembalikan promise yang akan
+    dichain dengan proses lainnya */
+  return await new Promise((resolve, reject) => {
+    // Merupakan id textbox yang digunakan untuk edit nilai slugnya
+    // jika tidak disertakan di option maka nilai defaultnya adalah 'slug'
+    let inputId = "slug";
+    if (options) {
+      if (options.inputId) {
+        inputId = options.inputId;
+      }
+    }
+    // Untuk sanitize slugnya mengingat slugnya bisa diedit
+    // setelah sanitize masukkin ke textboxnya
+    const slug = slugify($("#" + inputId).val(), {
+      lower: true,
+      strict: true,
+    });
+    $("#" + inputId).val(slug);
+    if (checkValid(slug) && slug.length <= 60) {
+      const body = {
+        code,
+        slug,
+        dbField: "slug", // Field apa yang digunakan collection untuk menampung slugnya
+      };
+      if (options) {
+        if (options.editId) {
+          // Menjamin agar saat proses edit dan slugnya tidak berubah
+          // , tidak dianggap error oleh methodnya
+          body.editId = options.editId;
+        }
+        if (options.dbField) {
+          body.dbField = options.dbField;
+        }
+      }
+      // Jika error atau nilainya tidak sesuai gunakan reject
+      // Gunakan resolve untuk mengembalikan hasil yang akan dipakai proses berikutnya
+      Meteor.call("cim-checkSlug", body, function (error, result) {
+        if (error) {
+          failAlert(error);
+          reject(error.reason);
+        } else if (result) {
+          failAlert("Silahkan gunakan slug yang lain");
+          reject("Silahkan gunakan slug yang lain");
+        } else {
+          resolve(slug);
+        }
+      });
+    } else {
+      failAlert("Slug harus ada dan panjangnya maksimum 60 karakter");
+    }
+  });
+};
+
+enterLoading = function () {
+  $("button").attr("disabled", true);
+  $("body").addClass("loading");
+};
+
+exitLoading = function (successState, callback) {
+  if (successState) {
+    $("button").attr("disabled", false);
+    $("body").removeClass("loading");
+    if (callback) {
+      callback();
+    }
+  } else {
+    $("button").attr("disabled", false);
+    $("body").removeClass("loading");
+    if (callback) {
+      callback();
+    }
+  }
+};

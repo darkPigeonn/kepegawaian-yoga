@@ -1,0 +1,130 @@
+<template name="evaluationForm">
+    {{#if isInRoles 'cmsGeneralCreate'}}
+    <div class="page container my-3">
+        <h3 class="page-title">Buat Evaluasi</h3>
+        <section class="">
+            <div class="form-group text-right">
+                <a href="/evaluation/list" class="btn btn-primary text-white" hidden>Lihat Evaluasi</a>
+                <!-- <a href="{{ pathFor route = 'evaluationList' _id=(toMeteorId _id) }}" class="btn btn-primary text-white">Lihat Evaluasi</a> -->
+            </div>
+            <div class="form-group">
+                <label for="" class="text-left">Title</label>
+                <input type="text" id="title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="" class="text-left">Deskripsi</label>
+                <input type="text" id="value" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Question</label>
+                <table class="table table-bordered">
+                    {{#each subs}}
+                        {{#if status}}
+                            <tr>
+                                <th class="fw-bold">Question {{id}}</th>
+                                <td><button class="btn btn-danger delete-subs" milik="{{id}}">Delete</button>   </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">
+                                    Pertanyaan 
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" id="value-{{id}}" value="{{value}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">
+                                    Jenis Pertanyaan
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        {{#if equals questionType 'pilgan' }}
+                                            <input class="form-check-input questionType" type="radio" name="questionType-{{@index}}" id="pilgan-{{@index}}" value={{@index}} checked>
+                                        {{else}}
+                                            <input class="form-check-input questionType" type="radio" name="questionType-{{@index}}" id="pilgan-{{@index}}" value={{@index}}>
+                                        {{/if}}
+                                        <label class="" for="optionPaid1">
+                                            Rating
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        {{#if equals questionType 'uraian'}}
+                                            <input class="form-check-input questionType" type="radio" name="questionType-{{@index}}" id="uraian-{{@index}}" value={{@index}} checked>
+                                        {{else}}
+                                            <input class="form-check-input questionType" type="radio" name="questionType-{{@index}}" id="uraian-{{@index}}" value={{@index}}>
+                                        {{/if}}
+                                        <label class="" for="optionPaid2">
+                                            Uraian
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/if}}
+                    {{/each}}
+                </table>
+            </div>
+        </section>
+        <section class="d-flex justify-content-between">
+            <button class="btn btn-warning tambah-subs">Tambah Pertanyaan</button>
+            <button class="btn btn-primary" id="insert">Simpan</button>
+        </section>
+    </div>
+    {{ else }}
+        {{> notAuthorized}}
+    {{/if}}
+</template>
+
+<template name="evaluationList">
+    {{#if isInRoles 'cmsGeneralCreate'}}
+    <div class="page container my-3">
+        <h3 class="page-title">Daftar Evaluasi</h3>
+        <section class="">
+            <table class = "table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                <thead>
+                    <tr>
+                        <th width="30%">Judul</th>
+                        <th width="20%">Pembuat</th>
+                        <th width="10%">Publish</th>
+                        <th width="10%">Outlets</th>
+                        <th width="25%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each i in articles}}
+                    <tr class="{{#if i.status}}{{else}}table-danger{{/if}}">
+                        <td>{{ i.title }}</td>
+                        <td>{{ i.author }}</td>
+                        <td>{{ formatHRDate i.publishDate }}</td>
+                        <td>{{ i.outlets }}</td>
+                        <td>
+                            {{#if isInRoles 'cmsArticleDelete'}}
+                                <a class="btn btn-primary toggle-article">
+                                    <i class="fa fa-eye text-white" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
+                                    </i>
+                                </a>
+                            {{/if}}
+                            {{#if i.status}}
+                                {{#if isInRoles 'cmsArticleFeatured'}}
+                                    <a class="btn btn-primary toggle-featured">
+                                        <i aria-hidden="true" id="{{ toMeteorId i._id}}" class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}" status="{{i.featured}}" milik="{{ toMeteorId i._id}}" value="{{i.featured}}">
+                                        </i>
+                                    </a>
+                                {{/if}}
+                                {{#if isInRoles 'cmsArticleEdit'}}
+                                    <a class="btn btn-primary btn-edit" href="/evaluation/edit/{{toMeteorId i._id}}" aria-disabled="true">
+                                        <i class="fa fa-edit" milik="{{i._id}}"></i>
+                                    </a>
+                                {{/if}}
+                            {{/if}}
+                            <a style="margin-top: 1rem" href="/articles/evaluation/{{toMeteorId i._id}}" class="btn btn-primary text-white">Evaluasi</a>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </section>
+    </div>
+    {{ else }}
+        {{> notAuthorized}}
+    {{/if}}
+</template>

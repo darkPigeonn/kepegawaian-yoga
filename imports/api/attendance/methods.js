@@ -6,10 +6,10 @@ import {
     ScheduleAttendance,
     ConfigAttendanceUser,
     Partner,
-} from "./attendance.js";
+} from "../administrasi/administrasi.js";
 import _ from "underscore";
 require("moment-weekday-calc");
-import { AppProfiles, AppUsers } from "../collections-profiles.js";
+import { AppProfiles, AppUsers } from "../../api/collections-profiles.js";
 import { check } from "meteor/check";
 import { Employee } from "../employee/employee.js";
 
