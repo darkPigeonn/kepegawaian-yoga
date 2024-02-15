@@ -6,7 +6,7 @@
             </a> 
             /
         </label>
-        <div class="d-flex align-items-center justify-content-between">
+        <!-- <div class="d-flex align-items-center justify-content-between">
             <h3 class="page-title mt-3">Doa</h3>
             <section class="section-page-shoulders">
                 <div class="btn-group" role="group" aria-label="command control">
@@ -23,58 +23,166 @@
                     {{ /if }}
                 </div>
             </section>
+        </div> -->
+        <div class="desktop-div">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="title-page mt-3">
+                  <h3>Doa</h3>
+              </div>
+              <section class="section-page-shoulders">
+                <div class="btn-group" role="group" aria-label="command control">
+                    <a class="btn btn-primary" id="buat-artikel" href="/prayers/create">
+                        <i class="fa fa-plus"></i>
+                        <span>Buat Doa</span>
+                    </a>
+                    <a class="btn btn-primary" id="buat-artikel" href="/prayers/upload">
+                      <!-- <i class="fa fa-list"></i> -->
+                      <span>Upload Doa</span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="adminMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-gears"></i>
+                            Admin Menu
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="adminMenu">
+                        {{#if isInRoles 'superadmin, vikpas'}}
+                            <button class="dropdown-item" id="repairDate">
+                                <i class="fa fa-wrench"></i> Repair Tanggal
+                            </button>
+                        {{/if}}
+                        </div>
+                    </div>
+                </div>
+              </section>
+            </div>
+        </div>
+        <div class="mobile-div">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="title-page mt-3">
+                <h3>Berita</h3>
+              </div>
+              <section class="section-page-shoulders">
+                <div class="dropdown">
+                  <button class="btn btn-warning dropdown-toggle" type="button" id="adminMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="adminMenu" style="max-width: 200px;">
+                      {{#if isInRoles 'cmsNewsCreate'}}
+                        <a class="dropdown-item" id="buat-artikel" href="/prayers/create">
+                            <i class="fa fa-plus"></i> 
+                            <span>Buat Doa</span>
+                        </a>
+                      {{/if}}
+                      {{#if isInRoles 'cmsCurator'}}
+                        <a class="dropdown-item" id="buat-artikel" href="/prayers/upload">
+                          <!-- <i class="fa fa-list"></i> -->
+                          <span>Upload Doa</span>
+                        </a>
+                      {{/if}}
+                      <hr class="dropdown-divider">
+                      {{#if isInRoles 'superadmin, vikpas'}}
+                        <button class="dropdown-item" id="repairDate">
+                            <i class="fa fa-wrench"></i> Repair Tanggal
+                        </button>
+                      {{/if}}
+                  </div>
+                </div>
+              </section>
+            </div>
         </div>
         <hr class="my-3" style="border: 1px solid lightgray;">
-        <section class="section-matkul-list table-responsive">
+        <section class="section-matkul-list">
             <h2 class="section-title mb-3">Daftar Doa</h2>
-            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
-                <thead>
-                    <tr>
-                        <th style="width:30%;">Judul</th>
-                        <th style="width:20%;">Pembuat</th>
-                        <th style="width:10%;">Publish</th>
-                        <th style="width:10%;">Outlets</th>
-                        <th style="width:25%;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each i in articles}}
-                        <tr class="{{#if i.status}}{{else}}table-danger{{/if}}">
-                            <td style="width:30%;">{{ i.title }}</td>
-                            <td style="width:15%;">{{ i.author }}</td>
-                            <td style="width:15%;">{{ formatHRDate i.publishDate }}</td>
-                            <td style="width:15%;">{{ i.outlets }}</td>
-                            <td style="width:25%;">
-                                <div class="d-flex align-items-center flex-wrap gap-1">
-                                    <a class="btn btn-primary btn-sm toggle-article" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
-                                        <i class="fa fa-eye text-white" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
-                                        </i>
-                                    </a>
-                                    {{#if i.status}}
-                                        <a class="btn btn-primary btn-sm toggle-featured" status="{{i.featured}}" milik="{{ toMeteorId i._id}}" value="{{i.featured}}">
-                                            <i aria-hidden="true" id="{{ toMeteorId i._id}}"
-                                                class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}"
-                                                status="{{i.featured}}" milik="{{ toMeteorId i._id}}"
-                                                value="{{i.featured}}">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">Judul</th>
+                            <th style="width:20%;">Pembuat</th>
+                            <th style="width:10%;">Publish</th>
+                            <th style="width:10%;">Outlets</th>
+                            <th style="width:25%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each i in articles}}
+                            <tr class="{{#if i.status}}{{else}}table-danger{{/if}}">
+                                <td style="width:30%;">{{ i.title }}</td>
+                                <td style="width:15%;">{{ i.author }}</td>
+                                <td style="width:15%;">{{ formatHRDate i.publishDate }}</td>
+                                <td style="width:15%;">{{ i.outlets }}</td>
+                                <td style="width:25%;">
+                                    <div class="d-flex align-items-center flex-wrap gap-1">
+                                        <a class="btn btn-primary btn-sm toggle-article" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
+                                            <i class="fa fa-eye text-white" status="{{i.status}}" milik="{{toMeteorId i._id}}" value="{{i.status}}">
                                             </i>
                                         </a>
-                                        <a class="btn btn-primary btn-sm btn-edit"
-                                            href="/prayers/edit/{{toMeteorId i._id}}">
-                                            <i class="fa fa-edit" milik="{{i._id}}"></i>
-                                        </a>                                        
-                                    {{/if}}
-                                    <a href="/articles/evaluation/{{toMeteorId i._id}}" class="btn btn-primary btn-sm text-white">
-                                        Evaluasi
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                                        {{#if i.status}}
+                                            <a class="btn btn-primary btn-sm toggle-featured">
+                                                <i aria-hidden="true" id="{{ toMeteorId i._id}}" class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}" status="{{i.featured}}" milik="{{ toMeteorId i._id}}" value="{{i.featured}}">
+                                                </i>
+                                            </a>
+                                            <a class="btn btn-primary btn-sm btn-edit"
+                                                href="/prayers/edit/{{toMeteorId i._id}}">
+                                                <i class="fa fa-edit" milik="{{i._id}}"></i>
+                                            </a>                                        
+                                        {{/if}}
+                                        <a href="/articles/evaluation/{{toMeteorId i._id}}" class="btn btn-primary btn-sm text-white">
+                                            Evaluasi
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
-
+    <style>
+        .canvas-wrapper {
+            width: 95%;
+            height: 95%;
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
+        }
+        .modal-content {
+            height: 100vh;
+            overflow-y: auto;
+        }
+    
+        .text-orange {
+            color: orange;
+        }
+    
+        .mobile-div{
+            display: none;
+        }
+    
+        .desktop-div{
+            display: block;
+        }
+    
+        @media (max-width: 1040px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+        }
+    
+        @media only screen and (max-width: 600px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+    
+        }
+      </style>
 </template>
 
 <template name="createPrayer">
@@ -119,28 +227,28 @@
     <section class="">
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col form-group">
-                <label for="" class="text-left">Judul</label>
+                <label for="" class="text-left fw-bold">Judul</label>
                 <input type="text" id="title" class="form-control">
             </div>
             <div class="col form-group">
-                <label for="" class="text-left">Slug</label>
+                <label for="" class="text-left fw-bold">Slug</label>
                 <input type="text" id="slug" class="form-control">
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2">
             <div class="col form-group">            
-                <label for="" class="text-left">Author</label>
+                <label for="" class="text-left fw-bold">Author</label>
                 <input type="text" id="author" class="form-control">
             </div>
             <div class="col form-group">
-                <label for="" class="text-left">Penjelasan Singkat</label>
+                <label for="" class="text-left fw-bold">Penjelasan Singkat</label>
                 <input type="text" id="excerpt" class="form-control">
             </div>
         </div>
 
         {{#if isInRoles 'superadmin'}}
             <div class="form-group">
-                <label for="" class="text-left">Outlet</label>
+                <label for="" class="text-left fw-bold">Outlet</label>
                 <div class="row row-cols-1 row-cols-md-5">
                     {{#each outlets}}
                         <div class="col pb-1">
@@ -156,7 +264,7 @@
         {{/if}}
         {{#if categories}}
         <div class="form-group">
-            <label class="text-left">Kategori</label>
+            <label class="text-left fw-bold">Kategori</label>
 
             <select class="select2 form-control" id="category">
                 <option>Pilih Kategori</option>
@@ -167,7 +275,7 @@
         </div>
         {{/if}}
         <div class="form-group">
-            <label class="text-left">Bahasa</label>
+            <label class="text-left fw-bold">Bahasa</label>
 
             <select class="select2 form-control" id="select-language">
                 <option>Pilih Bahasa</option>
@@ -184,10 +292,10 @@
               </ul>
         </div>
         <div class="form-group">
-            <label for="">Tanggal Publish</label>
+            <label class="fw-bold">Tanggal Publish</label>
             <input type="date" name="" class="form-control" id="publish-date">
         </div>
-        <label for="">Isi</label>
+        <label class="fw-bold">Isi</label>
         <div class="form-group">
             <div id="toolbar-container"></div>
 
@@ -195,10 +303,24 @@
             <div id="editor" class="ckeditor-content">
             </div>
         </div>
+        <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
         <div class="form-group d-flex justify-content-end mt-3">
             <button class="btn btn-primary" id="submit-form">Post</button>
         </div>
     </section>
+    <style>
+        .form-check-input {
+            position: absolute;
+            margin-top: 0.3rem;
+            margin-left: -1.25rem;
+        }
+        .form-check-input:disabled ~ .form-check-label {
+            color: #999;
+        }
+        #editor{
+            border: 1px solid black;
+        }
+      </style>
 </template>
 
 <template name="uploadPrayer">
@@ -218,36 +340,34 @@
             <span>Simpan Doa</span>
         </button>
         <hr class="my-3" style="border: 1px solid lightgray;">
-        <section class="section-matkul-list table-responsive">
+        <section class="section-matkul-list">
             <h2 class="section-title">Daftar Doa</h2>
-            <section class="section-page-shoulders mt-3">
-                <div class="btn-group" role="group" aria-label="command control">
-                </div>
-            </section>
-            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Judul</th>
-                        <th>Deskripsi Singkat</th>
-                        <th>Sumber</th>
-                        <th width="30%">Konten</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#if dataUploads}}
-                        {{#each dataUploads}}
-                            <tr class="{{#if status}}table-danger{{/if}}">
-                                <td>{{ number }}</td>
-                                <td>{{ title }}</td>
-                                <td>{{ excerpt }}</td>
-                                <td>{{ sumber }}</td>
-                                <td>{{ content }}</td>
-                            </tr>
-                        {{/each}}
-                    {{/if}}
-                </tbody>
-            </table>
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Judul</th>
+                            <th>Deskripsi Singkat</th>
+                            <th>Sumber</th>
+                            <th width="30%">Konten</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if dataUploads}}
+                            {{#each dataUploads}}
+                                <tr class="{{#if status}}table-danger{{/if}}">
+                                    <td>{{ number }}</td>
+                                    <td>{{ title }}</td>
+                                    <td>{{ excerpt }}</td>
+                                    <td>{{ sumber }}</td>
+                                    <td>{{ content }}</td>
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
         </section>
     </div>
 </template>

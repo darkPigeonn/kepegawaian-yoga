@@ -111,6 +111,7 @@ Meteor.methods({
         )
       },
       'featuredPrayer': function (data) {
+        console.log(data);
         const _id = new Meteor.Collection.ObjectID(data.id)
         const update = Prayers.update({ _id },
           {$set: {'featured': data.status}}

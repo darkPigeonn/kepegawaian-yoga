@@ -79,14 +79,15 @@ Template.listPrayer.events({
       id: milik,
       status: value,
     };
-    Meteor.call("featuredPrayersGroup", data, function (err, res) {
+    Meteor.call("featuredPrayer", data, function (err, res) {
       if (value === true) {
         $("#" + milik).attr("status", true);
         $("#" + milik)
           .removeClass("text-white")
           .addClass("text-orange");
         $("#" + milik).val(true);
-      } else {
+      } 
+      else {
         $("#" + milik).removeAttr("status");
         $("#" + milik).removeAttr("value");
         $("#" + milik)
@@ -778,6 +779,9 @@ Template.uploadPrayer.onCreated(function () {
   const self = this;
 
   self.dataUploads = new ReactiveVar([]);
+  setTimeout(() => {
+    $("#mytable").DataTable();
+  }, 500);
 });
 
 Template.uploadPrayer.helpers({
@@ -793,9 +797,10 @@ Template.uploadPrayer.events({
     Meteor.call("uploadPrayer", t.dataUploads.get(), function (error, result) {
       if (result) {
         successAlert("Berhasil!");
-      } else {
+      } 
+      else {
         failAlert(error);
-        console.log("error");
+        // console.log("error");
         console.log(error);
       }
     });

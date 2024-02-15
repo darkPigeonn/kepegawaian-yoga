@@ -150,6 +150,9 @@ Template.listNews.events({
       if (res) {
         location.reload();
       }
+      else{
+        console.log(err);
+      }
     });
   },
   "click .toggle-featured"(e, t) {

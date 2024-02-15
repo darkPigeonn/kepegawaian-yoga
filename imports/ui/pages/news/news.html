@@ -357,7 +357,7 @@
                     <div class="d-flex flex-wrap gap-1">
                       <a class="btn btn-primary btn-edit btn-sm"
                         href="/news/curate/{{toMeteorId i._id}}">
-                        <i class="fa fa-edit" milik="{{i._id}}"></i>
+                        <i class="fa fa-circle-info" milik="{{i._id}}"></i>
                       </a>
                       {{#if i.status}}
                         {{#if isInRoles 'cmsNewsEdit'}}
@@ -533,14 +533,18 @@
         {{#if equals confirmation 3}}
           <hr class="my-3" style="border: 1px solid lightgray;">
           <div class="form-group">
-            <label for="" class="text-left">Outlet</label>
-            {{#each outlets}}
-              <div class="form-check">
-                <input type="checkbox" name="" class="form-check-input outlet"
-                  style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{code}}" value="{{code}}">
-                <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
-              </div>
-            {{/each}}
+            <label for="" class="text-left fw-bold">Outlet</label>
+            <div class="row row-cols-1 row-cols-md-5">
+              {{#each outlets}}
+                <div class="col pb-1">
+                  <div class="form-check">
+                    <input type="checkbox" name="" class="form-check-input outlet"
+                      style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{code}}" value="{{code}}">
+                    <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
           </div>
         {{/if}}
         {{#if equals confirmation 2}}
