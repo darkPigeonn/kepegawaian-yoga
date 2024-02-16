@@ -1,6 +1,6 @@
 <template name="projects_page">
-    <div class="desktop-div">
-        <div class="box mt-3">
+    <div class="desktop-div pb-3">
+        <div class="box my-3">
             <div class="content">
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
@@ -52,7 +52,7 @@
                                     <div class="taskContent">
                                         <div class="row row-cols-2">
                                             <div class="col">
-                                                <h5 class="fw-bold" style="font-size: 14pt;">{{nama_project}}</h5>
+                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title" style="font-size: 14pt;">{{nama_project}}</h5>
                                                 <p class="text-secondary fw-light limited-text word-break mb-0" style="font-size: 11pt;">
                                                     {{toHTML deskripsi}}
                                                 </p>
@@ -118,8 +118,8 @@
             </div>
         </div> 
     </div>
-    <div class="mobile-div">
-        <div class="box mt-3">
+    <div class="mobile-div pb-3">
+        <div class="box my-3">
             <div class="content">
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
@@ -147,11 +147,11 @@
                     {{#if equals filterMode '2'}}
                         <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
                         <div class="d-flex justify-content-between mt-3 my-auto pb-0">
-                            <label class="fs-5 fw-bold">
+                            <label class="fs-6 fw-bold">
                                 Filter
                             </label>
                         </div>
-                        <div class="d-flex gap-2 mb-3">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
                             <select id="input_type" class="form-select filter">
                                 <option value="nama_project">Nama Proyek</option>
                                 <option value="status">Status</option>
@@ -554,7 +554,7 @@
                         {{/each}}
                     </select>
                 </div>
-                <div class="d-grid gap-2 mt-3">
+                <div class="d-grid gap-2 my-3">
                     <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
                 </div>
             </form>
@@ -569,7 +569,7 @@
                 Proyek
             </a> 
             /
-            <a href="/projects/detail/{{projects._id}}">
+            <a href="/projects/detail/{{projects._id}}" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
                 {{capitalizeWord projects.nama_project}}
             </a>
             /
@@ -624,16 +624,48 @@
                         {{/each}}
                     </select>
                 </div>
-                <div class="d-grid gap-2 mt-3">
+                <div class="d-grid gap-2 my-3">
                     <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
+    <style>
+        .project-link{
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 820px) {
+            .desktop-div{
+                width: 91%;
+            }
+            .project-link{
+                max-width: 600px; 
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .project-link{
+                max-width: 320px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        @media only screen and (max-width: 375px) {
+            .project-link{
+                max-width: 250px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    </style>
 </template>
 
 <template name="projects_detail">
-    <div class="desktop-div">
+    <div class="desktop-div pb-3">
         <div class="box mt-2">
             <div class="content">
                 <div class="contentAtas">
@@ -757,7 +789,7 @@
                                     <div class="taskContent">
                                         <div class="row row-cols-2">
                                             <div class="col">
-                                                <h5 class="fw-bold" style="font-size: 14pt;">{{task.nama_task}}</h5>
+                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title" style="font-size: 14pt;">{{task.nama_task}}</h5>
                                                 <p class="text-secondary fw-light limited-text word-break mb-0" style="font-size: 11pt;">
                                                     {{toHTML task.deskripsi}}
                                                 </p>
@@ -815,7 +847,7 @@
         </div> 
     </div>
 
-    <div class="mobile-div">
+    <div class="mobile-div pb-3">
         <div class="box mt-3">
             <div class="content">
                 <div class="contentAtas">
@@ -915,15 +947,15 @@
                         <label class="text-secondary text-desc fw-normal">{{toHTML projects.deskripsi}}</label>
                     </div>
                     <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
-                    <div class="d-flex {{#if equals filterMode '1'}} justify-content-end {{else}} justify-content-between {{/if}} mb-2">
+                    <div class="d-flex flex-wrap {{#if equals filterMode '1'}} justify-content-end {{else}} justify-content-between {{/if}} mb-2">
                         {{#if equals filterMode '2'}}
                             <div class="my-auto py-auto align-middle">
-                                <label class="fs-5 fw-bold pt-1">
+                                <label class="fs-6 fw-bold pt-1">
                                     Filter
                                 </label>
                             </div>
                         {{/if}}
-                        <div class="d-flex justify-content-end gap-2 mt-2 my-auto">
+                        <div class="d-flex flex-wrap justify-content-end gap-2 mt-2 my-auto">
                             <button class="btn btn-sm btn-primary btn-filter" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
                                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
@@ -936,7 +968,7 @@
                         </div>
                     </div>
                     {{#if equals filterMode '2'}}
-                        <div class="d-flex gap-2 mt-2 mb-2">
+                        <div class="d-flex flex-wrap gap-2 mt-2 mb-2">
                             <select id="input_type" class="form-select filter">
                                 <option value="nama_task">Nama Tugas</option>
                                 <option value="priority">Tingkat Prioritas</option>
