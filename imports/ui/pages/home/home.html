@@ -47,101 +47,62 @@
       color: white;
       font-weight: bold;
     }
-</style>
+  </style>
 
-<!-- Employees Section -->
-<div class="container-fluid employees-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <span class="employees-title">Pegawai</span>
-      </div>
-      <div class="col-md-6 text-md-right">
-        <!-- <button type="button" class="btn btn-secondary dropdown-toggle move-down btn-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Lainnya
+  <div class="container-fluid">
+    <div class="px-2">
+      <!-- <div class="row">
+        <div class="col-md-6">
+          <span class="employees-title">Pegawai</span>
+        </div>
+        <div class="col-md-6 text-md-right">
+          <div class="btn-group">
+            <a href="/employees/create">
+              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
+                Tambah Pegawai
               </button>
-              <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Dropdown Action 1</a>
-                  <a class="dropdown-item" href="#">Dropdown Action 2</a>
-              </div> -->
-        <!-- <button type="button" class="btn btn-secondary move-down btn-employee-transfer">Transfer Pegawai</button> -->
-        <div class="btn-group">
-          <a href="/employees/create">
-            <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
-              Tambah Pegawai
-            </button>
-          </a>
+            </a>
+          </div>
         </div>
-      </div>
+      </div> -->
+      {{> cardMobileWelcome username="Dosen John"}}
     </div>
   </div>
-</div>
 
 
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <div class="border rounded p-3 mt-2"> <!-- Add border and rounding styles -->
+
+
+  <!-- <div>
+    <div class="content">
+      <hr>
+      <div class="container">
         <div class="row">
-          <div class="col-md-2">
-            <p>Ringkasan Periode</p>
-            <h4>{{bulanPeriode}}</h4>
-          </div>
-          <div class="col-md-2">
-            <p>Total Pegawai</p>
-            <h4>{{employees.length}}</h4>
-          </div>
-          <div class="col-md-2">
-            <p>Pegawai Baru</p>
-            <h4>{{employeesMasuk.length}}</h4>
-          </div>
-          <div class="col-md-2 position-relative">
-            <div style="border-right: 1px solid #000; height: 100%; position: absolute; top: 0; right: 0;"></div>
-            <p>Pegawai Keluar</p>
-            <h4>{{employeesKeluar.length}}</h4>
-          </div>
-          <div class="col-md-4 d-flex align-items-center">
-            <a href="/employees/soon"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
-            <a href="/employees/soon"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
-          </div>
+          <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Nama Karyawan</th>
+                    <th>Posisi Pekerjaan</th>
+                    <th>Status Karyawan</th>
+                    <th>Tanggal Masuk</th>
+                </tr>
+            </thead>
+            <tbody>
+              {{#each employees}}
+                <tr>
+                  <td>
+                    <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;"> 
+                    {{full_name}}
+                  </td>
+                  <td> {{job_position}} </td>
+                  <td> {{employment_status}} </td>
+                  <td> {{formatHRDate start_date}} </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-<div>
-  <div class="content">
-    <hr>
-    <div class="container">
-      <div class="row">
-        <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
-          <thead>
-              <tr>
-                  <th>Nama Karyawan</th>
-                  <th>Posisi Pekerjaan</th>
-                  <th>Status Karyawan</th>
-                  <th>Tanggal Masuk</th>
-              </tr>
-          </thead>
-          <tbody>
-            {{#each employees}}
-              <tr>
-                <td>
-                  <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;"> 
-                  {{full_name}}
-                </td>
-                <td> {{job_position}} </td>
-                <td> {{employment_status}} </td>
-                <td> {{formatHRDate start_date}} </td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+  </div> -->
 
 </template>

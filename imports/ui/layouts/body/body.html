@@ -2,13 +2,188 @@
   {{#if currentUser}}
   <section>
     {{> navbar}}
-    <div class="container-fluid" style="height: 100%;">
+    <div class="container-fluid" style="height: 100%; min-height: 92vh; background-color: #EDF4FC;">
       {{> yield}}
     </div>
   </section>
   {{else}}
   {{> login_page}}
   {{/if}}
+
+  <style>
+    .poppins-thin {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extralight {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: normal;
+    }
+    
+    .poppins-light {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: normal;
+    }
+    
+    .poppins-regular {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
+    
+    .poppins-medium {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: normal;
+    }
+    
+    .poppins-semibold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: normal;
+    }
+    
+    .poppins-bold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extrabold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: normal;
+    }
+    
+    .poppins-black {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: normal;
+    }
+    
+    .poppins-thin-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extralight-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: italic;
+    }
+    
+    .poppins-light-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: italic;
+    }
+    
+    .poppins-regular-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: italic;
+    }
+    
+    .poppins-medium-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: italic;
+    }
+    
+    .poppins-semibold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: italic;
+    }
+    
+    .poppins-bold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extrabold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: italic;
+    }
+    
+    .poppins-black-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: italic;
+    }
+    
+    .open-sans {
+      font-family: "Open Sans", sans-serif !important;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings:
+        "wdth" 100;
+    }
+
+    .inter {
+      font-family: "Inter", sans-serif !important;
+      font-optical-sizing: auto;
+      font-weight: 400 !important;
+      font-style: normal;
+      font-variation-settings:
+        "slnt" 0;
+    }
+
+    .btn-login{
+      background-color: #3C6EE0;
+      border: 1px solid #549DF7;
+      color: #fff;
+    }
+    .btn-login:hover{
+      background-color: #3C6EE0;
+      opacity: 0.7;
+    }
+
+    .shadow-card{
+      box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    }
+
+    .mobile-div{
+      display: none;
+    }
+    .desktop-div{
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+    }
+
+    @media only screen and (max-width: 600px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    .text-login-content{
+      color: rgba(80, 130, 246, 0.839) !important;
+      font-weight: 500;
+    }
+  </style>
 </template>
 
 <template name="login_page">
@@ -17,25 +192,25 @@
 
       <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">
-          <div class="wrap">
+          <div class="wrap shadow-card poppins-regular">
             <div class="login-wrap p-4 p-md-5 shadow">
               <div class="d-flex">
                 <div class="w-100">
-                  <h3 class="mb-4">Kepegawaian</h3>
+                  <h3 class="poppins-bold text-login-content mb-4">Web Management</h3>
                 </div>
               </div>
               <form action="#" class="signin-form">
                 <div class="form-group mt-3">
-                  <label for="username">Username</label>
+                  <label for="username" class="fw-bold text-login-content">Username</label>
                   <input type="text" class="form-control" id='input_username' required="">
                 </div>
                 <div class="form-group">
-                  <label for="password">Password</label>
+                  <label for="password" class="fw-bold text-login-content">Password</label>
                   <input type="password" class="form-control" id="input_password" required="">
                   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
                 <div class="form-group">
-                  <button type="submit" class="form-control btn btn-primary rounded submit px-3">Masuk</button>
+                  <button type="submit" class="form-control btn btn-login rounded submit px-3">Login</button>
                 </div>
 
               </form>

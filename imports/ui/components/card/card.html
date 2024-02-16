@@ -16,6 +16,7 @@
     }
   </style>
 </template>
+
 <template name="cardFullWidth">
   <section>
     <div class="col-md-12 col-12">
@@ -25,6 +26,150 @@
           <p class="card-text">Jumlah Indukan: {{amountBS}}</p>
           <p class="card-text">Tanggal Mulai: {{formatHRDate startDate}}</p>
         </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<template name="cardMobileWelcome">
+  <style>
+    .welcome-card{
+      width: 100%;
+      border: none;
+      background: rgb(60,110,224);
+      background: linear-gradient(90deg, rgba(60,110,224,0.9) 35%, rgba(247,202,124,0.9) 100%);
+    }
+    .welcome-body{
+      border: none;
+    }
+    
+    .profile-container {
+      width: 120px;
+      height: 120px;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+    .profile-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover ;
+    }
+      
+    @media screen and (max-width: 600px) {
+        .welcome-card{
+          width: 100%;
+          border: none;
+          background: rgb(60,110,224);
+          background: linear-gradient(90deg, rgba(60,110,224,0.9) 65%, rgba(247,202,124,0.9) 100%);
+        }
+        .profile-container{
+            width: 75px;
+            height: 75px;
+        }
+    }
+  </style>
+  <section>
+    <div class="mobile-div">
+      <div class="pt-5">
+        <div class="card welcome-card rounded-3 bg-light shadow text-dark">
+          <div class="card-body welcome-body rounded-3">
+            <div class="d-flex flex-wrap align-items-center gap-4">
+              {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
+              <div class="welcome-container">
+                <p class="card-title poppins-light text-light">Welcome Back</p>
+                <h6 class="card-text poppins-bold text-light">{{username}}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123"}}
+      </div>
+    </div>
+    <div class="desktop-div">
+      <div class="container">
+        <div class="pt-5">
+          <div class="card welcome-card rounded-3 bg-light shadow text-dark">
+            <div class="card-body welcome-body rounded-3">
+              <div class="d-flex flex-wrap align-items-center gap-4">
+                {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
+                <div class="welcome-container">
+                  <p class="card-title poppins-light text-light">Welcome Back</p>
+                  <h6 class="card-text poppins-bold text-light">{{username}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
+      </div>
+    </div>
+  </section>
+</template>
+
+<template name="cardHomeProfileDetail">
+  <style>
+    .detail-card{
+      width: 100%;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+    }
+    .detail-header{
+      border: 1px solid #3C6EE0;
+      background-color: #3C6EE0;
+    }
+    .detail-body{
+      background-color: #fff;
+    }
+  </style>
+  <section>
+    <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+      <div class="card-header detail-header poppins-bold text-white">
+          About You
+      </div>
+      <div class="card-body detail-body">
+          <div class="row row-cols-1 row-cols">
+              <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-address-card"></i> 
+                        Fullname
+                      </p>
+                      <p class="open-sans text-dark">{{name}}</p>
+                  </div>
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-city"></i>
+                        Place of Birth
+                      </p>
+                      <p class="open-sans text-dark">{{pob}}</p>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-cake-candles"></i>
+                        Date of Birth
+                      </p>
+                      <p class="open-sans text-dark">{{dob}}</p>
+                  </div>
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-map-location-dot"></i>
+                        Address
+                      </p>
+                      <p class="open-sans text-dark">{{address}}</p>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-venus-mars"></i>
+                        Gender
+                      </p>
+                      <p class="open-sans text-dark">{{gender}}</p>
+                  </div>
+              </div>
+          </div>
       </div>
     </div>
   </section>
