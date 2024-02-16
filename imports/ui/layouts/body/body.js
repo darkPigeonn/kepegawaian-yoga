@@ -1,6 +1,8 @@
 import "./body.html";
 import "../../components/navbar/navbar.js";
 import { Meteor } from "meteor/meteor";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+
 Template.login_page.events({
   "click .submit"(e, t) {
     e.preventDefault();
@@ -11,7 +13,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          Router.go("home");
+          FlowRouter.go("home");
         }
       });
     } else {

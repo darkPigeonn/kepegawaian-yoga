@@ -11,18 +11,34 @@ import moment from "moment";
 Template.App_home.onCreated(function () {
   const self = this;
 
-  self.employees = new ReactiveVar();
+  self.lecturers = new ReactiveVar();
+  const tempDosen = [
+    {
+      name: 'Budi',
+      email: 'Budi@gmail.com',
+      dateOfBirth: '01/01/2000',
+      gender: 'Male',
+    },
+    {
+      name: 'Adi',
+      email: 'Adi@gmail.com',
+      dateOfBirth: '02/02/2000',
+      gender: 'Male',
+    }
+  ];
+  self.lecturers.set(tempDosen);
+  // console.log(self.lecturers.get());
 
   setTimeout(() => {
-    let table = new DataTable('#example', {
+    let table = new DataTable('#myTable', {
       responsive: true
     });
     
-  }, 3000);
+  }, 500);
 });
 Template.App_home.helpers({
-  employees() {
-    return Template.instance().employees.get();
+  lecturers() {
+    return Template.instance().lecturers.get();
   },
   bulanPeriode() {
     const currentDate = moment();

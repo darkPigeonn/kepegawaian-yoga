@@ -50,3 +50,74 @@
     </div>
   </div>
 </template>
+
+<template name="tableListDosen">
+  <div class="card rounded-3 poppins-regular p-4 my-4">
+    <h3>List Lecturers</h3>
+    <div class="table-responsive mt-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each i in dataDosen}}
+          <tr>
+            <td>
+              {{@index}}
+            </td>
+            <td>
+              {{i.name}} 
+            </td>
+            <td>
+              {{i.email}}
+            </td>
+            <td>
+              {{formatHRDate i.dateOfBirth}}
+            </td>
+            <td>
+              {{i.gender}}
+            </td>
+            <td>
+              <div class="d-flex flex-wrap gap-1">
+                {{#if isInRoles 'admin'}}
+                  <a class="btn btn-primary btn-sm btn-edit"
+                      href="/lecturers/detail/{{i._id}}">
+                      <i class="fa fa-circle-info" milik="{{i._id}}"></i> 
+                  </a>
+
+                  <a class="btn btn-primary btn-sm btn-edit"
+                      href="/lecturers/edit/{{i._id}}">
+                      <i class="fa fa-edit" milik="{{i._id}}"></i> 
+                  </a>
+
+                  <button class="btn btn-danger btn-sm delete-lecturer" id="{{i._id}}">
+                      <i class="fa fa-trash delete-lecturer" id="{{i._id}}"></i> 
+                  </button>
+                {{/if}}
+                <!-- <div class="dropdown">
+                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="moreActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Aksi Lain
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="moreActionsDropdown">
+                        {{#if isInRoles 'vecumFest'}}
+                            <a class="dropdown-item" href="#" id="openModalBtn" data-milik="{{i.slug}}">Lihat QR</a>
+                        {{/if}}
+                        <a class="dropdown-item" href="/articles/evaluation/{{toMeteorId i._id}}">Evaluasi</a>
+                    </div>
+                </div> -->
+              </div>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>

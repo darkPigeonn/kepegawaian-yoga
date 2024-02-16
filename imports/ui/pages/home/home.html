@@ -51,11 +51,10 @@
 
   <div class="container-fluid">
     <div class="px-2">
-      {{#if isInRoles 'admin'}}
-        {{> cardMobileWelcome username="Admin"}}
-      {{/if}}
       {{#if isInRoles 'dosen'}}
         {{> cardMobileWelcome username="Dosen John"}}
+      {{else}}
+        {{> cardMobileWelcome username="Admin"}}
       {{/if}}
     </div>
   </div>

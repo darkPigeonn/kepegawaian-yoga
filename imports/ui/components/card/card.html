@@ -82,8 +82,11 @@
             </div>
           </div>
         </div>
-
-        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123"}}
+        {{#if isInRoles 'dosen'}}
+        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
+        {{else}}
+        {{> tableListDosen dataDosen=lecturers}}
+        {{/if}}
       </div>
     </div>
     <div class="desktop-div">
@@ -101,7 +104,11 @@
             </div>
           </div>
         </div>
-        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
+        {{#if isInRoles 'dosen'}}
+        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}    
+        {{else}}
+        {{> tableListDosen dataDosen=lecturers}}
+        {{/if}}
       </div>
     </div>
   </section>
@@ -173,4 +180,10 @@
       </div>
     </div>
   </section>
+</template>
+
+<template name="cardListDosen">
+  <div>
+    
+  </div>
 </template>
