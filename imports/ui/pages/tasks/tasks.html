@@ -816,8 +816,8 @@
                                 </tr>
                                 <tr>
                                     <td class="fw-bold" style="padding:0 15px 20px 15px;">Deskripsi</td>
-                                    <td style="padding:0 15px 20px 70px;">
-                                        <p class="word-break text-wrap mb-0" id="description">
+                                    <td style="padding:0 15px 20px 70px; word-wrap: break-word;">
+                                        <p class="word-break text-wrap mb-0 description-limit" id="description">
                                             {{toHTML tasks.deskripsi}}
                                         </p>
                                     </td>
@@ -943,7 +943,7 @@
                                     <td class="fw-bold" style="padding:0 15px 10px 15px;">Deskripsi</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:0 15px 20px 15px;" colspan="2">
+                                    <td style="padding:0 15px 20px 15px; word-wrap: break-word;" class="description-limit" colspan="2">
                                         <p class="word-break text-wrap text-desc mb-0" id="description">
                                             {{toHTML tasks.deskripsi}}
                                         </p>
@@ -1160,6 +1160,15 @@
             .deadline{
                 font-size: 10pt;
             }
+            .description-limit{
+                max-width: 250px;
+                height: 20px;
+            }
+            .description-cell {
+                max-width: 300px; 
+                height: 100px; /* Adjust maximum height as needed */
+                overflow-y: auto;
+            }
         }
         @media only screen and (max-width: 600px) {
             .desktop-div {
@@ -1227,6 +1236,9 @@
             }
             .text-desc{
                 font-size: small;
+            }
+            .description-limit{
+                max-width: 250px;
             }
         }
     </style>
