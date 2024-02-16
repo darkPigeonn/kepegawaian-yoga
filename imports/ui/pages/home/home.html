@@ -51,58 +51,12 @@
 
   <div class="container-fluid">
     <div class="px-2">
-      <!-- <div class="row">
-        <div class="col-md-6">
-          <span class="employees-title">Pegawai</span>
-        </div>
-        <div class="col-md-6 text-md-right">
-          <div class="btn-group">
-            <a href="/employees/create">
-              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
-                Tambah Pegawai
-              </button>
-            </a>
-          </div>
-        </div>
-      </div> -->
-      {{> cardMobileWelcome username="Dosen John"}}
+      {{#if isInRoles 'admin'}}
+        {{> cardMobileWelcome username="Admin"}}
+      {{/if}}
+      {{#if isInRoles 'dosen'}}
+        {{> cardMobileWelcome username="Dosen John"}}
+      {{/if}}
     </div>
   </div>
-
-
-
-
-  <!-- <div>
-    <div class="content">
-      <hr>
-      <div class="container">
-        <div class="row">
-          <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <th>Posisi Pekerjaan</th>
-                    <th>Status Karyawan</th>
-                    <th>Tanggal Masuk</th>
-                </tr>
-            </thead>
-            <tbody>
-              {{#each employees}}
-                <tr>
-                  <td>
-                    <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;"> 
-                    {{full_name}}
-                  </td>
-                  <td> {{job_position}} </td>
-                  <td> {{employment_status}} </td>
-                  <td> {{formatHRDate start_date}} </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 </template>

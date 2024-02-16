@@ -140,6 +140,9 @@ Template.registerHelper("formatFullname", function (value) {
       return thisUser.fullname;
     }
 });
+Template.registerHelper("isInRoles", function(roles){
+  return isInRoles(roles);
+});
 Template.registerHelper("formatFullname", function (value) {
   if (value) {
     let thisUser = Meteor.users.findOne({
