@@ -186,6 +186,401 @@
   </style>
 </template>
 
+<template name="passwordForm">
+  <section>
+    <div class="container" style="margin: auto;">
+      <label class="text-login-content" style="font-size: 2rem;">Lupa Password</label>
+      {{> yield}}
+    </div>
+  </section>
+  <style>
+    .poppins-thin {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extralight {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: normal;
+    }
+    
+    .poppins-light {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: normal;
+    }
+    
+    .poppins-regular {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
+    
+    .poppins-medium {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: normal;
+    }
+    
+    .poppins-semibold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: normal;
+    }
+    
+    .poppins-bold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extrabold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: normal;
+    }
+    
+    .poppins-black {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: normal;
+    }
+    
+    .poppins-thin-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extralight-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: italic;
+    }
+    
+    .poppins-light-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: italic;
+    }
+    
+    .poppins-regular-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: italic;
+    }
+    
+    .poppins-medium-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: italic;
+    }
+    
+    .poppins-semibold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: italic;
+    }
+    
+    .poppins-bold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extrabold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: italic;
+    }
+    
+    .poppins-black-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: italic;
+    }
+    
+    .open-sans {
+      font-family: "Open Sans", sans-serif !important;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings:
+        "wdth" 100;
+    }
+
+    .inter {
+      font-family: "Inter", sans-serif !important;
+      font-optical-sizing: auto;
+      font-weight: 400 !important;
+      font-style: normal;
+      font-variation-settings:
+        "slnt" 0;
+    }
+
+    .btn-login{
+      background-color: #3C6EE0;
+      border: 1px solid #549DF7;
+      color: #fff;
+    }
+    .btn-login:hover{
+      background-color: #3C6EE0;
+      opacity: 0.7;
+    }
+
+    .shadow-card{
+      box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    }
+
+    .mobile-div{
+      display: none;
+    }
+    .desktop-div{
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+    }
+
+    @media only screen and (max-width: 600px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    .text-login-content{
+      color: rgba(80, 130, 246, 0.839) !important;
+      font-weight: 500;
+    }
+  </style>
+</template>
+
+
+<template name="resetPasswordForm">
+  <section>
+    <div class="container" style="margin: auto;">
+      <label class="text-login-content" style="font-size: 2rem;">Lupa Password</label>
+      {{> yield}}
+    </div>
+  </section>
+  <style>
+    .poppins-thin {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extralight {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: normal;
+    }
+    
+    .poppins-light {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: normal;
+    }
+    
+    .poppins-regular {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: normal;
+    }
+    
+    .poppins-medium {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: normal;
+    }
+    
+    .poppins-semibold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: normal;
+    }
+    
+    .poppins-bold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: normal;
+    }
+    
+    .poppins-extrabold {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: normal;
+    }
+    
+    .poppins-black {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: normal;
+    }
+    
+    .poppins-thin-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 100 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extralight-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 200 !important;
+      font-style: italic;
+    }
+    
+    .poppins-light-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 300 !important;
+      font-style: italic;
+    }
+    
+    .poppins-regular-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 400 !important;
+      font-style: italic;
+    }
+    
+    .poppins-medium-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 500 !important;
+      font-style: italic;
+    }
+    
+    .poppins-semibold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 600 !important;
+      font-style: italic;
+    }
+    
+    .poppins-bold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 700 !important;
+      font-style: italic;
+    }
+    
+    .poppins-extrabold-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 800 !important;
+      font-style: italic;
+    }
+    
+    .poppins-black-italic {
+      font-family: "Poppins", sans-serif !important;
+      font-weight: 900 !important;
+      font-style: italic;
+    }
+    
+    .open-sans {
+      font-family: "Open Sans", sans-serif !important;
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-variation-settings:
+        "wdth" 100;
+    }
+
+    .inter {
+      font-family: "Inter", sans-serif !important;
+      font-optical-sizing: auto;
+      font-weight: 400 !important;
+      font-style: normal;
+      font-variation-settings:
+        "slnt" 0;
+    }
+
+    .btn-login{
+      background-color: #3C6EE0;
+      border: 1px solid #549DF7;
+      color: #fff;
+    }
+    .btn-login:hover{
+      background-color: #3C6EE0;
+      opacity: 0.7;
+    }
+
+    .shadow-card{
+      box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    }
+
+    .mobile-div{
+      display: none;
+    }
+    .desktop-div{
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+    }
+
+    @media only screen and (max-width: 600px) {
+      .desktop-div {
+          display: none;
+      }
+      .mobile-div {
+          display: block;
+      }
+    }
+
+    .text-login-content{
+      color: rgba(80, 130, 246, 0.839) !important;
+      font-weight: 500;
+    }
+  </style>
+</template>
+
+
+<template name="forgotPassword">
+  <div class="form-group mt-3">
+    <label for="email" class="fw-bold text-login-content">Masukkan Email</label>
+    <input type="email" class="form-control" id='email' required="">
+    <div class="form-group mt-3">
+      <button type="submit" class="form-control btn btn-login rounded submit px-3">Kirim</button>
+    </div>
+  </div>
+</template>
+
+<template name="resetPassword">
+  <form>
+    <div class="form-group mt-3">
+      <label for="email" class="fw-bold text-login-content">Masukkan Password Baru</label>
+      <input type="password" class="form-control" id='password' required="">
+    </div>
+    <div class="form-group mt-3">
+      <label for="email" class="fw-bold text-login-content">Konfirmasi Password</label>
+      <input type="password" class="form-control" id='confirmation' required="">
+    </div>
+    <div class="form-group mt-3">
+      <button type="submit" class="form-control btn btn-login rounded submit px-3">Reset password</button>
+    </div>
+  </form>
+ 
+</template>
+
 <template name="login_page">
   <section class="ftco-section">
     <div class="container">
@@ -209,12 +604,15 @@
                   <input type="password" class="form-control" id="input_password" required="">
                   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
-                <div class="form-group">
+                <div>
+                  <a href="{{pathFor route='forgotPassword'}}">Lupa password</a>
+                </div>
+                <div class="form-group mt-3">
                   <button type="submit" class="form-control btn btn-login rounded submit px-3">Login</button>
                 </div>
 
               </form>
-            </div>
+            </div>         
           </div>
         </div>
       </div>

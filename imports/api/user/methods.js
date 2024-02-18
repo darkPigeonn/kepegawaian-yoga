@@ -2,10 +2,34 @@ import { data } from "jquery";
 import { Users } from "./user";
 import { check } from "meteor/check";
 import { Meteor } from 'meteor/meteor';
+import { HTTP } from "meteor/http";
+import { Email } from "meteor/email"
 
 import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
+process.env.APP_IDMOBILE = Meteor.settings.APP_IDMOBILE;
+process.env.APP_SECRETMOBILE = Meteor.settings.APP_SECRETMOBILE;
 Meteor.methods({
+    "employee.sendResetPassword" (username){
+       const response = HTTP.call("POST", `http://localhost:3005/imavi/users/dosen/reset-password`, {
+            headers: {
+                Id: process.env.APP_IDMOBILE,
+                Secret: process.env.APP_SECRETMOBILE,
+            },
+            data: {
+                username
+            },
+        });
+        console.log(response.data)
+    },
+    "employee.checkToken" (resetToken){
+       const user = Meteor.users.findOne({resetToken})
+       if (user){
+        return user._id
+       } else {
+        return false;
+       }
+     },
     "users.getAll"(){
         let partnerCode;
         const thisUser = Meteor.userId();

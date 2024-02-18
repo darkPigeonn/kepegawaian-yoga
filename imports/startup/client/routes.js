@@ -31,6 +31,20 @@ FlowRouter.route("/notification", {
   }
 });
 
+FlowRouter.route("/forgot-password", {
+  name: "forgotPassword",
+  action(){
+    this.render("passwordForm", "forgotPassword")
+  }
+});
+
+FlowRouter.route("/reset-password", {
+  name: "resetPassword",
+  action(){
+    this.render("resetPasswordForm", "resetPassword")
+  }
+});
+
 //USER
 // FlowRouter.route("/listUser", {
 //   name:"listUser",

@@ -8,6 +8,8 @@ async function insertLink({ title, url }) {
 }
 
 Meteor.startup(async () => {
+
+  // Configure MailgunMeteor.settings.mailgun.key
   // If the Links collection is empty, add some data.
   if (await Links.find().countAsync() === 0) {
     await insertLink({
