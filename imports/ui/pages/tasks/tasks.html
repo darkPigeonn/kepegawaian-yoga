@@ -1,0 +1,1329 @@
+<template name="tasks_page">
+    <div class="desktop-div">
+        <div class="box mt-3">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        <a href="/tasks">
+                            Tugas Umum
+                        </a> 
+                        /
+                    </label>
+                    <div class="d-flex justify-content-between align-middle mt-2">
+                        <div class="left-header-content">
+                            <div class="d-flex gap-3">
+                                <label style="font-size: 32px; font-weight: bold;">Semua Tugas</label>
+                            </div>
+                            <label class="text-secondary fw-normal" style="font-size: 16px;">Menampilkan {{tasks.length}} hasil</label>
+                        </div>
+                        <div class="d-flex {{#if equals filterMode '1'}} justify-content-end {{else}} justify-content-between {{/if}} mb-2">
+                            <div class="d-flex justify-content-end gap-2 mt-2 my-auto">
+                                <button class="btn btn-sm btn-primary btn-filter" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                    </svg>
+                                </button>
+        
+                                <div class="my-auto">
+                                    <a href="/tasks/create/umum" class="btn btn-primary">+ Tambah Tugas</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+
+                    {{#if equals filterMode '2'}}
+                        <div class="my-auto py-auto align-middle">
+                            <label class="fs-5 fw-bold pt-1">
+                                Filter
+                            </label>
+                        </div>
+                        <div class="d-flex gap-2 mt- mb-2">
+                            <select id="input_type" class="form-select filter">
+                                <option value="nama_task">Nama Tugas</option>
+                                <option value="priority">Tingkat Prioritas</option>
+                                <option value="deadline">Tenggat Waktu (Sisa Hari)</option>
+                            </select>
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Tugas" />
+                        </div>
+                    {{/if}}
+                </div>
+                <!-- Content -->
+                <div class="containerContent">
+                    <div class="row row-cols-3 mt-1">
+                        {{#each task in tasks}}
+                            <div class="col mb-3">
+                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div class="taskContent">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <h5 class="fw-bold" style="font-size: 14pt;">{{task.nama_task}}</h5>
+                                                <p class="text-secondary fw-light limited-text word-break mb-0" style="font-size: 11pt;">
+                                                    {{toHTML task.deskripsi}}
+                                                </p>
+                                            </div>
+                                            <div class="col d-flex justify-content-end align-middle gap-1">
+                                                <div class="status">
+                                                    {{#if equals task.priority "high"}}
+                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #f2709c;background-color: #fde2e4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "mid"}}
+                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #4c90d1;background-color: #c8e2f4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "low"}}
+                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #79c879;background-color: #e5f2e5;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                </div>
+                                                <div class="members">
+                                                    <span class="rounded-4 px-2 py-1" style="font-size: 9pt; color: #ffc14d;background-color: #ffeccb;">
+                                                        {{task.members.length}} Member
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                        <div class="d-flex gap-1">
+                                            <div class="time">
+                                                <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                    </svg>
+                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a href="/tasks/detail/{{task._id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="mobile-div">
+        <div class="box mt-3">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        <a href="/tasks">
+                            Tugas Umum
+                        </a> 
+                        /
+                    </label>
+                    <div class="d-flex justify-content-between align-middle mt-3">
+                        <div class="left-header-content">
+                            <div class="d-flex gap-3">
+                                <label class="text-title fw-bold">Semua Tugas</label>
+                            </div>
+                            <label class="text-secondary text-desc fw-normal">Menampilkan {{tasks.length}} hasil</label>
+                        </div>
+                        <div class="d-flex {{#if equals filterMode '1'}} justify-content-end {{else}} justify-content-between {{/if}} mb-2">
+                            <div class="d-flex justify-content-end gap-2 mt-2 my-auto">
+                                <button class="btn btn-sm btn-primary btn-filter" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                                        <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                                    </svg>
+                                </button>
+        
+                                <div class="my-auto">
+                                    <a href="/tasks/create/umum" class="btn btn-sm btn-primary">+ Tambah Tugas</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+                    {{#if equals filterMode '2'}}
+                        <div class="my-auto py-auto align-middle">
+                            <label class="fs-5 fw-bold pt-1">
+                                Filter
+                            </label>
+                        </div>
+                        <div class="d-flex gap-2 mt-1 mb-2">
+                            <select id="input_type" class="form-select filter">
+                                <option value="nama_task">Nama Tugas</option>
+                                <option value="priority">Tingkat Prioritas</option>
+                                <option value="deadline">Tenggat Waktu (Sisa Hari)</option>
+                            </select>
+                            <input type="text" id="input_data" class="form-control filter" placeholder="Cari Tugas" />
+                        </div>
+                    {{/if}}
+                </div>
+                <!-- Content -->
+                <div class="containerContent">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
+                        {{#each task in tasks}}
+                            <div class="col mb-3">
+                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                    <div class="taskContent">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title">{{task.nama_task}}</h5>
+                                                <p class="text-secondary fw-light limited-text word-break content-desc mb-0">
+                                                    {{toHTML task.deskripsi}}
+                                                </p>
+                                            </div>
+                                            <div class="col d-flex flex-column flex-wrap align-items-end">
+                                                <div class="status">
+                                                    {{#if equals task.priority "high"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "mid"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                    {{#if equals task.priority "low"}}
+                                                        <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                                            {{capitalizeWord task.priority}}
+                                                        </span>
+                                                    {{/if}}
+                                                </div>
+                                                <div class="members mt-2">
+                                                    <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                        {{task.members.length}} Member
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                        <div class="d-flex my-auto gap-1">
+                                            <div class="deadline">
+                                                <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                    </svg>
+                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <a href="/tasks/detail/{{task._id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <style>
+        .mobile-div{
+            display: none;
+        }
+
+        .desktop-div{
+            display: block;
+        }
+
+        .isiPersonalData>table>tr>td:nth-child(1) {
+            width: 150px;
+        }
+
+        .box {
+            width: 100%;
+            height: 89vh;
+            display: flex;
+            margin: auto;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow:  25px 25px 40px #a6a6a6,
+             -25px -25px 40px #ffffff;
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            border: 1px solid rgb(189, 189, 189);
+        }
+
+        .sidebar {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            border-right: 1px solid black;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px 15px 0px 0px;
+        }
+
+        .bagianAvatar {
+            width: 100%;
+            height: 250px;
+        }
+
+        .bagianItems>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bagianItems>ul>li {
+            list-style-type: none;
+            /* border: 1px solid black; */
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .active>i {
+            color: blue;
+        }
+
+        .active {
+            font-weight: bold;
+            background-color: beige;
+            border-radius: 10px;
+        }
+
+        .contentAtas {
+            padding-left: 1rem;
+            padding-top: 1rem;
+            padding-right: 1rem;
+            padding-bottom: 0.1rem;
+            border-radius: 15px 15px 0px 0px;
+            background-color: white;
+        }
+
+        .contentAtas>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .contentAtas>ul>li {
+            list-style-type: none;
+            display: inline;
+            margin-right: 15px;
+        }
+
+        .contentBawah {
+            height: 100%;
+            background-color: white;
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .contentBawah-1 {
+            height: auto;
+            background-color: white;
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .containerContent {
+            width: 100%;
+            height: auto;
+            overflow-y: auto;
+            background-color: #EFEFEF;
+            border-radius: 0px 0px 15px 15px;
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .task-card{
+            width: 100%;
+            height: 98%;
+            background-color: white;
+            border-radius: 15px;
+            padding: 1.2rem;
+        }
+
+        .limited-text {
+            max-width: 98%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .on-hover:hover{
+            opacity: 0.7;
+        }
+
+        .personalData {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+
+        .tulisanPersonalData {
+            width: 20vw;
+            height: 100%;
+            background-color: white;
+        }
+
+        @media (max-width: 1040px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
+            }
+            .time{
+                font-size: 11pt !important;
+            }
+            .text-title{
+                font-size: 24pt;
+            }
+            .text-desc{
+                font-size: 12pt;
+            }
+            .status,
+            .members{
+                font-size: 10pt;
+                width: fit-content;
+            }
+            .container-label{
+                justify-content: flex-end;
+            }
+            .deadline{
+                font-size: 11pt;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                border-right: none;
+            }
+
+            .content {
+                flex: none;
+            }
+
+            .contentAtas,
+            .contentBawah,
+            .contentBawah-1 {
+                height: auto;
+            }
+
+            .bagianAvatar {
+                height: auto;
+            }
+
+            .bagianItems {
+                display: none; /* Hide the sidebar items on small screens */
+            }
+
+            .tulisanPersonalData {
+                width: 100%;
+            }
+            .text-title{
+                font-size: 24pt;
+            }
+            .text-desc{
+                font-size: 12pt;
+            }
+            .time{
+                font-size: 10pt !important;
+            }
+            .status,
+            .members{
+                font-size: 10pt;
+                width: fit-content;
+            }
+            .container-label{
+                justify-content: flex-end;
+            }
+            .content-title{
+                font-size: 15pt;
+            }
+            .content-desc{
+                font-size: 12pt;
+            }
+            .deadline{
+                font-size: 11pt;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .desktop-div {
+                display: none;
+            }
+            .mobile-div {
+                display: block;
+            }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-header-content, 
+            .right-header-content {
+                width: 50% !important;
+            }
+            .deadline{
+                font-size: 9pt !important;
+            }
+            .text-title{
+                font-size: 18pt;
+            }
+            .text-desc{
+                font-size: 9pt;
+            }
+            .time{
+                font-size: 8pt !important;
+            }
+            .status,
+            .members{
+                font-size: 8pt;
+                width: fit-content;
+            }
+            .container-label{
+                flex-direction: column;
+            }
+            .content-title{
+                font-size: 12pt;
+            }
+            .content-desc{
+                font-size: 11pt;
+            }
+        }
+    </style>
+
+    <style scoped>
+        html,
+        body {
+            background-color: #F1F4F7;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</template>
+
+<template name="tasks_create">
+    <div class="container">
+        <label style="color: blue; margin: 0;"> 
+            {{#if isUmumProject projectId}}
+                <a href="/tasks" class="text-secondary"> 
+                    Tugas Umum
+                </a>
+            {{else}}
+                <a href="/projects/detail/{{projectId}}" class="text-secondary"> 
+                    Tugas
+                </a>
+            {{/if}}
+            /
+            <a href="/tasks/create/{{projectId}}">
+                Tambah
+            </a>
+        </label>
+        <div class="title-page mt-3">
+            <h3>Tambah Tugas Baru</h3>
+        </div>
+
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        
+        <div class="mt-2">
+            <form>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Nama Tugas</label>
+                    <input type="text" id="nama_task" class="form-control" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Deskripsi</label>
+                    <div id="toolbar-container-deskripsi"></div>
+                    <div id="editor-deskripsi" class="ckeditor-content"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tenggat Waktu</label>
+                    <input type="date" id="deadline" class="form-control" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tingkat Prioritas</label>
+                    <div class="d-flex gap-2">
+                        <div>
+                            <input type="radio" name="select-priority" value="high" id="select-priority">
+                            <b class="fw-bold" style="color: #ff6363;">High</b>
+                        </div>
+                        <div>
+                            <input type="radio" name="select-priority" value="mid" id="select-priority">
+                            <b class="fw-bold" style="color: #ffac74;">Mid</b>
+                        </div>
+                        <div>
+                            <input type="radio" name="select-priority" value="low" id="select-priority">
+                            <b class="fw-bold" style="color: #6adc6a;">Low</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Member Tugas</label>
+                    <select name="select-member" class="select2 form-control" id="select-member" required multiple>
+                        {{#if isUmumProject projectId}}
+                            {{#each data in employee}}
+                                <option value="{{ data._id }}">
+                                    <b>{{ data.full_name }}</b> - {{ data.department_unit }}
+                                </option>
+                            {{/each}}
+                        {{else}}
+                            {{#each member in projectEmployee.members}}
+                                {{#each data in member}}
+                                    <option value="{{ data.id }}">
+                                        <b>{{ data.name }}</b> - {{ data.department_unit }}
+                                    </option>
+                                {{/each}}
+                            {{/each}}
+                        {{/if}}
+                    </select>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="tasks_edit">
+    <div class="container">
+        <label style="color: blue; margin: 0;"> 
+            {{#if isUmumProject tasks.project_type}}
+                <a href="/tasks" class="text-secondary"> 
+                    Tugas Umum
+                </a> 
+                /
+            {{else}}
+                <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary"> 
+                    {{tasks.nama_project}}
+                </a> 
+                /
+            {{/if}}
+            <a href="/tasks/detail/{{tasks._id}}" class="text-secondary">
+                {{tasks.nama_task}}
+            </a>
+            /
+            <a href="/tasks/edit/{{tasks._id}}">
+                Ubah
+            </a>
+        </label>
+        <div class="title-page mt-3">
+            <h3>Ubah Tugas</h3>
+        </div>
+
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        
+        <div class="mt-2">
+            <form>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Nama Tugas</label>
+                    <input type="text" id="nama_task" class="form-control" value="{{tasks.nama_task}}" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Deskripsi</label>
+                    <div id="toolbar-container-deskripsi"></div>
+                    <div id="editor-deskripsi" class="ckeditor-content"></div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tenggat Waktu</label>
+                    <input type="date" id="deadline" class="form-control" value="{{dateToHTML tasks.deadline}}" required/>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tingkat Prioritas</label>
+
+                    <div class="d-flex gap-2">
+                        <div>
+                            <input type="radio" name="select-priority" value="high" class="select-priority" checked="{{#if equals tasks.priority 'high'}} checked {{/if}}">
+                            <b class="fw-bold" style="color: #ff6363;">High</b>
+                        </div>
+                        <div>
+                            <input type="radio" name="select-priority" value="mid" class="select-priority" checked="{{#if equals tasks.priority 'mid'}} checked {{/if}}">
+                            <b class="fw-bold" style="color: #ffac74;">Mid</b>
+                        </div>
+                        <div>
+                            <input type="radio" name="select-priority" value="low" class="select-priority" checked="{{#if equals tasks.priority 'low'}} checked {{/if}}">
+                            <b class="fw-bold" style="color: #6adc6a;">Low</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Member Tugas</label>
+                    <select name="select-member" class="select2 form-control" id="select-member" required multiple>
+                        {{#if equals tasks.project_type "umum"}}
+                            {{#each item in employee}}
+                                {{#if isInTaskMembers item._id}}
+                                    <option value="{{ item._id }}" selected>
+                                        <b>{{ item.full_name }}</b> - {{ item.department_unit }}
+                                    </option>
+                                {{else}}
+                                    <option value="{{ item.id }}">
+                                        <b>{{ item.full_name }}</b> - {{ item.department_unit }}
+                                    </option>
+                                {{/if}}
+                            {{/each}}
+                        {{else}}
+                            {{#each item in tasks.project_members}}
+                                {{#if isInTaskMembers item.id}}
+                                    <option value="{{ item.id }}" selected>
+                                        <b>{{ item.name }}</b> - {{ item.department_unit }}
+                                    </option>
+                                {{else}}
+                                    <option value="{{ item.id }}">
+                                        <b>{{ item.name }}</b> - {{ item.department_unit }}
+                                    </option>
+                                {{/if}}
+                            {{/each}}
+                        {{/if}}
+                    </select>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="tasks_detail">
+    <div class="desktop-div">
+        <div class="box">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        {{#if equals tasks.project_type "umum"}}
+                            <a href="/tasks" class="text-secondary">
+                                Tugas Umum
+                            </a> 
+                            /
+                        {{else}}
+                            <a href="/projects" class="text-secondary">
+                                Proyek
+                            </a> 
+                            / 
+                            <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary">
+                                {{tasks.nama_project}}
+                            </a>
+                            /
+                        {{/if}}
+                        <a href="/tasks/detail/{{tasks._id}}">
+                            {{tasks.nama_task}}
+                        </a>
+                    </label>
+                    <div class="d-flex justify-content-between align-middle mt-2">
+                        <div class="col col-sm-9 col-lg-9">
+                            <div class="d-flex gap-2">
+                                <label style="font-size: 32px; font-weight: bold;">{{tasks.nama_task}}</label>
+                                <div class="my-auto">
+                                    <a href="/tasks/edit/{{tasks._id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-3 col-lg-3 my-auto">
+                            <div class="my-auto">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <div class="members">
+                                        <a href="/tasks/detail/{{tasks._id}}/members" class="on-hover">
+                                            <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-eye" viewBox="0 0 16 20">
+                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                                                </svg>
+                                                {{tasks.members.length}} Member
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-3 mb-0" style="border: 1px solid lightgray;">
+                </div>
+                <!-- Content -->
+                <div class="containerContent bg-white">
+                    <div class="d-flex h-100">
+                        <div class="col col-sm-3 col-lg-3" style="border-right: 1px solid lightgray">
+                            <p style="color: black; font-weight: bold; font-size: 25px; width: 20vw; max-width: fit-content;">Tentang Tugas</p>
+                        </div>
+                        <div class="col col-sm-9 col-lg-9">
+                            <table class="mt-2">
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 20px 15px;">Tingkat Prioritas</td>
+                                    <td style="padding:0 15px 20px 70px;">
+                                        {{#if equals tasks.priority "high"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals tasks.priority "mid"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals tasks.priority "low"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 20px 15px;">Tenggat Waktu</td>
+                                    <td style="padding:0 15px 20px 70px;">
+                                        <span class="rounded-3 deadline px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                            </svg>
+                                            <b>Dalam {{daysDifference tasks.deadline}} hari</b> / {{formatHRDateShort tasks.deadline}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="padding-bottom: 20px; padding-top: 20px;">
+                                    <td class="fw-bold" style="padding:0px 15px 20px 15px;">Judul Tugas</td>
+                                    <td style="padding:0 15px 20px 70px;" class="word-break text-wrap">
+                                        {{tasks.nama_task}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 20px 15px;">Deskripsi</td>
+                                    <td style="padding:0 15px 20px 70px;">
+                                        <p class="word-break text-wrap mb-0" id="description">
+                                            {{toHTML tasks.deskripsi}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="mobile-div my-3">
+        <div class="box">
+            <div class="content">
+                <div class="contentAtas">
+                    <label style="color: blue; margin: 0;"> 
+                        {{#if equals tasks.project_type "umum"}}
+                            <a href="/tasks" class="text-secondary">
+                                Tugas Umum
+                            </a> 
+                            /
+                        {{else}}
+                            <a href="/projects" class="text-secondary">
+                                Proyek
+                            </a> 
+                            / 
+                            <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary">
+                                {{tasks.nama_project}}
+                            </a>
+                            /
+                        {{/if}}
+                        <a href="/tasks/detail/{{tasks._id}}">
+                            {{tasks.nama_task}}
+                        </a>
+                    </label>
+                    <!-- Header Content -->
+                    <div class="d-flex flex-column gap-3 align-middle mt-3">
+                        <div class="col col-sm-12 col-lg-12">
+                            <div class="d-flex justify-content-between">
+                                <label class="header-title fw-bold my-auto">{{tasks.nama_task}}</label>
+                                <div class="my-auto">
+                                    <a href="/tasks/edit/{{tasks._id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-lg-12 my-auto">
+                            <div class="my-auto">
+                                <div class="d-flex align-items-start justify-content-start flex-wrap gap-2">
+                                    <div class="members">
+                                        <a href="/tasks/detail/{{tasks._id}}/members" class="on-hover">
+                                            <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-eye" viewBox="0 0 16 20">
+                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                                                </svg>
+                                                {{tasks.members.length}} Member
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-3 mb-0" style="border: 1px solid lightgray;">
+                </div>
+
+                <!-- Content -->
+                <div class="containerContent bg-white">
+                    <div class="row row-cols-1 h-100">
+                        <div class="col col-sm-9 col-lg-12">
+                            <div class="d-flex gap-1">
+                                <label class="my-auto" style="border: 1px solid black; border-radius: 8px; background-color: black;">&nbsp;</label>
+                                <p class="content-context fw-bold my-auto" style="max-width: fit-content;">Tentang Tugas</p>
+                            </div>
+                        </div>
+                        <div class="col col-sm-9 col-lg-12 mt-3">
+                            <table class="mt-2">
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 20px 15px;">Tingkat Prioritas</td>
+                                    <td style="padding:0 15px 20px 35px;">
+                                        {{#if equals tasks.priority "high"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals tasks.priority "mid"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                        {{#if equals tasks.priority "low"}}
+                                            <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                                {{capitalizeWord tasks.priority}}
+                                            </span>
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 20px 15px;">Tenggat Waktu</td>
+                                    <td style="padding:0 15px 20px 35px;">
+                                        <span class="rounded-3 word-break deadline px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                            </svg>
+                                            <b>Dalam {{daysDifference tasks.deadline}} hari</b> / {{formatHRDateShort tasks.deadline}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr style="padding-bottom: 20px; padding-top: 20px;">
+                                    <td class="fw-bold" style="padding:0px 15px 20px 15px;">Judul Tugas</td>
+                                    <td style="padding:0 15px 20px 35px;" class="text-desc word-break text-wrap">
+                                        {{tasks.nama_task}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold" style="padding:0 15px 10px 15px;">Deskripsi</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:0 15px 20px 15px;" colspan="2">
+                                        <p class="word-break text-wrap text-desc mb-0" id="description">
+                                            {{toHTML tasks.deskripsi}}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+    <style>
+        .mobile-div{
+            display: none;
+        }
+
+        .desktop-div{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .isiPersonalData>table>tr>td:nth-child(1) {
+            width: 150px;
+        }
+
+        .box {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            margin: auto;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow:  25px 25px 40px #a6a6a6,
+             -25px -25px 40px #ffffff;
+            font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            border: 1px solid rgb(189, 189, 189);
+        }
+
+        .sidebar {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            border-right: 1px solid black;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px 15px 0px 0px;
+        }
+
+        .bagianAvatar {
+            width: 100%;
+            height: 250px;
+        }
+
+        .bagianItems>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bagianItems>ul>li {
+            list-style-type: none;
+            /* border: 1px solid black; */
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .active>i {
+            color: blue;
+        }
+
+        .active {
+            font-weight: bold;
+            background-color: beige;
+            border-radius: 10px;
+        }
+
+        .contentAtas {
+            padding-left: 1rem;
+            padding-top: 1rem;
+            padding-right: 1rem;
+            padding-bottom: 0.1rem;
+            border-radius: 15px 15px 0px 0px;
+            background-color: white;
+        }
+
+        .contentAtas>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .contentAtas>ul>li {
+            list-style-type: none;
+            display: inline;
+            margin-right: 15px;
+        }
+
+        .contentBawah {
+            height: 100%;
+            background-color: white;
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .contentBawah-1 {
+            height: auto;
+            background-color: white;
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .containerContent {
+            width: 100%;
+            height: auto;
+            overflow-y: auto;
+            background-color: #EFEFEF;
+            border-radius: 0px 0px 15px 15px;
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .task-card{
+            width: 100%;
+            height: 98%;
+            background-color: white;
+            border-radius: 15px;
+            padding: 1.2rem;
+        }
+
+        .limited-text {
+            max-width: 98%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .on-hover:hover{
+            opacity: 0.7;
+        }
+
+        .personalData {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+
+        .tulisanPersonalData {
+            width: 20vw;
+            height: 100%;
+            background-color: white;
+        }
+
+        @media (max-width: 1040px) {
+            .desktop-div{
+                width: 75%;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .desktop-div{
+                width: 91%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-div{
+                width: 90%;
+            }
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                border-right: none;
+            }
+
+            .content {
+                flex: none;
+            }
+
+            .contentAtas,
+            .contentBawah,
+            .contentBawah-1 {
+                height: auto;
+            }
+
+            .bagianAvatar {
+                height: auto;
+            }
+
+            .bagianItems {
+                display: none; /* Hide the sidebar items on small screens */
+            }
+
+            .tulisanPersonalData {
+                width: 100%;
+            }
+            .text-desc{
+                font-size: medium;
+            }
+            .deadline{
+                font-size: 10pt;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .desktop-div {
+                display: none;
+            }
+
+            .mobile-div {
+                display: block;
+            }
+
+            .profile-card-mobile {
+                max-width: auto;
+                max-height: auto;
+                margin: 20px auto;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                text-align: center;
+            }
+
+            .profile-content-mobile {
+                text-align: left;
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .profile-picture-mobile {
+                width: 75%;
+                height: auto;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                margin-top: 5px;
+                word-break: break-all;
+                word-wrap: break-word;
+            }
+            .content-item{
+                word-break: break-all;
+            }
+            .isiPersonalData>table>tr>td:nth-child(1) {
+                width: 150px;
+            }
+            .tulisanKiriMobile {
+                width: 150px; 
+                vertical-align: top; 
+                font-weight: bold;
+            }
+            .tulisanKananMobile {
+                word-break: break-all;
+                vertical-align: top;
+            }
+            .header-title{
+                font-size: 15pt;
+            }
+            .members{
+                font-size: 8pt;
+            }
+            .content-context{
+                font-size: 17px;
+            }
+            .deadline{
+                font-size: small;
+            }
+            .text-desc{
+                font-size: small;
+            }
+        }
+    </style>
+
+    <style scoped>
+        html,
+        body {
+            background-color: #F1F4F7;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</template>
+
+<template name="tasks_members">
+    <div class="container mt-3">
+        <label style="color: blue; margin: 0;"> 
+            {{#if equals tasks.project_type "umum"}}
+                <a href="/tasks" class="text-secondary">
+                    Tugas Umum
+                </a>
+                / 
+            {{else}}
+                <a href="/projects" class="text-secondary">
+                    Proyek
+                </a>
+                / 
+                <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary">
+                    {{tasks.nama_project}}
+                </a>
+                / 
+            {{/if}}
+            <a href="/tasks/detail/{{tasks._id}}" class="text-secondary">
+                {{tasks.nama_task}}
+            </a>
+            / 
+            <a href="/tasks/detail/{{tasks._id}}/members">
+                Member
+            </a>
+        </label>
+        <div class="mt-3">
+            <div class="d-flex justify-content-between">
+                <h1>{{tasks.nama_task}} Member</h1>
+                <div class="my-auto">
+                    <button class="btn btn-sm btn-primary btn-filter" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-2 mb-3">
+                {{#if equals filterMode '2'}}
+                    <hr class="mt-1 mb-2" style="border: 1px solid lightgray;">
+                    <div class="my-auto py-auto align-middle">
+                        <label class="fs-5 fw-bold">
+                            Filter
+                        </label>
+                    </div>
+                {{/if}}
+                {{#if equals filterMode '2'}}
+                    <div class="d-flex gap-2 mb-2">
+                        <select id="input_type" class="form-select filter">
+                            <option value="full_name">Nama Member</option>
+                            <option value="job_position">Jabatan</option>
+                            <option value="start_date">Tahun Masuk</option>
+                            <option value="masa_jabatan">Masa Jabatan (Tahun)</option>
+                            <option value="department_unit">Departement</option>
+                        </select>
+                        <input type="text" id="input_data" class="form-control filter" placeholder="Cari Member" />
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jabatan</th>
+                        <th scope="col">Tahun Masuk</th>
+                        <th scope="col">Departement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each item in employees}}
+                        <tr>
+                            <td> {{nomorUrut @index}}</td>
+                            <td> {{item.name}} </td>
+                            <td> {{item.job_position}} </td>
+                            <td> {{formatHRDate item.start_date}} </td>
+                            <td> {{item.department_unit}} </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </template>

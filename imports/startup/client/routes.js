@@ -5,6 +5,7 @@ import "../../ui/layouts/body/body.js";
 import "../../ui/pages/home/home.js";
 import "../../ui/pages/not-found/not-found.js";
 import "../../ui/pages/notification/notification.js";
+import "../../ui/pages/lecturers/lecturers.js";
 import "../../ui/pages/user/user.js";
 import { timers } from "jquery";
 // Set up all routes in the app
@@ -42,6 +43,14 @@ FlowRouter.route("/reset-password", {
   name: "resetPassword",
   action(){
     this.render("resetPasswordForm", "resetPassword")
+  }
+});
+
+// Lecturers
+FlowRouter.route("/lecturers/add", {
+  name: "lecturer add",
+  action() {
+    this.render("App_body","lecturers_add");
   }
 });
 

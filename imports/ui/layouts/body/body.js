@@ -13,7 +13,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          FlowRouter.go("home");
+          FlowRouter.go("/");
         }
       });
     } else {
@@ -30,7 +30,8 @@ Template.forgotPassword.events({
     if (emailRegex.test(email)){
       Meteor.call("employee.sendResetPassword", email, function (error, result) { 
         if(error){
-          failAlert(error)
+          failAlert(error);
+          console.log(error);
         } else {
           successAlert("Mohon periksa email Anda! link Reset password akan dikirim jika email yang anda masukkan terdaftar!")
         }

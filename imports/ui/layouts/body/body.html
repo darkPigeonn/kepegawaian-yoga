@@ -187,12 +187,16 @@
 </template>
 
 <template name="passwordForm">
-  <section>
-    <div class="container" style="margin: auto;">
-      <label class="text-login-content" style="font-size: 2rem;">Lupa Password</label>
-      {{> yield}}
-    </div>
-  </section>
+  <div class="container-fluid" style="min-height: 99vh;background: #f8f9fd;">
+    <section style="padding: 7em 0;">
+      <div class="container poppins-regular position-relative p-4 p-md-5" style="margin: auto;">
+        <div class="wrap card shadow-card my-auto p-4">
+          <label class="text-login-content fw-bold" style="font-size: 2rem;">Forgot Password</label>
+          {{> yield}}
+        </div>
+      </div>
+    </section>
+  </div>
   <style>
     .poppins-thin {
       font-family: "Poppins", sans-serif !important;
@@ -371,12 +375,16 @@
 
 
 <template name="resetPasswordForm">
-  <section>
-    <div class="container" style="margin: auto;">
-      <label class="text-login-content" style="font-size: 2rem;">Lupa Password</label>
-      {{> yield}}
-    </div>
-  </section>
+  <div class="container-fluid" style="min-height: 99vh;background: #f8f9fd;">
+    <section style="padding: 7em 0;">    
+      <div class="container poppins-regular position-relative p-4 p-md-5" style="margin: auto;">
+        <div class="wrap card shadow-card my-auto p-4">
+          <label class="text-login-content fw-bold" style="font-size: 2rem;">Forgot Password</label>
+          {{> yield}}
+        </div>
+      </div>
+    </section>
+  </div>
   <style>
     .poppins-thin {
       font-family: "Poppins", sans-serif !important;
@@ -556,10 +564,13 @@
 
 <template name="forgotPassword">
   <div class="form-group mt-3">
-    <label for="email" class="fw-bold text-login-content">Masukkan Email</label>
+    <label for="email" class="fw-bold text-login-content">Email</label>
     <input type="email" class="form-control" id='email' required="">
-    <div class="form-group mt-3">
-      <button type="submit" class="form-control btn btn-login rounded submit px-3">Kirim</button>
+    <div class="form-group mt-4">
+      <button type="submit" class="form-control btn btn-login rounded submit px-3">Send Confirmation</button>
+      <div class="d-flex justify-content-center mt-3">
+        <a href="/">Back to Login</a>
+      </div>
     </div>
   </div>
 </template>
@@ -567,11 +578,11 @@
 <template name="resetPassword">
   <form>
     <div class="form-group mt-3">
-      <label for="email" class="fw-bold text-login-content">Masukkan Password Baru</label>
+      <label for="email" class="fw-bold text-login-content">New Password</label>
       <input type="password" class="form-control" id='password' required="">
     </div>
     <div class="form-group mt-3">
-      <label for="email" class="fw-bold text-login-content">Konfirmasi Password</label>
+      <label for="email" class="fw-bold text-login-content">Confirm Password</label>
       <input type="password" class="form-control" id='confirmation' required="">
     </div>
     <div class="form-group mt-3">
@@ -586,7 +597,7 @@
     <div class="container">
 
       <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-5">
+        <div class="col-12 col-md-7 col-lg-5">
           <div class="wrap shadow-card poppins-regular">
             <div class="login-wrap p-4 p-md-5 shadow">
               <div class="d-flex">
@@ -604,10 +615,10 @@
                   <input type="password" class="form-control" id="input_password" required="">
                   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
-                <div>
-                  <a href="{{pathFor route='forgotPassword'}}">Lupa password</a>
+                <div class="d-flex justify-content-end">
+                  <a href="{{pathFor route='forgotPassword'}}">Forgot Password?</a>
                 </div>
-                <div class="form-group mt-3">
+                <div class="form-group mt-4">
                   <button type="submit" class="form-control btn btn-login rounded submit px-3">Login</button>
                 </div>
 

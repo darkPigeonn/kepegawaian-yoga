@@ -1,0 +1,184 @@
+<template name="formLecturers">
+    <!-- Component Forms Add Lecturers Requirement Parameter when using this component: -->
+    <!-- 1. formPage -> for selecting category of the page -->
+    <!-- 2. type -> for add / edit page -->
+    <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2">
+        <div class="navigation-form d-flex gap-3">
+            <label class="btnNavigation text-nowrap {{#if equals formPage 1}}text-blue fw-bold{{/if}}" data-value="1">1. Profile</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 2}}text-blue fw-bold{{/if}}" data-value="2">2. Educational</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 3}}text-blue fw-bold{{/if}}" data-value="3">3. Research</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 4}}text-blue fw-bold{{/if}}" data-value="4">4. Certification</label>
+        </div>
+    </div>
+
+    <!-- Page 1 -->
+    {{#if equals formPage 1}}
+        <!-- Personal Details -->
+        <div class="card rounded-3 mt-4">
+            <div class="card-header bg-blue text-white">
+                Personal Details
+            </div>
+            <div class="card-body">
+                <section class="p-2">
+                    <form id="formLecturers">
+                        <div class="form-group">
+                            <label for="inputUsername" class="fw-bold text-login-content">Username</label>
+                            <input type="text" class="form-control" id="inputUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFullname" class="fw-bold text-login-content">Fullname</label>
+                            <input type="text" class="form-control" id="inputFullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAddress" class="fw-bold text-login-content">Address</label>
+                            <input type="text" class="form-control" id="inputAddress" required>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="inputPOB" class="fw-bold text-login-content">Place of Birth</label>
+                                <input type="text" class="form-control" id="inputPob" required>
+                            </div>
+                            <div class="form-group col">
+                                <label for="inputDOB" class="fw-bold text-login-content">Date of Birth</label>
+                                <input type="date" class="form-control" id="inputDob" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGender" class="fw-bold text-login-content">Gender</label>
+                            <div class="d-flex flex-wrap gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="male">
+                                    <label class="form-check-label">
+                                    Male
+                                    <i class="fa fa-mars" style="color: #C3E6FF;"></i>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="female">
+                                    <label class="form-check-label">
+                                    Female
+                                    <i class="fa fa-venus" style="color: #F8C8DC;"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputImageProfile" class="fw-bold text-login-content">Image Profile</label>
+                            <input class="form-control" type="file" id="inputImageProfile">
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <!-- National Identity -->
+        <div class="card rounded-3 mt-4">
+            <div class="card-header bg-blue text-white">
+                National Identity
+            </div>
+            <div class="card-body">
+                <section class="p-2">
+                    <form id="formLecturers">
+                        <div class="form-group">
+                            <label for="inputNationality" class="fw-bold text-login-content">Nationality</label>
+                            <input type="text" class="form-control" id="inputNationality" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputReligion" class="fw-bold text-login-content">Religion</label>
+                            <input type="text" class="form-control" id="inputReligion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNIK" class="fw-bold text-login-content">NIK</label>
+                            <input type="text" class="form-control" id="inputNik" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNIDN" class="fw-bold text-login-content">NIDN / NIDK</label>
+                            <input type="text" class="form-control" id="inputNidn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRegisteredAddress" class="fw-bold text-login-content">Registered Address</label>
+                            <input type="text" class="form-control" id="inputRegisteredAddress" required>
+                        </div>
+                        <button class="btn btn-submit btn-next text-white float-end mt-2" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="2">
+                            Next
+                            <i class="fa fa-light fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    {{/if}}
+
+    <!-- Page 2 -->
+    <!-- National Identity -->
+    {{#if equals formPage 2}}
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Educational Details
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="name" class="fw-bold text-login-content">Username</label>
+                        <input type="text" class="form-control" id="inputUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="fw-bold text-login-content">Fullname</label>
+                        <input type="text" class="form-control" id="inputFullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="fw-bold text-login-content">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="fw-bold text-login-content">Place of Birth</label>
+                        <input type="text" class="form-control" id="inputPob" required>
+                    </div>
+                    {{#if equals type "add"}}
+                        <button class="btn btn-primary btn-submit float-end mt-2" type="button">Create New Lecturer</button>
+                    {{else}}
+                        <button class="btn btn-primary btn-submit float-end mt-2" type="button">Edit Data</button>
+                    {{/if}}
+                </form>
+            </section>
+        </div>
+    </div>
+    {{/if}}
+    
+    <style>
+        .navigation-form{
+            width: 100%;
+        }
+        .text-blue{
+            color: rgba(80, 130, 246, 0.839) !important;
+        }
+        .bg-blue{
+            background-color: rgba(80, 130, 246, 0.839) !important;
+        }
+        .btnNavigation:hover{
+            opacity: 0.6;
+            cursor: pointer;
+            scale: 1.1;
+            transition: 0.4s ease-in-out;
+        }
+        .btn-next:hover{
+            opacity: 0.8;
+            transition: opacity 0.4s;
+        }
+
+        @media (max-width: 1024px) {            
+            .navigation-form{
+                overflow-x: scroll;
+            }
+        }
+        @media (max-width: 768px) {            
+
+        }
+        @media screen and (max-width: 600px) {            
+            .navigation-form{
+                overflow-x: scroll;
+            }
+        }
+    </style>
+</template>

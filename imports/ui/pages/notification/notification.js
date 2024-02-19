@@ -24,7 +24,7 @@ Template.notification_page.onCreated(function (){
     
     Meteor.call("notification.getAll", thisUser.emails[0].address, function (error, result) {
         if (result) {
-            console.log(result);
+            // console.log(result);
             self.notification.set(result);
         } else {
             console.log(error);
