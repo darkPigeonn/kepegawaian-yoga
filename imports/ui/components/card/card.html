@@ -54,6 +54,22 @@
         height: 100%;
         object-fit: cover ;
     }
+
+    @media (min-width: 1400px){
+      .container-home{
+        width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1399px){
+      .container-home{
+        width: 860px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
       
     @media screen and (max-width: 600px) {
         .welcome-card{
@@ -69,47 +85,23 @@
     }
   </style>
   <section>
-    <div class="mobile-div">
-      <div class="pt-5">
-        <div class="card welcome-card rounded-3 bg-light shadow text-dark">
-          <div class="card-body welcome-body rounded-3">
-            <div class="d-flex flex-wrap align-items-center gap-4">
-              {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
-              <div class="welcome-container">
-                <p class="card-title poppins-light text-light">Welcome Back</p>
-                <h6 class="card-text poppins-bold text-light">{{username}}</h6>
-              </div>
+    <div class="container-home pt-5">
+      <div class="card welcome-card rounded-3 bg-light shadow text-dark">
+        <div class="card-body welcome-body rounded-3">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
+            <div class="welcome-container">
+              <p class="card-title poppins-light text-light">Welcome Back</p>
+              <h6 class="card-text poppins-bold text-light">{{username}}</h6>
             </div>
           </div>
         </div>
-        {{#if isInRoles 'dosen'}}
-        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
-        {{else}}
-        {{> tableListDosen dataDosen=lecturers}}
-        {{/if}}
       </div>
-    </div>
-    <div class="desktop-div">
-      <div class="container">
-        <div class="pt-5">
-          <div class="card welcome-card rounded-3 bg-light shadow text-dark">
-            <div class="card-body welcome-body rounded-3">
-              <div class="d-flex flex-wrap align-items-center gap-4">
-                {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
-                <div class="welcome-container">
-                  <p class="card-title poppins-light text-light">Welcome Back</p>
-                  <h6 class="card-text poppins-bold text-light">{{username}}</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {{#if isInRoles 'dosen'}}
-        {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}    
-        {{else}}
-        {{> tableListDosen dataDosen=lecturers}}
-        {{/if}}
-      </div>
+      {{#if isInRoles 'dosen'}}
+      {{> cardHomeProfileDetail name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
+      {{else}}
+      {{> tableListDosen dataDosen=lecturers}}
+      {{/if}}
     </div>
   </section>
 </template>

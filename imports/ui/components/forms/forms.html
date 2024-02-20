@@ -5,9 +5,10 @@
     <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2">
         <div class="navigation-form d-flex gap-3">
             <label class="btnNavigation text-nowrap {{#if equals formPage 1}}text-blue fw-bold{{/if}}" data-value="1">1. Profile</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 2}}text-blue fw-bold{{/if}}" data-value="2">2. Educational</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 3}}text-blue fw-bold{{/if}}" data-value="3">3. Research</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 4}}text-blue fw-bold{{/if}}" data-value="4">4. Certification</label>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 2}}text-blue fw-bold{{/if}}" data-value="2">2. Professional</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 3}}text-blue fw-bold{{/if}}" data-value="3">3. Educational</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="btnNavigation text-nowrap {{#if equals formPage 4}}text-blue fw-bold{{/if}}" data-value="4">4. Certification & Research</label>
+            <!-- <label class="btnNavigation text-nowrap {{#if equals formPage 5}}text-blue fw-bold{{/if}}" data-value="5">5. Certification</label> -->
         </div>
     </div>
 
@@ -23,24 +24,24 @@
                     <form id="formLecturers">
                         <div class="form-group">
                             <label for="inputUsername" class="fw-bold text-login-content">Username</label>
-                            <input type="text" class="form-control" id="inputUsername" required>
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Ex: John123" required>
                         </div>
                         <div class="form-group">
                             <label for="inputFullname" class="fw-bold text-login-content">Fullname</label>
-                            <input type="text" class="form-control" id="inputFullname" required>
+                            <input type="text" class="form-control" id="inputFullname" placeholder="Ex: John Doe" required>
                         </div>
                         <div class="form-group">
                             <label for="inputAddress" class="fw-bold text-login-content">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" required>
+                            <input type="text" class="form-control" id="inputAddress" placeholder="Ex: Jln. Avenue 12, Jakarta" required>
                         </div>
                         <div class="row row-cols-1 row-cols-md-2">
                             <div class="form-group col">
-                                <label for="inputPOB" class="fw-bold text-login-content">Place of Birth</label>
-                                <input type="text" class="form-control" id="inputPob" required>
+                                <label for="inputPob" class="fw-bold text-login-content">Place of Birth</label>
+                                <input type="text" class="form-control" id="inputPob" placeholder="Ex: Jakarta" required>
                             </div>
                             <div class="form-group col">
-                                <label for="inputDOB" class="fw-bold text-login-content">Date of Birth</label>
-                                <input type="date" class="form-control" id="inputDob" required>
+                                <label for="inputDob" class="fw-bold text-login-content">Date of Birth</label>
+                                <input type="date" class="form-control" id="inputDob" placeholder="Ex: 01/01/1990" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -81,68 +82,293 @@
                     <form id="formLecturers">
                         <div class="form-group">
                             <label for="inputNationality" class="fw-bold text-login-content">Nationality</label>
-                            <input type="text" class="form-control" id="inputNationality" required>
+                            <input type="text" class="form-control" id="inputNationality" placeholder="Ex: Indonesian" required>
                         </div>
                         <div class="form-group">
                             <label for="inputReligion" class="fw-bold text-login-content">Religion</label>
-                            <input type="text" class="form-control" id="inputReligion" required>
+                            <input type="text" class="form-control" id="inputReligion" placeholder="Ex: Catholic" required>
                         </div>
                         <div class="form-group">
-                            <label for="inputNIK" class="fw-bold text-login-content">NIK</label>
-                            <input type="text" class="form-control" id="inputNik" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputNIDN" class="fw-bold text-login-content">NIDN / NIDK</label>
-                            <input type="text" class="form-control" id="inputNidn" required>
+                            <label for="inputNik" class="fw-bold text-login-content">NIK</label>
+                            <input type="text" class="form-control" id="inputNik" placeholder="Ex: 3602041211870001" required>
                         </div>
                         <div class="form-group">
                             <label for="inputRegisteredAddress" class="fw-bold text-login-content">Registered Address</label>
-                            <input type="text" class="form-control" id="inputRegisteredAddress" required>
+                            <input type="text" class="form-control" id="inputRegisteredAddress" placeholder="Ex: Bandung" required>
                         </div>
-                        <button class="btn btn-submit btn-next text-white float-end mt-2" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="2">
-                            Next
-                            <i class="fa fa-light fa-arrow-right"></i>
-                        </button>
                     </form>
                 </section>
             </div>
         </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="2">
+                Next
+                <i class="fa fa-light fa-arrow-right"></i>
+            </button>
+        </div>
     {{/if}}
 
     <!-- Page 2 -->
-    <!-- National Identity -->
+    <!-- Professional Experience -->
     {{#if equals formPage 2}}
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
-            Educational Details
+            Current Professional Experience
         </div>
         <div class="card-body">
             <section class="p-2">
                 <form id="formLecturers">
                     <div class="form-group">
-                        <label for="name" class="fw-bold text-login-content">Username</label>
-                        <input type="text" class="form-control" id="inputUsername" required>
+                        <label for="inputNidn" class="fw-bold text-login-content">NIDN / NIDK</label>
+                        <input type="text" class="form-control" id="inputNidn" placeholder="Ex: 2016076202" required>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="fw-bold text-login-content">Fullname</label>
-                        <input type="text" class="form-control" id="inputFullname" required>
+                        <label for="inputPosition" class="fw-bold text-login-content">Current Position</label>
+                        <input type="text" class="form-control" id="inputPosition" placeholder="Ex: Lecturer" required>
                     </div>
                     <div class="form-group">
-                        <label for="name" class="fw-bold text-login-content">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" required>
+                        <label for="inputAcademicRank" class="fw-bold text-login-content">Academic Rank (Kepangkatan)</label>
+                        <input type="text" class="form-control" id="inputAcademicRank" placeholder="Ex: Penata Muda Tingkat 1" required>
                     </div>
-                    <div class="form-group">
-                        <label for="name" class="fw-bold text-login-content">Place of Birth</label>
-                        <input type="text" class="form-control" id="inputPob" required>
-                    </div>
-                    {{#if equals type "add"}}
-                        <button class="btn btn-primary btn-submit float-end mt-2" type="button">Create New Lecturer</button>
-                    {{else}}
-                        <button class="btn btn-primary btn-submit float-end mt-2" type="button">Edit Data</button>
-                    {{/if}}
+
                 </form>
             </section>
         </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Previous Professional Experience
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputJobPosition" class="fw-bold text-login-content">Job Position (Status Dosen di ...)</label>
+                        <input type="text" class="form-control" id="inputJobPosition" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputInstitution" class="fw-bold text-login-content">Institution</label>
+                        <input type="text" class="form-control" id="inputInstitution" placeholder="Ex: Universitas Ciputra" required>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputStartDate" class="fw-bold text-login-content">Start Date</label>
+                            <input type="date" class="form-control" id="inputStartDate" required>
+                        </div>
+                        <div class="form-group col">
+                            <label for="inputEndDate" class="fw-bold text-login-content">End Date</label>
+                            <input type="date" class="form-control" id="inputEndDate" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Add Experience
+                        </button>
+                    </div>
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <div class="form-group">
+                        <label for="inputListExperience" class="fw-bold text-login-content">List Experience</label>
+                        <textarea class="form-control" id="inputListExperience" readonly required></textarea>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="1">
+            <i class="fa fa-light fa-arrow-left"></i>
+            Previous
+        </button>
+        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
+            Next
+            <i class="fa fa-light fa-arrow-right"></i>
+        </button>
+    </div>
+    {{/if}}
+
+    <!-- Page 3 -->
+    <!-- Educational History -->
+    {{#if equals formPage 3}}
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Educational History
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputEducationLevel" class="fw-bold text-login-content">Education Level</label>
+                        <input type="text" class="form-control" id="inputEducationLevel" placeholder="Ex: Undergraduate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEducationMajor" class="fw-bold text-login-content">Major</label>
+                        <input type="text" class="form-control" id="inputEducationMajor" placeholder="Ex: Information Technology" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEducationInstitution" class="fw-bold text-login-content">Institution</label>
+                        <input type="text" class="form-control" id="inputEducationInstitution" placeholder="Ex: Universitas Teknologi Bandung" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputGraduateDegree" class="fw-bold text-login-content">Graduate Degree</label>
+                        <input type="text" class="form-control" id="inputGraduateDegree" placeholder="Ex: Bachelor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDomestic" class="fw-bold text-login-content">Domestic Institution</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputDomestic" value="local">
+                                <label class="form-check-label">
+                                    Local
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputDomestic" value="overseas">
+                                <label class="form-check-label">
+                                    Overseas
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputFormalStatus" class="fw-bold text-login-content">Formal Status</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputFormalStatus" value="formal">
+                                <label class="form-check-label">
+                                    Formal
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputFormalStatus" value="informal">
+                                <label class="form-check-label">
+                                    Informal
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputEducationStart" class="fw-bold text-login-content">Start Date</label>
+                            <input type="date" class="form-control" id="inputEducationStart" required>
+                        </div>
+                        <div class="form-group col">
+                            <label for="inputEducationEnd" class="fw-bold text-login-content">End Date</label>
+                            <input type="date" class="form-control" id="inputEducationEnd" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Add History
+                        </button>
+                    </div>
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <div class="form-group">
+                        <label for="inputListHistory" class="fw-bold text-login-content">List History</label>
+                        <textarea class="form-control" id="inputListHistory" readonly required></textarea>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="2">
+            <i class="fa fa-light fa-arrow-left"></i>
+            Previous
+        </button>
+        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="4">
+            Next
+            <i class="fa fa-light fa-arrow-right"></i>
+        </button>
+    </div>
+    {{/if}}
+
+    <!-- Page 4 -->
+    <!-- Certification & Research -->
+    {{#if equals formPage 4}}
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Certification
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputCertificationType" class="fw-bold text-login-content">Certification Type</label>
+                        <input type="text" class="form-control" id="inputCertificationType" placeholder="Ex: Lecturer Certification" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCertificationMajor" class="fw-bold text-login-content">Certification Major</label>
+                        <input type="text" class="form-control" id="inputCertificationMajor" placeholder="Ex: Information Technology" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRegistrationNumber" class="fw-bold text-login-content">Registration Number</label>
+                        <input type="text" class="form-control" id="inputRegistrationNumber" placeholder="Ex: xxxxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSkNumber" class="fw-bold text-login-content">SK Number</label>
+                        <input type="text" class="form-control" id="inputSkNumber" placeholder="Ex: xxxxxxxxxxxx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Certification Organiser</label>
+                        <input type="text" class="form-control" id="inputCertificationOrganiser" placeholder="Ex: Kemendikbud" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCertificationGrade" class="fw-bold text-login-content">Grade</label>
+                        <input type="text" class="form-control" id="inputCertificationGrade" placeholder="Ex: Grade A" required>
+                    </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputCertificationStart" class="fw-bold text-login-content">Start Date</label>
+                            <input type="date" class="form-control" id="inputCertificationStart" required>
+                        </div>
+                        <div class="form-group col">
+                            <label for="inputCertificationEnd" class="fw-bold text-login-content">End Date</label>
+                            <input type="date" class="form-control" id="inputCertificationEnd" required>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Add Certification
+                        </button>
+                    </div>
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <div class="form-group">
+                        <label for="inputListCertification" class="fw-bold text-login-content">List Certification</label>
+                        <textarea class="form-control" id="inputListCertification" readonly required></textarea>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Research Field of Interest
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputResearchInterest" class="fw-bold text-login-content">Research Interest</label>
+                        <input type="text" class="form-control" id="inputResearchInterest" placeholder="Ex: Spirituality" required>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="3">
+            <i class="fa fa-light fa-arrow-left"></i>
+            Previous
+        </button>
+        {{#if equals type "add"}}
+            <button class="btn btn-warning btn-submit" type="button">Submit</button>
+        {{else}}
+            <button class="btn btn-warning btn-submit" type="button">Submit</button>
+        {{/if}}
     </div>
     {{/if}}
     
@@ -165,6 +391,14 @@
         .btn-next:hover{
             opacity: 0.8;
             transition: opacity 0.4s;
+        }
+        .btn-previous:hover{
+            opacity: 0.8;
+            transition: opacity 0.4s;
+        }
+        .btn-add{
+            background-color: rgba(255, 165, 0, 0.8) !important;
+            color: black;
         }
 
         @media (max-width: 1024px) {            

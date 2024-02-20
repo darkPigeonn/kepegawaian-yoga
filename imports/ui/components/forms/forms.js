@@ -18,5 +18,9 @@ Template.formLecturers.events({
     'click .btn-next' (e, t){
         const getValue = $(e.target).val();
         t.formPage.set(getValue);
+    },
+    'click .btn-previous' (e, t){
+        const getValue = $(e.target).val();
+        t.formPage.set(getValue);
     }
 });
