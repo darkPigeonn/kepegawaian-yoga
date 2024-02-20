@@ -6,12 +6,7 @@ import "../../ui/pages/home/home.js";
 import "../../ui/pages/article/article.js";
 import "../../ui/pages/not-found/not-found.js";
 import "../../ui/pages/batch/batch.js";
-import "../../ui/pages/employee/employee.js";
-import "../../ui/pages/departement/departement.js";
 import "../../ui/pages/notification/notification.js";
-import "../../ui/pages/projects/projects.js";
-import "../../ui/pages/tasks/tasks.js";
-import "../../ui/pages/attendance/attendance.js";
 import "../../ui/pages/prayers/prayers.js";
 import "../../ui/pages/news/news.js";
 import "../../ui/pages/document/document.js";
@@ -266,70 +261,6 @@ FlowRouter.route("/notification", {
   name: "notificationPage",
   action(){
     this.render("App_body", "notification_page")
-  }
-});
-
-// Projects
-FlowRouter.route("/projects", {
-  name: "projectPage",
-  action(){
-    this.render("App_body", "projects_page")
-  }
-});
-FlowRouter.route("/projects/create", {
-  name: "projectCreate",
-  action(){
-    this.render("App_body", "projects_create")
-  }
-});
-FlowRouter.route("/projects/edit/:_id", {
-  name: "projectEdit",
-  action(){
-    this.render("App_body", "projects_edit")
-  }
-});
-FlowRouter.route("/projects/detail/:_id", {
-  name: "projectDetail",
-  action(){
-    this.render("App_body", "projects_detail")
-  }
-});
-FlowRouter.route("/projects/detail/:_id/members", {
-  name: "projectMembers",
-  action(){
-    this.render("App_body", "projects_members")
-  }
-});
-
-// Tasks
-FlowRouter.route("/tasks", {
-  name: "taskUmum",
-  action(){
-    this.render("App_body", "tasks_page")
-  }
-});
-FlowRouter.route("/tasks/create/:_id", {
-  name: "taskCreate",
-  action(){
-    this.render("App_body", "tasks_create")
-  }
-});
-FlowRouter.route("/tasks/edit/:_id", {
-  name: "taskEdit",
-  action(){
-    this.render("App_body", "tasks_edit")
-  }
-});
-FlowRouter.route("/tasks/detail/:_id", {
-  name: "taskDetail",
-  action(){
-    this.render("App_body", "tasks_detail")
-  }
-});
-FlowRouter.route("/tasks/detail/:_id/members", {
-  name: "taskMembers",
-  action(){
-    this.render("App_body", "tasks_members")
   }
 });
 

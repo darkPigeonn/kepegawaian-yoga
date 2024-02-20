@@ -1,6 +1,5 @@
 import { Prayers, PrayersGroup } from "./prayers";
 import { Notifications } from "../notification/notification";
-import { Employee } from "../employee/employee";
 import { check } from "meteor/check";
 import moment from "moment";
 import slugify from 'slugify';
