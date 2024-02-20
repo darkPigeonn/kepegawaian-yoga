@@ -1,6 +1,5 @@
 import { Article } from "./article";
 // import { Notifications } from "../notification/notification";
-// import { Employee } from "../employee/employee";
 // import { check } from "meteor/check";
 // import { Roles } from "meteor/alanning:roles";
 // import moment from "moment";
