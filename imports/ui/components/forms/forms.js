@@ -114,7 +114,7 @@ Template.formLecturers.events({
             formData.address = $("#inputAddress").val()
             formData.pob = $("#inputPob").val()
             formData.dob = $("#inputDob").val()
-            formData.inputGender = $("#inputGender").val()
+            formData.gender = $("#inputGender").val()
             formData.nationality = $("#inputNationality").val()
             formData.religion = $("#inputReligion").val()
             formData.nik = $("#inputNik").val()

@@ -147,6 +147,10 @@ Meteor.methods({
     },
 
     "dosen.insert" (formData){
-        Lecturers.insert(formData)
+        return Lecturers.insert(formData)
+    },
+
+    "dosen.getAll" (){
+        return Lecturers.find().fetch()
     }
 })
