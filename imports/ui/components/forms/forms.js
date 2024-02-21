@@ -3,13 +3,31 @@ import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 
 Template.formLecturers.onCreated(function () {
-    this.formPage = new ReactiveVar(1);
-    this.formData = new ReactiveVar({});
-    this.listExperiences = new ReactiveVar([])
-    this.listEducationalHistory = new ReactiveVar([])
-    this.listCertification = new ReactiveVar([])
-    this.submitType = new ReactiveVar()
+    const self = this;
+    self.formPage = new ReactiveVar(1);
+    self.formData = new ReactiveVar({});
+    self.listExperiences = new ReactiveVar([])
+    self.listEducationalHistory = new ReactiveVar([])
+    self.listCertification = new ReactiveVar([])
+    self.submitType = new ReactiveVar(self.data.submitType)
 });
+
+Template.formLecturers.onRendered( function(){
+    const context = Template.instance();
+    if (this.submitType.get() === 2) {
+        const id = FlowRouter.getParam("_id")
+        Meteor.call("dosen.getDetails", id, function (err, res) {
+            if (err) {
+                history.back();
+            } else {
+                context.formData.set(res)
+                context.listExperiences.set(res.listExperiences)
+                context.listEducationalHistory.set(res.listEducationalHistory)
+                context.listCertification.set(res.listCertification)
+            }
+        });
+    }
+})
 
 Template.formLecturers.helpers({
     formPage(){
@@ -163,6 +181,7 @@ Template.formLecturers.events({
         let postRoute = "dosen.insert"
         if (submitType === 2){
             postRoute = "dosen.update"
+            formData._id = FlowRouter.getParam("_id")
         }
         Meteor.call(postRoute, formData, async function (err, res) {
             if (err) {

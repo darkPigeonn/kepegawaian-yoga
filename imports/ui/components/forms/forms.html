@@ -90,19 +90,19 @@
                     <form id="formLecturers">
                         <div class="form-group">
                             <label for="inputNationality" class="fw-bold text-login-content">Nationality</label>
-                            <input type="text" class="form-control" id="inputNationality" placeholder="Ex: Indonesian" required>
+                            <input type="text" class="form-control" id="inputNationality" value="{{formData.nationality}}" placeholder="Ex: Indonesian" required>
                         </div>
                         <div class="form-group">
                             <label for="inputReligion" class="fw-bold text-login-content">Religion</label>
-                            <input type="text" class="form-control" id="inputReligion" placeholder="Ex: Catholic" required>
+                            <input type="text" class="form-control" id="inputReligion" value="{{formData.religion}}" placeholder="Ex: Catholic" required>
                         </div>
                         <div class="form-group">
                             <label for="inputNik" class="fw-bold text-login-content">NIK</label>
-                            <input type="text" class="form-control" id="inputNik" placeholder="Ex: 3602041211870001" required>
+                            <input type="text" class="form-control" id="inputNik" value="{{formData.nik}}" placeholder="Ex: 3602041211870001" required>
                         </div>
                         <div class="form-group">
                             <label for="inputRegisteredAddress" class="fw-bold text-login-content">Registered Address</label>
-                            <input type="text" class="form-control" id="inputRegisteredAddress" placeholder="Ex: Bandung" required>
+                            <input type="text" class="form-control" id="inputRegisteredAddress" value="{{formData.registeredAddress}}" placeholder="Ex: Bandung" required>
                         </div>
                     </form>
                 </section>
@@ -129,15 +129,15 @@
                 <form id="formLecturers">
                     <div class="form-group">
                         <label for="inputNidn" class="fw-bold text-login-content">NIDN / NIDK</label>
-                        <input type="text" class="form-control" id="inputNidn" placeholder="Ex: 2016076202" required>
+                        <input type="text" class="form-control" id="inputNidn" placeholder="Ex: 2016076202" value="{{formData.nidn}}" required>
                     </div>
                     <div class="form-group">
                         <label for="inputPosition" class="fw-bold text-login-content">Current Position</label>
-                        <input type="text" class="form-control" id="inputPosition" placeholder="Ex: Lecturer" required>
+                        <input type="text" class="form-control" id="inputPosition" placeholder="Ex: Lecturer" value="{{formData.position}}" required>
                     </div>
                     <div class="form-group">
                         <label for="inputAcademicRank" class="fw-bold text-login-content">Academic Rank (Kepangkatan)</label>
-                        <input type="text" class="form-control" id="inputAcademicRank" placeholder="Ex: Penata Muda Tingkat 1" required>
+                        <input type="text" class="form-control" id="inputAcademicRank" value="{{formData.academicRank}}" placeholder="Ex: Penata Muda Tingkat 1" required>
                     </div>
 
                 </form>
@@ -216,7 +216,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputEducationInstitution" class="fw-bold text-login-content">Institution</label>
-                        <input type="text" class="form-control" id="inputEducationInstitution" placeholder="Ex: Universitas Teknologi Bandung" required>
+                        <input type="text" class="form-control" id="inputEducationInstitution"  placeholder="Ex: Universitas Teknologi Bandung" required>
                     </div>
                     <div class="form-group">
                         <label for="inputGraduateDegree" class="fw-bold text-login-content">Graduate Degree</label>
@@ -361,7 +361,7 @@
                 <form id="formLecturers">
                     <div class="form-group">
                         <label for="inputResearchInterest" class="fw-bold text-login-content">Research Interest</label>
-                        <input type="text" class="form-control" id="inputResearchInterest" placeholder="Ex: Spirituality" required>
+                        <input type="text" class="form-control" id="inputResearchInterest" value="{{formData.researchInterest}}" placeholder="Ex: Spirituality" required>
                     </div>
                 </form>
             </section>

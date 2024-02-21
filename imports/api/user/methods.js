@@ -163,5 +163,17 @@ Meteor.methods({
 
     "dosen.getAll" (){
         return Lecturers.find().fetch()
+    },
+
+    "dosen.getDetails"(_id){
+        const user = Meteor.users.findOne({_id})
+        return user
+    },
+
+    "dosen.update"($set){
+        const _id = $set._id
+        delete $set._id
+        const user = Meteor.users.update({_id}, {$set})
+        return user
     }
 })
