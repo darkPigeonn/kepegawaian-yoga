@@ -193,3 +193,37 @@ Template.formLecturers.events({
         });
     }
 });
+
+
+  
+
+  
+  Template.passwordEdit.events({
+    'click #editPassword' (e, t) {
+      e.preventDefault();
+      const old = $("#old-password").val()
+      const newPassword = $("#new-password").val()
+      const confirmation = $("#confirmation-password").val()
+
+      if (old === "" || newPassword === "" || confirmation === "" ){
+        failAlert("Pastikan semua Field terisi !")
+      } else {
+        if (newPassword !== confirmation){
+            failAlert("Password baru dan konfirmasi password tidak sama !")
+        } else {
+            const data = {
+                old,
+                newPassword
+            } 
+            Meteor.call("users.changePassword", data, function (error, result) {
+                if (error) {
+                  failAlert(error)
+                } else {
+                  successAlert("Berhasil mengubah password")
+                  FlowRouter.go("/")
+                }
+              });
+        }
+      }
+    }
+  })

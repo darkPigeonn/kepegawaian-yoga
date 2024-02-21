@@ -22,6 +22,25 @@ isEmptyData = function (data) {
   return dataReturn;
 };
 
+confirmationAlertAsync = async function (additionalMessage) {
+  if (typeof message === "undefined") {
+    additionalMessage = "";
+  }
+  try {
+    let result = await Swal.fire({
+      title: "Konfirmasi",
+      text: "Apakah anda yakin? " + additionalMessage,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    });
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 uploadFiles = async function (uploadData) {
   const s3Client = new S3({
     endpoint: Meteor.settings.public.s3.endpoint,

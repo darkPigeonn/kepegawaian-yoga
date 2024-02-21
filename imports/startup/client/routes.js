@@ -32,6 +32,13 @@ FlowRouter.route("/notification", {
   }
 });
 
+FlowRouter.route('/password/edit', {
+  name: 'passwordEdit',
+  action() {
+    this.render("App_body", "passwordEdit");
+  }
+});
+
 FlowRouter.route("/forgot-password", {
   name: "forgotPassword",
   action(){

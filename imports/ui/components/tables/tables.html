@@ -93,32 +93,34 @@
               {{i.gender}}
             </td>
             <td>
-              <div class="d-flex flex-wrap gap-1">
-                  <a class="btn btn-primary btn-sm btn-edit"
-                      href="/lecturers/detail/{{i._id}}">
-                      <i class="fa fa-circle-info" milik="{{i._id}}"></i> 
-                  </a>
+              {{#if isInRoles 'admin'}}
+                <div class="d-flex flex-wrap gap-1">
+                    <a class="btn btn-primary btn-sm btn-edit"
+                        href="/lecturers/detail/{{i._id}}">
+                        <i class="fa fa-circle-info" milik="{{i._id}}"></i> 
+                    </a>
 
-                  <a class="btn btn-primary btn-sm btn-edit"
-                      href="/lecturers/edit/{{i._id}}">
-                      <i class="fa fa-edit" milik="{{i._id}}"></i> 
-                  </a>
+                    <a class="btn btn-primary btn-sm btn-edit"
+                        href="/lecturers/edit/{{i._id}}">
+                        <i class="fa fa-edit" milik="{{i._id}}"></i> 
+                    </a>
 
-                  <button class="btn btn-danger btn-sm delete-lecturer" id="{{i._id}}">
-                      <i class="fa fa-trash delete-lecturer" id="{{i._id}}"></i> 
-                  </button>
-                <!-- <div class="dropdown">
-                    <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="moreActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Aksi Lain
+                    <button class="btn btn-danger btn-sm delete-lecturer" id="delete-lecturer" value="{{i._id}}">
+                        <i class="fa fa-trash delete-lecturer" id="{{i._id}}" value="{{i._id}}"></i> 
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="moreActionsDropdown">
-                        {{#if isInRoles 'vecumFest'}}
-                            <a class="dropdown-item" href="#" id="openModalBtn" data-milik="{{i.slug}}">Lihat QR</a>
-                        {{/if}}
-                        <a class="dropdown-item" href="/articles/evaluation/{{toMeteorId i._id}}">Evaluasi</a>
-                    </div>
-                </div> -->
-              </div>
+                  <!-- <div class="dropdown">
+                      <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="moreActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Aksi Lain
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="moreActionsDropdown">
+                          {{#if isInRoles 'vecumFest'}}
+                              <a class="dropdown-item" href="#" id="openModalBtn" data-milik="{{i.slug}}">Lihat QR</a>
+                          {{/if}}
+                          <a class="dropdown-item" href="/articles/evaluation/{{toMeteorId i._id}}">Evaluasi</a>
+                      </div>
+                  </div> -->
+                </div>
+              {{/if}}
             </td>
           </tr>
           {{/each}}

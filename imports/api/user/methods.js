@@ -23,6 +23,21 @@ Meteor.methods({
         });
         console.log(response.data)
     },
+    "users.changePassword" (body){
+        const user = Meteor.users.findOne({_id: Meteor.userId()})
+        const newPassword = body.newPassword
+        const oldPassword = {
+            digest: Package.sha.SHA256(body.old),
+            algorithm: "sha-256",
+          };
+        const result = Accounts._checkPassword(user, oldPassword);
+
+        if (!result.error) {
+            Accounts.setPassword(Meteor.userId(), newPassword);
+        } else {
+            throw new Meteor.Error('invalid-old-password', 'Invalid old password', { logout: false });
+        }
+    },
     "employee.checkToken" (resetToken){
        const user = Meteor.users.findOne({resetToken})
        if (user){
@@ -149,11 +164,16 @@ Meteor.methods({
     "dosen.insert" (formData){
         formData.password = "dosen1234"
         formData.roles = ["dosen"]
+        formData.status = true
         const _id =  Accounts.createUser(formData);
         delete formData.username
         delete formData.password
         return Meteor.users.update({ _id }, { $set: formData })
 
+    },
+
+    "dosen.delete" (_id){
+        const user = Meteor.users.update({_id}, {$set: {status: false}})
     },
     
     "dosen.getMine" (){
@@ -162,7 +182,13 @@ Meteor.methods({
     },
 
     "dosen.getAll" (){
-        return Lecturers.find().fetch()
+        return Meteor.users.find({
+            roles: {
+                $in :  ["dosen"] 
+            },
+            status: true
+            
+        }).fetch()
     },
 
     "dosen.getDetails"(_id){
