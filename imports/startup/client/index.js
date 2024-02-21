@@ -5,6 +5,7 @@ import { S3, PutObjectCommand } from "@aws-sdk/client-s3";
 import Swal from "sweetalert2";
 import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
 import moment from "moment/moment.js";
+import { Random } from "meteor/random";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 
@@ -22,28 +23,45 @@ isEmptyData = function (data) {
 };
 
 uploadFiles = async function (uploadData) {
-    const s3Client = new S3({
-      endpoint: Meteor.settings.public.s3.endpoint,
-      region: Meteor.settings.public.s3.region,
-      credentials: {
-        accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
-        secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
-      },
-    });
-    try {
-      await s3Client.send(
-        new PutObjectCommand({
-          Bucket: "imavistatic",
-          Key: uploadData.fileName,
-          Body: uploadData.Body,
-          ACL: "public-read",
-          CacheControl: "no-cache",
-        })
-      );
-      return "https://cdn.imavi.org/" + uploadData.fileName;
-    } catch (err) {
-      console.log("Error " + err);
+  const s3Client = new S3({
+    endpoint: Meteor.settings.public.s3.endpoint,
+    region: Meteor.settings.public.s3.region,
+    credentials: {
+      accessKeyId: Meteor.settings.public.s3.credentials.accessKeyId,
+      secretAccessKey: Meteor.settings.public.s3.credentials.secretAccessKey,
+    },
+  });
+  let fileName;
+  if (uploadData.fileLink) {
+    const identifier = uploadData.fileLink.split("-")[1].split(".")[0];
+    fileName =
+      uploadData.type +
+      "-" +
+      identifier +
+      "." +
+      uploadData.Body.name.split(".").pop();
+  } else {
+    if (uploadData.type.split("-")[0] === "parokis") {
+      fileName = uploadData.type + "." + uploadData.Body.name.split(".").pop();
+    } else {
+      fileName =
+        uploadData.type + "~" + Random.id(7) + "~" + uploadData.Body.name;
     }
+  }
+  try {
+    const x = await s3Client.send(
+      new PutObjectCommand({
+        Bucket: "imavistatic",
+        Key: fileName,
+        Body: uploadData.Body,
+        ACL: "public-read",
+        CacheControl: "no-cache",
+      })
+    );
+    return "https://cdn.imavi.org/" + fileName;
+  } catch (err) {
+    failAlert("Error " + err);
+  }
 };
 
 churchOperationalDays = [

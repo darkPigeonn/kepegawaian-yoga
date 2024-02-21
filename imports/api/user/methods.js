@@ -7,6 +7,7 @@ import { Email } from "meteor/email"
 
 import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
+export const Lecturers = new Mongo.Collection("lecturers", { idGeneration: 'MONGO' });
 process.env.APP_IDMOBILE = Meteor.settings.APP_IDMOBILE;
 process.env.APP_SECRETMOBILE = Meteor.settings.APP_SECRETMOBILE;
 Meteor.methods({
@@ -143,5 +144,9 @@ Meteor.methods({
         check(password, String);
         Accounts.setPassword(id, password);
         return true;
+    },
+
+    "dosen.insert" (formData){
+        Lecturers.insert(formData)
     }
 })
