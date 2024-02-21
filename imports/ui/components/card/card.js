@@ -7,9 +7,7 @@ Template.cardMobileWelcome.onCreated(function () {
 
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
-        console.log(result);
         self.myData.set(result);
-        console.log(result)
       } else {
         console.log(error);
       }
@@ -29,7 +27,6 @@ Template.cardHomeProfileDetail.onCreated(function () {
 
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
-        console.log(result);
         self.myData.set(result);
         console.log(result)
       } else {
@@ -39,6 +36,27 @@ Template.cardHomeProfileDetail.onCreated(function () {
 });
 
 Template.cardHomeProfileDetail.helpers({
+    myData(){
+        return Template.instance().myData.get();
+    },
+});
+
+Template.cardDetailProfileDosen.onCreated(function () { 
+    const self = this;
+    self.myData = new ReactiveVar({});
+   
+
+    Meteor.call("dosen.getMine", function (error, result) {
+      if (result) {
+        self.myData.set(result);
+        console.log(result)
+      } else {
+        console.log(error);
+      }
+    });
+});
+
+Template.cardDetailProfileDosen.helpers({
     myData(){
         return Template.instance().myData.get();
     },

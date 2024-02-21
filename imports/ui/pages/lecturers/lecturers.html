@@ -1,13 +1,40 @@
 <template name="lecturers_add">
     <div class="container poppins-regular pt-4 pb-4">
-        <h4 class="text-login-content fw-bold py-2 mb-0">New Lecturers</h4>
+        <div class="d-flex align-items-center flex-wrap gap-3">
+            <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
+            <h4 class="text-login-content fw-bold py-2 mb-0">New Lecturers</h4>
+        </div>
         {{>formLecturers type="add" formPage="1" submitType=1}}
     </div>
 </template>
 
 <template name="lecturers_edit">
     <div class="container poppins-regular pt-4 pb-4">
-        <h4 class="text-login-content fw-bold py-2 mb-0">Edit Lecturers</h4>
+        <div class="d-flex align-items-center flex-wrap gap-3">
+            <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
+            <h4 class="text-login-content fw-bold py-2 mb-0">Edit Lecturers</h4>
+        </div>
         {{>formLecturers type="edit" formPage="1" submitType=2}}
+    </div>
+</template>
+
+<template name="lecturers_detail">
+    <div class="container poppins-regular pt-4 pb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            {{#if isInRoles 'admin'}}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
+                <h4 class="text-login-content fw-bold py-2 mb-0">Detail Lecturers</h4>
+            </div>
+            {{else if isInRoles 'dosen'}}
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
+                <h4 class="text-login-content fw-bold py-2 mb-0">Your Profile</h4>
+            </div>
+            {{/if}}
+            <a href="/lecturers/edit/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-pen-to-square text-dark me-3"></i></a>
+        </div>
+        <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+        {{> cardDetailProfileDosen name="John Doe" pob="Jakarta" dob="01/01/2000" address="Jl. Salak Durian 123" gender="Male"}}
     </div>
 </template>

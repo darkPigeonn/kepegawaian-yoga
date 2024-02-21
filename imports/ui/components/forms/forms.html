@@ -4,10 +4,10 @@
     <!-- 2. type -> for add / edit page -->
     <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2">
         <div class="navigation-form d-flex gap-3">
-            <label class="btnNavigation text-nowrap {{#if equals formPage 1}}text-blue fw-bold{{/if}}" data-value="1">1. Profile</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 2}}text-blue fw-bold{{/if}}" data-value="2">2. Professional</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 3}}text-blue fw-bold{{/if}}" data-value="3">3. Educational</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            <label class="btnNavigation text-nowrap {{#if equals formPage 4}}text-blue fw-bold{{/if}}" data-value="4">4. Certification & Research</label>
+            <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold{{/if}}" data-value="1">1. Profile</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold{{/if}}" data-value="2">2. Professional</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold{{/if}}" data-value="3">3. Educational</label><i class="fa fa-light fa-angle-right pt-1"></i>
+            <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold{{/if}}" data-value="4">4. Certification & Research</label>
             <!-- <label class="btnNavigation text-nowrap {{#if equals formPage 5}}text-blue fw-bold{{/if}}" data-value="5">5. Certification</label> -->
         </div>
     </div>
@@ -33,6 +33,10 @@
                         <div class="form-group">
                             <label for="inputAddress" class="fw-bold text-login-content">Address</label>
                             <input type="text" class="form-control"  value="{{formData.address}}" id="inputAddress" placeholder="Ex: Jln. Avenue 12, Jakarta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAddress" class="fw-bold text-login-content">Phone Number</label>
+                            <input type="tel" class="form-control"  value="{{formData.phoneNumber}}" id="inputPhoneNumber" placeholder="Ex: 0821-1234-5678" required>
                         </div>
                         <div class="row row-cols-1 row-cols-md-2">
                             <div class="form-group col">
@@ -112,7 +116,7 @@
         <div class="d-flex justify-content-end mt-4">
             <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="2">
                 Next
-                <i class="fa fa-light fa-arrow-right" value="2"></i>
+                <i class="fa fa-light fa-arrow-right btn-next" value="2"></i>
             </button>
         </div>
     {{/if}}
@@ -175,23 +179,72 @@
                             Add Experience
                         </button>
                     </div>
+                    {{#if listExperiences}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
-                    <div class="form-group">
-                        <label for="inputListExperience" class="fw-bold text-login-content">List Experience</label>
-                        <textarea class="form-control" id="inputListExperience" readonly required></textarea>
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">List Experiences</label>
+                        {{#each item in listExperiences}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="w-25 row row-cols-1 mx-0">
+                                        <label class="col text-break fw-bold">{{item.jobPosition}}</label>
+                                        <label class="col text-break">At {{item.institution}}</label>
+                                    </div>
+                                    <div class="w-75">
+                                        <div class="d-flex justify-content-end flex-row gap-2 me-2">
+                                            <label class="fw-bold text-secondary text-break"> {{formatHRDate item.startDate}}</label>
+                                            -
+                                            <label class="fw-bold text-secondary text-break"> {{formatHRDate item.endDate}}</label>
+                                        </div>
+                                        <div class="float-end bottom-0 me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
                     </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">List Experiences</label>
+                        {{#each item in listExperiences}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold">{{item.jobPosition}}</label>
+                                        <label class="col">At {{item.institution}}</label>
+                                        <div class="col-6">
+                                            <p class="fw-bold text-secondary mt-4"><b class="text-dark">Start Date:</b> {{formatHRDate item.startDate}}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="fw-bold text-secondary mt-4"><b class="text-dark">End Date:</b> {{formatHRDate item.endDate}}</p>
+                                        </div>
+                                        <div class="d-flex justify-content-end bottom-0 me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm" type="button">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
                 </form>
             </section>
         </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="1">
-            <i class="fa fa-light fa-arrow-left"></i>
+            <i class="fa fa-light fa-arrow-left btn-previous" value="1"></i>
             Previous
         </button>
         <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
             Next
-            <i class="fa fa-light fa-arrow-right" value="3"></i>
+            <i class="fa fa-light fa-arrow-right btn-next" value="3"></i>
         </button>
     </div>
     {{/if}}
@@ -226,13 +279,13 @@
                         <label for="inputDomestic" class="fw-bold text-login-content">Domestic Institution</label>
                         <div class="d-flex flex-wrap gap-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputDomestic" value="local">
+                                <input class="form-check-input" type="radio" name="inputDomestic" id="inputDomestic" value="local">
                                 <label class="form-check-label">
                                     Local
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputDomestic" value="overseas">
+                                <input class="form-check-input" type="radio" name="inputDomestic" id="inputDomestic" value="overseas">
                                 <label class="form-check-label">
                                     Overseas
                                 </label>
@@ -243,13 +296,13 @@
                         <label for="inputFormalStatus" class="fw-bold text-login-content">Formal Status</label>
                         <div class="d-flex flex-wrap gap-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputFormalStatus" value="formal">
+                                <input class="form-check-input" type="radio" name="inputFormalStatus" id="inputFormalStatus" value="formal">
                                 <label class="form-check-label">
                                     Formal
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputFormalStatus" value="informal">
+                                <input class="form-check-input" type="radio" name="inputFormalStatus" id="inputFormalStatus" value="informal">
                                 <label class="form-check-label">
                                     Informal
                                 </label>
@@ -272,23 +325,74 @@
                             Add History
                         </button>
                     </div>
+                    {{#if listEducationalHistory}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
-                    <div class="form-group">
-                        <label for="inputListHistory" class="fw-bold text-login-content">List History</label>
-                        <textarea class="form-control" id="inputListHistory" readonly required></textarea>
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">List History</label>
+                        {{#each item in listEducationalHistory}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="w-60 row row-cols-1 mx-0">
+                                        <label class="col text-break fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</label>
+                                    </div>
+                                    <div class="w-40">
+                                        <div class="d-flex justify-content-end flex-row gap-2 me-2">
+                                            <label class="fw-bold text-secondary">{{formatHRDate item.dateStart}}</label>
+                                            -
+                                            <label class="fw-bold text-secondary">{{formatHRDate item.dateEnd}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <label class="col text-break">{{capitalizeWord item.graduateDegree}} <b>at</b> {{capitalizeWord item.institution}} ({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</label>
+                                </div>
+                                <div class="d-flex justify-content-end bottom-0 me-2">
+                                    <button class="btn btn-trash btn-danger btn-sm">
+                                        <i class="fa fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        {{/each}}
                     </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">List History</label>
+                        {{#each item in listEducationalHistory}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</p>
+                                        <p>{{capitalizeWord item.graduateDegree}} at {{capitalizeWord item.institution}} ({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="fw-bold text-secondary mt-3"><b class="text-dark">Start Date:</b> {{formatHRDate item.dateStart}}</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="fw-bold text-secondary mt-3"><b class="text-dark">End Date:</b> {{formatHRDate item.dateEnd}}</p>
+                                    </div>
+                                    <div class="d-flex justify-content-end bottom-0 me-2">
+                                        <button class="btn btn-trash btn-danger btn-sm" type="button">
+                                            <i class="fa fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
                 </form>
             </section>
         </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="2">
-            <i class="fa fa-light fa-arrow-left"></i>
+            <i class="fa fa-light fa-arrow-left btn-previous" value="2"></i>
             Previous
         </button>
         <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="4">
             Next
-            <i class="fa fa-light fa-arrow-right"></i>
+            <i class="fa fa-light fa-arrow-right btn-next" value="4"></i>
         </button>
     </div>
     {{/if}}
@@ -343,11 +447,63 @@
                             Add Certification
                         </button>
                     </div>
+                    {{#if listCertification}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
-                    <div class="form-group">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
                         <label for="inputListCertification" class="fw-bold text-login-content">List Certification</label>
-                        <textarea class="form-control" id="inputListCertification" readonly required></textarea>
+                        {{#each item in listCertification}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm">
+                                                <i class="fa fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Certification Organizer:</b> {{capitalizeWord item.organizer}}</label>
+                                    <label class="col text-break"><b>Registration Number:</b> {{item.registrationNumber}}</label>
+                                    <label class="col text-break"><b>SK Number:</b> {{item.skNumber}}</label>
+                                    <label class="col text-break"><b>Grade:</b> {{item.grade}}</label>
+                                    <label class="col text-break"><b>Start Date:</b> {{formatHRDate item.dateStart}}</label>
+                                    <label class="col text-break"><b>End Date:</b> {{formatHRDate item.dateEnd}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
                     </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputListCertification" class="fw-bold text-login-content">List Certification</label>
+                        {{#each item in listCertification}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm">
+                                                    <i class="fa fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Certification Organizer:</b> {{capitalizeWord item.organizer}}</label>
+                                        <label class="col text-break"><b>Registration Number:</b> {{item.registrationNumber}}</label>
+                                        <label class="col text-break"><b>SK Number:</b> {{item.skNumber}}</label>
+                                        <label class="col text-break"><b>Grade:</b> {{item.grade}}</label>
+                                        <label class="col text-break"><b>Start Date:</b> {{formatHRDate item.dateStart}}</label>
+                                        <label class="col text-break"><b>End Date:</b> {{formatHRDate item.dateEnd}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
                 </form>
             </section>
         </div>
@@ -369,7 +525,7 @@
     </div>
     <div class="d-flex justify-content-between align-items-center mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="3">
-            <i class="fa fa-light fa-arrow-left"></i>
+            <i class="fa fa-light fa-arrow-left btn-previous" value="3"></i>
             Previous
         </button>
         {{#if equals type "add"}}
@@ -408,6 +564,12 @@
             background-color: rgba(255, 165, 0, 0.8) !important;
             color: black;
         }
+        .w-60{
+            width: 60%;
+        }
+        .w-40{
+            width: 40%;
+        }
 
         @media (max-width: 1024px) {            
             .navigation-form{
@@ -426,24 +588,57 @@
 </template>
 
 <template name="passwordEdit">
-    <div class="page page-create-student">
-      <h1 class="page-title">Ubah Sandi</h1>
-      <form action="" id="edit-user-form">
-        <div class="form-group">
-          <label for="">Sandi Sekarang</label>
-          <input type="password" id="old-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
+    <div class="container page page-create-student poppins-regular py-4">
+        <!-- <h4 class="text-login-content fw-bold py-2 mb-0">Change Password</h4>
+        <form action="" id="edit-user-form">
+            <div class="form-group">
+            <label for="">Sandi Sekarang</label>
+            <input type="password" id="old-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
+            </div>
+            <div class="form-group">
+            <label for="">Sandi Baru</label>
+            <input type="password" id="new-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
+            </div>
+            <div class="form-group">
+                <label for="">Konfirmasi Password</label>
+                <input type="password" id="confirmation-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="editPassword">Simpan</button>
+            </div>
+        </form> -->
+
+        <div class="card rounded-3 mt-4">
+            <div class="card-header bg-blue text-white">
+                Change Password
+            </div>
+            <div class="card-body">
+                <section class="p-2">
+                    <form id="edit-user-form">
+                        <div class="form-group">
+                            <label for="inputPassword" class="fw-bold text-login-content">Current Password</label>
+                            <input type="password" class="form-control" id="old-password" name="inputPassword" placeholder="Ex: *******" value="{{ thisUser.password }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="fw-bold text-login-content">New Password</label>
+                            <input type="password" class="form-control" id="new-password" name="inputPassword" placeholder="Ex: *******" value="{{ thisUser.password }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="fw-bold text-login-content">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmation-password" name="inputPassword" placeholder="Ex: *******" value="{{ thisUser.password }}" required>
+                        </div>
+                    </form>
+                </section>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="">Sandi Baru</label>
-          <input type="password" id="new-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
+        <div class="d-flex justify-content-end align-items-center mt-4">
+            <button class="btn btn-warning btn-submit" id="editPassword" type="button">Submit</button>
         </div>
-        <div class="form-group">
-            <label for="">Konfirmasi Password</label>
-            <input type="password" id="confirmation-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
-          </div>
-        <div class="form-group">
-          <button class="btn btn-primary" id="editPassword">Simpan</button>
-        </div>
-      </form>
     </div>
+
+    <style>
+        .bg-blue {
+            background-color: rgba(80, 130, 246, 0.839) !important;
+        }
+    </style>
   </template>

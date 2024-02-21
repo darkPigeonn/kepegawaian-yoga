@@ -68,6 +68,13 @@ FlowRouter.route("/lecturers/edit/:_id", {
   }
 });
 
+FlowRouter.route("/lecturers/detail/:_id", {
+  name: "lecturer detail",
+  action() {
+    this.render("App_body","lecturers_detail");
+  }
+});
+
 //USER
 // FlowRouter.route("/listUser", {
 //   name:"listUser",

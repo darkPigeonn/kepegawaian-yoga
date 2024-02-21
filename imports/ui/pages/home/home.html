@@ -53,7 +53,7 @@
     <div class="px-2">
       {{#if isInRoles 'dosen'}}
         {{> cardMobileWelcome username="Dosen John"}}
-      {{else}}
+      {{else if isInRoles 'admin'}}
         {{> cardMobileWelcome username="Admin"}}
       {{/if}}
     </div>

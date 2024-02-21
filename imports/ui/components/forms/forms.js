@@ -73,6 +73,7 @@ Template.formLecturers.events({
 
         listEducationalHistory.push(data)
         t.listEducationalHistory.set(listEducationalHistory)
+        console.log(t.listEducationalHistory.get());
     },
     "click .add-certification" (e, t){
         e.preventDefault()
@@ -99,6 +100,7 @@ Template.formLecturers.events({
 
         listCertification.push(data)
         t.listCertification.set(listCertification)
+        console.log(t.listCertification.get());
     },
     "click #add-experience" (e, t){
         e.preventDefault()
@@ -124,13 +126,14 @@ Template.formLecturers.events({
     },
     'click .btn-next' (e, t){
         e.preventDefault()
-        const formData = t.formData.get()
-        console.log(formData)
-        const getValue = $(e.target).val();
+        const formData = t.formData.get();
+        console.log(formData);
+        const getValue = $(e.currentTarget).val();
         if (getValue == 2){
             formData.username = $("#inputUsername").val()
             formData.fullName = $("#inputFullname").val()
             formData.address = $("#inputAddress").val()
+            formData.phoneNumber = $("#inputPhoneNumber").val()
             formData.pob = $("#inputPob").val()
             formData.dob = $("#inputDob").val()
             formData.gender = $("#inputGender").val()
@@ -152,8 +155,11 @@ Template.formLecturers.events({
     },
     'click .btn-previous' (e, t){
         e.preventDefault()
-        const getValue = $(e.target).val();
+        const getValue = $(e.currentTarget).val();
         t.formPage.set(getValue);
+    },
+    'click .btn-trash' (e, t) {
+        
     },
     async 'click #btn-submit' (e, t){
         e.preventDefault()

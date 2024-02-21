@@ -57,7 +57,7 @@
 
     @media (min-width: 1400px){
       .container-home{
-        width: 1280px;
+        width: 1100px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -65,7 +65,7 @@
 
     @media (min-width: 992px) and (max-width: 1399px){
       .container-home{
-        width: 860px;
+        width: 850px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -89,7 +89,11 @@
       <div class="card welcome-card rounded-3 bg-light shadow text-dark">
         <div class="card-body welcome-body rounded-3">
           <div class="d-flex flex-wrap align-items-center gap-4">
+            {{#if myData.imageLink}}
             {{> imageComponent image=myData.imageLink}}
+            {{else}}
+            {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
+            {{/if}}
             <div class="welcome-container">
               <p class="card-title poppins-light text-light">Welcome Back</p>
               <h6 class="card-text poppins-bold text-light">{{myData.username}}</h6>
@@ -128,8 +132,9 @@
   <section>
     <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
       <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-        <label class="pt-1">About You</label>
-        <a href="/lecturers/edit/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-user-pen text-white"></i></a>
+        <label class="fs-5 pt-1">About You</label>
+        <a href="/lecturers/detail/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-circle-info text-white"></i></a>
+        <!-- <a href="/lecturers/edit/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-user-pen text-white"></i></a> -->
       </div>
       <div class="card-body detail-body">
           <div class="row row-cols-1">
@@ -175,6 +180,471 @@
                   </div>
               </div>
           </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<template name="cardDetailProfileDosen">
+  <style>
+    .detail-card{
+      width: 100%;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+    }
+    .detail-header{
+      border: 1px solid #3C6EE0;
+      background-color: #3C6EE0;
+    }
+    .detail-body{
+      background-color: #fff;
+    }
+    .hovered-edit:hover{
+      opacity: 0.7;
+      scale: 1.1;
+      transition: scale 0.4s;
+    }
+
+    .container-image{
+      width: 25%;
+      height: fit-content;
+      max-height: 360px;
+      min-height: 300px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+    }
+    .container-image-none{
+      width: 25%;
+      height: fit-content;
+      max-height: 360px;
+    }
+
+    .container-detail{
+      width: 75%;
+    }
+
+    .image-fit{
+      min-height: 300px;
+      object-fit: cover !important;
+      object-position: center;
+    }
+
+    @media screen and (max-width: 767px) {
+      .container-image, .container-image-none{
+        width: 100%;
+        height: fit-content;
+        max-height: 360px;
+      }
+
+      .container-detail{
+        width: 100%;
+      }
+
+      .mt-4-custom{
+        margin-top: 1.5rem;
+      }
+    }
+
+  </style>
+
+  <section class="mt-2">
+    <!-- Personal Details -->
+    <div class="d-block d-md-flex gap-4">
+      <div class="container-image card rounded-3">
+        <!-- <img src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg" class="card-img-top image-fit"> -->
+        {{#if myData.imageLink}}
+          <img src="{{myData.imageLink}}" class="card-img-top image-fit">
+        {{else}}
+          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top image-fit">
+        {{/if}}
+      </div>
+      <div class="container-detail mt-4-custom">
+        <div class="card detail-card rounded-3 bg-light shadow text-dark">
+          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+            <label class="pt-1">Personal Details</label>
+          </div>
+          <div class="card-body detail-body">
+            <div class="row row-cols-1 row-cols-md-2">
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-user"></i> 
+                      Username
+                    </p>
+                    <p class="open-sans text-dark">{{myData.username}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <p class="form-label open-sans text-dark fw-bold">
+                    <i class="fa fa-light fa-lock"></i>
+                    <label for="title">
+                      Password
+                    </label>
+                    <a href="/reset-password"> <!-- Perlu diganti URL sesuai reset password -->
+                      <i class="fa fa-light fa-pen-to-square text-secondary ms-2"></i>
+                    </a>
+                  </p>
+                  <label class="open-sans text-dark">******</label>
+                </div>
+              </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-address-card"></i> 
+                          Fullname
+                        </p>
+                        <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-city"></i>
+                          Place of Birth
+                        </p>
+                        <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-cake-candles"></i>
+                          Date of Birth
+                        </p>
+                        <p class="open-sans text-dark">{{myData.dob}}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-map-location-dot"></i>
+                          Address
+                        </p>
+                        <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-venus-mars"></i>
+                          Gender
+                        </p>
+                        <p class="open-sans text-dark">{{capitalizeWord myData.gender}}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-phone"></i>
+                          Phone Number
+                        </p>
+                        <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+            <div class="row row-cols-1 row-cols-md-2">
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-flag"></i>
+                      Nationality
+                    </p>
+                    <p class="open-sans text-dark">{{myData.nationality}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-church"></i>
+                      Religion
+                    </p>
+                    <p class="open-sans text-dark">{{myData.religion}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-id-card"></i>
+                          NIK
+                        </p>
+                        <p class="open-sans text-dark">{{myData.nik}}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-location-dot"></i>
+                      Registered Address
+                    </p>
+                    <p class="open-sans text-dark">{{myData.registeredAddress}}</p>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professional -->
+    <div class="d-block d-md-flex align-items-center gap-4 mt-3">
+      <div class="container-image-none">
+        &nbsp;
+      </div>
+      <div class="container-detail">
+        <div class="card detail-card rounded-3 bg-light shadow text-dark">
+          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+            <label class="pt-1">Professional Experience</label>
+          </div>
+          <div class="card-body detail-body">
+            <h5 class="text-login-content fw-bold mb-4">Current Experience</h5>
+            <div class="row row-cols-1 row-cols-md-2">
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      NIDN / NIDK
+                    </p>
+                    <p class="open-sans text-dark">{{myData.nidn}}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      Current Position
+                    </p>
+                    <p class="open-sans text-dark">{{myData.position}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          Academic Rank
+                        </p>
+                        <p class="open-sans text-dark">{{myData.academicRank}}</p>
+                    </div>
+                </div>
+            </div>
+            <h5 class="text-login-content fw-bold mt-4 mb-4">Previous Experience</h5>
+            {{#if myData.listExperiences}}
+            {{#each item in myData.listExperiences}}
+            <div class="px-3">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Job Position
+                      </p>
+                      <p class="open-sans text-dark">{{item.jobPosition}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Institution
+                      </p>
+                      <p class="open-sans text-dark">{{item.institution}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            Start Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            End Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.endDate}}</p>
+                      </div>
+                  </div>
+              </div>
+              <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+            </div>
+            {{/each}}
+            {{else}}
+              No Previous Experience
+            {{/if}}
+          </div>
+        </div>
+
+        <!-- Educational History -->
+        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+            <label class="pt-1">Educational History</label>
+          </div>
+          <div class="card-body detail-body">
+            {{#if myData.listEducationalHistory}}
+            {{#each item in myData.listEducationalHistory}}
+            <div class="px-3">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Education Level
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.educationLevel}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Major
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Institution
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Graduate Degree
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.graduateDegree}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Domestic Status
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.domesticStatus}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Formal Status
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.formalStatus}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            Start Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            End Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                      </div>
+                  </div>
+              </div>
+              <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+            </div>
+            {{/each}}
+            {{else}}
+              No Education History
+            {{/if}}
+          </div>
+        </div>
+
+        <!-- Certification -->
+        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+            <label class="pt-1">Certification</label>
+          </div>
+          <div class="card-body detail-body">
+            {{#if myData.listCertification}}
+            {{#each item in myData.listCertification}}
+            <div class="px-3">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Certification Type
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Certification Major
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Certification Organizer
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Registration Number
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.registrationNumber}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        SK Number
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.skNumber}}</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Grade
+                      </p>
+                      <p class="open-sans text-dark">{{capitalizeWord item.grade}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            Start Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            End Date
+                          </p>
+                          <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                      </div>
+                  </div>
+              </div>
+              <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+            </div>
+            {{/each}}
+            {{else}}
+              No Certification
+            {{/if}}
+          </div>
+        </div>
       </div>
     </div>
   </section>

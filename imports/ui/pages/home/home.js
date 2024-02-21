@@ -31,7 +31,6 @@ Template.App_home.onCreated(function () {
 
   setTimeout(() => {
     let table = new DataTable('#myTable', {
-      responsive: true
     });
     
   }, 500);

@@ -14,3 +14,41 @@ import { HTTP } from 'meteor/http';
 Template.lecturers_add.onCreated(function (){
 
 });
+
+Template.lecturers_add.events({
+    'click .hover-icon' (e, t) {
+        history.back();
+    }
+});
+
+Template.lecturers_edit.events({
+    'click .hover-icon' (e, t) {
+        history.back();
+    }
+});
+
+Template.lecturers_detail.onCreated(function () { 
+    const self = this;
+    self.myData = new ReactiveVar({});
+   
+    Meteor.call("dosen.getMine", function (error, result) {
+      if (result) {
+        console.log(result);
+        self.myData.set(result);
+      } else {
+        console.log(error);
+      }
+    });
+});
+
+Template.lecturers_detail.helpers({
+    myData(){
+        return Template.instance().myData.get();
+    },
+});
+
+Template.lecturers_detail.events({
+    'click .hover-icon' (e, t) {
+        history.back();
+    }
+});
