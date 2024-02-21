@@ -125,6 +125,7 @@ Template.formLecturers.events({
     'click .btn-next' (e, t){
         e.preventDefault()
         const formData = t.formData.get()
+        console.log(formData)
         const getValue = $(e.target).val();
         if (getValue == 2){
             formData.username = $("#inputUsername").val()
