@@ -94,7 +94,6 @@
             </td>
             <td>
               <div class="d-flex flex-wrap gap-1">
-                {{#if isInRoles 'admin'}}
                   <a class="btn btn-primary btn-sm btn-edit"
                       href="/lecturers/detail/{{i._id}}">
                       <i class="fa fa-circle-info" milik="{{i._id}}"></i> 
@@ -108,7 +107,6 @@
                   <button class="btn btn-danger btn-sm delete-lecturer" id="{{i._id}}">
                       <i class="fa fa-trash delete-lecturer" id="{{i._id}}"></i> 
                   </button>
-                {{/if}}
                 <!-- <div class="dropdown">
                     <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="moreActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Aksi Lain

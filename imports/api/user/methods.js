@@ -147,7 +147,18 @@ Meteor.methods({
     },
 
     "dosen.insert" (formData){
-        return Lecturers.insert(formData)
+        formData.password = "dosen1234"
+        formData.roles = ["dosen"]
+        const _id =  Accounts.createUser(formData);
+        delete formData.username
+        delete formData.password
+        return Meteor.users.update({ _id }, { $set: formData })
+
+    },
+    
+    "dosen.getMine" (){
+        const users = Meteor.users.findOne({_id: Meteor.userId()})
+        return users
     },
 
     "dosen.getAll" (){

@@ -89,10 +89,10 @@
       <div class="card welcome-card rounded-3 bg-light shadow text-dark">
         <div class="card-body welcome-body rounded-3">
           <div class="d-flex flex-wrap align-items-center gap-4">
-            {{> imageComponent image="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}}
+            {{> imageComponent image=myData.imageLink}}
             <div class="welcome-container">
               <p class="card-title poppins-light text-light">Welcome Back</p>
-              <h6 class="card-text poppins-bold text-light">{{username}}</h6>
+              <h6 class="card-text poppins-bold text-light">{{myData.username}}</h6>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@
     <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
       <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
         <label class="pt-1">About You</label>
-        <a href="/lecturers/edit/{{id}}" class="hovered-edit"><i class="fa fa-light fa-user-pen text-white"></i></a>
+        <a href="/lecturers/edit/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-user-pen text-white"></i></a>
       </div>
       <div class="card-body detail-body">
           <div class="row row-cols-1">
@@ -139,14 +139,14 @@
                         <i class="fa fa-light fa-address-card"></i> 
                         Fullname
                       </p>
-                      <p class="open-sans text-dark">{{name}}</p>
+                      <p class="open-sans text-dark">{{myData.fullName}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-city"></i>
                         Place of Birth
                       </p>
-                      <p class="open-sans text-dark">{{pob}}</p>
+                      <p class="open-sans text-dark">{{myData.pob}}</p>
                   </div>
               </div>
               <div class="col-md-6">
@@ -155,14 +155,14 @@
                         <i class="fa fa-light fa-cake-candles"></i>
                         Date of Birth
                       </p>
-                      <p class="open-sans text-dark">{{dob}}</p>
+                      <p class="open-sans text-dark">{{myData.dob}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-map-location-dot"></i>
                         Address
                       </p>
-                      <p class="open-sans text-dark">{{address}}</p>
+                      <p class="open-sans text-dark">{{myData.address}}</p>
                   </div>
               </div>
               <div class="col-md-6">
@@ -171,7 +171,7 @@
                         <i class="fa fa-light fa-venus-mars"></i>
                         Gender
                       </p>
-                      <p class="open-sans text-dark">{{gender}}</p>
+                      <p class="open-sans text-dark">{{myData.gender}}</p>
                   </div>
               </div>
           </div>
