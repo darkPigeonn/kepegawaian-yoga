@@ -130,7 +130,7 @@
     }
   </style>
   <section>
-    <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+    <div class="card detail-card rounded-3 bg-light shadow text-dark my-4">
       <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
         <label class="fs-5 pt-1">About You</label>
         <a href="/lecturers/detail/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-circle-info text-white"></i></a>
@@ -226,6 +226,10 @@
       object-fit: cover !important;
       object-position: center;
     }
+    
+    .image-fit:hover{
+      cursor: pointer;
+    }
 
     @media screen and (max-width: 767px) {
       .container-image, .container-image-none{
@@ -269,7 +273,11 @@
                       <i class="fa fa-light fa-user"></i> 
                       Username
                     </p>
+                    {{#if myData.username}}
                     <p class="open-sans text-dark">{{myData.username}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                 </div>
               </div>
               <div class="col-md-6">
@@ -294,14 +302,22 @@
                           <i class="fa fa-light fa-address-card"></i> 
                           Fullname
                         </p>
+                        {{#if myData.fullName}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                     <div class="mb-3">
                         <p class="form-label open-sans text-dark fw-bold">
                           <i class="fa fa-light fa-city"></i>
                           Place of Birth
                         </p>
+                        {{#if myData.pob}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -310,14 +326,22 @@
                           <i class="fa fa-light fa-cake-candles"></i>
                           Date of Birth
                         </p>
+                        {{#if myData.dob}}
                         <p class="open-sans text-dark">{{myData.dob}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                     <div class="mb-3">
                         <p class="form-label open-sans text-dark fw-bold">
                           <i class="fa fa-light fa-map-location-dot"></i>
                           Address
                         </p>
+                        {{#if myData.address}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -326,7 +350,11 @@
                           <i class="fa fa-light fa-venus-mars"></i>
                           Gender
                         </p>
+                        {{#if myData.gender}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.gender}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -335,7 +363,11 @@
                           <i class="fa fa-light fa-phone"></i>
                           Phone Number
                         </p>
+                        {{#if myData.phoneNumber}}
                         <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
             </div>
@@ -347,7 +379,11 @@
                       <i class="fa fa-light fa-flag"></i>
                       Nationality
                     </p>
+                    {{#if myData.nationality}}
                     <p class="open-sans text-dark">{{myData.nationality}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                 </div>
               </div>
               <div class="col-md-6">
@@ -356,7 +392,11 @@
                       <i class="fa fa-light fa-church"></i>
                       Religion
                     </p>
+                    {{#if myData.religion}}
                     <p class="open-sans text-dark">{{myData.religion}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                 </div>
               </div>
             </div>
@@ -367,7 +407,11 @@
                           <i class="fa fa-light fa-id-card"></i>
                           NIK
                         </p>
+                        {{#if myData.nik}}
                         <p class="open-sans text-dark">{{myData.nik}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -376,9 +420,31 @@
                       <i class="fa fa-light fa-location-dot"></i>
                       Registered Address
                     </p>
+                    {{#if myData.registeredAddress}}
                     <p class="open-sans text-dark">{{myData.registeredAddress}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                   </div>
                 </div>
+            </div>
+            <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+            <div class="row row-cols-1 row-cols-md-2">
+              <div class="col-md-6">
+                <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-book"></i>
+                      Research Interest
+                    </p>
+                    {{#if myData.researchInterest}}
+                    <p class="open-sans text-dark">
+                      {{myData.researchInterest}}
+                    </p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -403,7 +469,11 @@
                     <p class="form-label open-sans text-dark fw-bold">
                       NIDN / NIDK
                     </p>
+                    {{#if myData.nidn}}
                     <p class="open-sans text-dark">{{myData.nidn}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                 </div>
               </div>
               <div class="col-md-6">
@@ -411,7 +481,11 @@
                     <p class="form-label open-sans text-dark fw-bold">
                       Current Position
                     </p>
+                    {{#if myData.position}}
                     <p class="open-sans text-dark">{{myData.position}}</p>
+                    {{else}}
+                    <p class="open-sans text-dark"><i>No Data</i></p>
+                    {{/if}}
                 </div>
               </div>
             </div>
@@ -421,7 +495,11 @@
                         <p class="form-label open-sans text-dark fw-bold">
                           Academic Rank
                         </p>
+                        {{#if myData.academicRank}}
                         <p class="open-sans text-dark">{{myData.academicRank}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
                     </div>
                 </div>
             </div>
