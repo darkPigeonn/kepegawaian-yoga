@@ -54,8 +54,9 @@ Template.formLecturers.events({
         const educationLevel = $("#inputEducationLevel").val()
         const major = $("#inputEducationMajor").val()
         const institution = $("#inputEducationInstitution").val()
-        const graduateDegree = $("#inputGraduateDegree").val()
         const domesticStatus = $("#inputDomestic").val()
+        const graduateDegree = $("#inputGraduateDegree").val()
+        const studyPublication = $("#inputStudyPublication").val()
         const formalStatus = $("#inputFormalStatus").val()
         const dateStart = $("#inputEducationStart").val()
         const dateEnd = $("#inputEducationEnd").val()
@@ -64,8 +65,9 @@ Template.formLecturers.events({
             educationLevel,
             major,
             institution,
-            graduateDegree,
             domesticStatus,
+            graduateDegree,
+            studyPublication,
             formalStatus,
             dateStart,
             dateEnd

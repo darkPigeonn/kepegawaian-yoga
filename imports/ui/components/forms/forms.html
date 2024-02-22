@@ -193,7 +193,7 @@
                                 <div class="d-flex flex-wrap">
                                     <div class="w-25 row row-cols-1 mx-0">
                                         <label class="col text-break fw-bold">{{item.jobPosition}}</label>
-                                        <label class="col text-break">At {{item.institution}}</label>
+                                        <label class="col text-break"><b>Institution: </b> {{item.institution}}</label>
                                     </div>
                                     <div class="w-75">
                                         <div class="d-flex justify-content-end flex-row gap-2 me-2">
@@ -219,7 +219,7 @@
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
                                         <label class="col fw-bold">{{item.jobPosition}}</label>
-                                        <label class="col">At {{item.institution}}</label>
+                                        <label class="col"><b>Institution: </b> {{item.institution}}</label>
                                         <div class="col-6">
                                             <p class="fw-bold text-secondary mt-4"><b class="text-dark">Start Date:</b> {{formatHRDate item.startDate}}</p>
                                         </div>
@@ -278,6 +278,10 @@
                     <div class="form-group">
                         <label for="inputGraduateDegree" class="fw-bold text-login-content">Graduate Degree</label>
                         <input type="text" class="form-control" id="inputGraduateDegree" placeholder="Ex: Bachelor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStudyPublication" class="fw-bold text-login-content">Study Publication</label>
+                        <input type="text" class="form-control" id="inputStudyPublication" placeholder="Title of the Study Publication" required>
                     </div>
                     <div class="form-group">
                         <label for="inputDomestic" class="fw-bold text-login-content">Domestic Institution</label>
@@ -339,6 +343,7 @@
                                 <div class="d-flex flex-wrap">
                                     <div class="w-60 row row-cols-1 mx-0">
                                         <label class="col text-break fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</label>
+                                        <label class="col text-break mt-2"><b>Study Publication: </b> {{capitalizeWord item.studyPublication}}</label>
                                     </div>
                                     <div class="w-40">
                                         <div class="d-flex justify-content-end flex-row gap-2 me-2">
@@ -349,7 +354,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-wrap">
-                                    <label class="col text-break">{{capitalizeWord item.graduateDegree}} <b>at</b> {{capitalizeWord item.institution}} ({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</label>
+                                    <label class="col text-break"><b>Graduate Degree: </b>{{capitalizeWord item.graduateDegree}} at {{capitalizeWord item.institution}} <b>({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</b></label>
                                 </div>
                                 <div class="d-flex justify-content-end bottom-0 me-2">
                                     <button class="btn btn-trash btn-danger btn-sm">
@@ -367,7 +372,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <p class="fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</p>
-                                        <p>{{capitalizeWord item.graduateDegree}} at {{capitalizeWord item.institution}} ({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</p>
+                                        <p class="text-break"><b>Study Publication: </b> {{capitalizeWord item.studyPublication}}</p>
+                                        <p><b>Graduate Degree: </b> {{capitalizeWord item.graduateDegree}} at {{capitalizeWord item.institution}} <b>({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</b></p>
                                     </div>
                                     <div class="col-6">
                                         <p class="fw-bold text-secondary mt-3"><b class="text-dark">Start Date:</b> {{formatHRDate item.dateStart}}</p>
