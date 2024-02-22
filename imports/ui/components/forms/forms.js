@@ -73,7 +73,7 @@ Template.formLecturers.events({
 
         listEducationalHistory.push(data)
         t.listEducationalHistory.set(listEducationalHistory)
-        console.log(t.listEducationalHistory.get());
+        // console.log(t.listEducationalHistory.get());
     },
     "click .add-certification" (e, t){
         e.preventDefault()
@@ -100,7 +100,7 @@ Template.formLecturers.events({
 
         listCertification.push(data)
         t.listCertification.set(listCertification)
-        console.log(t.listCertification.get());
+        // console.log(t.listCertification.get());
     },
     "click #add-experience" (e, t){
         e.preventDefault()
@@ -127,12 +127,13 @@ Template.formLecturers.events({
     'click .btn-next' (e, t){
         e.preventDefault()
         const formData = t.formData.get();
-        console.log(formData);
+        // console.log(formData);
         const getValue = $(e.currentTarget).val();
         if (getValue == 2){
             formData.username = $("#inputUsername").val()
             formData.fullName = $("#inputFullname").val()
             formData.address = $("#inputAddress").val()
+            formData.email = $("#inputEmail").val()
             formData.phoneNumber = $("#inputPhoneNumber").val()
             formData.pob = $("#inputPob").val()
             formData.dob = $("#inputDob").val()
@@ -170,7 +171,7 @@ Template.formLecturers.events({
         const listEducationalHistory = t.listEducationalHistory.get()
         const listExperiences = t.listExperiences.get()
 
-        console.log(formData)
+        // console.log(formData)
         formData.researchInterest = researchInterest
         formData.listCertification = listCertification
         formData.listEducationalHistory = listEducationalHistory

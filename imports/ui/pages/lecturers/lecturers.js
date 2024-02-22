@@ -33,7 +33,7 @@ Template.lecturers_detail.onCreated(function () {
    
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
-        console.log(result);
+        // console.log(result);
         self.myData.set(result);
       } else {
         console.log(error);

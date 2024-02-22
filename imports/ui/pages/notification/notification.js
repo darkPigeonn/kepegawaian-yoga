@@ -20,16 +20,18 @@ Template.notification_page.onCreated(function (){
     })
     self.filterMode = new ReactiveVar("1");
     
-    const thisUser = Meteor.user();self.filterMode = new ReactiveVar("1");
+    const thisUser = Meteor.user();
     
-    Meteor.call("notification.getAll", thisUser.emails[0].address, function (error, result) {
-        if (result) {
-            // console.log(result);
-            self.notification.set(result);
-        } else {
-            console.log(error);
-        }
-    });
+    if (thisUser.emails) {        
+        Meteor.call("notification.getAll", thisUser.emails[0].address, function (error, result) {
+            if (result) {
+                // console.log(result);
+                self.notification.set(result);
+            } else {
+                console.log(error);
+            }
+        });
+    }
 });
 
 Template.notification_page.helpers({

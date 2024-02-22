@@ -4,7 +4,6 @@ Template.cardMobileWelcome.onCreated(function () {
     const self = this;
     self.myData = new ReactiveVar({});
    
-
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
         self.myData.set(result);
@@ -28,7 +27,7 @@ Template.cardHomeProfileDetail.onCreated(function () {
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
         self.myData.set(result);
-        console.log(result)
+        // console.log(result)
       } else {
         console.log(error);
       }
@@ -49,7 +48,7 @@ Template.cardDetailProfileDosen.onCreated(function () {
     Meteor.call("dosen.getMine", function (error, result) {
       if (result) {
         self.myData.set(result);
-        console.log(result)
+        // console.log(result)
       } else {
         console.log(error);
       }

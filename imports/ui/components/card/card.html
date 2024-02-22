@@ -144,14 +144,14 @@
                         <i class="fa fa-light fa-address-card"></i> 
                         Fullname
                       </p>
-                      <p class="open-sans text-dark">{{myData.fullName}}</p>
+                      <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-city"></i>
                         Place of Birth
                       </p>
-                      <p class="open-sans text-dark">{{myData.pob}}</p>
+                      <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
                   </div>
               </div>
               <div class="col-md-6">
@@ -167,7 +167,7 @@
                         <i class="fa fa-light fa-map-location-dot"></i>
                         Address
                       </p>
-                      <p class="open-sans text-dark">{{myData.address}}</p>
+                      <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
                   </div>
               </div>
               <div class="col-md-6">
@@ -176,7 +176,7 @@
                         <i class="fa fa-light fa-venus-mars"></i>
                         Gender
                       </p>
-                      <p class="open-sans text-dark">{{myData.gender}}</p>
+                      <p class="open-sans text-dark">{{capitalizeWord myData.gender}}</p>
                   </div>
               </div>
           </div>
@@ -236,6 +236,12 @@
         width: 100%;
         height: fit-content;
         max-height: 360px;
+      }
+
+      .image-fit{
+        max-height: 300px;
+        object-fit: cover !important;
+        object-position: center;
       }
 
       .container-detail{
@@ -311,16 +317,27 @@
                     <div class="mb-3">
                         <p class="form-label open-sans text-dark fw-bold">
                           <i class="fa fa-light fa-city"></i>
-                          Place of Birth
+                          Email
                         </p>
-                        {{#if myData.pob}}
-                        <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
+                        {{#if myData.email}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.email}}</p>
                         {{else}}
                         <p class="open-sans text-dark"><i>No Data</i></p>
                         {{/if}}
                     </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-city"></i>
+                        Place of Birth
+                      </p>
+                      {{#if myData.pob}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                    </div>
                     <div class="mb-3">
                         <p class="form-label open-sans text-dark fw-bold">
                           <i class="fa fa-light fa-cake-candles"></i>
@@ -332,19 +349,19 @@
                         <p class="open-sans text-dark"><i>No Data</i></p>
                         {{/if}}
                     </div>
-                    <div class="mb-3">
-                        <p class="form-label open-sans text-dark fw-bold">
-                          <i class="fa fa-light fa-map-location-dot"></i>
-                          Address
-                        </p>
-                        {{#if myData.address}}
-                        <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
-                        {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
-                        {{/if}}
-                    </div>
                 </div>
                 <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-map-location-dot"></i>
+                        Address
+                      </p>
+                      {{#if myData.address}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                    </div>
                     <div class="mb-3">
                         <p class="form-label open-sans text-dark fw-bold">
                           <i class="fa fa-light fa-venus-mars"></i>
@@ -358,18 +375,18 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3">
-                        <p class="form-label open-sans text-dark fw-bold">
-                          <i class="fa fa-light fa-phone"></i>
-                          Phone Number
-                        </p>
-                        {{#if myData.phoneNumber}}
-                        <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
-                        {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
-                        {{/if}}
-                    </div>
-                </div>
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-phone"></i>
+                        Phone Number
+                      </p>
+                      {{#if myData.phoneNumber}}
+                      <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+              </div>
             </div>
             <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
             <div class="row row-cols-1 row-cols-md-2">
