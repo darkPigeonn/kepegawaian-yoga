@@ -104,6 +104,30 @@ Template.formLecturers.events({
         t.listCertification.set(listCertification)
         // console.log(t.listCertification.get());
     },
+    "click .remove-list" (e, t){
+        e.preventDefault()
+        const index = $(e.target).data("milik")
+        const identifier = $(e.target).data("id");
+        const listExperiences = t.listExperiences.get()
+        const listEducationalHistory = t.listEducationalHistory.get()
+        const listCertification = t.listCertification.get()
+
+        confirmationAlertAsync().then(async function (result) {
+            if (result.value){
+                if (identifier === "experiences"){
+                    listExperiences.splice(index, 1)
+                    t.listExperiences.set(listExperiences)
+                } else if (identifier === "education"){
+                    listEducationalHistory.splice(index, 1)
+                    t.listEducationalHistory.set(listEducationalHistory)
+                } else if (identifier === "certification") {
+                    listCertification.splice(index, 1)
+                    t.listCertification.set(listCertification)
+                }
+            }
+        })
+        
+    },
     "click #add-experience" (e, t){
         e.preventDefault()
         const listExperiences = t.listExperiences.get()
@@ -120,6 +144,7 @@ Template.formLecturers.events({
         }
         listExperiences.push(data)
         t.listExperiences.set(listExperiences)
+        console.log(t.listExperiences.get())
     },
     'click .btnNavigation' (e, t){
         e.preventDefault()
@@ -132,37 +157,44 @@ Template.formLecturers.events({
         // console.log(formData);
         const getValue = $(e.currentTarget).val();
         if (getValue == 2){
-            formData.username = $("#inputUsername").val()
-            formData.fullName = $("#inputFullname").val()
-            formData.address = $("#inputAddress").val()
-            formData.email = $("#inputEmail").val()
-            formData.phoneNumber = $("#inputPhoneNumber").val()
-            formData.pob = $("#inputPob").val()
-            formData.dob = $("#inputDob").val()
-            formData.gender = $("#inputGender").val()
-            formData.nationality = $("#inputNationality").val()
-            formData.religion = $("#inputReligion").val()
-            formData.nik = $("#inputNik").val()
-            formData.registeredAddress = $("#inputRegisteredAddress").val()
-            formData.imageFile = $('#inputImageProfile')[0].files[0]
+            if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+                formData.username = $("#inputUsername").val()
+                formData.fullName = $("#inputFullname").val()
+                formData.address = $("#inputAddress").val()
+                formData.email = $("#inputEmail").val()
+                formData.phoneNumber = $("#inputPhoneNumber").val()
+                formData.pob = $("#inputPob").val()
+                formData.dob = $("#inputDob").val()
+                formData.gender = $("#inputGender").val()
+                formData.nationality = $("#inputNationality").val()
+                formData.religion = $("#inputReligion").val()
+                formData.nik = $("#inputNik").val()
+                formData.registeredAddress = $("#inputRegisteredAddress").val()
+                formData.imageFile = $('#inputImageProfile')[0].files[0]
+                t.formPage.set(getValue);
+                t.formData.set(formData)
+            } else {
+                failAlert("Pastikan username, Nama, email, alamat, dan tempat lahir sudah diisi !")
+
+            }
+            
         } else if (getValue == 3){
             formData.nidn = $("#inputNidn").val()
             formData.position = $("#inputPosition").val()
             formData.academicRank = $("#inputAcademicRank").val()
             formData.listExperience = $("#inputListExperience").val()
+            t.formPage.set(getValue);
+            t.formData.set(formData)
         } else if (getValue == 4){
             formData.listEducationalHistory = $("#inputListHistory").val()
+            t.formPage.set(getValue);
+            t.formData.set(formData)
         } 
-        t.formPage.set(getValue);
-        t.formData.set(formData)
     },
     'click .btn-previous' (e, t){
         e.preventDefault()
         const getValue = $(e.currentTarget).val();
         t.formPage.set(getValue);
-    },
-    'click .btn-trash' (e, t) {
-        
     },
     async 'click #btn-submit' (e, t){
         e.preventDefault()
@@ -173,34 +205,40 @@ Template.formLecturers.events({
         const listEducationalHistory = t.listEducationalHistory.get()
         const listExperiences = t.listExperiences.get()
 
-        // console.log(formData)
-        formData.researchInterest = researchInterest
-        formData.listCertification = listCertification
-        formData.listEducationalHistory = listEducationalHistory
-        formData.listExperiences = listExperiences
+        confirmationAlertAsync().then(async function (result) {
+            if (result.value) {
+                formData.researchInterest = researchInterest
+                formData.listCertification = listCertification
+                formData.listEducationalHistory = listEducationalHistory
+                formData.listExperiences = listExperiences
 
-        if (formData.imageFile){
-            const uploadData = {
-                type: 'dosen-profilePics',
-                Body: formData.imageFile
-              };
-              const fileLink = await uploadFiles(uploadData)
-              formData.imageLink = fileLink
-              delete formData.imageFile
-        }
-        let postRoute = "dosen.insert"
-        if (submitType === 2){
-            postRoute = "dosen.update"
-            formData._id = FlowRouter.getParam("_id")
-        }
-        Meteor.call(postRoute, formData, async function (err, res) {
-            if (err) {
-              failAlert(err);
-            } else {
-              successAlert("Data berhasil disimpan");
-              FlowRouter.go("/")
+                if (formData.imageFile){
+                    const uploadData = {
+                        type: 'dosen-profilePics',
+                        Body: formData.imageFile
+                    };
+                    const fileLink = await uploadFiles(uploadData)
+                    formData.imageLink = fileLink
+                    delete formData.imageFile
+                }
+                let postRoute = "dosen.insert"
+                if (submitType === 2){
+                    postRoute = "dosen.update"
+                    formData._id = FlowRouter.getParam("_id")
+                }
+                Meteor.call(postRoute, formData, async function (err, res) {
+                    if (err) {
+                    failAlert(err);
+                    } else {
+                    successAlert("Data berhasil disimpan");
+                    FlowRouter.go("/")
+                    }
+                });
             }
         });
+
+        // console.log(formData)
+       
     }
 });
 

@@ -1,4 +1,5 @@
 import "./card.html";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 Template.cardMobileWelcome.onCreated(function () { 
     const self = this;
@@ -43,12 +44,12 @@ Template.cardHomeProfileDetail.helpers({
 Template.cardDetailProfileDosen.onCreated(function () { 
     const self = this;
     self.myData = new ReactiveVar({});
-   
-
-    Meteor.call("dosen.getMine", function (error, result) {
+    const _id = FlowRouter.getParam("_id")
+    Meteor.call("dosen.getDetails", _id,  function (error, result) {
       if (result) {
+        // console.log(result);
         self.myData.set(result);
-        // console.log(result)
+        console.log(result)
       } else {
         console.log(error);
       }
