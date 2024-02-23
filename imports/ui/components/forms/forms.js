@@ -126,12 +126,10 @@ Template.formLecturers.events({
                 }
             }
         })
-        
     },
     "click #add-experience" (e, t){
         e.preventDefault()
         const listExperiences = t.listExperiences.get()
-        const textArea = $("#inputListExperience").val()
         const jobPosition = $("#inputJobPosition").val()
         const institution = $("#inputInstitution").val()
         const startDate = $("#inputStartDate").val()
@@ -175,7 +173,6 @@ Template.formLecturers.events({
                 t.formData.set(formData)
             } else {
                 failAlert("Pastikan username, Nama, email, alamat, dan tempat lahir sudah diisi !")
-
             }
             
         } else if (getValue == 3){
@@ -275,5 +272,18 @@ Template.passwordEdit.events({
     },
     'click .hover-icon' (e, t) {
         history.back();
-    }
+    },
+    'click .toggle-password' (e, t) {
+        const inputId = $(e.target).data("id");
+        const input = t.find('#' + inputId);
+        const icon = $(e.target);
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    },
 })
