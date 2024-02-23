@@ -13,6 +13,7 @@ import "datatables.net-responsive-dt";
         failAlert(err)
       }
       else{
+        console.log(res)
        context.dataDosen.set(res)
       }
     });
