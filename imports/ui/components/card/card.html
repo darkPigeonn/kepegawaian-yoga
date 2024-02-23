@@ -293,7 +293,7 @@
                     <label for="title">
                       Password
                     </label>
-                    <a href="/reset-password"> <!-- Perlu diganti URL sesuai reset password -->
+                    <a href="/password/edit/{{myData._id}}">
                       <i class="fa fa-light fa-pen-to-square text-secondary ms-2"></i>
                     </a>
                   </p>
@@ -548,7 +548,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             Start Date
                           </p>
+                          {{#if item.startDate}}
                           <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
                   <div class="col-md-6">
@@ -556,7 +560,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             End Date
                           </p>
+                          {{#if item.endDate}}
                           <p class="open-sans text-dark">{{formatHRDate item.endDate}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
               </div>
@@ -584,7 +592,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Education Level
                       </p>
+                      {{#if item.educationLevel}}
                       <p class="open-sans text-dark">{{capitalizeWord item.educationLevel}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -592,7 +604,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Major
                       </p>
+                      {{#if item.major}}
                       <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -600,7 +616,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Institution
                       </p>
+                      {{#if item.institution}}
                       <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -608,7 +628,23 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Graduate Degree
                       </p>
+                      {{#if item.graduateDegree}}
                       <p class="open-sans text-dark">{{capitalizeWord item.graduateDegree}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Study Publication
+                      </p>
+                      {{#if item.studyPublication}}
+                      <p class="open-sans text-dark">{{capitalizeWord item.studyPublication}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -616,7 +652,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Domestic Status
                       </p>
+                      {{#if item.domesticStatus}}
                       <p class="open-sans text-dark">{{capitalizeWord item.domesticStatus}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -624,7 +664,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Formal Status
                       </p>
+                      {{#if item.formalStatus}}
                       <p class="open-sans text-dark">{{capitalizeWord item.formalStatus}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
               </div>
@@ -634,7 +678,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             Start Date
                           </p>
+                          {{#if item.dateStart}}
                           <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
                   <div class="col-md-6">
@@ -642,7 +690,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             End Date
                           </p>
+                          {{#if item.dateEnd}}
                           <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
               </div>
@@ -670,7 +722,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Certification Type
                       </p>
+                      {{#if item.type}}
                       <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -678,7 +734,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Certification Major
                       </p>
+                      {{#if item.major}}
                       <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -686,7 +746,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Certification Organizer
                       </p>
+                      {{#if item.organizer}}
                       <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -694,7 +758,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Registration Number
                       </p>
+                      {{#if item.registrationNumber}}
                       <p class="open-sans text-dark">{{capitalizeWord item.registrationNumber}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -702,7 +770,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         SK Number
                       </p>
+                      {{#if item.skNumber}}
                       <p class="open-sans text-dark">{{capitalizeWord item.skNumber}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -710,7 +782,11 @@
                       <p class="form-label open-sans text-dark fw-bold">
                         Grade
                       </p>
+                      {{#if item.grade}}
                       <p class="open-sans text-dark">{{capitalizeWord item.grade}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
                   </div>
                 </div>
               </div>
@@ -720,7 +796,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             Start Date
                           </p>
+                          {{#if item.dateStart}}
                           <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
                   <div class="col-md-6">
@@ -728,7 +808,11 @@
                           <p class="form-label open-sans text-dark fw-bold">
                             End Date
                           </p>
+                          {{#if item.dateEnd}}
                           <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
                       </div>
                   </div>
               </div>
@@ -743,10 +827,4 @@
       </div>
     </div>
   </section>
-</template>
-
-<template name="cardListDosen">
-  <div>
-    
-  </div>
 </template>

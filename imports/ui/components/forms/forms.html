@@ -144,7 +144,7 @@
                         <input type="text" class="form-control" id="inputPosition" placeholder="Ex: Lecturer" value="{{formData.position}}" required>
                     </div>
                     <div class="form-group">
-                        <label for="inputAcademicRank" class="fw-bold text-login-content">Academic Rank (Kepangkatan)</label>
+                        <label for="inputAcademicRank" class="fw-bold text-login-content">Academic Rank</label>
                         <input type="text" class="form-control" id="inputAcademicRank" value="{{formData.academicRank}}" placeholder="Ex: Penata Muda Tingkat 1" required>
                     </div>
 
@@ -160,7 +160,7 @@
             <section class="p-2">
                 <form id="formLecturers">
                     <div class="form-group">
-                        <label for="inputJobPosition" class="fw-bold text-login-content">Job Position (Status Dosen di ...)</label>
+                        <label for="inputJobPosition" class="fw-bold text-login-content">Job Position</label>
                         <input type="text" class="form-control" id="inputJobPosition" placeholder="Ex: Regular Lecturer" required>
                     </div>
                     <div class="form-group">
@@ -191,17 +191,24 @@
                         {{#each item in listExperiences}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
-                                    <div class="w-25 row row-cols-1 mx-0">
+                                    <div class="w-60 row row-cols-1 mx-0">
                                         <label class="col text-break fw-bold">{{item.jobPosition}}</label>
-                                        <label class="col text-break"><b>Institution: </b> {{item.institution}}</label>
                                     </div>
-                                    <div class="w-75">
+                                    <div class="w-40">
                                         <div class="d-flex justify-content-end flex-row gap-2 me-2">
                                             <label class="fw-bold text-secondary text-break"> {{formatHRDate item.startDate}}</label>
                                             -
                                             <label class="fw-bold text-secondary text-break"> {{formatHRDate item.endDate}}</label>
                                         </div>
-                                        <div class="float-end bottom-0 me-2">
+                                        
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <div class="w-75">
+                                        <label class="col text-break"><b>Institution: </b> {{item.institution}}</label>
+                                    </div>
+                                    <div class="w-25">
+                                        <div class="d-flex justify-content-end bottom-0 me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="experiences" data-milik="{{@index}}">
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="experiences" data-milik="{{@index}}"></i>
                                             </button>
@@ -218,13 +225,13 @@
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
-                                        <label class="col fw-bold">{{item.jobPosition}}</label>
-                                        <label class="col"><b>Institution: </b> {{item.institution}}</label>
+                                        <label class="col fw-bold text-break">{{item.jobPosition}}</label>
+                                        <label class="col text-break"><b>Institution: </b> {{item.institution}}</label>
                                         <div class="col-6">
-                                            <p class="fw-bold text-secondary mt-4"><b class="text-dark">Start Date:</b> {{formatHRDate item.startDate}}</p>
+                                            <p class="fw-bold text-secondary text-break mt-4"><b class="text-dark">Start Date:</b> {{formatHRDate item.startDate}}</p>
                                         </div>
                                         <div class="col-6">
-                                            <p class="fw-bold text-secondary mt-4"><b class="text-dark">End Date:</b> {{formatHRDate item.endDate}}</p>
+                                            <p class="fw-bold text-secondary text-break mt-4"><b class="text-dark">End Date:</b> {{formatHRDate item.endDate}}</p>
                                         </div>
                                         <div class="d-flex justify-content-end bottom-0 me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" type="button" data-id="experiences" data-milik="{{@index}}">
@@ -347,9 +354,9 @@
                                     </div>
                                     <div class="w-40">
                                         <div class="d-flex justify-content-end flex-row gap-2 me-2">
-                                            <label class="fw-bold text-secondary">{{formatHRDate item.dateStart}}</label>
+                                            <label class="fw-bold text-secondary text-break">{{formatHRDate item.dateStart}}</label>
                                             -
-                                            <label class="fw-bold text-secondary">{{formatHRDate item.dateEnd}}</label>
+                                            <label class="fw-bold text-secondary text-break">{{formatHRDate item.dateEnd}}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -371,15 +378,15 @@
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="row">
                                     <div class="col-12">
-                                        <p class="fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</p>
+                                        <p class="fw-bold text-break">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</p>
                                         <p class="text-break"><b>Study Publication: </b> {{capitalizeWord item.studyPublication}}</p>
                                         <p><b>Graduate Degree: </b> {{capitalizeWord item.graduateDegree}} at {{capitalizeWord item.institution}} <b>({{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}} Institution)</b></p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="fw-bold text-secondary mt-3"><b class="text-dark">Start Date:</b> {{formatHRDate item.dateStart}}</p>
+                                        <p class="fw-bold text-secondary text-break mt-3"><b class="text-dark">Start Date:</b> {{formatHRDate item.dateStart}}</p>
                                     </div>
                                     <div class="col-6">
-                                        <p class="fw-bold text-secondary mt-3"><b class="text-dark">End Date:</b> {{formatHRDate item.dateEnd}}</p>
+                                        <p class="fw-bold text-secondary text-break mt-3"><b class="text-dark">End Date:</b> {{formatHRDate item.dateEnd}}</p>
                                     </div>
                                     <div class="d-flex justify-content-end bottom-0 me-2">
                                         <button class="btn btn-trash btn-danger btn-sm remove-list" type="button" data-id="education" data-milik="{{@index}}">
@@ -599,25 +606,10 @@
 
 <template name="passwordEdit">
     <div class="container page page-create-student poppins-regular py-4">
-        <!-- <h4 class="text-login-content fw-bold py-2 mb-0">Change Password</h4>
-        <form action="" id="edit-user-form">
-            <div class="form-group">
-            <label for="">Sandi Sekarang</label>
-            <input type="password" id="old-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
-            </div>
-            <div class="form-group">
-            <label for="">Sandi Baru</label>
-            <input type="password" id="new-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
-            </div>
-            <div class="form-group">
-                <label for="">Konfirmasi Password</label>
-                <input type="password" id="confirmation-password" name="inputPassword" placeholder="Password" class="form-control" value="{{ thisUser.password }}">
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary" id="editPassword">Simpan</button>
-            </div>
-        </form> -->
-
+        <div class="d-flex align-items-center flex-wrap gap-3">
+            <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
+            <h4 class="text-login-content fw-bold py-2 mb-0">Back</h4>
+        </div>
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
                 Change Password

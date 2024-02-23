@@ -11,10 +11,6 @@ import Papa, { parse } from 'papaparse';
 import { each, filter, result } from "underscore";
 import { HTTP } from 'meteor/http';
 
-Template.lecturers_add.onCreated(function (){
-
-});
-
 Template.lecturers_add.events({
     'click .hover-icon' (e, t) {
         history.back();
@@ -33,9 +29,8 @@ Template.lecturers_detail.onCreated(function () {
     const _id = FlowRouter.getParam("_id")
     Meteor.call("dosen.getDetails", _id,  function (error, result) {
       if (result) {
-        // console.log(result);
         self.myData.set(result);
-        console.log(result)
+        // console.log(result)
       } else {
         console.log(error);
       }

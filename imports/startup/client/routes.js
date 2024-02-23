@@ -32,7 +32,7 @@ FlowRouter.route("/notification", {
   }
 });
 
-FlowRouter.route('/password/edit', {
+FlowRouter.route('/password/edit/:_id', {
   name: 'passwordEdit',
   action() {
     this.render("App_body", "passwordEdit");

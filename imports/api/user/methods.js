@@ -24,16 +24,16 @@ Meteor.methods({
         console.log(response.data)
     },
     "users.changePassword" (body){
-        const user = Meteor.users.findOne({_id: Meteor.userId()})
-        const newPassword = body.newPassword
+        const user = Meteor.users.findOne({_id: body.userId});
+        const newPassword = body.newPassword;
         const oldPassword = {
             digest: Package.sha.SHA256(body.old),
             algorithm: "sha-256",
-          };
+        };
         const result = Accounts._checkPassword(user, oldPassword);
 
         if (!result.error) {
-            Accounts.setPassword(Meteor.userId(), newPassword);
+            Accounts.setPassword(body.userId, newPassword);
         } else {
             throw new Meteor.Error('invalid-old-password', 'Invalid old password', { logout: false });
         }
