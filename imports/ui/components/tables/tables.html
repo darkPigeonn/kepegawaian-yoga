@@ -81,16 +81,16 @@
               {{@index}}
             </td>
             <td>
-              {{capitalizeWord i.fullName}} 
+              {{capitalizeWord i.profile.fullName}} 
             </td>
             <td>
               {{capitalizeWord i.email}}
             </td>
             <td>
-              {{formatHRDate i.dob}}
+              {{formatHRDate i.profile.dob}}
             </td>
             <td>
-              {{capitalizeWord i.gender}}
+              {{capitalizeWord i.profile.gender}}
             </td>
             <td>
               {{#if isInRoles 'admin'}}

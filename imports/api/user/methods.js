@@ -163,12 +163,17 @@ Meteor.methods({
 
     "dosen.insert" (formData){
         formData.password = "dosen1234"
-        formData.roles = ["dosen"]
-        formData.status = true
         const _id =  Accounts.createUser(formData);
         delete formData.username
         delete formData.password
-        return Meteor.users.update({ _id }, { $set: formData })
+        formData.userId = _id
+        const profileId = Lecturers.insert(formData)
+        Meteor.users.update({ _id }, { $set: {
+            status: true,
+            roles: ["dosen"],
+            profileId: profileId.toHexString()
+        } })
+
 
     },
 
@@ -178,28 +183,46 @@ Meteor.methods({
     
     "dosen.getMine" (){
         const users = Meteor.users.findOne({_id: Meteor.userId()})
-        return users
+        const profile = Lecturers.findOne({_id: new Meteor.Collection.ObjectID(users.profileId)})
+        delete profile._id
+        return Object.assign(users, profile)
     },
 
     "dosen.getAll" (){
-        return Meteor.users.find({
+        const users =  Meteor.users.find({
             roles: {
                 $in :  ["dosen"] 
             },
             status: true
             
         }).fetch()
+        for (const element of users) {
+            const profile = Lecturers.findOne({userId: element._id})
+            element.profile = profile
+        }
+        console.log(users)
+        return users
     },
 
     "dosen.getDetails"(_id){
         const user = Meteor.users.findOne({_id})
-        return user
+        const profiles = Lecturers.findOne({userId: user._id})
+
+        delete profiles._id
+        return Object.assign(user,profiles)
     },
 
     "dosen.update"($set){
         const _id = $set._id
         delete $set._id
-        const user = Meteor.users.update({_id}, {$set})
+        const userUpdate = {
+            email: $set.email,
+            username: $set.username,
+        }
+        delete $set.email
+        delete $set.username
+        const user = Meteor.users.update({_id}, {$set: userUpdate})
+        const profile = Lecturers.update({userId: _id}, {$set})
         return user
     }
 })
