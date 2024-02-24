@@ -62,5 +62,5 @@ Template.cardDetailProfileDosen.events({
   'click .image-fit' (e, t){
     e.preventDefault();
     window.open(e.target.src, '_blank');
-  }
+  },
 })

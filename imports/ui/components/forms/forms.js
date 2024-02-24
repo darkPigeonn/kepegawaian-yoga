@@ -10,6 +10,12 @@ Template.formLecturers.onCreated(function () {
     self.listEducationalHistory = new ReactiveVar([])
     self.listCertification = new ReactiveVar([])
     self.submitType = new ReactiveVar(self.data.submitType)
+    self.pageMode = new ReactiveVar();
+
+    // Set mode page add / edit
+    const lecturerId = FlowRouter.getParam("_id");
+    const mode = lecturerId ? "edit" : "add";
+    self.pageMode.set(mode);
 });
 
 Template.formLecturers.onRendered( function(){
@@ -44,6 +50,9 @@ Template.formLecturers.helpers({
     },
     listCertification(){
         return Template.instance().listCertification.get()
+    },
+    pageMode(){
+        return Template.instance().pageMode.get();
     }
 });
 
@@ -142,7 +151,7 @@ Template.formLecturers.events({
         }
         listExperiences.push(data)
         t.listExperiences.set(listExperiences)
-        console.log(t.listExperiences.get())
+        // console.log(t.listExperiences.get())
     },
     'click .btnNavigation' (e, t){
         e.preventDefault()
