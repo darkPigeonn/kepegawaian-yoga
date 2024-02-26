@@ -132,7 +132,7 @@
   <section>
     <div class="card detail-card rounded-3 bg-light shadow text-dark my-4">
       <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-        <label class="fs-5 pt-1">About You</label>
+        <label class="fs-5 pt-1">Profil Anda</label>
         <a href="/lecturers/detail/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-circle-info text-white"></i></a>
         <!-- <a href="/lecturers/edit/{{myData._id}}" class="hovered-edit"><i class="fa fa-light fa-user-pen text-white"></i></a> -->
       </div>
@@ -142,14 +142,14 @@
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-address-card"></i> 
-                        Fullname
+                        Nama Lengkap
                       </p>
                       <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-city"></i>
-                        Place of Birth
+                        Tempat Kelahiran
                       </p>
                       <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
                   </div>
@@ -158,14 +158,14 @@
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-cake-candles"></i>
-                        Date of Birth
+                        Tanggal Lahir
                       </p>
                       <p class="open-sans text-dark">{{myData.dob}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-map-location-dot"></i>
-                        Address
+                        Alamat
                       </p>
                       <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
                   </div>
@@ -174,9 +174,13 @@
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
                         <i class="fa fa-light fa-venus-mars"></i>
-                        Gender
+                        Jenis Kelamin
                       </p>
-                      <p class="open-sans text-dark">{{capitalizeWord myData.gender}}</p>
+                      {{#if equals myData.gender "male"}}
+                        <p class="open-sans text-dark">Laki-Laki</p>
+                      {{else if equals myData.gender "female"}}
+                        <p class="open-sans text-dark">Perempuan</p>
+                      {{/if}}
                   </div>
               </div>
           </div>
@@ -389,7 +393,11 @@
                         Jenis Kelamin
                       </p>
                       {{#if myData.gender}}
-                      <p class="open-sans text-dark">{{capitalizeWord myData.gender}}</p>
+                        {{#if equals myData.gender "male"}}
+                          <p class="open-sans text-dark">Laki-Laki</p>
+                        {{else if equals myData.gender "female"}}
+                          <p class="open-sans text-dark">Perempuan</p>
+                        {{/if}}
                       {{else}}
                       <p class="open-sans text-dark"><i>No Data</i></p>
                       {{/if}}
@@ -650,7 +658,7 @@
                           <div class="col-md-6">
                             <div class="mb-3">
                                 <p class="form-label open-sans text-dark fw-bold">
-                                  Institution
+                                  Institusi
                                 </p>
                                 {{#if item.institution}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>

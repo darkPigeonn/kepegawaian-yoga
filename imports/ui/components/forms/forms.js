@@ -64,10 +64,10 @@ Template.formLecturers.events({
         const educationLevel = $("#inputEducationLevel").val()
         const major = $("#inputEducationMajor").val()
         const institution = $("#inputEducationInstitution").val()
-        const domesticStatus = $("#inputDomestic").val()
         const graduateDegree = $("#inputGraduateDegree").val()
         const studyPublication = $("#inputStudyPublication").val()
-        const formalStatus = $("#inputFormalStatus").val()
+        const domesticStatus = $("input[name=inputDomestic]:checked").val()
+        const formalStatus = $("input[name=inputFormalStatus]:checked").val()
         const dateStart = $("#inputEducationStart").val()
         const dateEnd = $("#inputEducationEnd").val()
 
@@ -166,19 +166,19 @@ Template.formLecturers.events({
         const getValue = $(e.currentTarget).val();
         if (getValue == 2){
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
-                formData.username = $("#inputUsername").val()
-                formData.fullName = $("#inputFullname").val()
-                formData.address = $("#inputAddress").val()
-                formData.email = $("#inputEmail").val()
-                formData.phoneNumber = $("#inputPhoneNumber").val()
-                formData.pob = $("#inputPob").val()
-                formData.dob = $("#inputDob").val()
-                formData.gender = $("#inputGender").val()
-                formData.nationality = $("#inputNationality").val()
-                formData.religion = $("#inputReligion").val()
-                formData.nik = $("#inputNik").val()
-                formData.registeredAddress = $("#inputRegisteredAddress").val()
-                formData.imageFile = $('#inputImageProfile')[0].files[0]
+                formData.username = $("#inputUsername").val();
+                formData.fullName = $("#inputFullname").val();
+                formData.address = $("#inputAddress").val();
+                formData.email = $("#inputEmail").val();
+                formData.phoneNumber = $("#inputPhoneNumber").val();
+                formData.pob = $("#inputPob").val();
+                formData.dob = $("#inputDob").val();
+                formData.gender = $("input[name=inputGender]:checked").val();
+                formData.nationality = $("#inputNationality").val();
+                formData.religion = $("#inputReligion").val();
+                formData.nik = $("#inputNik").val();
+                formData.registeredAddress = $("#inputRegisteredAddress").val();
+                formData.imageFile = $('#inputImageProfile')[0].files[0];
                 t.formPage.set(getValue);
                 t.formData.set(formData)
             } else {
@@ -243,7 +243,95 @@ Template.formLecturers.events({
                 });
             }
         });
-       
+    },
+    async 'click .btn-personal' (e, t) {
+        e.preventDefault()
+        const formData = t.formData.get();
+        const getValue = $(e.currentTarget).val();
+        // 1 = data pribadi, 2 = identitas nasional, 3 = pengalaman profesi terbaru, 4 = pengalaman profesi sebelumnya, 5 = riwayat pendidikan, 6 = sertifikasi, 7 = bidang penelitian yang diminati
+        confirmationAlertAsync().then(async function (result) {
+            if (result.value) {
+                if (getValue == 1){
+                    if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+                        formData._id = FlowRouter.getParam("_id");
+                        formData.username = $("#inputUsername").val();
+                        formData.fullName = $("#inputFullname").val();
+                        formData.address = $("#inputAddress").val();
+                        formData.email = $("#inputEmail").val();
+                        formData.phoneNumber = $("#inputPhoneNumber").val();
+                        formData.pob = $("#inputPob").val();
+                        formData.dob = $("#inputDob").val();
+                        formData.gender = $("input[name=inputGender]:checked").val();
+                        formData.imageFile = $('#inputImageProfile')[0].files[0];
+
+                        if (formData.imageFile){
+                            const uploadData = {
+                                type: 'dosen-profilePics',
+                                Body: formData.imageFile
+                            };
+                            const fileLink = await uploadFiles(uploadData)
+                            formData.imageLink = fileLink
+                            delete formData.imageFile
+                        }
+                    } 
+                    else {
+                        failAlert("Pastikan username, Nama, email, alamat, dan tempat lahir sudah diisi !");
+                    }
+                }
+                else if(getValue == 2){
+                    if ($("#inputNik").val() !== "" && $("#inputRegisteredAddress").val() !== "") {
+                        formData._id = FlowRouter.getParam("_id");
+                        formData.nationality = $("#inputNationality").val();
+                        formData.religion = $("#inputReligion").val();
+                        formData.nik = $("#inputNik").val();
+                        formData.registeredAddress = $("#inputRegisteredAddress").val();
+                    }
+                    else{
+                        failAlert("Pastikan semua field telah terisi !");
+                    }
+                }
+                else if(getValue == 3){
+                    if ($("#inputNidn").val() !== "" && $("#inputPosition").val() !== "" && $("#inputAcademicRank").val() !== "") {
+                        formData._id = FlowRouter.getParam("_id")
+                        formData.nidn = $("#inputNidn").val();
+                        formData.position = $("#inputPosition").val();
+                        formData.academicRank = $("#inputAcademicRank").val();
+                    }
+                    else{
+                        failAlert("Pastikan semua field telah terisi !");
+                    }
+                }
+                else if(getValue == 4){
+                    formData._id = FlowRouter.getParam("_id");
+                    const listExperiences = t.listExperiences.get();
+                    formData.listExperiences = listExperiences;
+                }
+                else if(getValue == 5){
+                    formData._id = FlowRouter.getParam("_id");
+                    const listEducationalHistory = t.listEducationalHistory.get();
+                    formData.listEducationalHistory = listEducationalHistory;
+                }
+                else if(getValue == 6){
+                    formData._id = FlowRouter.getParam("_id");
+                    const listCertification = t.listCertification.get();
+                    formData.listCertification = listCertification;
+                }
+                else if(getValue == 7){
+                    formData._id = FlowRouter.getParam("_id");
+                    const researchInterest = $("#inputResearchInterest").val();
+                    formData.researchInterest = researchInterest;
+                }
+
+                Meteor.call("dosen.update", formData, async function (err, res) {
+                    if (err) {
+                        failAlert(err);
+                    } else {
+                        successAlert("Data berhasil diubah");
+                        FlowRouter.go("/")
+                    }
+                });
+            }
+        });
     }
 });
   

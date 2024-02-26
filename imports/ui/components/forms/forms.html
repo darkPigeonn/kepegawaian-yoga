@@ -56,9 +56,9 @@
                             <div class="d-flex flex-wrap gap-4">
                                 <div class="form-check">
                                     {{#if equals formData.gender 'male'}}
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="male" checked>
+                                        <input class="form-check-input" type="radio" name="inputGender" id="inputGender" value="male" checked>
                                     {{else}}
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="male">
+                                        <input class="form-check-input" type="radio" name="inputGender" id="inputGender" value="male">
                                     {{/if}}
                                     <label class="form-check-label">
                                         Laki-Laki
@@ -67,9 +67,9 @@
                                 </div>
                                 <div class="form-check">
                                     {{#if equals formData.gender 'female'}}
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="female" checked>
+                                        <input class="form-check-input" type="radio" name="inputGender" id="inputGender" value="female" checked>
                                     {{else}}
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="inputGender" value="female">
+                                        <input class="form-check-input" type="radio" name="inputGender" id="inputGender" value="female">
                                     {{/if}}
                                     <label class="form-check-label">
                                         Perempuan
@@ -97,7 +97,14 @@
                         </div>
                     </form>
                 </section>
+                {{#if equals pageMode "edit"}}
+                    <hr class="my-3" style="border: 1px solid lightgray;">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-warning btn-personal" type="button" value="1">Edit Data</button>
+                    </div>
+                {{/if}}
             </div>
+
         </div>
 
         <!-- National Identity -->
@@ -126,6 +133,12 @@
                         </div>
                     </form>
                 </section>
+                {{#if equals pageMode "edit"}}
+                    <hr class="my-3" style="border: 1px solid lightgray;">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-warning btn-personal" type="button" value="2">Edit Data</button>
+                    </div>
+                {{/if}}
             </div>
         </div>
 
@@ -159,9 +172,14 @@
                         <label for="inputAcademicRank" class="fw-bold text-login-content">Kepangkatan</label>
                         <input type="text" class="form-control" id="inputAcademicRank" value="{{formData.academicRank}}" placeholder="Ex: Penata Muda Tingkat 1" required>
                     </div>
-
                 </form>
             </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="3">Edit Data</button>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="card rounded-3 mt-4">
@@ -258,6 +276,12 @@
                     {{/if}}
                 </form>
             </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="4">Edit Data</button>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
@@ -373,7 +397,15 @@
                                     </div>
                                 </div>
                                 <div class="d-flex flex-wrap">
-                                    <label class="col text-break"><b>Gelar Kelulusan: </b>{{capitalizeWord item.graduateDegree}} di {{capitalizeWord item.institution}} <b>(Institusi {{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}})</b></label>
+                                    <label class="col text-break"><b>Gelar Kelulusan: </b>{{capitalizeWord item.graduateDegree}} di {{capitalizeWord item.institution}} 
+                                        <b>
+                                            {{#if equals item.formalStatus "informal"}}
+                                                (Institusi {{capitalizeWord item.domesticStatus}} & Tidak Formal)
+                                            {{else if equals item.formalStatus "formal"}}
+                                                (Institusi {{capitalizeWord item.domesticStatus}} & {{capitalizeWord item.formalStatus}})
+                                            {{/if}}
+                                        </b>
+                                    </label>
                                 </div>
                                 <div class="d-flex justify-content-end bottom-0 me-2">
                                     <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="education" data-milik="{{@index}}">
@@ -412,6 +444,12 @@
                     {{/if}}
                 </form>
             </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="5">Edit Data</button>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
@@ -539,6 +577,12 @@
                     {{/if}}
                 </form>
             </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="card rounded-3 mt-4">
@@ -554,6 +598,12 @@
                     </div>
                 </form>
             </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="mt-2 mb-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="7">Edit Data</button>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -561,10 +611,11 @@
             <i class="fa fa-light fa-arrow-left btn-previous" value="3"></i>
             Previous
         </button>
+
         {{#if equals type "add"}}
             <button class="btn btn-warning btn-submit" id="btn-submit" type="button">Submit</button>
-        {{else}}
-            <button class="btn btn-warning btn-submit" id="btn-submit" type="button">Submit</button>
+        {{else if equals type "edit"}}
+            <!-- <button class="btn btn-warning btn-submit" id="btn-submit" type="button">Submit</button> -->
         {{/if}}
     </div>
     {{/if}}
