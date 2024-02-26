@@ -24,6 +24,7 @@ Template.formLecturers.onRendered( function(){
         const id = FlowRouter.getParam("_id")
         Meteor.call("dosen.getDetails", id, function (err, res) {
             if (err) {
+                failAlert("Dosen Tidak Ditemukan!");
                 history.back();
             } else {
                 context.formData.set(res)
@@ -234,10 +235,10 @@ Template.formLecturers.events({
                 }
                 Meteor.call(postRoute, formData, async function (err, res) {
                     if (err) {
-                    failAlert(err);
+                        failAlert(err);
                     } else {
-                    successAlert("Data berhasil disimpan");
-                    FlowRouter.go("/")
+                        successAlert("Data berhasil disimpan");
+                        FlowRouter.go("/")
                     }
                 });
             }

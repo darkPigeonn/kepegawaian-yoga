@@ -21,7 +21,7 @@ Meteor.methods({
                 username
             },
         });
-        console.log(response.data)
+        // console.log(response.data)
     },
     "users.changePassword" (body){
         const user = Meteor.users.findOne({_id: body.userId});
@@ -62,13 +62,13 @@ Meteor.methods({
     async "users.createAppMeteor"(dataSend){
         check(dataSend, Object);
 
-        console.log(dataSend);
+        // console.log(dataSend);
         // return
 
-        console.log([dataSend.role]);
+        // console.log([dataSend.role]);
         Roles.createRole(dataSend.role, {unlessExists: true});
         // return
-        console.log(dataSend.fullname);
+        // console.log(dataSend.fullname);
 
         let newAccountData = {
             username: dataSend.username,
@@ -78,7 +78,7 @@ Meteor.methods({
         let _id;
         try {
             _id = Accounts.createUser(newAccountData);
-            console.log(_id);
+            // console.log(_id);
             if(_id){
                 let partnerCode;
                 const thisUser = Meteor.userId();
@@ -102,7 +102,7 @@ Meteor.methods({
     async "users.createAppMeteorSuperAdmin"(dataSend){
         check(dataSend, Object);
 
-        console.log(dataSend);
+        // console.log(dataSend);
         // return
 
         Roles.createRole("admin", {unlessExists: true});
@@ -116,14 +116,14 @@ Meteor.methods({
         let _id;
         try {
             _id = Accounts.createUser(newAccountData);
-            console.log(_id);
+            // console.log(_id);
             if(_id){
                 let partnerCode;
                 const thisUser = Meteor.userId();
                 const adminPartner = Meteor.users.findOne({
                     _id: thisUser,
                 });
-                console.log(adminPartner);
+                // console.log(adminPartner);
                 partnerCode = adminPartner.partners;
                 return await Meteor.users.update({ _id }, { $set: { roles: ["admin"], fullname: dataSend.fullname, partners: [dataSend.partners] } })
             }
@@ -150,7 +150,7 @@ Meteor.methods({
     "users.edit"(id, dataSave){
         check(id, String);
         check(dataSave, Object);
-        console.log(dataSave);
+        // console.log(dataSave);
         return Meteor.users.update({ _id: id }, { $set: { username: dataSave.username, fullname: dataSave.fullname, roles: [dataSave.roles] } })
     },
 
@@ -173,8 +173,6 @@ Meteor.methods({
             roles: ["dosen"],
             profileId: profileId.toHexString()
         } })
-
-
     },
 
     "dosen.delete" (_id){
@@ -200,7 +198,7 @@ Meteor.methods({
             const profile = Lecturers.findOne({userId: element._id})
             element.profile = profile
         }
-        console.log(users)
+        // console.log(users)
         return users
     },
 

@@ -90,7 +90,11 @@
               {{formatHRDate i.profile.dob}}
             </td>
             <td>
-              {{capitalizeWord i.profile.gender}}
+              {{#if equals i.profile.gender "male"}}
+                Laki-Laki
+              {{else if equals i.profile.gender "female"}}
+                Perempuan
+              {{/if}}
             </td>
             <td>
               {{#if isInRoles 'admin'}}

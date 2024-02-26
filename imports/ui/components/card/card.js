@@ -42,14 +42,20 @@ Template.cardHomeProfileDetail.helpers({
 Template.cardDetailProfileDosen.onCreated(function () { 
     const self = this;
     self.myData = new ReactiveVar({});
-    const _id = FlowRouter.getParam("_id")
-    Meteor.call("dosen.getDetails", _id,  function (error, result) {
-      if (result) {
-        self.myData.set(result);
-      } else {
-        console.log(error);
-      }
-    });
+    const _id = FlowRouter.getParam("_id");
+    if (_id) {
+      Meteor.call("dosen.getDetails", _id,  function (error, result) {
+        if (result) {
+          self.myData.set(result);
+        } else {
+          console.log(error);
+        }
+      });
+    }
+    else{
+      failAlert("Data Dosen Tidak Ditemukan!");
+      history.back();
+    }
 });
 
 Template.cardDetailProfileDosen.helpers({
