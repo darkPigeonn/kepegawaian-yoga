@@ -265,7 +265,7 @@ Template.employee_create.events({
     // console.log(file[0].name);
     if(file[0]){
       const uploadData = {
-        fileName: file[0].name,
+        fileName: "employee/"+file[0].name,
         type: "image/png",
         Body: file[0]
       }
@@ -487,10 +487,10 @@ Template.employee_create.events({
       const dob = moment(t.employee.get().date_of_birth).format("DD-MM-YYYY");
       const splitDob = dob.split("-");
       const jabatan = t.employee.get().job_position;
+      const user = Meteor.user();
       const tempPassword = splitDob[0] + splitDob[1] + splitDob[2];
-      const password = "y0g4." + tempPassword;
-      const partner = "imavi";
-      console.log(fullName, email, password, jabatan);
+      const password = tempPassword;
+      const partner = t.employee.get().partnerCode;
       const body = {
         fullName,
         email,
@@ -514,7 +514,7 @@ Template.employee_create.events({
               Swal.alert
               Swal.fire({
                 title: "Berhasil",
-                text: "Akun APP berhasil dibuat",
+                text: `Akun APP berhasil dibuat dengan username ${email} dan password ${partner}.${password}`,
                 showConfirmButton: true,
                 allowOutsideClick: true,
               });
@@ -532,11 +532,9 @@ Template.employee_create.events({
           })
         }
       });
-      console.log(body);
   
     },
     "click #btn-tambah-akun-user"(e, t){
-      console.log("masuk");
       Swal.fire({
         title: "Konfirmasi Tambah User Pegawai",
         text: "",
@@ -571,7 +569,7 @@ Template.employee_create.events({
                   }
                   Swal.fire({
                     title: "Berhasil",
-                    text: "Data berhasil dimasukkan",
+                    text: `Data berhasil dimasukkan, user memiliki username ${dataSend.username} dan password ${dataSend.password}`,
                     showConfirmButton: true,
                     allowOutsideClick: true,
                   }).then((result) => {
@@ -849,7 +847,7 @@ Template.employee_create.events({
     // console.log(file[0].name);
     if(file[0]){
       const uploadData = {
-        fileName: file[0].name,
+        fileName: "employee/"+file[0].name,
         type: "image/png",
         Body: file[0]
       }

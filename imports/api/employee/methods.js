@@ -6,7 +6,12 @@ import moment from "moment";
 Meteor.methods({
     "employee.createApp"(dataSend){
       check(dataSend, Object);
-
+      const thisUser = Meteor.userId();
+      const adminPartner = Meteor.users.findOne({
+          _id: thisUser,
+        });
+      partnerCode = adminPartner.partners[0];
+      dataSend.password = partnerCode + "." + dataSend.password
       let postURL =
       process.env.USE_LOCAL === "true"
         ? "http://localhost:3005/imavi/"
