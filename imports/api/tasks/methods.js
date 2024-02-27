@@ -227,6 +227,7 @@ Meteor.methods({
         
         const idTask = Tasks.insert(dataSave);
 
+        // Notification
         const dataNotif = updatedMembers.map(x => {
             let notif = {
                 member_id: x.id,
@@ -241,8 +242,14 @@ Meteor.methods({
             id_task: idTask,
             data: dataNotif,
             assign_for: notifType,
+            senderId: adminPartner._id,
+            receiverId: "system",
             message: messages,
+            categoryId: 10,
+            categoryName: "Informasi",
+            timestamp: new Date(),
             createdAt: new Date(),
+            createdBy: adminPartner._id
         };
 
         return Notifications.insert(newDataSave);
@@ -273,6 +280,7 @@ Meteor.methods({
             updatedBy: updatedBy
         };
         
+        // Notification
         const dataNotif = updatedMembers.map(x => {
             let notif = {
                 member_id: x.id,
@@ -287,8 +295,14 @@ Meteor.methods({
             id_task: id,
             data: dataNotif,
             assign_for: notifType,
+            senderId: adminPartner._id,
+            receiverId: "system",
             message: messages,
+            categoryId: 10,
+            categoryName: "Informasi",
+            timestamp: new Date(),
             createdAt: new Date(),
+            createdBy: adminPartner._id
         };
 
         const updateTask = Notifications.insert(newDataSave);
