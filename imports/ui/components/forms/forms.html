@@ -86,7 +86,7 @@
                                     <div class="card-header bg-blue d-flex flex-wrap justify-content-between align-items-center">
                                         <label class="poppins-bold text-white mb-0">Preview</label>
                                         <div>
-                                            <button class="btn btn-trash btn-danger btn-sm remove-image" type="button">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-image" id="remove-profile" type="button">
                                                 <i class="fa fa-light fa-trash"></i>
                                             </button>
                                         </div>
@@ -492,7 +492,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
-                        <input type="file" class="form-control" id="inputFileSk" required>
+                        <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv" required>
                     </div>
                     <div class="form-group">
                         <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara Sertifikasi</label>
@@ -541,6 +541,13 @@
                                     <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
                                     <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
                                     <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
+                                    {{#if item.fileLink}}
+                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                    {{/if}}
+
+                                    {{#if item.skFile}}
+                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                    {{/if}}
                                 </div>
                             </div>
                         {{/each}}
@@ -569,6 +576,13 @@
                                         <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
                                         <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
                                         <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
+                                        {{#if item.fileLink}}
+                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                        {{/if}}
+
+                                        {{#if item.skFile}}
+                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                        {{/if}}
                                     </div>
                                 </div>
                             </div>

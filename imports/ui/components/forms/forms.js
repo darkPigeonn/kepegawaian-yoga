@@ -11,6 +11,7 @@ Template.formLecturers.onCreated(function () {
     self.listCertification = new ReactiveVar([])
     self.submitType = new ReactiveVar(self.data.submitType)
     self.pageMode = new ReactiveVar();
+    self.skImage = new ReactiveVar(false)
 
     // Set mode page add / edit
     const lecturerId = FlowRouter.getParam("_id");
@@ -37,6 +38,9 @@ Template.formLecturers.onRendered( function(){
 })
 
 Template.formLecturers.helpers({
+    skImage(){
+        return Template.instance().skImage.get()
+    },
     formPage(){
         return Template.instance().formPage.get();
     },
@@ -58,6 +62,52 @@ Template.formLecturers.helpers({
 });
 
 Template.formLecturers.events({
+    "change #inputFileSk" (e, t){
+        e.preventDefault();
+        const file = e.target.files[0]
+        if (file) {
+          t.skImage.set(true)
+          const reader = new FileReader()
+          reader.addEventListener('load', function () {
+            $('#skImage').attr('src', this.result)
+          });
+          reader.readAsDataURL(file);
+        }
+        else {
+          $('#skImage').attr('src', '#')
+        }
+    },
+    'click #remove-sk' (e, t){
+        e.preventDefault()
+        $('#inputFileSk').attr('src', "")
+        $("#inputFileSk").val("")
+        t.skImage.set(false)
+    },
+    'change #inputImageProfile'(e, t) {
+        e.preventDefault();
+        const file = e.target.files[0]
+        if (file) {
+          const reader = new FileReader()
+          reader.addEventListener('load', function () {
+            $('#inputImageProfile').attr('src', this.result)
+            const formData = t.formData.get()
+            formData.imageLink = this.result
+            t.formData.set(formData)
+          });
+          reader.readAsDataURL(file);
+        }
+        else {
+          $('#inputImageProfile').attr('src', '#')
+        }
+    },
+    'click #remove-profile' (e, t){
+        e.preventDefault()
+        $('#inputImageProfile').attr('src', "")
+        $("#inputImageProfile").val("")
+        const formData = t.formData.get()
+        delete formData.imageLink
+        t.formData.set(formData)
+    },
     "click #add-history" (e, t){
         e.preventDefault()
         const listEducationalHistory = t.listEducationalHistory.get()
@@ -70,7 +120,7 @@ Template.formLecturers.events({
         const formalStatus = $("input[name=inputFormalStatus]:checked").val()
         const dateStart = $("#inputEducationStart").val()
         const dateEnd = $("#inputEducationEnd").val()
-
+        
         const data = {
             educationLevel,
             major,
@@ -98,7 +148,7 @@ Template.formLecturers.events({
         const grade = $("#inputCertificationGrade").val()
         const dateStart = $("#inputCertificationStart").val()
         const dateEnd = $("#inputCertificationEnd").val()
-
+        const file = $("#inputFileSk").prop("files")[0]
         const data = {
             type,
             major,
@@ -109,10 +159,22 @@ Template.formLecturers.events({
             dateStart,
             dateEnd
         }
-
+        if (file) {
+            data.skFile = file
+        }
+        console.log(data)
         listCertification.push(data)
         t.listCertification.set(listCertification)
-        // console.log(t.listCertification.get());
+
+        if (file){
+            const reader = new FileReader()
+            reader.addEventListener('load', function () {
+                $('.link-'+(listCertification.length-1) +"").attr('href', this.result)
+            });
+            reader.readAsDataURL(file);
+          console.log(t.listCertification.get());
+        }
+      
     },
     "click .remove-list" (e, t){
         e.preventDefault()
@@ -219,6 +281,8 @@ Template.formLecturers.events({
                 formData.listEducationalHistory = listEducationalHistory
                 formData.listExperiences = listExperiences
 
+                console.log(formData)
+
                 if (formData.imageFile){
                     const uploadData = {
                         type: 'dosen-profilePics',
@@ -227,6 +291,19 @@ Template.formLecturers.events({
                     const fileLink = await uploadFiles(uploadData)
                     formData.imageLink = fileLink
                     delete formData.imageFile
+                }
+
+                for (const iterator of formData.listCertification) {
+                    console.log(iterator)
+                    if (iterator.skFile){
+                        const uploadData = {
+                            type: 'dosen-sk',
+                            Body: iterator.skFile
+                        };
+                        const fileLink = await uploadFiles(uploadData)
+                        iterator.fileLink = fileLink
+                        delete iterator.skFile
+                    }
                 }
                 let postRoute = "dosen.insert"
                 if (submitType === 2){
@@ -315,6 +392,18 @@ Template.formLecturers.events({
                     formData._id = FlowRouter.getParam("_id");
                     const listCertification = t.listCertification.get();
                     formData.listCertification = listCertification;
+                    for (const iterator of formData.listCertification) {
+                        console.log(iterator)
+                        if (iterator.skFile){
+                            const uploadData = {
+                                type: 'dosen-sk',
+                                Body: iterator.skFile
+                            };
+                            const fileLink = await uploadFiles(uploadData)
+                            iterator.fileLink = fileLink
+                            delete iterator.skFile
+                        }
+                    }
                 }
                 else if(getValue == 7){
                     formData._id = FlowRouter.getParam("_id");
