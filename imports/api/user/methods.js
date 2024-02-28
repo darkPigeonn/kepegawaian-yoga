@@ -182,7 +182,8 @@ Meteor.methods({
     "dosen.getMine" (){
         const users = Meteor.users.findOne({_id: Meteor.userId()})
         const profile = Lecturers.findOne({_id: new Meteor.Collection.ObjectID(users.profileId)})
-        delete profile._id
+        if (profile)
+            delete profile._id
         return Object.assign(users, profile)
     },
 
