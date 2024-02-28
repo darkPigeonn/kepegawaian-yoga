@@ -88,7 +88,7 @@ Meteor.methods({
       return Employee.find({statusDelete: 1}).fetch();
     },
     async "employee.insert"(data) {
-      let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = data
+      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = data
       check(full_name, String);
       check(identification_number, String);
       check(gender, String);
@@ -107,7 +107,7 @@ Meteor.methods({
       // check(employment_history, String);
       // check(partnerCode, String);
   
-      // date_of_birth = new Date(date_of_birth);
+      // dob = new Date(dob);
       // start_date = new Date(start_date);
 
       let partnerCode;
@@ -125,7 +125,7 @@ Meteor.methods({
         full_name,
         identification_number,
         place_of_birth,
-        date_of_birth,
+        dob,
         gender,
         address,
         phone_number,
@@ -167,7 +167,7 @@ Meteor.methods({
     async "employee.insertCSV"(data) {
       const fail = []
       for (const i of data) {
-        let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = i
+        let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = i
           identification_number = identification_number.toString();
           base_salary = base_salary.toString();
           allowances = allowances.toString();
@@ -202,10 +202,10 @@ Meteor.methods({
           phone_number = formatPhoneNumber(phone_number);
           emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
 
-          date_of_birth = moment(date_of_birth, 'DD/MM/YYYY').toDate();
+          dob = moment(dob, 'DD/MM/YYYY').toDate();
           start_date = moment(start_date, 'DD/MM/YYYY').toDate();
 
-          // console.log(date_of_birth, start_date);
+          // console.log(dob, start_date);
 
           let partnerCode;
           let createdBy;
@@ -222,7 +222,7 @@ Meteor.methods({
             full_name,
             identification_number,
             place_of_birth,
-            date_of_birth,
+            dob,
             gender,
             address,
             phone_number,
@@ -273,7 +273,7 @@ Meteor.methods({
     },
 
     "employee.update"(id, data) {
-      let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,golongan } = data
+      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,golongan } = data
       check(full_name, String);
       check(identification_number, String);
       check(gender, String);
@@ -291,14 +291,14 @@ Meteor.methods({
       check(emergency_contact_name, String);
       // check(employment_history, String);
   
-      // date_of_birth = new Date(date_of_birth);
+      // dob = new Date(dob);
       // start_date = new Date(start_date);
   
       const dataSave = {
         full_name,
         identification_number,
         place_of_birth,
-        date_of_birth,
+        dob,
         gender,
         address,
         phone_number,
@@ -330,7 +330,7 @@ Meteor.methods({
   },
 
   "employee.updateWithPicture"(id, data) {
-    let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,partnerCode,linkGambar,golongan } = data
+    let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,partnerCode,linkGambar,golongan } = data
     check(full_name, String);
     check(identification_number, String);
     check(gender, String);
@@ -349,14 +349,14 @@ Meteor.methods({
     // check(employment_history, String);
     // check(partnerCode, String);
 
-    // date_of_birth = new Date(date_of_birth);
+    // dob = new Date(dob);
     // start_date = new Date(start_date);
 
     const dataSave = {
       full_name,
       identification_number,
       place_of_birth,
-      date_of_birth,
+      dob,
       gender,
       address,
       phone_number,

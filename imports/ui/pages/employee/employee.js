@@ -180,7 +180,7 @@ Template.employee_create.events({
     const full_name = $("#input_fullName").val();
     const identification_number = $("#input_identificationNumber").val();
     const place_of_birth = $("#input_placeOfBirth").val();
-    let date_of_birth = $("#input_dateOfBirth").val();
+    let dob = $("#input_dateOfBirth").val();
     const gender = $("#input_gender").val();
     const address = $("#input_address").val();
     let phone_number = $("#input_phoneNumber").val();
@@ -204,7 +204,7 @@ Template.employee_create.events({
     // const employment_history = $("#input_employmentHistory").val();
     // const partnerCode = $("#input_partnerCode").val();
     const golongan = $("#input_golongan").val();
-    date_of_birth = new Date(date_of_birth);
+    dob = new Date(dob);
     start_date = new Date(start_date);
     // console.log(isNumber(gajiPokok));
     // console.log(full_name);
@@ -281,7 +281,7 @@ Template.employee_create.events({
     const data = {full_name,
       identification_number,
       place_of_birth,
-      date_of_birth,
+      dob,
       gender,
       address,
       phone_number,
@@ -484,7 +484,7 @@ Template.employee_create.events({
       e.preventDefault();
       const fullName = t.employee.get().full_name;
       const email = t.employee.get().email_address;
-      const dob = moment(t.employee.get().date_of_birth).format("DD-MM-YYYY");
+      const dob = moment(t.employee.get().dob).format("DD-MM-YYYY");
       const splitDob = dob.split("-");
       const jabatan = t.employee.get().job_position;
       const user = Meteor.user();
@@ -694,7 +694,7 @@ Template.employee_create.events({
       const full_name = $("#input_fullName").val();
       const identification_number = $("#input_identificationNumber").val();
       const place_of_birth = $("#input_placeOfBirth").val();
-      let date_of_birth = $("#input_dateOfBirth").val();
+      let dob = $("#input_dateOfBirth").val();
       const gender = $("#input_gender").val();
       const address = $("#input_address").val();
       let phone_number = parseInt($("#input_phoneNumber").val());
@@ -718,7 +718,7 @@ Template.employee_create.events({
       // const employment_history = $("#input_employmentHistory").val();
       // const partnerCode = $("#input_partnerCode").val();
       const golongan = $("#input_golongan").val();
-      date_of_birth = new Date(date_of_birth);
+      dob = new Date(dob);
       start_date = new Date(start_date);
 
       console.log(golongan);
@@ -775,7 +775,7 @@ Template.employee_create.events({
     const data = {full_name,
       identification_number,
       place_of_birth,
-      date_of_birth,
+      dob,
       gender,
       address,
       phone_number,
@@ -857,7 +857,7 @@ Template.employee_create.events({
       const data = {full_name,
         identification_number,
         place_of_birth,
-        date_of_birth,
+        dob,
         gender,
         address,
         phone_number,
@@ -1101,26 +1101,11 @@ Template.employee_create.events({
           complete: function(results) {
             const parsedData = results.data;
             console.log(parsedData);
-            // for (const i of parsedData) {
-            //   i.start_date = new Date(i.start_date);
-            //   i.date_of_birth = new Date(i.date_of_birth);
-            //   const day = i.start_date.getDate().toString().padStart(2, '0');
-            //   const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
-            //   const year = i.start_date.getFullYear();
-            //   const formattedDate = `${day}/${month}/${year}`;
-            //   // const dayBirth = i.date_of_birth.getDate().toString().padStart(2, '0');
-            //   // const monthBirth = (i.date_of_birth.getMonth() + 1).toString().padStart(2, '0');
-            //   // const yearBirth = i.date_of_birth.getFullYear();
-            //   // const formattedDateBirth = `${dayBirth}/${monthBirth}/${yearBirth}`;
-            //   // console.log(formattedDateBirth);
-            //   i.start_date = formattedDate
-            //   // i.date_of_birth = formattedDateBirth
-            // }
               const data = [
                 'full_name',
                 'identification_number',
                 'place_of_birth',
-                'date_of_birth',
+                'dob',
                 'gender',
                 'address',
                 'phone_number',
@@ -1189,24 +1174,24 @@ Template.employee_create.events({
             console.log(parsedData);
             for (const i of parsedData) {
               i.start_date = new Date(i.start_date);
-              i.date_of_birth = new Date(i.date_of_birth);
+              i.dob = new Date(i.dob);
               const day = i.start_date.getDate().toString().padStart(2, '0');
               const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
               const year = i.start_date.getFullYear();
               const formattedDate = `${day}/${month}/${year}`;
-              const dayBirth = i.date_of_birth.getDate().toString().padStart(2, '0');
-              const monthBirth = (i.date_of_birth.getMonth() + 1).toString().padStart(2, '0');
-              const yearBirth = i.date_of_birth.getFullYear();
+              const dayBirth = i.dob.getDate().toString().padStart(2, '0');
+              const monthBirth = (i.dob.getMonth() + 1).toString().padStart(2, '0');
+              const yearBirth = i.dob.getFullYear();
               const formattedDateBirth = `${dayBirth}/${monthBirth}/${yearBirth}`;
               console.log(formattedDateBirth);
               i.start_date = formattedDate
-              i.date_of_birth = formattedDateBirth
+              i.dob = formattedDateBirth
             }
               const data = [
                 'full_name',
                 'identification_number',
                 'place_of_birth',
-                'date_of_birth',
+                'dob',
                 'gender',
                 'address',
                 'phone_number',
