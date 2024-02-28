@@ -844,6 +844,18 @@
                           <div class="col-md-6">
                             <div class="mb-3">
                                 <p class="form-label open-sans text-dark fw-bold">
+                                  File SK
+                                </p>
+                                {{#if item.fileLink}}
+                                <p class="open-sans text-dark"><a href="{{item.fileLink}}" class="link-{{@index}}">Download</a></p>
+                                {{else}}
+                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                {{/if}}
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                                <p class="form-label open-sans text-dark fw-bold">
                                   Nilai
                                 </p>
                                 {{#if item.grade}}

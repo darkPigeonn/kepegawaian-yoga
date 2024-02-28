@@ -162,7 +162,7 @@ Template.formLecturers.events({
         if (file) {
             data.skFile = file
         }
-        console.log(data)
+        // console.log(data)
         listCertification.push(data)
         t.listCertification.set(listCertification)
 
@@ -172,7 +172,7 @@ Template.formLecturers.events({
                 $('.link-'+(listCertification.length-1) +"").attr('href', this.result)
             });
             reader.readAsDataURL(file);
-          console.log(t.listCertification.get());
+        //   console.log(t.listCertification.get());
         }
       
     },
@@ -281,7 +281,7 @@ Template.formLecturers.events({
                 formData.listEducationalHistory = listEducationalHistory
                 formData.listExperiences = listExperiences
 
-                console.log(formData)
+                // console.log(formData)
 
                 if (formData.imageFile){
                     const uploadData = {
@@ -294,7 +294,7 @@ Template.formLecturers.events({
                 }
 
                 for (const iterator of formData.listCertification) {
-                    console.log(iterator)
+                    // console.log(iterator)
                     if (iterator.skFile){
                         const uploadData = {
                             type: 'dosen-sk',
@@ -393,7 +393,7 @@ Template.formLecturers.events({
                     const listCertification = t.listCertification.get();
                     formData.listCertification = listCertification;
                     for (const iterator of formData.listCertification) {
-                        console.log(iterator)
+                        // console.log(iterator)
                         if (iterator.skFile){
                             const uploadData = {
                                 type: 'dosen-sk',
