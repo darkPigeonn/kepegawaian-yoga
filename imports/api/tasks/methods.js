@@ -2,6 +2,7 @@ import { Tasks } from "./tasks";
 import { Projects } from "../projects/projects";
 import { Employee } from "../employee/employee";
 import { Notifications } from "../notification/notification";
+import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import { check } from "meteor/check";
 import moment from "moment";
 // import { ObjectId } from 'mongodb';
@@ -178,7 +179,7 @@ Meteor.methods({
         const tglHapus = new Date();
         return Tasks.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
-    "tasks.insert"(data) {
+    async "tasks.insert"(data) {
         let { idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages } = data
         check(idProject, String);
         check(nama_tasks, String);
@@ -251,8 +252,50 @@ Meteor.methods({
             createdAt: new Date(),
             createdBy: adminPartner._id
         };
-
-        return Notifications.insert(newDataSave);
+        
+        const insertNotif = Notifications.insert(newDataSave);
+        for (let index = 0; index < dataNotif.length; index++) {
+            const element = dataNotif[index];
+            const dataUser = AppUsers.findOne({email: element.member_email });
+            if(!dataUser){
+                dataNotif.splice(index, 1);
+            }
+            else {
+                newDataSave.token = []
+                newDataSave.token.push(dataUser.token_fcm)
+                newDataSave.title = "Tugas Baru Menanti Anda!"
+                newDataSave.description = "Anda memiliki tugas baru yang ditugaskan"
+            }
+        }
+        let runNotif = true;
+        if(dataNotif.length == 0) {
+            runNotif = false
+        }
+        if(runNotif == false) {
+            return insertNotif
+        }
+        else {
+            let postURL =
+            process.env.USE_LOCAL === "true"
+            ? "http://localhost:3005/imavi/"
+            : "https://api.imavi.org/imavi/";
+            try {
+                response = HTTP.call("POST", `${postURL}notifications/create-kepegawaian`, {
+                    headers: {
+                    Id: Meteor.settings.APP_IDMOBILE_IMAVI,
+                    Secret: Meteor.settings.APP_SECRETMOBILE_IMAVI,
+                    partner: "cim"
+                    },
+                    data: newDataSave,
+                });
+                // console.log(response);
+                return insertNotif
+            } catch (e) {
+                console.log(e);
+                return insertNotif
+                // throw new Meteor.Error(412, "Kirim Notifikasi ke Aplikasi Gagal")
+            }
+        }
     },
     "tasks.update"(id, data) {
         let { nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages } = data
