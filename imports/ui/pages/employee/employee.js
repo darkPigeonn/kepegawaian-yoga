@@ -535,6 +535,7 @@ Template.employee_create.events({
   
     },
     "click #btn-tambah-akun-user"(e, t){
+      e.preventDefault()
       Swal.fire({
         title: "Konfirmasi Tambah User Pegawai",
         text: "",
@@ -548,12 +549,14 @@ Template.employee_create.events({
           const fullName = t.employee.get().full_name
           const partner = "imavi";
           const role = [];
+          const id = FlowRouter.getParam("_id");
       
           const dataSend = {
               username : email,
               password : email,
               fullname: fullName,
-              role
+              role,
+              idEmployee: id
           };
       
           Meteor.call("users.createAppMeteorEmployee", dataSend, function (error ,result) { 
@@ -641,6 +644,121 @@ Template.employee_create.events({
       return Template.instance().employee.get();
     }
   });
+
+  Template.employee_detail_config.onCreated( function () {
+    const self = this;
+  
+    self.employee = new ReactiveVar();
+    // self.viewMode = new ReactiveVar("1");
+    const id = FlowRouter.getParam("_id");
+    // console.log(id);
+  
+    Meteor.call("employee.getBy", id, function (error, result) {
+      if (result) {
+        // console.log(result);
+        self.employee.set(result);
+      } else {
+        console.log(error);
+      }
+    });
+  });
+
+  Template.employee_detail_config.helpers({
+    employee() {
+      return Template.instance().employee.get();
+    }
+  });
+
+  Template.employee_detail_config.events({
+    async "click #btn_saveWebsite"(e, t) {
+      e.preventDefault();
+      const passwordBaru = $("#input_passwordWebsite").val();
+      const id = FlowRouter.getParam("_id");
+      Swal.fire({
+        title: "Warning",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+        text: "Apakah anda yakin ingin mengubah password akun website",
+      }).then((result) => {
+        if(result.isConfirmed){
+          Meteor.call(
+            "usersEmployee.editPassword",
+            id,
+            passwordBaru,
+            function (error, result) {
+              if (result) {
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                }).then((result) => {
+                  if(result.isConfirmed){
+                    history.back();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                console.log(error);
+              }
+            }
+          );
+        }
+      });
+    },
+
+    async "click #btn_saveApp"(e, t) {
+      e.preventDefault();
+      const passwordBaru = $("#input_passwordAplikasi").val();
+      const id = FlowRouter.getParam("_id");
+      console.log(passwordBaru, id);
+      Swal.fire({
+        title: "Warning",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Iya",
+        cancelButtonText: "Tidak",
+        text: "Apakah anda yakin ingin mengubah password akun website",
+      }).then((result) => {
+        if(result.isConfirmed){
+          Meteor.call(
+            "usersEmployee.editPasswordApp",
+            id,
+            passwordBaru,
+            function (error, result) {
+              if (result) {
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                }).then((result) => {
+                  if(result.isConfirmed){
+                    history.back();
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal diupdate",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                console.log(error);
+              }
+            }
+          );
+        }
+      });
+    }
+  })
 
   Template.employee_edit.onCreated(function (){
     const self = this;

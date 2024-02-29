@@ -310,6 +310,8 @@
                                     value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
                         <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                     type="button" value="Kontak Darurat" class="nav-link"></a></li>
+                        <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
+                            type="button" value="Konfigurasi" class="nav-link"></a></li>
                     </ul>
                 </div>
                 <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -747,6 +749,8 @@
                                 value="Pendidikan dan Pekerjaan" class="nav-link active"></a></li>
                     <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                 type="button" value="Kontak Darurat" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
+                        type="button" value="Konfigurasi" class="nav-link"></a></li>
                 </ul>
             </div>
             <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -1032,6 +1036,8 @@
                                 value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
                     <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                 type="button" value="Kontak Darurat" class="nav-link active"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
+                        type="button" value="Konfigurasi" class="nav-link"></a></li>
                 </ul>
             </div>
             <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -1052,6 +1058,225 @@
                                     <td style="padding:0 15px 20px 200px;">{{employee.emergency_contact_phone}}</td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .box {
+            width: 95%;
+            height: 80vh;
+            display: flex;
+            margin: auto;
+            margin-top: 2rem;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            border-right: 1px solid black;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bagianAvatar {
+            width: 100%;
+            height: 250px;
+        }
+
+        .bagianItems>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bagianItems>ul>li {
+            list-style-type: none;
+            /* border: 1px solid black; */
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .active>i {
+            color: blue;
+        }
+
+        .active {
+            font-weight: bold;
+            background-color: beige;
+            border-radius: 10px;
+        }
+
+        .contentAtas {
+            height: 18vh;
+            background-color: white;
+            padding: 1rem;
+        }
+
+        .contentAtas>ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        .contentAtas>ul>li {
+            list-style-type: none;
+            display: inline;
+            margin-right: 15px;
+        }
+
+        .contentBawah {
+            height: 45%;
+            background-color: white;
+            padding: 1rem;
+            overflow: auto;
+            flex: 1;
+        }
+
+        .personalData {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+
+        .tulisanPersonalData {
+            width: 20vw;
+            height: 100%;
+            background-color: white;
+        }
+        @media (max-width: 768px) {
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                border-right: none;
+            }
+
+            .content {
+                flex: none;
+            }
+
+            .contentBawah {
+                height: auto;
+            }
+
+            .bagianAvatar,
+            .bagianItems {
+                width: 100%;
+            }
+
+            .bagianItems {
+                display: none; /* Hide the sidebar items on small screens */
+            }
+
+            .tulisanPersonalData {
+                width: 100%;
+            }
+
+            .isiPersonalData>table>tr>td:nth-child(1) {
+                width: auto; /* Allow the content to determine the width */
+            }
+        }
+    </style>
+
+    <style scoped>
+        html,
+        body {
+            background-color: #F1F4F7;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</template>
+
+<template name="employee_detail_config">
+    <div class="box">
+        <div class="sidebar">
+            <div class="bagianAvatar"
+                style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <div style="text-align: center;">
+                    <div class="gambarAvatar"
+                        style="border: 1px solid black; width: 100px; height: 100px; border-radius: 100%; margin: auto;">
+                        <img src={{employee.linkGambar}}
+                            style="width: 100px; height: 100px; border-radius: 100%; margin: auto; object-fit: cover;">
+                    </div>
+                    <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
+                    <!-- <span>-</span> -->
+                </div>
+            </div>
+            <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+            <div class="bagianItems">
+                <ul class="nav flex-column">
+                    <!-- <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
+                                class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li> -->
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content">
+            <div class="contentAtas">
+                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/detail/{{employee._id}}">
+                    {{employee.full_name}}</a></p>
+                <p style="font-size: 32px; font-weight: bold;">Personal</p>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
+                                value="Informasi Umum" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input type="button"
+                                value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
+                                type="button" value="Kontak Darurat" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
+                        type="button" value="Konfigurasi" class="nav-link active"></a></li>
+                </ul>
+            </div>
+            <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
+            <div style="overflow: auto; height: 100%; width: 100%;">
+                <div class="contentBawah">
+                    <div class="personalData" style=" display: flex;">
+                        <div class="tulisanPersonalData">
+                            <p style="color: black; font-weight: bold; font-size: 28px;">Ubah Password Website</p>
+                        </div>
+                        <div class="isiPersonalData">
+                            <form>
+                                <div class="form-group mb-2">
+                                    <label>Password Baru Website</label>
+                                    <input type="text" id="input_passwordWebsite" class="form-control" />
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" type="submit" id="btn_saveWebsite">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="contentBawah">
+                    <div class="personalData" style=" display: flex;">
+                        <div class="tulisanPersonalData">
+                            <p style="color: black; font-weight: bold; font-size: 28px;">Ubah Password Aplikasi</p>
+                        </div>
+                        <div class="isiPersonalData">
+                            <form>
+                                <div class="form-group mb-2">
+                                    <label>Password Baru Aplikasi</label>
+                                    <input type="text" id="input_passwordAplikasi" class="form-control" />
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" type="submit" id="btn_saveApp">Simpan</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

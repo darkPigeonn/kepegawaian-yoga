@@ -1,6 +1,7 @@
 import { Employee } from "./employee";
 import { check } from "meteor/check";
 import moment from "moment";
+import { Meteor } from 'meteor/meteor';
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -113,11 +114,11 @@ Meteor.methods({
       let partnerCode;
       let createdBy;
       const thisUser = Meteor.userId();
-      console.log(thisUser);
+      // console.log(thisUser);
       const adminPartner = Meteor.users.findOne({
         _id: thisUser,
       });
-      console.log(adminPartner.partners[0]);
+      // console.log(adminPartner.partners[0]);
       partnerCode = adminPartner.partners[0];
       createdBy = adminPartner.fullname;
     
@@ -197,8 +198,6 @@ Meteor.methods({
           allowances = convert2number(allowances);
           deductions = convert2number(deductions);
 
-          console.log(base_salary, allowances, deductions)
-
           phone_number = formatPhoneNumber(phone_number);
           emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
 
@@ -210,11 +209,11 @@ Meteor.methods({
           let partnerCode;
           let createdBy;
           const thisUser = Meteor.userId();
-          console.log(thisUser);
+          // console.log(thisUser);
           const adminPartner = Meteor.users.findOne({
             _id: thisUser,
           });
-          console.log(adminPartner.partners[0]);
+          // console.log(adminPartner.partners[0]);
           partnerCode = adminPartner.partners[0];
           createdBy = adminPartner.fullname;
     
@@ -260,7 +259,6 @@ Meteor.methods({
             ]
           };
 
-          console.log(dataSave);
         try {
           
           Employee.insert(dataSave);
@@ -404,7 +402,7 @@ Meteor.methods({
   async "users.createAppMeteorEmployee"(dataSend){
     check(dataSend, Object);
 
-    console.log(dataSend);
+    // console.log(dataSend);
 
     let newAccountData = {
         username: dataSend.username,
@@ -413,27 +411,60 @@ Meteor.methods({
     };
     let _id;
     try {
-        _id = Accounts.createUser(newAccountData);
-        console.log(_id);
-        if(_id){
-            let partnerCode;
-            const thisUser = Meteor.userId();
-            const adminPartner = Meteor.users.findOne({
-                _id: thisUser,
-            });
-            partnerCode = adminPartner.partners[0];
-            return await Meteor.users.update({ _id }, { $set: {roles: [], fullname: dataSend.fullname, partners: [partnerCode] } })
-        }
+      _id = Accounts.createUser(newAccountData);
+      if(_id){
+          let partnerCode;
+          const thisUser = Meteor.userId();
+          const adminPartner = Meteor.users.findOne({
+              _id: thisUser,
+          });
+          partnerCode = adminPartner.partners[0];
+          return Meteor.users.update({ _id }, { $set: {roles: [], fullname: dataSend.fullname, partners: [partnerCode], idEmployee: dataSend.idEmployee } })
+      }
 
     } catch (error) {
-        console.log(error);
-        return error;
+      return error;
     }
-    
-    // Roles.createRole(dataSend.role)
-    // console.log(_id);
     return true;
 },
+
+  async "usersEmployee.editPassword"(id, password){
+    check(id, String);
+    check(password, String);
+    const dataUser = await Meteor.users.findOne({idEmployee : id});
+    const idUser = dataUser._id;
+    Accounts.setPassword(idUser, password);
+    return true;
+  },
+
+  async "usersEmployee.editPasswordApp"(id, password) {
+    check(id, String);
+    check(password, String);
+    const dataUser = await Meteor.users.findOne({idEmployee : id});
+    const idUser = dataUser._id;
+    const dataSend = {
+      id: idUser,
+      password: password
+    }
+    let postURL =
+      process.env.USE_LOCAL === "true"
+        ? "http://localhost:3005/imavi/"
+        : "https://api.imavi.org/imavi/";
+    try {
+      response = HTTP.call("POST", `${postURL}users/reset-password-meteor`, {
+        headers: {
+          Id: Meteor.settings.APP_IDMOBILE,
+          Secret: Meteor.settings.APP_SECRETMOBILE,
+        },
+        data: dataSend,
+      });
+      console.log(response);
+      return true;
+    } catch (e) {
+      console.log(e);
+      throw new Meteor.Error(412, "Ubah password aplikasi gagal")
+    }
+  }
 
   // "employee.getMutasi"(id){
   //   check(id, String);
@@ -479,7 +510,6 @@ if (ribuan) {
 }
 
 rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-console.log(rupiah);
 return rupiah;
 }
 

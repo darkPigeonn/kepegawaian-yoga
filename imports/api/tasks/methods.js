@@ -132,7 +132,7 @@ Meteor.methods({
     
                 // Is Project Member
                 if (checkProject) {
-                    console.log(checkProject);
+                    // console.log(checkProject);
                     findTasks = Tasks.find({ id_project: id, "members.email": relatedUser.emails[0].address }).fetch();
     
                     const priorityOrder = { high: 0, mid: 1, low: 2 };

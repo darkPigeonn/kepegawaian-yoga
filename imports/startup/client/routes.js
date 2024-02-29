@@ -103,6 +103,12 @@ FlowRouter.route("/employees/detail/emergencyContact/:_id", {
     this.render("App_body", "employee_detail_emergencyContact")
   }
 });
+FlowRouter.route("/employees/detail/config/:_id", {
+  name: "employee detail config",
+  action(){
+    this.render("App_body", "employee_detail_config")
+  }
+})
 FlowRouter.route("/employees/soon", {
   name: "comingSoon",
   action(){

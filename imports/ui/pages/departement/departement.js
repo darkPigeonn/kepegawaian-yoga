@@ -135,7 +135,7 @@ Template.departement_edit.events({
           id,
           data,
           function (error, result) {
-            console.log(result);
+            // console.log(result);
             if (result) {
               // alert("Sukses");
               Swal.fire({
@@ -170,7 +170,7 @@ Template.departement_detail.onCreated(function () {
 
     Meteor.call("departement.getBy", id, function (error, result) {
        if(result) {
-        console.log(result);
+        // console.log(result);
         self.departement.set(result);
        } else {
         console.log(error);

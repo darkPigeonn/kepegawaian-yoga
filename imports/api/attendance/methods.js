@@ -15,7 +15,6 @@ import { Employee } from "../employee/employee.js";
 
 Meteor.methods({
     "staffsAttendance.getAll"() {
-        // console.log(StaffsAttendance.find().fetch());
         return StaffsAttendance.find().fetch();
     },
     "staffsAttendance.inThisMonth"(userId, startDate, endDate) {
@@ -483,15 +482,11 @@ Meteor.methods({
                 clockOut: jamKeluar
             }
         }
-        // console.log(dataSave);
         return ClockShifts.update({_id: id}, dataSave);
     },
     "create.scheduleAttendance"(name, dataSend) {
     check(name, String);
     check(dataSend, Array);
-
-    // console.log(name);
-    // console.log(dataSend);
 
     const thisUser = Meteor.users.findOne({
         _id: Meteor.userId(),
@@ -515,9 +510,6 @@ Meteor.methods({
             _id: Meteor.userId(),
         });
 
-        console.log(id, name, dataSend);
-        // return;
-
         const dataSave = {
             name: name,
             schedule: dataSend,
@@ -526,14 +518,12 @@ Meteor.methods({
             createdByName: thisUser.fullname,
         };
 
-        console.log(dataSave);
 
         return ScheduleAttendance.update(
             { _id: id },
             { $set: dataSave }
-            );
+        );
 
-        // return ScheduleAttendance.insert(dataSave);
     },
     "getAll.scheduleAttendanceList"() {
     return ScheduleAttendance.find().fetch();

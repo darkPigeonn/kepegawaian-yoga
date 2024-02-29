@@ -26,7 +26,6 @@ Meteor.methods({
     check(name, String);
     check(description, String);
 
-    // console.log(data);
     let partnerCode;
     let createdBy;
     const thisUser = Meteor.userId();
@@ -49,7 +48,6 @@ Meteor.methods({
     check(id, String);
 
     let {name, description} = data;
-    // console.log(name,description);
 
     return Departement.update(
       { _id: id },
