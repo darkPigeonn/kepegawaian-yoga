@@ -1,0 +1,16 @@
+
+.section-label-page{
+	background:#1B3C73;
+	width:100%;
+  padding : 10px;
+  color : white;
+}
+.section-action-page{
+  margin:2vh 0;
+  float: right;
+}
+
+.section-title-page{
+  display:flex;
+  justify-content: center;
+}
