@@ -185,13 +185,15 @@ Meteor.methods({
   },
 
   "korespondensi.create"(data) {
-    const { name, purpose, attachment, subject, desc } = data;
+    const { name, purpose, attachment, subject, desc, dataAlur } = data;
 
-    const thisUser = Meteor.users.findOne({ _id: Meteor.userId });
+    const idUserPengisi = Meteor.userId();
+    const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
 
     if (!thisUser) {
       throw new Meteor.Error(412, "No Access");
     }
+    let modelData;
     //status surat
     //10 : draft
     //11 : send to level 1
@@ -200,41 +202,194 @@ Meteor.methods({
     //60 : success
     //80 : final cetak
     //90 : reject
+    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
     //masih belum bisa generate
-    const modelData = {
-      name,
-      purpose,
-      attachment,
-      subject,
-      desc,
-      status: 10,
-      createdAt: new Date(),
-      createdBy: thisUser._id,
-    };
+    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: [],
+        status: 10,
+        currentOrder: 0,
+        currentJabatan: "",
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+    else {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: dataAlur,
+        status: 10,
+        currentOrder: 0,
+        currentJabatan: dataAlur[0],
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
 
     //perlu penjagaan surat ini dibuat oleh siapa selain dari user
     //maksud nya seperti partner (Keuskupan) atau department
+    //TINDAKAN:
+    //Penjagaan partner sudah diambil dari partner pembuat surat
 
-    if (!thisUser.partner) {
-      modelData.partner = "default";
-    }
+    // if (!thisUser.partner) {
+    //   modelData.partner = "default";
+    // }
 
     return Letters.insert(modelData);
   },
 
-  "korespondensi.getAll"() {
-    const thisUser = Meteor.users.findOne({ _id: Meteor.userId });
-
+  "korespondensi.save"(data) {
+    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const idUserPengisi = Meteor.userId();
+    const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
-      throw new Meteor.Error("412", "No access");
+      throw new Meteor.Error(412, "No Access");
     }
 
-    //penjagaan baru dari siapa yang membuat surat , next perlu dilihat partner
+    console.log(dataAlur);
+    let modelData;
+    //status surat
+    //10 : draft
+    //11 : send to level 1
+    //20 : send to level 2
+    //30 : send to level 3
+    //60 : success
+    //80 : final cetak
+    //90 : reject
+    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
-    return Letters.find(
-      { createdBy: thisUser._id },
+    //masih belum bisa generate
+    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: [],
+        status: 11,
+        currentOrder: 0,
+        currentJabatan: "sekretaris-keuskupan",
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+    else {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: dataAlur,
+        status: 11,
+        currentOrder: 1,
+        currentJabatan: dataAlur[0],
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+
+    //perlu penjagaan surat ini dibuat oleh siapa selain dari user
+    //maksud nya seperti partner (Keuskupan) atau department
+    //TINDAKAN:
+    //Penjagaan partner sudah diambil dari partner pembuat surat
+
+    // if (!thisUser.partner) {
+    //   modelData.partner = "default";
+    // }
+
+    return Letters.insert(modelData);
+  },
+
+  "korespondensi.getByRoles"(role) {
+    // console.log(role);
+    let partnerCode;
+    const thisUser = Meteor.userId();
+    const adminPartner = Meteor.users.findOne({
+      _id: thisUser,
+    });
+    partnerCode = adminPartner.partners[0];
+    console.log(partnerCode);
+    console.log(role);
+    const data = Letters.find({
+      currentJabatan: role,
+      partner: partnerCode,
+    }).fetch();
+    // console.log(data);
+    return data;
+  },
+
+  "korespondensi.getByCreator"() {
+    const thisUser = Meteor.userId();
+    const data = Letters.find({
+      createdBy: thisUser
+    }).fetch()
+    return data;
+  },
+
+  "korespondensi.getAll"() {
+    const data = Letters.find({},
       { $sort: { createdAt: -1 } }
     ).fetch();
+    return data;
   },
+  
+  "korespondensi.getById"(id) {
+    const data = Letters.findOne({_id: id});
+    return data;
+  },
+
+  "korespondensi.getHistoryByPengisi"(role) {
+    let partnerCode;
+    const thisUser = Meteor.userId();
+    const adminPartner = Meteor.users.findOne({
+      _id: thisUser,
+    });
+    partnerCode = adminPartner.partners[0];
+    const data = Letters.find({
+      "alur.jabatan": role,
+      partner: partnerCode,
+    }).fetch();
+    console.log(data);
+    return data.filter((x) => {
+      return x.alur.find((y) => y.analisis.length && y.jabatan == role);
+    });
+  },
+
+  "korespondensi.updateAlur"(id, dataRow){
+    let dataAlurObject = [];
+    for (let index = 0; index < dataRow.length; index++) {
+      const element = dataRow[index];
+      let dataAlur = {
+          order: index+1,
+          jabatan: element,
+          analisis: ""
+      }
+      dataAlurObject.push(dataAlur)
+    }
+    return Letters.update({ _id: id }, 
+    { 
+        $push: { alur: { $each: dataAlurObject } }, 
+        $set: { 
+            currentOrder: 1, 
+            currentJabatan: dataAlurObject[0].jabatan
+        } 
+    }
+    )
+  }
 });

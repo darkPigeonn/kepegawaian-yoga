@@ -401,19 +401,71 @@ Template.reviewDocument.events({
 
 //korespondensi
 
-Template.formKorespondensi.onCreated(function () {
+Template.createKorespondensi.onCreated(function () {
+  const self = this;
   this.editor = new ReactiveVar();
+  self.data = new ReactiveVar();
+  self.daftarAlur = new ReactiveVar([]);
+  self.jabatanLogin = new ReactiveVar();
+  startSelect2();
+  const userId = Meteor.userId();
+  if (userId) {
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {
+      if (result) {
+        const dataRole = result[0];
+        self.jabatanLogin.set(dataRole);
+        console.log(dataRole);
+      } else {
+        console.log(error);
+      }
+    });
+  }
 });
-Template.formKorespondensi.onRendered(function () {
+Template.createKorespondensi.onRendered(function () {
   initEditor(Template.instance());
 });
-Template.formKorespondensi.events({
+Template.createKorespondensi.helpers({
+  daftarAlur() {
+    return Template.instance().daftarAlur.get();
+  },
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  }
+})
+Template.createKorespondensi.events({
+  "click #btn-add-alur"(e, t) {
+    e.preventDefault();
+    const dataRow = t.daftarAlur.get();
+    const selectedAlur = $("#input_alur").val();
+    Swal.fire({
+      title: "Konfirmasi Tambah Alur",
+      text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (selectedAlur.length > 0) {
+          for (let index = 0; index < selectedAlur.length; index++) {
+            const element = selectedAlur[index];
+            dataRow.push(element);
+          }
+        }
+        t.daftarAlur.set(dataRow);
+      }
+    });
+  },
   "click #submit": function (e, t) {
     const name = $("#nameOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
     const desc = t.editor.get().getData();
+    let dataAlur = t.daftarAlur.get();
+    if(dataAlur.length == 0){
+      dataAlur = null
+    }
     //categori
     const data = {
       name,
@@ -421,11 +473,43 @@ Template.formKorespondensi.events({
       attachment,
       subject,
       desc,
+      dataAlur
     };
 
     Meteor.call("korespondensi.create", data, function (error, result) {
       if (result) {
         successAlert();
+        location.reload();
+        history.back();
+      } else {
+        console.log(error);
+        failAlert(error);
+      }
+    });
+  },
+  "click #btn-send": function (e, t) {
+    const name = $("#nameOfLetter").val();
+    const purpose = $("#toLetter").val();
+    const attachment = $("#attach").val();
+    const subject = $("#about").val();
+    const desc = t.editor.get().getData();
+    let dataAlur = t.daftarAlur.get();
+    console.log(dataAlur);
+    //categori
+    const data = {
+      name,
+      purpose,
+      attachment,
+      subject,
+      desc,
+      dataAlur
+    };
+
+    Meteor.call("korespondensi.save", data, function (error, result) {
+      if (result) {
+        successAlert();
+        location.reload();
+        history.back();
       } else {
         console.log(error);
         failAlert(error);
@@ -436,21 +520,148 @@ Template.formKorespondensi.events({
 
 Template.listKorespondensi.onCreated(function () {
   const self = this;
-
   self.listItems = new ReactiveVar();
+  self.jabatanLogin = new ReactiveVar();
+  self.dataKorespondensi = new ReactiveVar();
+  self.dataKorespondensiPembuat = new ReactiveVar();
 
-  Meteor.call("korespondensi.getAll", function (error, result) {
+  const userId = Meteor.userId();
+  if (userId) {
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {
+      if (result) {
+        const dataRole = result[0];
+        self.jabatanLogin.set(dataRole);
+        console.log(dataRole);
+        Meteor.call("korespondensi.getByRoles", dataRole, function (error, result) {
+          if (result) {
+            console.log(result);
+            self.listItems.set(result);
+          } else {
+            console.log(error);
+          }
+        });
+        //get history orang yang melakukan review
+      } else {
+        console.log(error);
+      }
+    });
+  }
+  Meteor.call("korespondensi.getAll", function (error1, result1) {
+    if (result1) {
+      console.log(result1);
+      self.dataKorespondensi.set(result1);
+    } else {
+      console.log(error1);
+    }
+  });
+
+  Meteor.call("korespondensi.getByCreator", function (error, result){
     if (result) {
       console.log(result);
-      self.listItems.set(result);
+      self.dataKorespondensiPembuat.set(result);
     } else {
       console.log(error);
     }
-  });
+  })
+ 
 });
 
 Template.listKorespondensi.helpers({
   listItems() {
     return Template.instance().listItems.get();
   },
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  },
+  dataKorespondensi() {
+    return Template.instance().dataKorespondensi.get();
+  },
+  dataKorespondensiPembuat() {
+    return Template.instance().dataKorespondensiPembuat.get();
+  }
 });
+
+Template.editKorespondensiAlur.onCreated(function (){
+  const self = this;
+  self.dataKorespondensi = new ReactiveVar();
+  self.daftarAlur = new ReactiveVar([]);
+  self.jabatanLogin = new ReactiveVar();
+  const id = FlowRouter.getParam("_id");
+  const userId = Meteor.userId();
+  
+  startSelect2();
+  if (userId) {
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {
+      if (result) {
+        const dataRole = result[0];
+        self.jabatanLogin.set(dataRole);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  Meteor.call("korespondensi.getById", id, function (error, result) {
+    if (result) {
+      console.log(result);
+      self.dataKorespondensi.set(result)
+    } else {
+      console.log(error);
+    }
+  });
+
+})
+
+Template.editKorespondensiAlur.helpers({
+  dataKorespondensi() {
+    return Template.instance().dataKorespondensi.get();
+  },
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  },
+  daftarAlur() {
+    return Template.instance().daftarAlur.get();
+  }
+})
+
+Template.editKorespondensiAlur.events({
+  "click #btn-add-alur"(e, t) {
+    e.preventDefault();
+    const dataRow = t.daftarAlur.get();
+    const selectedAlur = $("#input_alur").val();
+    Swal.fire({
+      title: "Konfirmasi Tambah Alur",
+      text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (selectedAlur.length > 0) {
+          for (let index = 0; index < selectedAlur.length; index++) {
+            const element = selectedAlur[index];
+            dataRow.push(element);
+          }
+        }
+        t.daftarAlur.set(dataRow);
+      }
+    });
+  },
+  "click #btn-send"(e, t) {
+    e.preventDefault();
+    const id = FlowRouter.getParam("_id");
+    const dataRow = t.daftarAlur.get();
+    Meteor.call("korespondensi.updateAlur", id, dataRow, function (error, result) {
+      if (result) {
+        successAlert();
+        location.reload();
+        history.back();
+        
+      } else {
+        failAlert();
+        console.log(error);
+      }
+    });
+  }
+})
