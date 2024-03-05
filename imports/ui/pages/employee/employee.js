@@ -491,6 +491,7 @@ Template.employee_create.events({
       const tempPassword = splitDob[0] + splitDob[1] + splitDob[2];
       const password = tempPassword;
       const partner = t.employee.get().partnerCode;
+      const idEmployee = FlowRouter.getParam("_id");
       const body = {
         fullName,
         email,
@@ -509,7 +510,7 @@ Template.employee_create.events({
         cancelButtonText: "Batal"
       }).then((result) => {
         if(result.isConfirmed){
-          Meteor.call("employee.createApp", body, function(error, result){
+          Meteor.call("employee.createApp", body, idEmployee, function(error, result){
             if(result){
               Swal.alert
               Swal.fire({
@@ -521,12 +522,22 @@ Template.employee_create.events({
               history.back();
             }
             else{
-              Swal.fire({
-                title: "Gagal",
-                text: "Akun APP gagal dibuat, cek kembali bila user ini sudah memiliki akun APP",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
+              if(error.error == 412) {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Akun APP gagal dibuat, cek kembali bila user ini sudah memiliki akun APP",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+              else {
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Sistem bermasalah, silahkan hubungi administrasi",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
               // location.reload();
             }
           })
@@ -547,7 +558,6 @@ Template.employee_create.events({
         if(result.isConfirmed) {
           const email = t.employee.get().email_address;
           const fullName = t.employee.get().full_name
-          const partner = "imavi";
           const role = [];
           const id = FlowRouter.getParam("_id");
       

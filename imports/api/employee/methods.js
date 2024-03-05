@@ -5,12 +5,13 @@ import { Meteor } from 'meteor/meteor';
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
-    "employee.createApp"(dataSend){
+    "employee.createApp"(dataSend, idEmployee){
       check(dataSend, Object);
+      check(idEmployee, String);
       const thisUser = Meteor.userId();
       const adminPartner = Meteor.users.findOne({
-          _id: thisUser,
-        });
+        _id: thisUser,
+      });
       partnerCode = adminPartner.partners[0];
       dataSend.password = partnerCode + "." + dataSend.password
       let postURL =
@@ -28,10 +29,18 @@ Meteor.methods({
           },
           data: dataSend,
         });
+        const dataSave = {
+          profileId : response.data.profileId
+        }
+        const updateEmployee =  Employee.update({_id: idEmployee}, {$set: dataSave})
         return true;
       } catch (e) {
-        // console.log(e);
-        throw new Meteor.Error(412, "Akun sudah ada pada sistem")
+        if(e.response.statusCode == 502) {
+          throw new Meteor.Error(502, "Gangguan sistem")
+        }
+        else {
+          throw new Meteor.Error(e.response.statusCode, e.response.content)
+        }
       }
     },
     "employee.getAll"(){
@@ -401,7 +410,6 @@ Meteor.methods({
 
   async "users.createAppMeteorEmployee"(dataSend){
     check(dataSend, Object);
-
     // console.log(dataSend);
 
     let newAccountData = {
@@ -413,13 +421,15 @@ Meteor.methods({
     try {
       _id = Accounts.createUser(newAccountData);
       if(_id){
-          let partnerCode;
-          const thisUser = Meteor.userId();
-          const adminPartner = Meteor.users.findOne({
-              _id: thisUser,
-          });
-          partnerCode = adminPartner.partners[0];
-          return Meteor.users.update({ _id }, { $set: {roles: [], fullname: dataSend.fullname, partners: [partnerCode], idEmployee: dataSend.idEmployee } })
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        partnerCode = adminPartner.partners[0];
+        let roles;
+        if(partnerCode == "imavi") roles = "staff"
+        return Meteor.users.update({ _id }, { $set: {roles: [roles], fullname: dataSend.fullname, partners: [partnerCode], idEmployee: dataSend.idEmployee } })
       }
 
     } catch (error) {
@@ -440,7 +450,10 @@ Meteor.methods({
   async "usersEmployee.editPasswordApp"(id, password) {
     check(id, String);
     check(password, String);
-    const dataUser = await Meteor.users.findOne({idEmployee : id});
+    const dataUser = Meteor.users.findOne({idEmployee : id});
+    // if(!dataUser) {
+    //   throw new Error()
+    // }
     const idUser = dataUser._id;
     const dataSend = {
       id: idUser,
