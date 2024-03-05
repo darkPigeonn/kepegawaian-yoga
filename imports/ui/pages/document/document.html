@@ -902,6 +902,62 @@
             </div>
         {{else}}
             <h3>Daftar Surat Yang Harus Direview</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Perihal Surat</th>
+                        <th>Tujuan Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each listItems}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{name}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 99}}
+                                        Ditolak
+                                    {{else}}
+                                        Sedang Direview
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if equals status 11}}
+                                    <a href="/editKorespondensiAlur/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_reviewAlur">Review Alur</button>
+                                    </a>
+                                {{else}}
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                                    </a>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
             <br><br>
             <h3>Daftar Surat Dibuat</h3>
             <div class="section-content-page">
@@ -945,15 +1001,27 @@
                                 {{/if}}
                             </td>
                             <td>
-                                <a href="/documents/details/{{_id}}">
-                                    <button class="btn btn-primary" type="button" id="btn_details">Details</button>
-                                </a>
+                                {{#if equals status 10}}
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Edit</button>
+                                    </a>
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                    </a>
+
+                                {{else}}
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                    </a>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/each}}
                     </tbody>
                 </table>
             </div>
+            <br><br>
+            <h3>Daftar Riwayat Review Surat</h3>
         {{/if}}
     </div>
 </template>
@@ -1036,11 +1104,11 @@
                                         <td>
                                             {{setJabatanFormat i}}
                                         </td>
-                                        <td>
-                                            <!-- <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                        <!-- <td>
+                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
                                                 <i class="fa fa-trash"></i>
-                                            </button> -->
-                                        </td>
+                                            </button>
+                                        </td> -->
                                     </tr>
                                     {{/each}}
                                 </tbody>
@@ -1131,11 +1199,11 @@
                                         <td>
                                             {{setJabatanFormat i}}
                                         </td>
-                                        <td>
-                                            <!-- <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                        <!-- <td>
+                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
                                                 <i class="fa fa-trash"></i>
-                                            </button> -->
-                                        </td>
+                                            </button>
+                                        </td> -->
                                     </tr>
                                     {{/each}}
                                 </tbody>

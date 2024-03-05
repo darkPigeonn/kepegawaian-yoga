@@ -318,14 +318,13 @@ Meteor.methods({
 
   "korespondensi.getByRoles"(role) {
     // console.log(role);
+    //Untuk mendapatkan data yang harus direview oleh masing-masing role
     let partnerCode;
     const thisUser = Meteor.userId();
     const adminPartner = Meteor.users.findOne({
       _id: thisUser,
     });
     partnerCode = adminPartner.partners[0];
-    console.log(partnerCode);
-    console.log(role);
     const data = Letters.find({
       currentJabatan: role,
       partner: partnerCode,
@@ -386,8 +385,9 @@ Meteor.methods({
     { 
         $push: { alur: { $each: dataAlurObject } }, 
         $set: { 
-            currentOrder: 1, 
-            currentJabatan: dataAlurObject[0].jabatan
+          currentOrder: 1, 
+          currentJabatan: dataAlurObject[0].jabatan,
+          status: 12
         } 
     }
     )

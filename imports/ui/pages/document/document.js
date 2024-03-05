@@ -548,7 +548,6 @@ Template.listKorespondensi.onCreated(function () {
   }
   Meteor.call("korespondensi.getAll", function (error1, result1) {
     if (result1) {
-      console.log(result1);
       self.dataKorespondensi.set(result1);
     } else {
       console.log(error1);
@@ -557,7 +556,6 @@ Template.listKorespondensi.onCreated(function () {
 
   Meteor.call("korespondensi.getByCreator", function (error, result){
     if (result) {
-      console.log(result);
       self.dataKorespondensiPembuat.set(result);
     } else {
       console.log(error);
