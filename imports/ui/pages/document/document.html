@@ -839,15 +839,26 @@
                                 {{/if}}
                             </td>
                             <td>
-                                <a href="/documents/details/{{_id}}">
-                                    <button class="btn btn-primary" type="button" id="btn_details">Details</button>
-                                </a>
+                                {{#if equals status 10}}
+                                    <a href="/editKorespondensi/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                    </a>
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                    </a>
+                                {{else}}
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                    </a>
+                                {{/if}}
                             </td>
                         </tr>
                         {{/each}}
                     </tbody>
                 </table>
             </div>
+            <br><br>
+            <h3>Daftar Riwayat Review Surat</h3>
             <br><br>
             <h3>Daftar Semua Surat</h3>
             <div class="section-content-page">
@@ -943,15 +954,9 @@
                                 {{/if}}
                             </td>
                             <td>
-                                {{#if equals status 11}}
-                                    <a href="/editKorespondensiAlur/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_reviewAlur">Review Alur</button>
-                                    </a>
-                                {{else}}
-                                    <a href="/documents/details/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_review">Review</button>
-                                    </a>
-                                {{/if}}
+                                <a href="/documents/details/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                                </a>
                             </td>
                         </tr>
                         {{/each}}
@@ -1002,13 +1007,13 @@
                             </td>
                             <td>
                                 {{#if equals status 10}}
-                                    <a href="/documents/details/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_details">Edit</button>
+                                    <a href="/editKorespondensi/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
                                     </a>
-                                    <a href="/documents/details/{{_id}}">
+                                    <a href="/detailKorespondensi/{{_id}}">
                                         <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                                     </a>
-
+                                    <button class="btn btn-primary" type="button" id="btn_delete" data-id="{{_id}}">Delete</button>
                                 {{else}}
                                     <a href="/documents/details/{{_id}}">
                                         <button class="btn btn-primary" type="button" id="btn_details">Details</button>
@@ -1064,12 +1069,10 @@
         
                 <div class="form-group">
                     <label for="">Isi surat</label>
-                    <!-- The toolbar will be rendered in this container. -->
-                    <div id="toolbar-container"></div>
-        
-                    <!-- This container will become the editable. -->
-                    <div id="editor" class="toolbar-container" style="background-color: white;color: black;">
-                    </div>
+                    <div id="toolbar-containerDescription"></div>
+					<div id="editorDescription" class="toolbar-containerDescription"
+						style="background-color: white;color: black;">
+					</div>
                 </div>
         
                 {{#if equals jabatanLogin "sekretaris-keuskupan"}}
@@ -1213,6 +1216,103 @@
                 {{/if}}
 
                 <div class="form-actions">
+                    <button class="btn btn-success" id="btn-send">Kirim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editKorespondensi">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Ubah Surat</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <!-- <div class="form-group">
+                    <label for="">Kategori Surat</label>
+                    <select id="category" class="form-control ">
+                        <option>Pilih Kategori</option>
+                        {{#each categoryLetters}}
+                        <option value="{{_id}}">{{ name }}</option>
+                        {{/each}}
+                    </select>
+                </div> -->
+                <div class="form-group">
+                    <label for="">Nama Surat</label>
+                    <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Tujuan</label>
+                    <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}">
+                </div>
+        
+        
+                <div class="form-group">
+                    <label for="">Lampiran</label>
+                    <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Perihal</label>
+                    <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}">
+                </div>
+        
+        
+                <div class="form-group">
+                    <label for="">Isi surat</label>
+                    <div id="toolbar-containerDescription"></div>
+					<div id="editorDescription" class="toolbar-containerDescription"
+						style="background-color: white;color: black;">
+					</div>
+                </div>
+        
+                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+                    <div class="form-group">
+                        <label>Alur</label>
+                        <select id="input_alur" class="form-control select2" multiple>
+                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                            <option value="bidang">Bidang</option>
+                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                            <option value="dewan-pengurus">Dewan Pengurus</option>
+                            <option value="pengurus-inti">Pengurus Inti</option>
+                            <option value="administrasi-umum">Administrasi Umum</option>
+                        </select>
+                        <br><br>
+                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+                    </div>
+                    {{#if daftarAlur}}
+                        <h4>Daftar Alur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th>Jabatan</th>
+                                    <!-- <th>Action</th> -->
+                                </thead>
+                                <tbody>
+                                    {{#each i in daftarAlur}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{setJabatanFormat i}}
+                                        </td>
+                                        <!-- <td>
+                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td> -->
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+                {{/if}}
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submit">Simpan</button>
                     <button class="btn btn-success" id="btn-send">Kirim</button>
                 </div>
             </div>

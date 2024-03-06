@@ -250,6 +250,72 @@ Meteor.methods({
     return Letters.insert(modelData);
   },
 
+  "korespondensi.editSimpan"(id, data) {
+    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+
+    const idUserPengisi = Meteor.userId();
+    const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
+
+    if (!thisUser) {
+      throw new Meteor.Error(412, "No Access");
+    }
+    let modelData;
+    //status surat
+    //10 : draft
+    //11 : send to level 1
+    //20 : send to level 2
+    //30 : send to level 3
+    //60 : success
+    //80 : final cetak
+    //90 : reject
+    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
+
+    //masih belum bisa generate
+    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: [],
+        status: 10,
+        currentOrder: 0,
+        currentJabatan: "",
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+    else {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: dataAlur,
+        status: 10,
+        currentOrder: 0,
+        currentJabatan: dataAlur[0],
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+
+    //perlu penjagaan surat ini dibuat oleh siapa selain dari user
+    //maksud nya seperti partner (Keuskupan) atau department
+    //TINDAKAN:
+    //Penjagaan partner sudah diambil dari partner pembuat surat
+
+    // if (!thisUser.partner) {
+    //   modelData.partner = "default";
+    // }
+
+    return Letters.update({ _id: id }, { $set: modelData });
+  },
+
   "korespondensi.save"(data) {
     const { name, purpose, attachment, subject, desc, dataAlur } = data;
     const idUserPengisi = Meteor.userId();
@@ -314,6 +380,72 @@ Meteor.methods({
     // }
 
     return Letters.insert(modelData);
+  },
+
+  "korespondensi.editKirim"(id, data) {
+    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const idUserPengisi = Meteor.userId();
+    const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
+    if (!thisUser) {
+      throw new Meteor.Error(412, "No Access");
+    }
+
+    console.log(dataAlur);
+    let modelData;
+    //status surat
+    //10 : draft
+    //11 : send to level 1
+    //20 : send to level 2
+    //30 : send to level 3
+    //60 : success
+    //80 : final cetak
+    //90 : reject
+    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
+
+    //masih belum bisa generate
+    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: [],
+        status: 11,
+        currentOrder: 0,
+        currentJabatan: "sekretaris-keuskupan",
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+    else {
+      modelData = {
+        name,
+        purpose,
+        attachment,
+        subject,
+        desc,
+        alur: dataAlur,
+        status: 11,
+        currentOrder: 1,
+        currentJabatan: dataAlur[0],
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+      };
+    }
+
+    //perlu penjagaan surat ini dibuat oleh siapa selain dari user
+    //maksud nya seperti partner (Keuskupan) atau department
+    //TINDAKAN:
+    //Penjagaan partner sudah diambil dari partner pembuat surat
+
+    // if (!thisUser.partner) {
+    //   modelData.partner = "default";
+    // }
+
+    return Letters.update({ _id: id }, { $set: modelData });
   },
 
   "korespondensi.getByRoles"(role) {
@@ -391,5 +523,9 @@ Meteor.methods({
         } 
     }
     )
+  },
+
+  "korespondensi.delete"(id){
+    return Letters.remove({_id: id});
   }
 });

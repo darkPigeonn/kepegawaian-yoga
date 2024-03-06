@@ -405,6 +405,12 @@ FlowRouter.route("/createKorespondensi/", {
     this.render("App_body", "createKorespondensi");
   },
 });
+FlowRouter.route("/editKorespondensi/:_id", {
+  name: "editKorespondensi",
+  action() {
+    this.render("App_body", "editKorespondensi");
+  },
+});
 FlowRouter.route("/editKorespondensiAlur/:_id", {
   name: "editKorespondensiAlur",
   action() {

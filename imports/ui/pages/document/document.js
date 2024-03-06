@@ -375,35 +375,12 @@ Template.reviewDocument.events({
   },
 });
 
-// function previewPDF() {
-//     const fileInput = document.getElementById('pdfInput');
-//     const pdfPreview = document.getElementById('pdfPreview');
-
-//     const file = fileInput.files[0];
-//     if (!file) {
-//       alert('Pilih file PDF terlebih dahulu.');
-//       return;
-//     }
-
-//     const reader = new FileReader();
-//     reader.onload = function (e) {
-//       const pdfUrl = e.target.result;
-//       displayPDF(pdfUrl);
-//     };
-//     reader.readAsDataURL(file);
-// }
-
-// function displayPDF(pdfUrl) {
-//     const container = document.getElementById('pdfPreview');
-//     const pdf = new PDFJS.PDFDoc(pdfUrl);
-//     pdf.render(container);
-// }
-
 //korespondensi
 
 Template.createKorespondensi.onCreated(function () {
   const self = this;
   this.editor = new ReactiveVar();
+  this.editorDescription = new ReactiveVar();
   self.data = new ReactiveVar();
   self.daftarAlur = new ReactiveVar([]);
   self.jabatanLogin = new ReactiveVar();
@@ -420,9 +397,16 @@ Template.createKorespondensi.onCreated(function () {
       }
     });
   }
+  this.optionsDescription = {
+    editorEl: "editorDescription",
+    toolbarEl: "toolbar-containerDescription",
+    templateField: "editorDescription"
+  };
 });
 Template.createKorespondensi.onRendered(function () {
-  initEditor(Template.instance());
+  const template = Template.instance();
+	const context = this;
+	initEditor(template, context.optionsDescription);
 });
 Template.createKorespondensi.helpers({
   daftarAlur() {
@@ -453,6 +437,7 @@ Template.createKorespondensi.events({
           }
         }
         t.daftarAlur.set(dataRow);
+        console.log(t.daftarAlur.get());
       }
     });
   },
@@ -461,7 +446,8 @@ Template.createKorespondensi.events({
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
-    const desc = t.editor.get().getData();
+    const desc = t.editorDescription.get().getData();
+    console.log(desc);
     let dataAlur = t.daftarAlur.get();
     if(dataAlur.length == 0){
       dataAlur = null
@@ -492,7 +478,7 @@ Template.createKorespondensi.events({
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
-    const desc = t.editor.get().getData();
+    const desc = t.editorDescription.get().getData();
     let dataAlur = t.daftarAlur.get();
     console.log(dataAlur);
     //categori
@@ -579,6 +565,33 @@ Template.listKorespondensi.helpers({
   }
 });
 
+Template.listKorespondensi.events({
+  "click #btn_delete"(e, t) {
+    e.preventDefault();
+    const id = e.target.getAttribute('data-id');
+    Swal.fire({
+      title: "Konfirmasi Hapus Surat",
+      text: "Apakah anda yakin menghapus surat ini",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if(result.isConfirmed){
+        Meteor.call("korespondensi.delete", id, function (error, result) {
+          if (result) {
+            successAlert();
+            location.reload();
+          } else {
+            console.log(error);
+            failAlert()
+          }
+        });
+      }
+    });
+  }
+})
+
 Template.editKorespondensiAlur.onCreated(function (){
   const self = this;
   self.dataKorespondensi = new ReactiveVar();
@@ -661,5 +674,152 @@ Template.editKorespondensiAlur.events({
         console.log(error);
       }
     });
+  },
+})
+
+Template.editKorespondensi.onCreated(function (){
+  const self = this;
+  const template = Template.instance();
+  self.dataKorespondensi = new ReactiveVar();
+  self.daftarAlur = new ReactiveVar([]);
+  self.jabatanLogin = new ReactiveVar();
+  const id = FlowRouter.getParam("_id");
+  const userId = Meteor.userId();
+  
+  startSelect2();
+  if (userId) {
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {
+      if (result) {
+        const dataRole = result[0];
+        self.jabatanLogin.set(dataRole);
+      } else {
+        console.log(error);
+      }
+    });
+  }
+
+  Meteor.call("korespondensi.getById", id, function (error, result) {
+    if (result) {
+      self.dataKorespondensi.set(result)
+      console.log(result.alur.length);
+      let dataAlur = [];
+      for (const iterator of result.alur) {
+        dataAlur.push(iterator);
+      }
+      self.daftarAlur.set(dataAlur)
+      self.optionsDescription.content = result.desc;
+      initEditor(template, self.optionsDescription);
+    } else {
+      console.log(error);
+    }
+  });
+  self.editorDescription = new ReactiveVar();
+  self.optionsDescription = {
+    editorEl: "editorDescription",
+    toolbarEl: "toolbar-containerDescription",
+    templateField: "editorDescription"
+  };
+})
+
+Template.editKorespondensi.helpers({
+  dataKorespondensi() {
+    return Template.instance().dataKorespondensi.get();
+  },
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  },
+  daftarAlur() {
+    return Template.instance().daftarAlur.get();
   }
 })
+
+Template.editKorespondensi.events({
+  "click #btn-add-alur"(e, t) {
+    e.preventDefault();
+    const dataRow = t.daftarAlur.get();
+    const selectedAlur = $("#input_alur").val();
+    Swal.fire({
+      title: "Konfirmasi Tambah Alur",
+      text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (selectedAlur.length > 0) {
+          for (let index = 0; index < selectedAlur.length; index++) {
+            const element = selectedAlur[index];
+            dataRow.push(element);
+          }
+        }
+        t.daftarAlur.set(dataRow);
+        console.log(t.daftarAlur.get());
+      }
+    });
+  },
+  "click #submit" (e, t) {
+    e.preventDefault();
+    const name = $("#nameOfLetter").val();
+    const purpose = $("#toLetter").val();
+    const attachment = $("#attach").val();
+    const subject = $("#about").val();
+    const desc = t.editorDescription.get().getData();
+    console.log(desc);
+    let dataAlur = t.daftarAlur.get();
+    const id = FlowRouter.getParam("_id");
+    if(dataAlur.length == 0){
+      dataAlur = null
+    }
+    //categori
+    const data = {
+      name,
+      purpose,
+      attachment,
+      subject,
+      desc,
+      dataAlur
+    };
+
+    Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
+      if (result) {
+        successAlert();
+        location.reload();
+        history.back();
+      } else {
+        console.log(error);
+        failAlert(error);
+      }
+    });
+  },
+  "click #btn-send": function (e, t) {
+    e.preventDefault();
+    const name = $("#nameOfLetter").val();
+    const purpose = $("#toLetter").val();
+    const attachment = $("#attach").val();
+    const subject = $("#about").val();
+    const desc = t.editorDescription.get().getData();
+    let dataAlur = t.daftarAlur.get();
+    const id = FlowRouter.getParam("_id");
+    //categori
+    const data = {
+      name,
+      purpose,
+      attachment,
+      subject,
+      desc,
+      dataAlur
+    };
+
+    Meteor.call("korespondensi.editKirim",id, data, function (error, result) {
+      if (result) {
+        successAlert();
+        location.reload();
+        history.back();
+      } else {
+        console.log(error);
+        failAlert(error);
+      }
+    });
+  },
+});
