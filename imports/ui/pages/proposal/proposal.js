@@ -572,6 +572,7 @@ Template.formProposal.onCreated(function () {
 
 Template.formProposal.events({
     "click #submit"(e, t) {
+        e.preventDefault();
         Swal.fire({
             title: "Konfirmasi Buat Proposal",
             text: "Apakah anda yakin ingin membuat proposal",
@@ -963,6 +964,7 @@ Template.previewProposal.events({
         t.formSubmit.set(2);
     },
     "click #btn-proposal-setuju"(e, t){
+        e.preventDefault();
         Swal.fire({
             title: "Konfirmasi Setuju",
             text: "Apakah anda yakin untuk menyetujui proposal",
@@ -996,6 +998,7 @@ Template.previewProposal.events({
         t.formSubmit.set(3);
     },
     "click #btn-proposal-tolak"(e, t){
+        e.preventDefault();
         Swal.fire({
             title: "Konfirmasi Tolak",
             text: "Apakah anda yakin untuk menolak proposal",

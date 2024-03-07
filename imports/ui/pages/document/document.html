@@ -1096,7 +1096,7 @@
                                 <thead>
                                     <th>Nomor</th>
                                     <th>Jabatan</th>
-                                    <!-- <th>Action</th> -->
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     {{#each i in daftarAlur}}
@@ -1107,11 +1107,11 @@
                                         <td>
                                             {{setJabatanFormat i}}
                                         </td>
-                                        <!-- <td>
-                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                                <i class="fa fa-trash"></i>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                                <i class="fa fa-trash" posisi={{@index}}></i>
                                             </button>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                     {{/each}}
                                 </tbody>
@@ -1288,7 +1288,7 @@
                                 <thead>
                                     <th>Nomor</th>
                                     <th>Jabatan</th>
-                                    <!-- <th>Action</th> -->
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                     {{#each i in daftarAlur}}
@@ -1299,11 +1299,11 @@
                                         <td>
                                             {{setJabatanFormat i}}
                                         </td>
-                                        <!-- <td>
-                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                                <i class="fa fa-trash"></i>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                                <i class="fa fa-trash" posisi={{@index}}></i>
                                             </button>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                     {{/each}}
                                 </tbody>

@@ -441,7 +441,18 @@ Template.createKorespondensi.events({
       }
     });
   },
+  "click .btn-remove"(e, t) {
+    e.preventDefault()
+    const index = $(e.target).attr("posisi");
+    let dataAlur = t.daftarAlur.get();
+    console.log(index, dataAlur);
+    if(index != undefined) {
+      dataAlur.splice(index, 1);
+    }
+    t.daftarAlur.set(dataAlur);
+  },
   "click #submit": function (e, t) {
+    e.preventDefault();
     const name = $("#nameOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
@@ -474,6 +485,7 @@ Template.createKorespondensi.events({
     });
   },
   "click #btn-send": function (e, t) {
+    e.preventDefault();
     const name = $("#nameOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
@@ -757,6 +769,16 @@ Template.editKorespondensi.events({
         console.log(t.daftarAlur.get());
       }
     });
+  },
+  "click .btn-remove"(e, t) {
+    e.preventDefault()
+    const index = $(e.target).attr("posisi");
+    let dataAlur = t.daftarAlur.get();
+    console.log(index, dataAlur);
+    if(index != undefined) {
+      dataAlur.splice(index, 1);
+    }
+    t.daftarAlur.set(dataAlur);
   },
   "click #submit" (e, t) {
     e.preventDefault();
