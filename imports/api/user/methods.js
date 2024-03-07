@@ -22,13 +22,7 @@ Meteor.methods({
     async "users.createAppMeteor"(dataSend){
         check(dataSend, Object);
 
-        console.log(dataSend);
-        // return
-
-        console.log([dataSend.role]);
         Roles.createRole(dataSend.role, {unlessExists: true});
-        // return
-        console.log(dataSend.fullname);
 
         let newAccountData = {
             username: dataSend.username,
@@ -46,7 +40,7 @@ Meteor.methods({
                     _id: thisUser,
                 });
                 partnerCode = adminPartner.partners[0];
-                return await Meteor.users.update({ _id }, { $set: { roles: [dataSend.role], fullname: dataSend.fullname, partners: [partnerCode] } })
+                return Meteor.users.update({ _id }, { $set: { roles: [dataSend.role], fullname: dataSend.fullname, partners: [partnerCode] } })
             }
 
         } catch (error) {
@@ -85,7 +79,7 @@ Meteor.methods({
                 });
                 console.log(adminPartner);
                 partnerCode = adminPartner.partners;
-                return await Meteor.users.update({ _id }, { $set: { roles: ["admin"], fullname: dataSend.fullname, partners: [dataSend.partners] } })
+                return Meteor.users.update({ _id }, { $set: { roles: ["admin"], fullname: dataSend.fullname, partners: [dataSend.partners] } })
             }
 
         } catch (error) {
@@ -119,5 +113,9 @@ Meteor.methods({
         check(password, String);
         Accounts.setPassword(id, password);
         return true;
-    }
+    },
+    "users.getDataLogin"(id) {
+        const data = Meteor.users.findOne({ _id: id });
+        return data;
+      },
 })

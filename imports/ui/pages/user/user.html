@@ -128,16 +128,24 @@
             <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" required><br>
             
             <label for="input_roles">Roles</label>
-            <select id="input_roles" class="form-control" style="max-width: auto;">
-                <option value="admin">Admin</option>
-                <option value="resepsionis">Resepsionis</option>
-                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                <option value="bidang">Bidang</option>
-                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                <option value="dewan-pengurus">Dewan Pengurus</option>
-                <option value="pengurus-inti">Pengurus Inti</option>
-                <option value="administrasi-umum">Administrasi Umum</option>
-            </select>
+            {{#if equals partnerLogin "imavi"}}
+                <select id="input_roles" class="form-control" style="max-width: auto;">
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
+            {{else}}
+                <select id="input_roles" class="form-control" style="max-width: auto;">
+                    <option value="admin">Admin</option>
+                    <option value="resepsionis">Resepsionis</option>
+                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                    <option value="bidang">Bidang</option>
+                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                    <option value="dewan-pengurus">Dewan Pengurus</option>
+                    <option value="pengurus-inti">Pengurus Inti</option>
+                    <option value="administrasi-umum">Administrasi Umum</option>
+                    <option value="staff">Staff</option>
+                </select>
+            {{/if}}
             
             <br>
             

@@ -18,6 +18,8 @@ Template.employee_page.onCreated(function (){
       type: '',
       data: ''
     })
+    self.jabatanLogin = new ReactiveVar();
+    const userId = Meteor.userId();
 
     Meteor.call("employee.getAll", function (error, result) {
         if (result) {
@@ -27,6 +29,16 @@ Template.employee_page.onCreated(function (){
           console.log(error);
         }
     });
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {  
+      if (result) {
+        const dataRole = result[0];
+        console.log(dataRole);
+        self.jabatanLogin.set(dataRole);
+      }
+      else{
+        console.log(error);
+      }
+    })
 })
 
 Template.employee_page.helpers({
@@ -64,7 +76,10 @@ Template.employee_page.helpers({
       else{
         return []
       }
-    }
+    },
+    jabatanLogin() {
+      return Template.instance().jabatanLogin.get();
+    },
 });
 
 Template.employee_page.events({

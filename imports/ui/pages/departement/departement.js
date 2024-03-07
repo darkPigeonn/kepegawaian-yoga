@@ -8,6 +8,8 @@ Template.departement_page.onCreated(function () {
     const self = this;
   
     self.departements = new ReactiveVar();
+    self.jabatanLogin = new ReactiveVar();
+    const userId = Meteor.userId();
   
     Meteor.call("departement.getAll", function (error, result) {
       if (result) {
@@ -17,11 +19,24 @@ Template.departement_page.onCreated(function () {
         console.log(error);
       }
     });
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {  
+      if (result) {
+      const dataRole = result[0];
+      console.log(dataRole);
+      self.jabatanLogin.set(dataRole);
+      }
+      else{
+      console.log(error);
+      }
+    })
 });
 
 Template.departement_page.helpers({
     departements() {
       return Template.instance().departements.get();
+    },
+    jabatanLogin() {
+      return Template.instance().jabatanLogin.get();
     }
 });
 

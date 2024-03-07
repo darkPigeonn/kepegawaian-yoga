@@ -103,9 +103,31 @@ Template.listUser.events({
   }
 })
 
+Template.createUser.onCreated(function () { 
+  const self = this;
+  self.partnerLogin = new ReactiveVar();
+
+  const userId = Meteor.userId();
+  if(userId){
+    Meteor.call("users.getDataLogin", userId, function (error, result) { 
+      if(result){
+        self.partnerLogin.set(result.partners[0])
+      }
+      else{
+        console.log(error);
+      }
+    })
+  }
+});
+
+Template.createUser.helpers({
+  partnerLogin(){
+    return Template.instance().partnerLogin.get();
+  }
+})
+
 Template.createUser.events({
   "click #btn_save_user"(e, t){
-    console.log("masuk");
     const username = $("#input_username").val();
     const password = $("#input_password").val();
     const role = $("#input_roles").val();
@@ -119,7 +141,6 @@ Template.createUser.events({
     };
 
     Meteor.call("users.createAppMeteor", dataSend, function (error ,result) { 
-      console.log(error ,result);
         if (result) {
           if(result.error == 403){
             return Swal.fire({
@@ -127,6 +148,10 @@ Template.createUser.events({
               text: "Data gagal dimasukkan, username sudah ada",
               showConfirmButton: true,
               allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed) {
+                location.reload();
+              }
             });
           }
             // alert("Sukses");

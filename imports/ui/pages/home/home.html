@@ -57,21 +57,24 @@
         <span class="employees-title">Pegawai</span>
       </div>
       <div class="col-md-6 text-md-right">
-        <!-- <button type="button" class="btn btn-secondary dropdown-toggle move-down btn-more" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Lainnya
+        {{#if equals jabatanLogin "admin"}}
+          <div class="btn-group">
+            <a href="/employees/create">
+              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
+                Tambah Pegawai
               </button>
-              <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Dropdown Action 1</a>
-                  <a class="dropdown-item" href="#">Dropdown Action 2</a>
-              </div> -->
-        <!-- <button type="button" class="btn btn-secondary move-down btn-employee-transfer">Transfer Pegawai</button> -->
-        <div class="btn-group">
-          <a href="/employees/create">
-            <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
-              Tambah Pegawai
-            </button>
-          </a>
-        </div>
+            </a>
+          </div>
+        {{/if}}
+        {{#if equals jabatanLogin "super-admin"}}
+          <div class="btn-group">
+            <a href="/employees/create">
+              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
+                Tambah Pegawai
+              </button>
+            </a>
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>
