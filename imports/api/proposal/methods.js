@@ -112,7 +112,7 @@ Meteor.methods({
       // console.log(element);
       let dataAlur = {
           order: index+1,
-          jabatan: alur[index],
+          role: alur[index],
           analisis: ""
       }
       dataAlurObject.push(dataAlur)
@@ -129,13 +129,13 @@ Meteor.methods({
     if(data.status == 0){
       for (let index = 0; index < dataAlurObject.length; index++) {
         currentOrder = dataAlurObject[1].order;
-        currentJabatan = dataAlurObject[1].jabatan
+        currentJabatan = dataAlurObject[1].role
       }
     
       data.currentOrder = currentOrder;
       data.currentJabatan = currentJabatan;
-      data.alur = dataAlurObject;
-      data.log = [
+      data.flows = dataAlurObject;
+      data.logs = [
         {
           activity: "revision proposal",
           createdBy: Meteor.userId(),
@@ -147,18 +147,19 @@ Meteor.methods({
     else{
       for (let index = 0; index < dataAlurObject.length; index++) {
         currentOrder = dataAlurObject[0].order;
-        currentJabatan = dataAlurObject[0].jabatan
+        currentJabatan = dataAlurObject[0].role
       }
       data.currentOrder = currentOrder;
       data.currentJabatan = currentJabatan;
-      data.alur = dataAlurObject;
-      data.log = [
+      data.flows = dataAlurObject;
+      data.logs = [
         {
-          activity: "create proposal",
+          activity: "Proposal Created",
           createdBy: Meteor.userId(),
           createdAt: new Date(),
         },
       ];
+      delete data.alur
     }
     // console.log("Data",data.status);
     return Proposals.update(
@@ -213,7 +214,7 @@ Meteor.methods({
     // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
     // console.log(dataProposalByID);
-    const alur = dataProposalByID.alur;
+    const alur = dataProposalByID.flows;
     // console.log(alur);
     // return;
     const note = {
@@ -227,10 +228,16 @@ Meteor.methods({
       // console.log(element.order, element.jabatan);
       //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
       if(index === alur.length - 1){
-        await Proposals.update({_id: data.proposalId, "alur.jabatan":element.jabatan},
+        const dataLogs = {
+          activity: "Review of the proposal is finished and accepted",
+          createdBy: Meteor.userId(),
+          createdAt: new Date(),
+        }
+        await Proposals.update({_id: data.proposalId, "flows.role":element.role},
         {
-            $set: {"alur.$.analisis": data.dispositionContent, currentOrder: "99", currentJabatan: "Review Selesai", status: 60}
-        });
+            $set: {"alur.$.analisis": data.dispositionContent, currentOrder: "99", currentJabatan: "Review Selesai", status: 60},
+            $push: {logs: dataLogs}
+          });
         return Proposals.update(
           {
             _id: data.proposalId,
@@ -250,12 +257,18 @@ Meteor.methods({
         );
       }
       else {
-          if(role == element.jabatan){
+          if(role == element.role){
               const value = index+2;
               const currentOrder = value.toString();
-              await Proposals.update({_id: data.proposalId, "alur.jabatan":element.jabatan},
+              const dataLogs = {
+                activity: "Proposal Accepted",
+                createdBy: Meteor.userId(),
+                createdAt: new Date(),
+              }
+              await Proposals.update({_id: data.proposalId, "flows.role":element.role},
               {
-                  $set: {"alur.$.analisis": data.dispositionContent, currentOrder: currentOrder, currentJabatan: alurNext.jabatan, status: 1}
+                  $set: {"flows.$.analisis": data.dispositionContent, currentOrder: currentOrder, currentJabatan: alurNext.role, status: 1},
+                  $push: {logs: dataLogs}
               });
               return Proposals.update(
                 {
@@ -291,7 +304,7 @@ Meteor.methods({
     // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
     // console.log(dataProposalByID);
-    const alur = dataProposalByID.alur;
+    const alur = dataProposalByID.flows;
     // console.log(alur);
     // return;
     const note = {
@@ -301,10 +314,16 @@ Meteor.methods({
     };
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
-      if(role == element.jabatan){
-        await Proposals.update({_id: data.proposalId, "alur.jabatan":element.jabatan},
+      if(role == element.role){
+        const dataLogs = {
+          activity: "Proposal Declined",
+          createdBy: Meteor.userId(),
+          createdAt: new Date(),
+        }
+        await Proposals.update({_id: data.proposalId, "flows.role":element.role},
         {
-            $set: {"alur.$.analisis": data.dispositionContent, status: 99}
+            $set: {"flows.$.analisis": data.dispositionContent, status: 99},
+            $push: {logs: dataLogs}
         });
         return Proposals.update(
           {
@@ -324,7 +343,7 @@ Meteor.methods({
           }
         );
       }
-  }
+    }
     // const dispotitionsContent = {
     //   userId: thisUser._id,
     //   content: data.dispositionContent,
@@ -344,7 +363,6 @@ Meteor.methods({
       noteBy: currentUser._id,
       noteByName: currentUser.fullname,
     };
-    // console.log(note);
 
     await Proposals.update(
       {
@@ -360,27 +378,28 @@ Meteor.methods({
         },
         $addToSet: {
           note,
-        },
+        }
       }
     );
 
     //kembalikan ke awal
     const dataProposalByID = Proposals.findOne({ _id: data.letterId });
     const dataUser = Meteor.users.findOne({_id:currentUser._id});
-    // console.log(data);
-    // console.log(dataUser.roles);
     const roleUser = dataUser.roles;
-    const alur = dataProposalByID.alur;
-    // console.log(roleUser, alur);
-    // console.log(dataReview);
+    const alur = dataProposalByID.flows;
+    const dataLogs = {
+      activity: "Proposal Revision",
+      createdBy: Meteor.userId(),
+      createdAt: new Date(),
+    }
     for (let index = 0; index < alur.length; index++) {
         const element = alur[index];
-        // console.log(element.order, element.jabatan);
         //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
-        if(roleUser == element.jabatan){
-            return Proposals.update({_id: data.letterId, "alur.jabatan":element.jabatan},
+        if(roleUser == element.role){
+            return Proposals.update({_id: data.letterId, "flows.role":element.role},
             {
-                $set: {"alur.$.analisis": data.note, currentOrder: "1", currentJabatan: alur[0].jabatan, status: 90}
+                $set: {"alur.$.analisis": data.note, currentOrder: "1", currentJabatan: alur[0].role, status: 90},
+                $push: {logs: dataLogs}
             });
         }
         
@@ -389,45 +408,53 @@ Meteor.methods({
 
   //kirim proposal dari pembuat
   "sentProposal"(data, idUser) {
-    check(data, Object);
-
-    const thisProposal = Proposals.findOne({
-      _id: data.proposalId,
-    });
-    // console.log(thisProposal);
-    //cek diposisi
-    const checkValue = isEmptyData(thisProposal);
-    if (checkValue) {
-      throw new Meteor.Error(404, "Ada data yang belum terisi");
+    try {
+      check(data, Object);
+      const thisProposal = Proposals.findOne({
+        _id: data.proposalId,
+      });
+      //cek diposisi
+      const checkValue = isEmptyData(thisProposal);
+      if (checkValue) {
+        throw new Meteor.Error(404, "Ada data yang belum terisi");
+      }
+      const dataUser = Meteor.users.findOne({_id:idUser});
+      const roleUser = dataUser.roles;
+      const alur = thisProposal.flows;
+      for (let index = 0; index < alur.length; index++) {
+        const element = alur[index];
+        const alurNext = alur[index+1];
+        // console.log(element.order, element.jabatan);
+        //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
+        if(index === alur.length - 1){
+          // return Document.update({_id: id, "alur.jabatan":element.jabatan},
+          //   {
+          //       $set: {"alur.$.analisis": dataReview, currentOrder: "99", currentJabatan: "Review Selesai"}
+          //   });
+        }
+        else {
+            if(roleUser == element.role){
+              const value = index+2;
+              const currentOrder = value.toString();
+              const dataLogs = {
+                activity: "Proposal Sended",
+                createdBy: Meteor.userId(),
+                createdAt: new Date(),
+              }
+              return Proposals.update({_id: data.proposalId},
+              {
+                  $set: {currentOrder: currentOrder, currentJabatan: alurNext.role, status: 0},
+                  $push: {logs: dataLogs}
+              });
+            }
+        }
+      }
+    // return Proposals.update({ _id: data.proposalId }, { $set: { status: 0 } });
+    } catch (error) {
+      console.log(error);
+      return error
     }
-    const dataUser = Meteor.users.findOne({_id:idUser});
-    const roleUser = dataUser.roles;
-    const alur = thisProposal.alur;
-    // console.log(alur);
-    for (let index = 0; index < alur.length; index++) {
-      const element = alur[index];
-      const alurNext = alur[index+1];
-      // console.log(element.order, element.jabatan);
-      //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
-      if(index === alur.length - 1){
-        // return Document.update({_id: id, "alur.jabatan":element.jabatan},
-        //   {
-        //       $set: {"alur.$.analisis": dataReview, currentOrder: "99", currentJabatan: "Review Selesai"}
-        //   });
-      }
-      else {
-          if(roleUser == element.jabatan){
-            const value = index+2;
-            const currentOrder = value.toString();
-            return Proposals.update({_id: data.proposalId},
-            {
-                $set: {currentOrder: currentOrder, currentJabatan: alurNext.jabatan, status: 0}
-            });
-          }
-      }
-  }
-    // Proposals.update({ _id: data.proposalId }, { $set: { status: 0 } });
-    return true;
+    
   },
 
   async "incomingProposals"() {

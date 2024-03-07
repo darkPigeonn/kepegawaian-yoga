@@ -414,6 +414,7 @@ Template.listProposals.events({
                 const userId = Meteor.userId();
 
                 Meteor.call("sentProposal", data, userId, function (error, result) {
+                    console.log(result);
                     if (result) {
                         Swal.fire({
                             title: "Berhasil",
@@ -423,6 +424,7 @@ Template.listProposals.events({
                         });
                         location.reload()
                     } else {
+                        console.log(error);
                         alert("Pastikan semua field terisi");
                     }
                 });
@@ -445,6 +447,7 @@ Template.listProposals.events({
 Template.formProposal.onCreated(function () {
     // initEditor(Template.instance())
     const self = this;
+    startSelect2();
     this.editorNeeds = new ReactiveVar();
     this.editorBackground = new ReactiveVar();
     this.editorPurpose = new ReactiveVar();
@@ -460,7 +463,7 @@ Template.formProposal.onCreated(function () {
     this.nowListing = new ReactiveVar(0);
     self.dispositions = new ReactiveVar();
     self.daftarAlur = new ReactiveVar([]);
-
+    console.log(self.daftarAlur);
     //set up ck editor untuk semua form
     this.optionsNeeds = {
         editorEl: "editorNeeds",
@@ -566,11 +569,20 @@ Template.formProposal.onCreated(function () {
             console.log("data tidak ada");
         }
     })
-    startSelect2();
 
 });
 
 Template.formProposal.events({
+    "click .btn-remove"(e, t) {
+        e.preventDefault()
+        const index = $(e.target).attr("posisi");
+        let dataAlur = t.daftarAlur.get();
+        console.log(index, dataAlur);
+        if(index != undefined) {
+            dataAlur.splice(index, 1);
+        }
+        t.daftarAlur.set(dataAlur);
+    },
     "click #submit"(e, t) {
         e.preventDefault();
         Swal.fire({
@@ -683,14 +695,13 @@ Template.formProposal.onRendered(function () {
         let dataAlur;
         Meteor.call('getProposalById', id, function (error, result) {
             // console.log("result get proposal by id : ", result, error);
-            dataAlur = result.alur;
-            console.log(dataAlur);
+            dataAlur = result.flows;
+            //hapus index pertama
             dataAlur.shift();
+            //
             const dataAlurEdit = [];
-            dataAlur.map((x)=>dataAlurEdit.push(x.jabatan))
-            console.log(dataAlurEdit);
+            dataAlur.map((x)=>dataAlurEdit.push(x.role))
             context.daftarAlur.set(dataAlurEdit);
-            console.log(result);
             if (result) {
                 $('#name').val(result.name);
                 // $('#categoryProposal').val(result.dispositionId)
