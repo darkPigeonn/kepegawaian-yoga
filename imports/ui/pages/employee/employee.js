@@ -506,7 +506,7 @@ Template.employee_create.events({
       const tempPassword = splitDob[0] + splitDob[1] + splitDob[2];
       const password = tempPassword;
       const partner = t.employee.get().partnerCode;
-      const idEmployee = FlowRouter.getParam("_id");
+      const profileId = FlowRouter.getParam("_id");
       const body = {
         fullName,
         email,
@@ -525,7 +525,7 @@ Template.employee_create.events({
         cancelButtonText: "Batal"
       }).then((result) => {
         if(result.isConfirmed){
-          Meteor.call("employee.createApp", body, idEmployee, function(error, result){
+          Meteor.call("employee.createApp", body, profileId, function(error, result){
             if(result){
               Swal.alert
               Swal.fire({

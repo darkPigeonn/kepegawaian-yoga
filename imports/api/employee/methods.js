@@ -22,7 +22,7 @@ Meteor.methods({
       // console.log(Meteor.settings.APP_IDMOBILE);
       // console.log(Meteor.settings.APP_IDMOBILE);
       try {
-        response = HTTP.call("POST", `${postURL}users/register`, {
+        response = HTTP.call("POST", `${postURL}users/register-v2`, {
           headers: {
             Id: Meteor.settings.APP_IDMOBILE,
             Secret: Meteor.settings.APP_SECRETMOBILE,
@@ -429,7 +429,7 @@ Meteor.methods({
         partnerCode = adminPartner.partners[0];
         let roles;
         if(partnerCode == "imavi") roles = "staff"
-        return Meteor.users.update({ _id }, { $set: {roles: [roles], fullname: dataSend.fullname, partners: [partnerCode], idEmployee: dataSend.idEmployee } })
+        return Meteor.users.update({ _id }, { $set: {roles: [roles], fullname: dataSend.fullname, partners: [partnerCode], profileId: dataSend.idEmployee } })
       }
 
     } catch (error) {
