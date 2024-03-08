@@ -559,7 +559,6 @@ Template.listKorespondensi.onCreated(function () {
       console.log(error);
     }
   })
- 
 });
 
 Template.listKorespondensi.helpers({
@@ -611,13 +610,15 @@ Template.editKorespondensiAlur.onCreated(function (){
   self.jabatanLogin = new ReactiveVar();
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
-  
   startSelect2();
   if (userId) {
     Meteor.call("employee.getDataLogin", userId, function (error, result) {
       if (result) {
         const dataRole = result[0];
         self.jabatanLogin.set(dataRole);
+        setTimeout(() => {
+          startSelect2();
+        }, 1000);
       } else {
         console.log(error);
       }
@@ -680,12 +681,21 @@ Template.editKorespondensiAlur.events({
         successAlert();
         location.reload();
         history.back();
-        
       } else {
         failAlert();
         console.log(error);
       }
     });
+  },
+  "click .btn-remove"(e, t) {
+    e.preventDefault()
+    const index = $(e.target).attr("milik");
+    let dataAlur = t.daftarAlur.get();
+    console.log(index, dataAlur);
+    if (index != undefined) {
+      dataAlur.splice(index, 1);
+    }
+    t.daftarAlur.set(dataAlur);
   },
 })
 
@@ -697,7 +707,6 @@ Template.editKorespondensi.onCreated(function (){
   self.jabatanLogin = new ReactiveVar();
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
-  
   startSelect2();
   if (userId) {
     Meteor.call("employee.getDataLogin", userId, function (error, result) {
@@ -772,7 +781,8 @@ Template.editKorespondensi.events({
   },
   "click .btn-remove"(e, t) {
     e.preventDefault()
-    const index = $(e.target).attr("posisi");
+    console.log(this);
+    const index = $(e.target).attr("milik");
     let dataAlur = t.daftarAlur.get();
     console.log(index, dataAlur);
     if(index != undefined) {
@@ -844,4 +854,77 @@ Template.editKorespondensi.events({
       }
     });
   },
+});
+Template.detailKorespondensi.onCreated(function () {
+  const self = this;
+  self.formSubmit = new ReactiveVar(0);
+  const id = FlowRouter.current().params._id;
+  // //('prev '+ id);
+  self.letterData = new ReactiveVar();
+  Meteor.call('korespondensi.getById', id, function (error, result) {
+    if (result) {
+      console.log(result);
+      self.letterData.set(result)
+    }
+  });
+});
+
+Template.detailKorespondensi.helpers({
+  letterData: function () {
+    return Template.instance().letterData.get();
+  },
+  formSubmit: function () {
+    //(Template.instance().formSubmit.get());
+    return Template.instance().formSubmit.get();
+  },
+  statusRevisi: function () {
+    const data = Template.instance().letterData.get();
+    const approval1 = data.approval1;
+    const approval2 = data.approval2;
+
+    let statusRevisi = 1;
+    if (approval2.status == 1) {
+      statusRevisi = 0;
+    }
+    //(statusRevisi);
+    return statusRevisi;
+  }
+});
+Template.detailKorespondensi.events({
+  'click #btn-revisi': function (e, t) {
+    t.formSubmit.set(1);
+  },
+  'click #revisi-save': function (e, t) {
+    const note = $('#note').val();
+    const letterId = Router.current().params._id;
+    const status = 99;
+
+    const data = {
+      note,
+      letterId,
+      status
+    }
+    Meteor.call('update.revisionLetter', data, function (error, result) {
+      if (result) {
+        alert('berhasil update');
+        history.back();
+      } else {
+        alert('gagal update');
+      }
+    })
+  },
+  "click #btn-approve"(e, t) {
+    const letterId = $(e.target).attr("milik");
+    const status = 1;
+    const data = {
+      letterId,
+      status
+    };
+    Meteor.call('update.statusLetter', data, function (error, result) {
+      if (result) {
+        history.back();
+      } else {}
+    });
+
+  }
 });
