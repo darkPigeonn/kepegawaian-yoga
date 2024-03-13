@@ -12,6 +12,7 @@ Template.formLecturers.onCreated(function () {
     self.submitType = new ReactiveVar(self.data.submitType)
     self.pageMode = new ReactiveVar();
     self.skImage = new ReactiveVar(false)
+    self.listKerjaPenugasan = new ReactiveVar([])
 
     // Set mode page add / edit
     const lecturerId = FlowRouter.getParam("_id");
@@ -38,6 +39,9 @@ Template.formLecturers.onRendered( function(){
 })
 
 Template.formLecturers.helpers({
+    listKerjaPenugasan(){
+        return Template.instance().listKerjaPenugasan.get()
+    },
     skImage(){
         return Template.instance().skImage.get()
     },
@@ -199,6 +203,21 @@ Template.formLecturers.events({
             }
         })
     },
+    "click #add-kerjapengugasan"(e, t){
+        const listKerjaPenugasan = t.listKerjaPenugasan.get()
+        const job = $("#inputJobs").val()
+        const place = $("#inputPlace").val()
+        const period = $("#inputPeriod").val()
+        const note = $("#inputNote").val()
+        const data = {
+            job,
+            place,
+            period,
+            note
+        }
+        listKerjaPenugasan.push(data)
+        t.listKerjaPenugasan.set(listKerjaPenugasan)
+    },
     "click #add-experience" (e, t){
         e.preventDefault()
         const listExperiences = t.listExperiences.get()
@@ -226,6 +245,7 @@ Template.formLecturers.events({
         const formData = t.formData.get();
         // console.log(formData);
         const getValue = $(e.currentTarget).val();
+        console.log(getValue)
         if (getValue == 2){
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
                 formData.username = $("#inputUsername").val();
@@ -258,7 +278,21 @@ Template.formLecturers.events({
             formData.listEducationalHistory = $("#inputListHistory").val()
             t.formPage.set(getValue);
             t.formData.set(formData)
-        } 
+        } else if (getValue == 5){
+            formData.researchInterest = $("#inputResearchInterest").val()
+            t.formPage.set(getValue);
+            t.formData.set(formData)
+        }
+        else if (getValue == 6){
+            t.formPage.set(getValue);
+            t.formData.set(formData)
+        } else if (getValue == 7){
+            t.formPage.set(getValue);
+            t.formData.set(formData)
+        } else if (getValue == 8){
+            t.formPage.set(getValue);
+            t.formData.set(formData)
+        }
     },
     'click .btn-previous' (e, t){
         e.preventDefault()
