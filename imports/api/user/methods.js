@@ -5,6 +5,8 @@ import { Meteor } from 'meteor/meteor';
 
 import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
+import { Employee } from "../employee/employee";
+import { AppProfiles, AppUsers } from "../collections-profiles.js";
 Meteor.methods({
     "users.getAll"(){
         let partnerCode;
@@ -117,5 +119,24 @@ Meteor.methods({
     "users.getDataLogin"(id) {
         const data = Meteor.users.findOne({ _id: id });
         return data;
-      },
+    },
+
+    "users.getDataNotEmployee"() {
+        let dataFinal = [];
+        const dataAppProfile = AppProfiles.find().fetch();
+        for (let index = 0; index < dataAppProfile.length; index++) {
+            const element = dataAppProfile[index];
+            const objectIdString = element._id.toString().slice(10, -2);
+            const dataAppUser = AppUsers.findOne({profileId : objectIdString})
+            if(dataAppUser){
+                const dataEmployee = Employee.findOne({email_address: dataAppUser.email});
+                if(!dataEmployee){
+                    dataAppUser.fullname = dataAppProfile[index].fullName
+                    dataFinal.push(dataAppUser)
+                }
+            }
+        }
+        return dataFinal;
+        
+    }
 })

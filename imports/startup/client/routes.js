@@ -320,6 +320,13 @@ FlowRouter.route("/changePassUser/:_id", {
   },
 });
 
+FlowRouter.route("/createEmployeeAdmin", {
+  name: "createEmployeeAdmin",
+  action() {
+    this.render("App_body", "createEmployeeAdmin");
+  },
+});
+
 //DOCUMENTS
 FlowRouter.route("/documents", {
   name: "listDocument",

@@ -336,3 +336,114 @@ Template.changePassUser.events({
     
   }
 })
+
+Template.createEmployeeAdmin.onCreated(function () { 
+  const self = this;
+  self.dataListUser = new ReactiveVar();
+  self.filteredDataListUser = new ReactiveVar();
+  self.filtered = new ReactiveVar(0);
+  Meteor.call("users.getDataNotEmployee", function (error, result) { 
+    console.log(result);
+    if(result){
+      self.dataListUser.set(result)
+      self.filteredDataListUser.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+}); 
+
+Template.createEmployeeAdmin.helpers({
+  dataListUser(){
+    return Template.instance().dataListUser.get();
+  },
+  filteredDataListUser(){
+    return Template.instance().filteredDataListUser.get();
+  },
+  filtered(){
+    return Template.instance().filtered.get();
+  }
+})
+
+Template.createEmployeeAdmin.events({
+  "input .filter"(e, t){
+    e.preventDefault();
+    const type = $("#input_type").val();
+    const data = $('#input_data').val();
+    const dataUser = t.filteredDataListUser.get();
+    let filteredUsers
+    console.log(data.length);
+    if(data.length >= 3) {
+      console.log(type);
+      if(type == "outlets"){
+        for (let index = 0; index < dataUser.length; index++) {
+          const element = dataUser[index];
+          if(element.outlets[0] == undefined || element.outlets.length == 0) {
+            dataUser.splice(index, 1);
+          }
+        }
+        filteredUsers = dataUser.filter(user => {
+          console.log(user.outlets[0]);
+          const filter = user.outlets[0].toLowerCase().includes(data.toLowerCase());
+          return filter;
+        });
+      }
+      else if(type == "fullname"){
+        filteredUsers = dataUser.filter(user => {
+          return user.fullname.toLowerCase().includes(data.toLowerCase());
+        });
+      }
+      else if(type == "email"){
+        filteredUsers = dataUser.filter(user => {
+          return user.email.toLowerCase().includes(data.toLowerCase());
+        });
+      }
+      t.filtered.set(1);
+      t.filteredDataListUser.set(filteredUsers)
+    }
+    else {
+      t.filtered.set(0);
+    }
+  },
+  "change .filter"(e, t){
+    e.preventDefault();
+    const type = $("#input_type").val();
+    const data = $('#input_data').val();
+    const dataUser = t.filteredDataListUser.get();
+    let filteredUsers
+    console.log(data.length);
+    if(data.length >= 3) {
+      if(type == "outlets"){
+        for (let index = 0; index < dataUser.length; index++) {
+          const element = dataUser[index];
+          if(element.outlets[0] == undefined || element.outlets.length == 0) {
+            dataUser.splice(index, 1);
+          }
+        }
+        filteredUsers = dataUser.filter(user => {
+          return user.outlets[0].toLowerCase().includes(data.toLowerCase());
+        });
+      }
+      else if(type == "fullname"){
+        filteredUsers = dataUser.filter(user => {
+          return user.fullname.toLowerCase().includes(data.toLowerCase());
+        });
+      }
+      else if(type == "email"){
+        filteredUsers = dataUser.filter(user => {
+          return user.email.toLowerCase().includes(data.toLowerCase());
+        });
+      }
+      t.filtered.set(1);
+      t.filteredDataListUser.set(filteredUsers)
+    }
+    else {
+      t.filtered.set(0);
+    }
+  },
+  "click #btnClearFilter"(e, t){
+    t.filteredDataListUser.set(t.dataListUser.get())
+    $('#input_data').val("");
+  }
+});
