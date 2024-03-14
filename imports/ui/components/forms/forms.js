@@ -13,8 +13,8 @@ Template.formLecturers.onCreated(function () {
     self.pageMode = new ReactiveVar();
     self.skImage = new ReactiveVar(false)
     self.listKerjaPenugasan = new ReactiveVar([])
-
-    // Set mode page add / edit
+    self.listPengajaran = new ReactiveVar([])
+    self.listBimbingan = new ReactiveVar([])
     const lecturerId = FlowRouter.getParam("_id");
     const mode = lecturerId ? "edit" : "add";
     self.pageMode.set(mode);
@@ -39,6 +39,12 @@ Template.formLecturers.onRendered( function(){
 })
 
 Template.formLecturers.helpers({
+    listBimbingan(){
+        return Template.instance().listBimbingan.get()
+    },
+    listPengajaran(){
+        return Template.instance().listPengajaran.get()
+    },
     listKerjaPenugasan(){
         return Template.instance().listKerjaPenugasan.get()
     },
@@ -141,6 +147,50 @@ Template.formLecturers.events({
         t.listEducationalHistory.set(listEducationalHistory)
         // console.log(t.listEducationalHistory.get());
     },
+    "click .add-pengajaran" (e, t){
+        e.preventDefault()
+        const listPengajaran = t.listPengajaran.get()
+        const matkul = $("#inputMataKuliah").val()
+        const ps = $("#input-ps").val()
+        const type = $("#input-jenis").val()
+        const bidangKeilmuan = $("#inputBidangKeilmuan").val()
+        const mhsTotal = $("#inputJumlahMahasiswa").val()
+        const sks = $("#inputSks").val()
+        const data = {
+            type,
+            matkul,
+            ps,
+            bidangKeilmuan,
+            mhsTotal,
+            sks
+        }
+        // console.log(data)
+        listPengajaran.push(data)
+        t.listPengajaran.set(listPengajaran)
+    },
+    "click .add-bimbingan" (e, t){
+        e.preventDefault()
+        const listBimbingan = t.listBimbingan.get()
+        const name = $("#inputName").val()
+        const title = $("#inputJudul").val()
+        const pembimbingCategory = $("#input-jenis-pembimbing").val()
+        const bidangKeilmuan = $("#inputBidangKeilmuanPembimbing").val()
+        const programStudi = $("#inputProgramStudi").val()
+        const lembagaName = $("#inputNamaLembaga").val()
+        const endDate = $("#inputTahun").val()
+        const data = {
+            name,
+            title,
+            pembimbingCategory,
+            programStudi,
+            bidangKeilmuan,
+            lembagaName,
+            endDate
+        }
+        // console.log(data)
+        listBimbingan.push(data)
+        t.listBimbingan.set(listBimbingan)
+    },
     "click .add-certification" (e, t){
         e.preventDefault()
         const listCertification = t.listCertification.get()
@@ -187,6 +237,9 @@ Template.formLecturers.events({
         const listExperiences = t.listExperiences.get()
         const listEducationalHistory = t.listEducationalHistory.get()
         const listCertification = t.listCertification.get()
+        const listKerjaPenugasan = t.listKerjaPenugasan.get()
+        const listPengajaran = t.listPengajaran.get()
+        const listBimbingan = t.listBimbingan.get()
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value){
@@ -199,22 +252,34 @@ Template.formLecturers.events({
                 } else if (identifier === "certification") {
                     listCertification.splice(index, 1)
                     t.listCertification.set(listCertification)
+                } else if (identifier === "kerjapenugasan" ) {
+                    listKerjaPenugasan.splice(index, 1)
+                    t.listKerjaPenugasan.set(listKerjaPenugasan)
+                } else if (identifier === "pengajaran"){
+                    listPengajaran.splice(index, 1)
+                    t.listPengajaran.set(listPengajaran)
+                } else if (identifier === "bimbingan"){
+                    listBimbingan.splice(index, 1)
+                    t.listBimbingan.set(listBimbingan)
                 }
             }
         })
     },
-    "click #add-kerjapengugasan"(e, t){
+    "click .add-kerjapenugasan"(e, t){
+        e.preventDefault()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
-        const job = $("#inputJobs").val()
+        const name = $("#inputName").val()
         const place = $("#inputPlace").val()
         const period = $("#inputPeriod").val()
         const note = $("#inputNote").val()
         const data = {
-            job,
+            name,
             place,
             period,
             note
         }
+
+        console.log(data)
         listKerjaPenugasan.push(data)
         t.listKerjaPenugasan.set(listKerjaPenugasan)
     },

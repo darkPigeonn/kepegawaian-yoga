@@ -655,19 +655,19 @@
             <section class="p-2">
                 <form id="formLecturers">
                     <div class="form-group">
-                        <label for="inputCertificationType" class="fw-bold text-login-content">Nama tugas</label>
-                        <input type="text" class="form-control" id="inputJobs" placeholder="Ex: Diakonat">
+                        <label for="inputName" class="fw-bold text-login-content">Nama tugas</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Ex: Diakonat">
                     </div>
                     <div class="form-group">
-                        <label for="inputCertificationMajor" class="fw-bold text-login-content">Tempat</label>
+                        <label for="inputPlace" class="fw-bold text-login-content">Tempat</label>
                         <input type="text" class="form-control" id="inputPlace" placeholder="Ex: Paroki ST Yakobus Surabaya" required>
                     </div>
                     <div class="form-group">
-                        <label for="inputRegistrationNumber" class="fw-bold text-login-content">Periode</label>
+                        <label for="inputPeriod" class="fw-bold text-login-content">Periode</label>
                         <input type="text" class="form-control" id="inputPeriod" placeholder="Ex: Agustus 1995 - Januari 1996" required>
                     </div>
                     <div class="form-group">
-                        <label for="inputSkNumber" class="fw-bold text-login-content">Keterangan</label>
+                        <label for="inputNotes" class="fw-bold text-login-content">Keterangan</label>
                         <input type="text" class="form-control" id="inputNotes" placeholder="Ex: xxxxxxxxxxxx" required>
                     </div>
                     <div class="d-flex justify-content-end mt-2 add-kerjapenugasan">
@@ -687,25 +687,15 @@
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
                                         {{capitalizeWord item.name}}
                                         <div class="me-2">
-                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}" >
-                                                <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="kerjapenugasan" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="kerjapenugasan" data-milik="{{@index}}"></i>
                                             </button>
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                    <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                    <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                    <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                    <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                    <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
-                                    <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
-                                    {{#if item.fileLink}}
-                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                    {{/if}}
-
-                                    {{#if item.skFile}}
-                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                    {{/if}}
+                                    <label class="col text-break"><b>Tempat:</b> {{capitalizeWord item.place}}</label>
+                                    <label class="col text-break"><b>Periode:</b> {{item.period}}</label>
+                                    <label class="col text-break"><b>Keterangan:</b> {{item.notes}}</label>
                                 </div>
                             </div>
                         {{/each}}
@@ -713,34 +703,24 @@
                     <!-- Mobile -->
                     <div class="form-group mobile-div">
                         <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                        {{#each item in listCertification}}
+                        {{#each item in listKerjaPenugasan}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
                                         <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                            {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                            {{capitalizeWord item.name}}
                                             <div class="me-2">
-                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}">
-                                                    <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="kerjapenugasan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="kerjapenugasan" data-milik="{{@index}}"></i>
                                                 </button>
                                             </div>
                                         </label>
                                         <div>
                                             <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
-                                        <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                        <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                        <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                        <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                        <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
-                                        <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
-                                        {{#if item.fileLink}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
-
-                                        {{#if item.skFile}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
+                                        <label class="col text-break"><b>Tempat:</b> {{capitalizeWord item.place}}</label>
+                                        <label class="col text-break"><b>Periode:</b> {{item.period}}</label>
+                                        <label class="col text-break"><b>Keterangan:</b> {{item.notes}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -777,6 +757,10 @@
         <div class="card-body">
             <section class="p-2">
                 <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputMataKuliah" class="fw-bold text-login-content">Mata Kuliah</label>
+                        <input type="text" class="form-control" id="inputMataKuliah" placeholder="Ex: Diakonat">
+                    </div>
                     <div class="form-group">
                         <label class="fw-bold text-login-content">Periode Studi</label>
                         <select id="input-ps" class="form-select filter">
@@ -827,77 +811,61 @@
                         <label for="inputSks" class="fw-bold text-login-content">SKS</label>
                         <input type="text" class="form-control" id="inputSks" placeholder="Ex: 2">
                     </div>
-                    <div class="d-flex justify-content-end mt-2 add-kerjapenugasan">
+                    <div class="d-flex justify-content-end mt-2 add-pengajaran">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
                             Tambah Riwayat Pengajaran
                         </button>
                     </div>
-                    {{#if listCertification}}
+                    {{#if listPengajaran}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
                     <!-- Desktop -->
                     <div class="form-group desktop-div">
-                        <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                        {{#each item in listCertification}}
+                        <label for="inputistPengajaran" class="fw-bold text-login-content">Daftar Riwayat Pengajaran</label>
+                        {{#each item in listPengajaran}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                        {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                        {{capitalizeWord item.matkul}}
                                         <div class="me-2">
-                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}" >
-                                                <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengajaran" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="pengajaran" data-milik="{{@index}}"></i>
                                             </button>
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                    <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                    <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                    <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                    <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                    <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
-                                    <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
-                                    {{#if item.fileLink}}
-                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                    {{/if}}
-
-                                    {{#if item.skFile}}
-                                        <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                    {{/if}}
+                                    <label class="col text-break"><b>Periode Studi:</b> {{item.ps}}</label>
+                                    <label class="col text-break"><b>Jenis Mata Kuliah:</b> {{item.type}}</label>
+                                    <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                    <label class="col text-break"><b>Jumlah Mahasiswa:</b> {{item.mhsTotal}}</label>
+                                    <label class="col text-break"><b>SKS:</b> {{item.sks}}</label>
                                 </div>
                             </div>
                         {{/each}}
                     </div>
                     <!-- Mobile -->
                     <div class="form-group mobile-div">
-                        <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                        {{#each item in listCertification}}
+                        <label for="inputListPengajaran" class="fw-bold text-login-content">Daftar Riwayat Pengajaran</label>
+                        {{#each item in listPengajaran}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
                                         <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                            {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                            {{capitalizeWord item.matkul}}
                                             <div class="me-2">
-                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}">
-                                                    <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengajaran" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="pengajaran" data-milik="{{@index}}"></i>
                                                 </button>
                                             </div>
                                         </label>
                                         <div>
                                             <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
-                                        <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                        <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                        <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                        <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                        <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.dateStart}}</label>
-                                        <label class="col text-break"><b>Tanggal Selesai:</b> {{formatHRDate item.dateEnd}}</label>
-                                        {{#if item.fileLink}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
-
-                                        {{#if item.skFile}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
+                                        <label class="col text-break"><b>Periode Studi:</b> {{item.ps}}</label>
+                                        <label class="col text-break"><b>Jenis Mata Kuliah:</b> {{item.type}}</label>
+                                        <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                        <label class="col text-break"><b>Jumlah Mahasiswa:</b> {{item.mhsTotal}}</label>
+                                        <label class="col text-break"><b>SKS:</b> {{item.sks}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -927,7 +895,7 @@
                     </div>
                     <div class="form-group">
                         <label class="fw-bold text-login-content">Jenis Bimbingan</label>
-                        <select id="input-jenis" class="form-select filter">
+                        <select id="inputJenisBimbingan" class="form-select filter">
                             <option value="Thesis">Thesis</option>
                             <option value="Tugas Akhir">Tugas Akhir</option>
                         </select>
@@ -945,8 +913,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang Keilmuan</label>
-                        <input type="text" class="form-control" id="inputBidangKeilmuan" placeholder="Ex: Manajemen Pastoral" required>
+                        <label for="inputBidangKeilmuanPembimbing" class="fw-bold text-login-content">Bidang Keilmuan</label>
+                        <input type="text" class="form-control" id="inputBidangKeilmuanPembimbing" placeholder="Ex: Manajemen Pastoral" required>
                     </div>
                     <div class="form-group">
                         <label for="inputProgramStudi" class="fw-bold text-login-content">Program Studi</label>
@@ -960,42 +928,38 @@
                         <label for="inputTahun" class="fw-bold text-login-content">Tahun Selesai</label>
                         <input type="text" class="form-control" id="inputTahun" placeholder="Ex: 2024" required>
                     </div>
-                    <div class="d-flex justify-content-end mt-2">
-                        <button class="btn btn-add btn-sm" id="add-experience">
+                    <div class="d-flex justify-content-end mt-2 add-bimbingan">
+                        <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
-                            Tambah Pengalaman
+                            Tambah Riwayat Bimbingan
                         </button>
                     </div>
-                    {{#if listExperiences}}
+                    {{#if listBimbingan}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
                     <!-- Desktop -->
                     <div class="form-group desktop-div">
-                        <label for="inputListExperience" class="fw-bold text-login-content">Daftar Pengalaman</label>
-                        {{#each item in listExperiences}}
+                        <label for="inputListExperience" class="fw-bold text-login-content">Daftar Riwayat Bimbingan</label>
+                        {{#each item in listBimbingan}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
-                                    <div class="w-60 row row-cols-1 mx-0">
-                                        <label class="col text-break fw-bold">{{item.jobPosition}}</label>
-                                    </div>
-                                    <div class="w-40">
-                                        <div class="d-flex justify-content-end flex-row gap-2 me-2">
-                                            <label class="fw-bold text-secondary text-break"> {{formatHRDate item.startDate}}</label>
-                                            -
-                                            <label class="fw-bold text-secondary text-break"> {{formatHRDate item.endDate}}</label>
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="bimbingan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="bimbingan" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-wrap">
-                                    <div class="w-75">
-                                        <label class="col text-break"><b>Institusi: </b> {{item.institution}}</label>
-                                    </div>
-                                    <div class="w-25">
-                                        <div class="d-flex justify-content-end bottom-0 me-2">
-                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="experiences" data-milik="{{@index}}">
-                                                <i class="fa fa-solid fa-trash remove-list" data-id="experiences" data-milik="{{@index}}"></i>
-                                            </button>
-                                        </div>
+                                        <label class="col text-break"><b>Judul:</b> {{item.title}}</label>
+                                        <label class="col text-break"><b>Kategori Bimbingan:</b> {{item.pembimbingCategory}}</label>
+                                        <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                        <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembagaName}}</label>
+                                        <label class="col text-break"><b>Program Studi:</b> {{item.programStudi}}</label>
+                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.endDate}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -1003,24 +967,28 @@
                     </div>
                     <!-- Mobile -->
                     <div class="form-group mobile-div">
-                        <label for="inputListExperience" class="fw-bold text-login-content">Daftar Pengalaman</label>
-                        {{#each item in listExperiences}}
+                        <label for="inputListPengajaran" class="fw-bold text-login-content">Daftar Riwayat Bimbingan</label>
+                        {{#each item in listBimbingan}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
-                                        <label class="col fw-bold text-break">{{item.jobPosition}}</label>
-                                        <label class="col text-break"><b>Institusi: </b> {{item.institution}}</label>
-                                        <div class="col-6">
-                                            <p class="fw-bold text-secondary text-break mt-4"><b class="text-dark">Tanggal Mulai:</b> {{formatHRDate item.startDate}}</p>
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="bimbingan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="bimbingan" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
-                                        <div class="col-6">
-                                            <p class="fw-bold text-secondary text-break mt-4"><b class="text-dark">Tanggal Selesai:</b> {{formatHRDate item.endDate}}</p>
-                                        </div>
-                                        <div class="d-flex justify-content-end bottom-0 me-2">
-                                            <button class="btn btn-trash btn-danger btn-sm remove-list" type="button" data-id="experiences" data-milik="{{@index}}">
-                                                <i class="fa fa-solid fa-trash remove-list" data-id="experiences" data-milik="{{@index}}"></i>
-                                            </button>
-                                        </div>
+                                        <label class="col text-break"><b>Judul:</b> {{item.title}}</label>
+                                        <label class="col text-break"><b>Kategori Bimbingan:</b> {{item.pembimbingCategory}}</label>
+                                        <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                        <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembagaName}}</label>
+                                        <label class="col text-break"><b>Program Studi:</b> {{item.programStudi}}</label>
+                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.endDate}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -2855,15 +2823,17 @@
             {{/if}}
         </div>
     </div>
-    <div class="d-flex justify-content-between mt-4">
+    <div class="d-flex justify-content-between align-items-center mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="8">
             <i class="fa fa-light fa-arrow-left btn-previous" value="8"></i>
             Previous
         </button>
-        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="10">
-            Next
-            <i class="fa fa-light fa-arrow-right btn-next" value="10"></i>
-        </button>
+
+        {{#if equals type "add"}}
+            <button class="btn btn-warning btn-submit" id="btn-submit" type="button">Submit</button>
+        {{else if equals type "edit"}}
+            <!-- <button class="btn btn-warning btn-submit" id="btn-submit" type="button">Submit</button> -->
+        {{/if}}
     </div>
     {{/if}}
 
