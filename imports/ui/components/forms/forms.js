@@ -292,6 +292,9 @@ Template.formLecturers.events({
         } else if (getValue == 8){
             t.formPage.set(getValue);
             t.formData.set(formData)
+        } else if (getValue == 9){
+            t.formPage.set(getValue);
+            t.formData.set(formData)
         }
     },
     'click .btn-previous' (e, t){

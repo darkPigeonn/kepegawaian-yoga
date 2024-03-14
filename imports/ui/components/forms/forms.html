@@ -2103,16 +2103,771 @@
         </div>
     </div>
     <div class="d-flex justify-content-between mt-4">
-        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="5">
-            <i class="fa fa-light fa-arrow-left btn-previous" value="5"></i>
+        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="7">
+            <i class="fa fa-light fa-arrow-left btn-previous" value="7"></i>
             Previous
         </button>
-        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="7">
+        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="9">
             Next
-            <i class="fa fa-light fa-arrow-right btn-next" value="7"></i>
+            <i class="fa fa-light fa-arrow-right btn-next" value="9"></i>
         </button>
     </div>
     {{/if}}
+
+    {{#if equals formPage 9}}
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Pengabdian
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaKegiatan" class="fw-bold text-login-content">Nama Kegiatan</label>
+                        <input type="text" class="form-control" id="inputNamaKegiatan" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTemaKegiatan" class="fw-bold text-login-content">Tema Kegiatan</label>
+                        <input type="text" class="form-control" id="inputTemaKegiatan" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTahunPelaksanaan" class="fw-bold text-login-content">Tahun Pelaksanaan</label>
+                        <input type="text" class="form-control" id="inputTahunPelaksanaan" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLamaKegiatan" class="fw-bold text-login-content">Lama Kegiatan</label>
+                        <input type="text" class="form-control" id="inputLamaKegiatan" placeholder="Ex: 2">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-penunjang-beasiswa">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Pengabdian
+                        </button>
+                    </div>
+                    {{#if listPengabdian}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistPengabdian" class="fw-bold text-login-content">Daftar Pengabdian</label>
+                        {{#each item in listPengabdian}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengabdian" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="pengabdian" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Tema Kegiatan:</b> {{item.theme}}</label>
+                                    <label class="col text-break"><b>Tahun Pelaksanaan:</b> {{item.year}}</label>
+                                    <label class="col text-break"><b>Lama Kegiatan:</b> {{item.duration}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistPengabdian" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listPengabdian}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengabdian" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="pengabdian" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Tema Kegiatan:</b> {{item.theme}}</label>
+                                        <label class="col text-break"><b>Tahun Pelaksanaan:</b> {{item.year}}</label>
+                                        <label class="col text-break"><b>Lama Kegiatan:</b> {{item.duration}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Riwayat Pembicara
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputKategoriKegiatan" class="fw-bold text-login-content">Kategori Kegiatan</label>
+                        <input type="text" class="form-control" id="inputKategoriKegiatan" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJudulMakalah" class="fw-bold text-login-content">Judul Makalah</label>
+                        <input type="text" class="form-control" id="inputJudulMakalah" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNamaTemuIlmiah" class="fw-bold text-login-content">Nama Temu Ilmiah</label>
+                        <input type="text" class="form-control" id="inputNamaTemuIlmiah" placeholder="Ex: Manajemen Pastoral" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPenyelenggara" class="fw-bold text-login-content">Penyelenggara</label>
+                        <input type="text" class="form-control" id="inputPenyelenggara" placeholder="Ex: Teologi Dasar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTanggalPelaksanaan" class="fw-bold text-login-content">Tanggal Pelaksanaan</label>
+                        <input type="text" class="form-control" id="inputTanggalPelaksanaan" placeholder="Ex: Teologi Dasar" required>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-add btn-sm" id="add-experience">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Pembicara
+                        </button>
+                    </div>
+                    {{#if listPembicara}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistPengabdian" class="fw-bold text-login-content">Daftar Pengabdian</label>
+                        {{#each item in listPembicara}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengabdian" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="pengabdian" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Kategori Kegiatan:</b> {{item.categories}}</label>
+                                    <label class="col text-break"><b>Judul Makalah:</b> {{item.title}}</label>
+                                    <label class="col text-break"><b>Penyelenggara:</b> {{item.initiator}}</label>
+                                    <label class="col text-break"><b>Tanggal Pelaksanaan:</b> {{item.date}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistPengabdian" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listPembicara}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengabdian" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="pengabdian" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Kategori Kegiatan:</b> {{item.categories}}</label>
+                                        <label class="col text-break"><b>Judul Makalah:</b> {{item.title}}</label>
+                                        <label class="col text-break"><b>Penyelenggara:</b> {{item.initiator}}</label>
+                                        <label class="col text-break"><b>Tanggal Pelaksanaan:</b> {{item.date}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="4">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Pengelola Jurnal
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaJurnal" class="fw-bold text-login-content">Nama Jurnal</label>
+                        <input type="text" class="form-control" id="inputNamaJurnal" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNoSkPenugasan" class="fw-bold text-login-content">No SK Penugasan</label>
+                        <input type="text" class="form-control" id="inputNoSkPenugasan" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPeran" class="fw-bold text-login-content">Peran</label>
+                        <input type="text" class="form-control" id="inputPeran" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStartDate" class="fw-bold text-login-content">Terhitung Mulai</label>
+                        <input type="text" class="form-control" id="inputStartDate" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndDate" class="fw-bold text-login-content">Tanggal Selesai</label>
+                        <input type="text" class="form-control" id="inputEndDate" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-jurnal">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Pengelola Jurnal
+                        </button>
+                    </div>
+                    {{#if listJournal}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Pengelola Jurnal</label>
+                        {{#each item in listJournal}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="jurnal" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="jurnal" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listJournal}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="tunjangan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="tunjangan" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Pengelola Media Lain
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaJurnalOthers" class="fw-bold text-login-content">Nama Jurnal</label>
+                        <input type="text" class="form-control" id="inputNamaJurnalOthers" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNoSkPenugasanOthers" class="fw-bold text-login-content">No SK Penugasan</label>
+                        <input type="text" class="form-control" id="inputNoSkPenugasanOthers" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPeranOthers" class="fw-bold text-login-content">Peran</label>
+                        <input type="text" class="form-control" id="inputPeranOthers" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStartDateOthers" class="fw-bold text-login-content">Terhitung Mulai</label>
+                        <input type="text" class="form-control" id="inputStartDateOthers" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndDateOthers" class="fw-bold text-login-content">Tanggal Selesai</label>
+                        <input type="text" class="form-control" id="inputEndDateOthers" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-others-media">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Pengelola Jurnal
+                        </button>
+                    </div>
+                    {{#if listOthersMedia}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Pengelola Jurnal</label>
+                        {{#each item in listOthersMedia}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="media-lain" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="media-lain" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listOthersMedia}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="media-lain" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="media-lain" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Pengelola Media Lain
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaJurnalOthers" class="fw-bold text-login-content">Nama Jurnal</label>
+                        <input type="text" class="form-control" id="inputNamaJurnalOthers" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNoSkPenugasanOthers" class="fw-bold text-login-content">No SK Penugasan</label>
+                        <input type="text" class="form-control" id="inputNoSkPenugasanOthers" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPeranOthers" class="fw-bold text-login-content">Peran</label>
+                        <input type="text" class="form-control" id="inputPeranOthers" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStartDateOthers" class="fw-bold text-login-content">Terhitung Mulai</label>
+                        <input type="text" class="form-control" id="inputStartDateOthers" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndDateOthers" class="fw-bold text-login-content">Tanggal Selesai</label>
+                        <input type="text" class="form-control" id="inputEndDateOthers" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-others-media">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Pengelola Jurnal
+                        </button>
+                    </div>
+                    {{#if listOthersMedia}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Pengelola Jurnal</label>
+                        {{#each item in listOthersMedia}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="media-lain" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="media-lain" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listOthersMedia}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.noSkPenugasan }} - {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="media-lain" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="media-lain" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Jabatan Struktural Imavi
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputJabatanStruktural" class="fw-bold text-login-content">Jabatan Struktural</label>
+                        <input type="text" class="form-control" id="inputJabatanStruktural" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNomorSkImavi" class="fw-bold text-login-content">No SK</label>
+                        <input type="text" class="form-control" id="inputNomorSkImavi" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStartDateImavi" class="fw-bold text-login-content">Terhitung Tanggal Mulai</label>
+                        <input type="text" class="form-control" id="inputStartDateImavi" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tanggal Selesai</label>
+                        <input type="text" class="form-control" id="inputEndDateImavi" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-imavistructure">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Jabatan Struktural Imavi
+                        </button>
+                    </div>
+                    {{#if listImaviStructure}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Jabatan Struktural Imavi</label>
+                        {{#each item in listImaviStructure}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.noSk }} - {{capitalizeWord item.name}}
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="imavi-structure" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="imavi-structure" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                        {{#each item in listImaviStructure}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.noSk }} - {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="imavi-structure" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="imavi-structure" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Kegiatan Profesi
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaOrganisasi" class="fw-bold text-login-content">Nama Organisasi</label>
+                        <input type="text" class="form-control" id="inputNamaOrganisasi" placeholder="Ex: Teologi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPeranProfesi" class="fw-bold text-login-content">Peran/Kedudukan Mulai Keanggotaan</label>
+                        <input type="text" class="form-control" id="inputPeranProfesi" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStartDateProfesi" class="fw-bold text-login-content">Mulai Keanggotaan</label>
+                        <input type="text" class="form-control" id="inputStartDateProfesi" placeholder="Ex: 2023">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEndDateProfesi" class="fw-bold text-login-content">Selesai Keanggotaan</label>
+                        <input type="text" class="form-control" id="inputEndDateProfesi" placeholder="Ex: 2022">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputInstansiProfesi" class="fw-bold text-login-content">Instansi Profesi</label>
+                        <input type="text" class="form-control" id="inputInstansiProfesi" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-profesi">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Kegiatan Profesi
+                        </button>
+                    </div>
+                    {{#if listProfesi}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Kegiatan Profesi</label>
+                        {{#each item in listProfesi}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.name }} 
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="profesi" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="profesi" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Kegiatan Profesi</label>
+                        {{#each item in listProfesi}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.name }}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="profesi" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="profesi" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Penghargaan
+            Nama Penghargaan	Jenis Penghargaan	Instansi	Tahun
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputNamaPenghargaan" class="fw-bold text-login-content">Nama Penghargaan</label>
+                        <input type="text" class="form-control" id="inputNamaPenghargaan" placeholder="Ex: PIagam">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJenisPenghargaan" class="fw-bold text-login-content">Jenis Penghargaan</label>
+                        <input type="text" class="form-control" id="inputJenisPenghargaan" placeholder="Ex: 10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTahunPenghargaan" class="fw-bold text-login-content">Tahun</label>
+                        <input type="text" class="form-control" id="inputTahunPenghargaan" placeholder="Ex: 2022">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputInstansiPenghargaan" class="fw-bold text-login-content">Instansi</label>
+                        <input type="text" class="form-control" id="inputInstansiPenghargaan" placeholder="Ex: 2022">
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-penghargaan">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Penghargaan
+                        </button>
+                    </div>
+                    {{#if listPenghargaan}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Penghargaan</label>
+                        {{#each item in listPenghargaan}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div>
+                                    <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                        {{item.name }} 
+                                        <div class="me-2">
+                                            <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="profesi" data-milik="{{@index}}" >
+                                                <i class="fa fa-solid fa-trash remove-list" data-id="profesi" data-milik="{{@index}}"></i>
+                                            </button>
+                                        </div>
+                                    </label>
+                                    <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                    <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                    <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Penghargaan</label>
+                        {{#each item in listPenghargaan}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{item.name }}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="profesi" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="profesi" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
+                                        <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="6">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="8">
+            <i class="fa fa-light fa-arrow-left btn-previous" value="8"></i>
+            Previous
+        </button>
+        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="10">
+            Next
+            <i class="fa fa-light fa-arrow-right btn-next" value="10"></i>
+        </button>
+    </div>
+    {{/if}}
+
     
     <style>
         .navigation-form{
