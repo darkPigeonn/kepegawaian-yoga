@@ -40,6 +40,46 @@
             </table>
         </div>
         {{/if}}
+        {{#if equals jabatanLogin "super-admin"}}
+        <!-- {{jabatanLogin.roles.}} -->
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/documents/create" class="btn btn-primary">Tambah</a>
+        </div>
+        <h3>Semua List Dokumen</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
+                            {{/if}}</td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
         {{#if equals jabatanLogin "resepsionis"}}
         <div class="d-flex justify-content-end mb-2">
             <a href="/documents/create" class="btn btn-primary">Tambah</a>
