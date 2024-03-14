@@ -137,6 +137,49 @@ Meteor.methods({
             }
         }
         return dataFinal;
-        
+
+    },
+    "users.createDataEmployee"(id) {
+        id = id.toString().slice(10, -2);
+        const objectId = new Meteor.Collection.ObjectID(id);
+        const dataAppuser = AppUsers.findOne({_id: objectId});
+        const objectIdAppProfile = new Meteor.Collection.ObjectID(dataAppuser.profileId);
+        const dataAppProfile = AppProfiles.findOne({_id: objectIdAppProfile});
+        console.log(dataAppProfile);
+        const dataSave = {
+            full_name : dataAppProfile.fullName,
+            identification_number: "",
+            place_of_birth : "",
+            dob: null,
+            gender: "",
+            address: "",
+            phone_number: "",
+            email_address: dataAppProfile.email,
+            job_position: "",
+            department_unit: "",
+            start_date: null,
+            employment_status: null,
+            base_salery: 0,
+            allowances: 0,
+            deductions: 0,
+            highest_education: null,
+            eduation_institution: null,
+            major_in_highest_education: null,
+            academic_degree: null,
+            previous_work_experience: null,
+            marital_status: null,
+            number_of_children: 0,
+            emergency_contact_name: null,
+            emergency_contact_name: null,
+            golongan: 0,
+            partnerCode: dataAppProfile.outlets[0],
+            linkGambar: "-",
+            status: 10,
+            statusDelete: 0,
+            createdAt: new Date(),
+            createdBy: "SuperAdmin",
+            historyMutasi: []
+        }
+        return Employee.insert(dataSave)
     }
 })

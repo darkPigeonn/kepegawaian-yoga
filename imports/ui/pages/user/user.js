@@ -445,5 +445,45 @@ Template.createEmployeeAdmin.events({
   "click #btnClearFilter"(e, t){
     t.filteredDataListUser.set(t.dataListUser.get())
     $('#input_data').val("");
+  },
+  "click #btnCreateEmployee"(e, t) {
+    e.preventDefault()
+    Swal.fire({
+      title: "Konfirmasi",
+      text: "Apakah anda yakin ingin menambahkan data pegawai ini?",
+      showCancelButton: true,
+      confirmButtonText: "Buat",
+      cancelButtonText: "Batal"
+    }).then((result) => {
+      if(result.isConfirmed){
+        const id = e.target.getAttribute('data-id');
+        console.log(id);
+        Meteor.call("users.createDataEmployee", id, function (error, result) { 
+          console.log(result);
+          if(result){
+            Swal.fire({
+              title: "Berhasil",
+              text: "Berhasil Menambahkan Pegawai",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if(result.isConfirmed){
+                history.back();
+                location.reload()
+              }
+            });
+          }
+          else{
+            console.log(error);
+            Swal.fire({
+              title: "Gagal",
+              text: "Buat Pegawai gagal",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+          }
+        })
+      }
+    });
   }
 });

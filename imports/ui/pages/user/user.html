@@ -277,7 +277,7 @@
                         <td> {{email}} </td>
                         <td> {{fullname}} </td>
                         <td> {{outlets}} </td>
-                        <td> <button>Buat Employee</button></td>
+                        <td><button class="btn btn-primary" type="button" id="btnCreateEmployee" data-id="{{_id}}">Buat Pegawai</button></td>
                     </tr>
                 {{/each}}
             {{else}}
@@ -286,10 +286,10 @@
                         <td> {{email}} </td>
                         <td> {{fullname}} </td>
                         <td> {{outlets}} </td>
-                        <td> <button>Buat Employee</button></td>
+                        <td><button class="btn btn-primary" type="button" id="btnCreateEmployee">Buat Pegawai</button></td>
                     </tr>
                 {{/each}}
             {{/if}}
         </tbody>
-      </table>
+    </table>
 </template>
