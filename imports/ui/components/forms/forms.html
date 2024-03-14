@@ -676,16 +676,16 @@
                             Tambah Riwayat kerjapenugasan
                         </button>
                     </div>
-                    {{#if listCertification}}
+                    {{#if listKerjaPenugasan}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
                     <!-- Desktop -->
                     <div class="form-group desktop-div">
-                        <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                        {{#each item in listCertification}}
+                        <label for="inputlistKerjaPenugasan" class="fw-bold text-login-content">Daftar Kerja Penugasan</label>
+                        {{#each item in listKerjaPenugasan}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                        {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                        {{capitalizeWord item.name}}
                                         <div class="me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
