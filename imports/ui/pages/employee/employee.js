@@ -1283,14 +1283,18 @@ Template.employee_create.events({
                 }
                 arr.push(formData)
               }
-              const filteredArr = arr.filter(obj => {
-                if (obj.full_name === null) {
+              console.log(arr);
+              const filteredArr = arr.filter((obj, index) => {
+                if(index !== arr.length - 1 && obj.full_name === null) {
                   Swal.fire({
                     title: "Warning",
                     text: "Ada data yang tidak terdapat nama lengkap sehingga tidak ditampilkan pada preview",
                     showConfirmButton: true,
                     allowOutsideClick: true,
                   });
+                  return false;
+                }
+                if (index == arr.length -1 && obj.full_name === null) {
                   return false;
                 }
                 return true;
@@ -1370,9 +1374,12 @@ Template.employee_create.events({
               }
 
               let cek = false;
-              const filteredArr = arr.filter(obj => {
-                if (obj.full_name === null) {
-                  cek = true;
+              const filteredArr = arr.filter((obj, index) => {
+                if(index !== arr.length - 1 && obj.full_name === null) {
+                  cek = true
+                  return false;
+                }
+                if (index == arr.length -1 && obj.full_name === null) {
                   return false;
                 }
                 return true;
