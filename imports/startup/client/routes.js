@@ -14,6 +14,7 @@ import "../../ui/pages/attendance/attendance.js";
 import "../../ui/pages/document/document.js";
 import "../../ui/pages/user/user.js";
 import "../../ui/pages/proposal/proposal.js";
+import "../../ui/pages/configuration/configuration.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -422,5 +423,31 @@ FlowRouter.route("/editKorespondensiAlur/:_id", {
   name: "editKorespondensiAlur",
   action() {
     this.render("App_body", "editKorespondensiAlur");
+  },
+});
+
+//konfigurasi
+FlowRouter.route("/listKonfigurasi/", {
+  name: "listKonfigurasi",
+  action() {
+    this.render("App_body", "listKonfigurasi");
+  },
+});
+FlowRouter.route("/listKonfigurasi/listKategoriSurat", {
+  name: "listKategoriSurat",
+  action() {
+    this.render("App_body", "listKategoriSurat");
+  },
+});
+FlowRouter.route("/listKonfigurasi/createKategoriSurat", {
+  name: "createKategoriSurat",
+  action() {
+    this.render("App_body", "createKategoriSurat");
+  },
+});
+FlowRouter.route("/listKonfigurasi/editKategoriSurat/:_id", {
+  name: "editKategoriSurat",
+  action() {
+    this.render("App_body", "editKategoriSurat");
   },
 });

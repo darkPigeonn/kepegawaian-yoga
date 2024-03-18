@@ -12,4 +12,5 @@ import "../../api/attendance/methods.js";
 import "../../api/documents/methods.js";
 import "../../api/user/methods.js";
 import "../../api/proposal/methods.js";
+import "../../api/configuration/methods.js";
 import "../../api/server/publications.js";

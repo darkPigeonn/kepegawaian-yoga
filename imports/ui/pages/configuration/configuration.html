@@ -1,0 +1,86 @@
+<template name="listKonfigurasi">
+    <div class="container mt-4">
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                <a href="/listKonfigurasi/listKategoriSurat"><button type="button" id="btn_categoryLetter" class="btn btn-primary btn-lg bg-dark">Kategori Surat</button></a>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary btn-lg bg-dark">Kategori Dokumen</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary btn-lg bg-dark">Kategori</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name = "listKategoriSurat">
+    <div class="container">
+        <div class="mt-5">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/listKonfigurasi/createKategoriSurat" class="btn btn-primary">+ Tambah</a>   
+            </div>
+        </div>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Format</th>
+                        <th scope="col">Penerima</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each kategoriSurat}}
+                        <tr>
+                            <td> {{nomorUrut @index}}</td>
+                            <td style="text-transform: capitalize;"> {{name}} </td>
+                            <td style="text-transform: capitalize;"> {{format}} </td>
+                            <td style="text-transform: capitalize;"> {{receiver}} </td>
+                            <td>
+                                <a href="/listKonfigurasi/editKategoriSurat/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                </a>
+                                <button class="btn btn-danger" type="button" id="btn_delete" data-id="{{_id}}">Delete</button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name = "createKategoriSurat">
+    <form style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+        <div class="form-group mb-2">
+            <label>Nama Kategori</label>
+            <input type="text" id="input_categoryName" style="width: 20vw;" class="form-control" required/><br>
+
+            <label>Format Nomor Surat</label>
+            <input type="text" id="input_letterNumbering" style="width: 20vw;" class="form-control" required/><br>
+
+            <label>Penerima</label>
+            <input type="text" id="input_receiver" style="width: 20vw;" class="form-control" required/><br>
+            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_categoryLetter">Simpan</button>
+        </div>
+    </form>
+</template>
+
+<template name = "editKategoriSurat">
+    <form style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+        <div class="form-group mb-2">
+            <label>Nama Kategori</label>
+            <input type="text" id="input_categoryName" style="width: 20vw;" class="form-control" value="{{dataConfig.name}}" required/><br>
+
+            <label>Format Nomor Surat</label>
+            <input type="text" id="input_letterNumbering" style="width: 20vw;" class="form-control" value="{{dataConfig.format}}" required/><br>
+
+            <label>Penerima</label>
+            <input type="text" id="input_receiver" style="width: 20vw;" class="form-control" value="{{dataConfig.receiver}}" required/><br>
+            <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_editCategoryLetter">Simpan</button>
+        </div>
+    </form>
+</template>
