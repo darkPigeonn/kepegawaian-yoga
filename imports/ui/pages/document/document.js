@@ -384,6 +384,8 @@ Template.createKorespondensi.onCreated(function () {
   self.data = new ReactiveVar();
   self.daftarAlur = new ReactiveVar([]);
   self.jabatanLogin = new ReactiveVar();
+  self.categoryLetters = new ReactiveVar();
+  const jenis = "kategori-surat"
   startSelect2();
   const userId = Meteor.userId();
   if (userId) {
@@ -397,6 +399,18 @@ Template.createKorespondensi.onCreated(function () {
       }
     });
   }
+  Meteor.call(
+    "config.getConfig",
+    jenis,
+    function (error, result) {
+      if (result) {
+        console.log(result);
+        self.categoryLetters.set(result)
+      } else {
+        console.log(error);
+      }
+    }
+  );
   this.optionsDescription = {
     editorEl: "editorDescription",
     toolbarEl: "toolbar-containerDescription",
@@ -414,6 +428,9 @@ Template.createKorespondensi.helpers({
   },
   jabatanLogin() {
     return Template.instance().jabatanLogin.get();
+  },
+  categoryLetters() {
+    return Template.instance().categoryLetters.get();
   }
 })
 Template.createKorespondensi.events({
@@ -453,19 +470,20 @@ Template.createKorespondensi.events({
   },
   "click #submit": function (e, t) {
     e.preventDefault();
-    const name = $("#nameOfLetter").val();
+    const category = $("#category").val();
+    const note = $("#noteOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
-    console.log(desc);
     let dataAlur = t.daftarAlur.get();
     if(dataAlur.length == 0){
       dataAlur = null
     }
     //categori
     const data = {
-      name,
+      category,
+      note,
       purpose,
       attachment,
       subject,
@@ -486,7 +504,8 @@ Template.createKorespondensi.events({
   },
   "click #btn-send": function (e, t) {
     e.preventDefault();
-    const name = $("#nameOfLetter").val();
+    const category = $("#category").val();
+    const note = $("#noteOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
@@ -495,7 +514,8 @@ Template.createKorespondensi.events({
     console.log(dataAlur);
     //categori
     const data = {
-      name,
+      category,
+      note,
       purpose,
       attachment,
       subject,
@@ -611,6 +631,8 @@ Template.editKorespondensiAlur.onCreated(function (){
   self.jabatanLogin = new ReactiveVar();
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
+  self.categoryLetters = new ReactiveVar();
+  const jenis = "kategori-surat"
   
   startSelect2();
   if (userId) {
@@ -623,6 +645,19 @@ Template.editKorespondensiAlur.onCreated(function (){
       }
     });
   }
+
+  Meteor.call(
+    "config.getConfig",
+    jenis,
+    function (error, result) {
+      if (result) {
+        console.log(result);
+        self.categoryLetters.set(result)
+      } else {
+        console.log(error);
+      }
+    }
+  );
 
   Meteor.call("korespondensi.getById", id, function (error, result) {
     if (result) {
@@ -644,6 +679,9 @@ Template.editKorespondensiAlur.helpers({
   },
   daftarAlur() {
     return Template.instance().daftarAlur.get();
+  },
+  categoryLetters() {
+    return Template.instance().categoryLetters.get();
   }
 })
 
@@ -697,6 +735,8 @@ Template.editKorespondensi.onCreated(function (){
   self.jabatanLogin = new ReactiveVar();
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
+  self.categoryLetters = new ReactiveVar();
+  const jenis = "kategori-surat"
   
   startSelect2();
   if (userId) {
@@ -725,6 +765,18 @@ Template.editKorespondensi.onCreated(function (){
       console.log(error);
     }
   });
+  Meteor.call(
+    "config.getConfig",
+    jenis,
+    function (error, result) {
+      if (result) {
+        console.log(result);
+        self.categoryLetters.set(result)
+      } else {
+        console.log(error);
+      }
+    }
+  );
   self.editorDescription = new ReactiveVar();
   self.optionsDescription = {
     editorEl: "editorDescription",
@@ -742,6 +794,9 @@ Template.editKorespondensi.helpers({
   },
   daftarAlur() {
     return Template.instance().daftarAlur.get();
+  },
+  categoryLetters() {
+    return Template.instance().categoryLetters.get();
   }
 })
 
@@ -782,7 +837,8 @@ Template.editKorespondensi.events({
   },
   "click #submit" (e, t) {
     e.preventDefault();
-    const name = $("#nameOfLetter").val();
+    const category = $("#category").val();
+    const note = $("#noteOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
@@ -795,7 +851,8 @@ Template.editKorespondensi.events({
     }
     //categori
     const data = {
-      name,
+      category,
+      note,
       purpose,
       attachment,
       subject,
@@ -816,7 +873,8 @@ Template.editKorespondensi.events({
   },
   "click #btn-send": function (e, t) {
     e.preventDefault();
-    const name = $("#nameOfLetter").val();
+    const category = $("#category").val();
+    const note = $("#noteOfLetter").val();
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
@@ -825,7 +883,8 @@ Template.editKorespondensi.events({
     const id = FlowRouter.getParam("_id");
     //categori
     const data = {
-      name,
+      category,
+      note,
       purpose,
       attachment,
       subject,

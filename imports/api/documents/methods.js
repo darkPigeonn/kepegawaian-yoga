@@ -1,4 +1,5 @@
 import { Document, Letters } from "./documents";
+import { Configuration } from "../configuration/configuration";
 // import { Roles } from "./roles"
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
@@ -185,7 +186,7 @@ Meteor.methods({
   },
 
   "korespondensi.create"(data) {
-    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
 
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
@@ -207,7 +208,8 @@ Meteor.methods({
     //masih belum bisa generate
     if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -223,7 +225,8 @@ Meteor.methods({
     }
     else {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -251,7 +254,7 @@ Meteor.methods({
   },
 
   "korespondensi.editSimpan"(id, data) {
-    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
 
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
@@ -273,7 +276,8 @@ Meteor.methods({
     //masih belum bisa generate
     if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -289,7 +293,8 @@ Meteor.methods({
     }
     else {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -317,7 +322,7 @@ Meteor.methods({
   },
 
   "korespondensi.save"(data) {
-    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const {category, name, purpose, attachment, subject, desc, dataAlur } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
@@ -339,6 +344,7 @@ Meteor.methods({
     //masih belum bisa generate
     if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
+        category,
         name,
         purpose,
         attachment,
@@ -355,6 +361,7 @@ Meteor.methods({
     }
     else {
       modelData = {
+        category,
         name,
         purpose,
         attachment,
@@ -383,13 +390,14 @@ Meteor.methods({
   },
 
   "korespondensi.editKirim"(id, data) {
-    const { name, purpose, attachment, subject, desc, dataAlur } = data;
+    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
       throw new Meteor.Error(412, "No Access");
     }
 
+    console.log(category);
     console.log(dataAlur);
     let modelData;
     //status surat
@@ -405,7 +413,8 @@ Meteor.methods({
     //masih belum bisa generate
     if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -421,7 +430,8 @@ Meteor.methods({
     }
     else {
       modelData = {
-        name,
+        category,
+        note,
         purpose,
         attachment,
         subject,
@@ -461,6 +471,13 @@ Meteor.methods({
       currentJabatan: role,
       partner: partnerCode,
     }).fetch();
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if(element.category!= "" || element.category != null || element.category != undefined) {
+        const dataKonfig = Configuration.findOne({_id: element.category})
+        element.categoryName = dataKonfig.name;
+      }
+    }
     // console.log(data);
     return data;
   },
@@ -470,6 +487,13 @@ Meteor.methods({
     const data = Letters.find({
       createdBy: thisUser
     }).fetch()
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if(element.category!= "" || element.category != null || element.category != undefined) {
+        const dataKonfig = Configuration.findOne({_id: element.category})
+        element.categoryName = dataKonfig.name;
+      }
+    }
     return data;
   },
 
@@ -477,6 +501,13 @@ Meteor.methods({
     const data = Letters.find({},
       { $sort: { createdAt: -1 } }
     ).fetch();
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if(element.category!= "" || element.category != null || element.category != undefined) {
+        const dataKonfig = Configuration.findOne({_id: element.category})
+        element.categoryName = dataKonfig.name;
+      }
+    }
     return data;
   },
   
@@ -496,7 +527,14 @@ Meteor.methods({
       "alur.jabatan": role,
       partner: partnerCode,
     }).fetch();
-    console.log(data);
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      if(element.category!= "" || element.category != null || element.category != undefined) {
+        console.log(element.category);
+        const dataKonfig = Configuration.findOne({_id: element.category})
+        element.categoryName = dataKonfig.name;
+      }
+    }
     return data.filter((x) => {
       return x.alur.find((y) => y.analisis.length && y.jabatan == role);
     });
