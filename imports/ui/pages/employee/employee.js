@@ -894,8 +894,10 @@ Template.employee_create.events({
         });
         return;
       }
+
+      console.log(base_salary);
       
-      if(!base_salary){
+      if(base_salary == undefined || base_salary == null){
           // alert("Gaji pokok atau Allowance harus angka");
           Swal.fire({
             title: "Gagal",
