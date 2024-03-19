@@ -30,7 +30,7 @@ Meteor.methods({
           data: dataSend,
         });
         const dataSave = {
-          profileId : response.data.profileId
+          userAppId : response.data.profileId
         }
         const updateEmployee =  Employee.update({_id: idEmployee}, {$set: dataSave})
         return true;
@@ -116,7 +116,7 @@ Meteor.methods({
       check(emergency_contact_name, String);
       // check(employment_history, String);
       // check(partnerCode, String);
-  
+
       // dob = new Date(dob);
       // start_date = new Date(start_date);
 
@@ -130,8 +130,8 @@ Meteor.methods({
       // console.log(adminPartner.partners[0]);
       partnerCode = adminPartner.partners[0];
       createdBy = adminPartner.fullname;
-    
-      const dataSave = { 
+
+      const dataSave = {
         full_name,
         identification_number,
         place_of_birth,
@@ -204,7 +204,7 @@ Meteor.methods({
           check(marital_status, String);
           check(emergency_contact_name, String);
           // check(employment_history, String);
-      
+
           base_salary = convert2number(base_salary);
           allowances = convert2number(allowances);
           deductions = convert2number(deductions);
@@ -227,7 +227,7 @@ Meteor.methods({
           // console.log(adminPartner.partners[0]);
           partnerCode = adminPartner.partners[0];
           createdBy = adminPartner.fullname;
-    
+
           const dataSave = {
             full_name,
             identification_number,
@@ -271,12 +271,12 @@ Meteor.methods({
           };
 
         try {
-          
+
           Employee.insert(dataSave);
         } catch (error) {
           fail.push(dataSave)
         }
-        
+
       }
       return fail
     },
@@ -299,10 +299,10 @@ Meteor.methods({
       check(marital_status, String);
       check(emergency_contact_name, String);
       // check(employment_history, String);
-  
+
       // dob = new Date(dob);
       // start_date = new Date(start_date);
-  
+
       const dataSave = {
         full_name,
         identification_number,
@@ -403,7 +403,7 @@ Meteor.methods({
     check(departement_unit, String);
     const name = departement_unit;
     const timestamp = new Date();
-    
+
     return Employee.update(
       { _id: id },
       { $set: {department_unit: name}, $push: {historyMutasi: {name: name, timestamp: timestamp}}}
