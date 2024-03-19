@@ -507,6 +507,10 @@ Template.employee_create.events({
       const password = tempPassword;
       const partner = t.employee.get().partnerCode;
       const profileId = FlowRouter.getParam("_id");
+      let roles = [];
+       if(partner == "imavi") {
+        roles.push("staff");
+       }
       const body = {
         fullName,
         email,
@@ -514,6 +518,7 @@ Template.employee_create.events({
         jabatan,
         outlets: [partner],
         partners: [partner],
+        roles,
         dob
       }
       Swal.fire({
