@@ -13,6 +13,7 @@ Meteor.methods({
         _id: thisUser,
       });
       partnerCode = adminPartner.partners[0];
+      dataSend.profileId = idEmployee;
       dataSend.password = partnerCode + "." + dataSend.password
       let postURL =
       process.env.USE_LOCAL === "true"
