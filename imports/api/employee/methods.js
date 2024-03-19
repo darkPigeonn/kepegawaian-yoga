@@ -179,7 +179,7 @@ Meteor.methods({
       const fail = []
       console.log(data);
       for (const i of data) {
-        let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = i
+        let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = i
           identification_number = identification_number.toString();
           base_salary = base_salary.toString();
           console.log(allowances, deductions);
@@ -213,7 +213,7 @@ Meteor.methods({
           phone_number = formatPhoneNumber(phone_number);
           emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
 
-          dob = moment(dob, 'DD/MM/YYYY').toDate();
+          date_of_birth = moment(date_of_birth, 'DD/MM/YYYY').toDate();
           start_date = moment(start_date, 'DD/MM/YYYY').toDate();
 
           // console.log(dob, start_date);
@@ -233,7 +233,7 @@ Meteor.methods({
             full_name,
             identification_number,
             place_of_birth,
-            dob,
+            dob: date_of_birth,
             gender,
             address,
             phone_number,

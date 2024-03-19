@@ -1326,24 +1326,24 @@ Template.employee_create.events({
             console.log(parsedData);
             for (const i of parsedData) {
               i.start_date = new Date(i.start_date);
-              i.dob = new Date(i.dob);
+              i.date_of_birth = new Date(i.date_of_birth);
               const day = i.start_date.getDate().toString().padStart(2, '0');
               const month = (i.start_date.getMonth() + 1).toString().padStart(2, '0');
               const year = i.start_date.getFullYear();
               const formattedDate = `${day}/${month}/${year}`;
-              const dayBirth = i.dob.getDate().toString().padStart(2, '0');
-              const monthBirth = (i.dob.getMonth() + 1).toString().padStart(2, '0');
-              const yearBirth = i.dob.getFullYear();
+              const dayBirth = i.date_of_birth.getDate().toString().padStart(2, '0');
+              const monthBirth = (i.date_of_birth.getMonth() + 1).toString().padStart(2, '0');
+              const yearBirth = i.date_of_birth.getFullYear();
               const formattedDateBirth = `${dayBirth}/${monthBirth}/${yearBirth}`;
               console.log(formattedDateBirth);
               i.start_date = formattedDate
-              i.dob = formattedDateBirth
+              i.date_of_birth = formattedDateBirth
             }
               const data = [
                 'full_name',
                 'identification_number',
                 'place_of_birth',
-                'dob',
+                'date_of_birth',
                 'gender',
                 'address',
                 'phone_number',
@@ -1445,7 +1445,7 @@ Template.employee_create.events({
                       else{
                         Swal.fire({
                           title: "Gagal",
-                          text: "Data gagal dimasukkan, silahkan cek kembali bila data excel sudah terisi",
+                          text: "Data gagal dimasukkan, silahkan cek kembali bila data excel sudah terisi dengan sesuai atau hubungin admin bila ada pertanyaan lebih lanjut",
                           showConfirmButton: true,
                           allowOutsideClick: true,
                         });
