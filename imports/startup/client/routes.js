@@ -15,6 +15,7 @@ import "../../ui/pages/document/document.js";
 import "../../ui/pages/user/user.js";
 import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
+import "../../ui/pages/tickets/tickets.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -397,6 +398,26 @@ FlowRouter.route("/proposal/print/:_id", {
   name: "printProposal",
   action() {
     this.render("App_body", "printProposal");
+  },
+});
+
+//TICKETS
+FlowRouter.route("/tickets", {
+  name: "listTicket",
+  action() {
+    this.render("App_body", "listTicket");
+  },
+});
+FlowRouter.route("/tickets/create", {
+  name: "createTicket",
+  action() {
+    this.render("App_body", "createTicket");
+  },
+});
+FlowRouter.route("/tickets/edit/:_id", {
+  name: "editTicket",
+  action() {
+    this.render("App_body", "editTicket");
   },
 });
 

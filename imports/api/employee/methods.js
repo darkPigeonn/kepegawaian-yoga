@@ -444,7 +444,7 @@ Meteor.methods({
   async "usersEmployee.editPassword"(id, password){
     check(id, String);
     check(password, String);
-    const dataUser = await Meteor.users.findOne({idEmployee : id});
+    const dataUser = await Meteor.users.findOne({profileId : id});
     const idUser = dataUser._id;
     Accounts.setPassword(idUser, password);
     return true;
@@ -453,7 +453,7 @@ Meteor.methods({
   async "usersEmployee.editPasswordApp"(id, password) {
     check(id, String);
     check(password, String);
-    const dataUser = Meteor.users.findOne({idEmployee : id});
+    const dataUser = Meteor.users.findOne({profileId : id});
     // if(!dataUser) {
     //   throw new Error()
     // }
