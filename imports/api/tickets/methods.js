@@ -37,6 +37,7 @@ Meteor.methods({
             _id: thisUser,
         });
         const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+        data._id = new Mongo.ObjectID() //create _id with objectID
         data.partner = relatedEmployee.partnerCode;
         data.message = [];
         data.timeline = [{
@@ -49,6 +50,12 @@ Meteor.methods({
         data.createdByName = relatedEmployee.full_name;
 
         return Tickets.insert(data);
+    },
+
+    "tickets.delete"(id){
+        id = id.toString().slice(10, -2);
+        const objectId = new Meteor.Collection.ObjectID(id);
+        return Tickets.remove({_id: objectId});
     },
 
     "fileName.getAll" () {

@@ -29,12 +29,13 @@
                             <td> {{formatHRDate createdAt}}</td>
                             <td>
                                 {{#if equals isOwned 1}}
-                                    <a href="/employees/edit/{{_id}}">
+                                    <a href="/tickets/edit/{{_id}}">
                                         <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
                                     </a>
-                                    <a href="/employees/detail/{{_id}}">
+                                    <a href="/tickets/detail/{{_id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                                     </a>
+                                    <button class="btn btn-danger" type="button" id="btn_delete" milik="{{_id}}">Delete</button>
                                 {{else}}
                                     <a href="/employees/detail/{{_id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
