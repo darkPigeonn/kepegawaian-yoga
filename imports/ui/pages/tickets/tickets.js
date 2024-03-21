@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { start } from "@popperjs/core";
 import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
-import { filter, result, template } from "underscore";
+import { filter, functions, result, template } from "underscore";
 import { HTTP } from 'meteor/http';
 
 Template.listTicket.onCreated(function (){
@@ -163,14 +163,14 @@ Template.createTicket.events({
     t.buktiTiket.set(buktiTiket);
     }
   }
-},
+  },
   "click .remove-buktiTiket": function (e, t) {
     e.preventDefault();
     const index = $(e.target).attr("milik");
     const buktiTiket = t.buktiTiket.get();
     buktiTiket.splice(parseInt(index), 1);
     t.buktiTiket.set(buktiTiket);
-},
+  },
   "click #btn-save"(e, t) {
     e.preventDefault();
     const judul = $("#title").val();
@@ -242,6 +242,255 @@ Template.createTicket.events({
           }
           Meteor.call(
             "tickets.createTicket",
+            data,
+            function (error, result) {
+              if (result) {
+                Swal.close();
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Data berhasil dibuat",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                location.reload();
+                history.back();
+              } else {
+                // console.log(error);
+                Swal.close();
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data gagal dibuat",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+            }
+          );
+        }
+      }
+    })
+  }
+})
+
+Template.editTicket.onCreated(function () {
+  const self = this;
+  self.dataTicket = new ReactiveVar();
+  self.buktiTiket = new ReactiveVar([]);
+  self.workers = new ReactiveVar();
+  self.daftarWorker = new ReactiveVar([]);
+  self.allFileNames = new ReactiveVar([]);
+  const id = FlowRouter.getParam("_id");
+  Meteor.call("tickets.getById", id, function (error, result) {
+    if (result) {
+      self.dataTicket.set(result);
+      self.buktiTiket.set(result.images);
+      let fileArray = [];
+      if(result.images.length != 0){
+        for (const data of result.images) {
+          const file = {
+            file:{
+                name: data.name
+            },
+            src: data.link,
+            onInsert: true
+          }
+          fileArray.push(file)
+        }
+      }
+      self.buktiTiket.set(fileArray);
+      let dataWorkers = [];
+      for (const iterator of result.workers) {
+        dataWorkers.push(iterator);
+      }
+      self.daftarWorker.set(dataWorkers)
+    } else {
+      console.log(error);
+    }
+  })
+  Meteor.call('fileName.getAll', function(error, result) {
+    if (error) {
+        console.log(error);
+    } else {
+        self.allFileNames.set(result)
+    }
+  })
+  Meteor.call("tickets.getPekerja", function (error, result) {
+    if (result) {
+      self.workers.set(result);
+    } else {
+      console.log(error);
+    }
+  });
+  startSelect2();
+})
+
+Template.editTicket.helpers({
+  dataTicket() {
+    return Template.instance().dataTicket.get();
+  },
+  allFileNames() {
+    return Template.instance().allFileNames.get();
+  },
+  buktiTiket() {
+    return Template.instance().buktiTiket.get();
+  },
+  workers() {
+    return Template.instance().workers.get();
+  },
+  daftarWorker() {
+    return Template.instance().daftarWorker.get();
+  }
+})
+
+Template.editTicket.events({
+  "click #btn-add-workers"(e, t) {
+    e.preventDefault();
+    const dataRow = t.daftarWorker.get();
+    const selectedData = Array.from(document.querySelectorAll('#input_workers option:checked')).map(option => ({
+      _id: option.value,
+      workerName: option.textContent
+    }));
+    Swal.fire({
+      title: "Konfirmasi Tambah Pekerja",
+      text: "Apakah anda yakin menambah pekerja kedalam daftar pekerja untuk tiket ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (selectedData.length > 0) {
+          for (let index = 0; index < selectedData.length; index++) {
+            const element = selectedData[index];
+            dataRow.push(element);
+          }
+        }
+        t.daftarWorker.set(dataRow);
+      }
+    });
+  },
+  "click .btn-remove"(e, t) {
+      e.preventDefault()
+      const index = $(e.target).attr("posisi");
+      let daftarWorker = t.daftarWorker.get();
+      if(index != undefined) {
+          daftarWorker.splice(index, 1);
+      }
+      t.daftarWorker.set(daftarWorker);
+  },
+  "change #buktiTiket": function (e, t) {
+  const buktiTiket = t.buktiTiket.get();
+  const files = $("#buktiTiket").prop("files");
+  for (let index = 0; index < files.length; index++) {
+    const file = files[index];
+    if (file) {
+    const reader = new FileReader();
+    const body = {
+      file: file,
+    };
+    reader.addEventListener("load", function () {
+      body.src = this.result;
+      if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" || 
+              file.type != ".png" || file.type != ".jpg" || file.type != ".jpeg") {
+      $(`#buktiTiket-${buktiTiket.length - 1}`).attr(
+        "href",
+        this.result
+      );
+      }
+    });
+    reader.readAsDataURL(file);
+    buktiTiket.push(body);
+    t.buktiTiket.set(buktiTiket);
+    }
+  }
+  },
+  "click .remove-buktiTiket": function (e, t) {
+    e.preventDefault();
+    const index = $(e.target).attr("milik");
+    const buktiTiket = t.buktiTiket.get();
+    buktiTiket.splice(parseInt(index), 1);
+    t.buktiTiket.set(buktiTiket);
+  },
+  "click #btn-save"(e, t) {
+    e.preventDefault();
+    const judul = $("#title").val();
+    const deskripsi = $("#description").val();
+    const priority = $('input[name=select-priority]:checked').val();
+    const daftarWorker = t.daftarWorker.get();
+    const files = t.buktiTiket.get();
+    const thisForm = {};
+    thisForm[files] = [];
+    const allFileNames = t.allFileNames.get();
+    const id = FlowRouter.getParam("_id");
+    Swal.fire({
+      title: "Konfirmasi",
+      text: "Apakah anda ingin mengubah data tiket ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Simpan",
+      cancelButtonText: "Batal"
+    }).then(async (result) => {
+      if(result.isConfirmed){
+        Swal.fire({
+          title: "Loading...",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        const dataForm = $(".form-control")
+        let cek = false;
+        for (let index = 0; index < dataForm.length; index++) {
+          console.log(dataForm[index].id);
+          if(dataForm[index].id == "input_workers"){
+            if(dataForm[index].value == ""){
+              cek = false;
+            }
+          }
+          else {
+            if(dataForm[index].value == ""){
+              cek = true;
+            }
+          }
+        }
+
+        if(cek == true){
+          Swal.close();
+          Swal.fire({
+            title: "Gagal",
+            text: "Data harus diisi semua",
+            showConfirmButton: true,
+            allowOutsideClick: true,
+          });
+        }
+        else{
+          for (let index = 0; index < files.length; index++) {
+            const fileName = files[index].file.name;
+            const sendFileName = checkDuplicateFileName(fileName, allFileNames);
+            const uploadData = {
+              fileName: sendFileName,
+              type: "image/png",
+              Body: files[index].file
+            }
+            const linkUpload = await uploadFiles(uploadData);
+            thisForm[files].push(
+            {
+              name: files[index].file.name,
+              link: linkUpload
+            });
+          }
+          const linksBukti = thisForm[files];
+          const data = {
+              title: judul,
+              description: deskripsi,
+              priority,
+              workers: daftarWorker,
+              images: linksBukti
+          }
+          Meteor.call(
+            "tickets.editTicket",
+            id,
             data,
             function (error, result) {
               if (result) {

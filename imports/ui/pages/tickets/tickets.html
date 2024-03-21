@@ -22,22 +22,22 @@
                     {{#each dataTicket}}
                         <tr>
                             <td> {{nomorUrut @index}}</td>
-                            <td> {{title}} </td>
-                            <td> {{priority}} </td>
-                            <td> {{status}} </td>
-                            <td> {{createdByName}} </td>
+                            <td> {{capitalizeWord title}} </td>
+                            <td> {{capitalizeWord priority}} </td>
+                            <td> {{capitalizeWord status}} </td>
+                            <td> {{capitalizeWord createdByName}} </td>
                             <td> {{formatHRDate createdAt}}</td>
                             <td>
                                 {{#if equals isOwned 1}}
-                                    <a href="/tickets/edit/{{_id}}">
+                                    <a href="/tickets/edit/{{toMeteorId _id}}">
                                         <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
                                     </a>
-                                    <a href="/tickets/detail/{{_id}}">
+                                    <a href="/tickets/detail/{{toMeteorId _id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                                     </a>
-                                    <button class="btn btn-danger" type="button" id="btn_delete" milik="{{_id}}">Delete</button>
+                                    <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Delete</button>
                                 {{else}}
-                                    <a href="/employees/detail/{{_id}}">
+                                    <a href="/employees/detail/{{toMeteorId _id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                                     </a>
                                 {{/if}}
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group">
                     <label for="">Deskripsi</label>
-                    <input type="text" id="description" class="form-control">
+                    <textarea id="description" class="form-control"></textarea>
                 </div>
                 <div class="form-group mb-3">
                     <label class="fw-bold">Tingkat Prioritas</label>
@@ -137,7 +137,118 @@
 </template>
 
 <template name="editTicket">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Buat Tiket Baru</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Judul</label>
+                    <input type="text" id="title" class="form-control" value="{{dataTicket.title}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Deskripsi</label>
+                    <textarea id="description" class="form-control" value="{{dataTicket.description}}"></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Tingkat Prioritas</label>
+                    <div class="d-flex gap-2">
+                        {{#if equals dataTicket.priority "high"}}
+                            <div>
+                                <input type="radio" name="select-priority" value="high" id="select-priority" checked>
+                                <b class="fw-bold" style="color: #ff6363;">High</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="mid" id="select-priority">
+                                <b class="fw-bold" style="color: #ffac74;">Mid</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="low" id="select-priority">
+                                <b class="fw-bold" style="color: #6adc6a;">Low</b>
+                            </div>
+                        {{/if}}
+                        {{#if equals dataTicket.priority "mid"}}
+                            <div>
+                                <input type="radio" name="select-priority" value="high" id="select-priority">
+                                <b class="fw-bold" style="color: #ff6363;">High</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="mid" id="select-priority" checked>
+                                <b class="fw-bold" style="color: #ffac74;">Mid</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="low" id="select-priority">
+                                <b class="fw-bold" style="color: #6adc6a;">Low</b>
+                            </div>
+                        {{/if}}
+                        {{#if equals dataTicket.priority "low"}}
+                            <div>
+                                <input type="radio" name="select-priority" value="high" id="select-priority">
+                                <b class="fw-bold" style="color: #ff6363;">High</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="mid" id="select-priority">
+                                <b class="fw-bold" style="color: #ffac74;">Mid</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-priority" value="low" id="select-priority" checked>
+                                <b class="fw-bold" style="color: #6adc6a;">Low</b>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    {{> inputMultipleFiles label="Bukti" id="buktiTiket" files=buktiTiket buttonLabel="Upload"}}
+                </div>
+        
+                <div class="form-group">
+                    <label>Daftar Pekerja</label>
+                    <select id="input_workers" class="form-control select2" multiple>
+                        {{#each workers}}
+                            <option value="{{_id}}">{{ full_name }}</option>
+                        {{/each}}
+                    </select>
+                    <br><br>
+                    <button class="btn btn-primary" id="btn-add-workers">Tambah</button>
+                </div>
+                {{#if daftarWorker}}
+                    <h4>Daftar Pekerja</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Nomor</th>
+                                <th>Nama</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                {{#each i in daftarWorker}}
+                                <tr>
+                                    <td>
+                                        {{setTableNumber @index}}
+                                    </td>
+                                    <td>
+                                        {{i.workerName}}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                            <i class="fa fa-trash" posisi={{@index}}></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                {{/if}}
+        
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="btn-save">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <!-- Template Upload File -->

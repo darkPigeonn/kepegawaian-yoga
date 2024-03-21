@@ -31,6 +31,11 @@ Meteor.methods({
         return dataPlus;
     },
 
+    "tickets.getById"(id){
+        const objectId = new Meteor.Collection.ObjectID(id);
+        return Tickets.findOne({_id: objectId});
+    },
+
     "tickets.createTicket"(data){
         const thisUser = Meteor.userId();
         const relatedUser = Meteor.users.findOne({
@@ -52,8 +57,14 @@ Meteor.methods({
         return Tickets.insert(data);
     },
 
+    "tickets.editTicket"(id, data){
+        check(id, String);
+        check(data, Object);
+        const objectId = new Meteor.Collection.ObjectID(id);
+        return Tickets.update({_id: objectId}, {$set: data})
+    },
+
     "tickets.delete"(id){
-        id = id.toString().slice(10, -2);
         const objectId = new Meteor.Collection.ObjectID(id);
         return Tickets.remove({_id: objectId});
     },
