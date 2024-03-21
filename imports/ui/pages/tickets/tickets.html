@@ -33,7 +33,6 @@
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
                                             <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                                         </a>
-
                                     {{else}}
                                         <a href="/tickets/edit/{{toMeteorId _id}}">
                                             <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
@@ -41,11 +40,17 @@
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
                                             <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                                         </a>
+                                        <a href="/tickets/message/{{toMeteorId _id}}">
+                                            <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
+                                        </a>
                                         <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Delete</button>
                                     {{/if}}
                                 {{else}}
                                     <a href="/employees/detail/{{toMeteorId _id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                    </a>
+                                    <a href="/tickets/message/{{toMeteorId _id}}">
+                                        <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
                                     </a>
                                 {{/if}}
                                 
@@ -504,7 +509,69 @@
     </style>
 </template>
   
-  
+<template name="chatTicket">
+    <div class="chat-container">
+        <div class="messages">
+          {{#each daftarChat}}
+            <div class="message sender">
+                <div class="meta">{{createdByName}} - {{formatHRDateShort createdAt}}</div>
+                {{message}}
+            </div>
+          {{/each}}
+        </div>
+        <div class="input-container">
+          <input type="text" id="input_message" placeholder="Ketik pesan...">
+          <button id="btn_send">Kirim</button>
+        </div>
+    </div>
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 93vh;
+        }
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .message {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+        .message.sender {
+            background-color: #d4edda;
+            align-self: flex-end;
+        }
+        .message .meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 2px;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        .input-container button {
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</template>
   
   
 

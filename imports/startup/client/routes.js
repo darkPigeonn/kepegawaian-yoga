@@ -426,6 +426,12 @@ FlowRouter.route("/tickets/detail/:_id", {
     this.render("App_body", "detailTicket");
   },
 });
+FlowRouter.route("/tickets/message/:_id", {
+  name: "chatTicket",
+  action() {
+    this.render("App_body", "chatTicket");
+  },
+})
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {

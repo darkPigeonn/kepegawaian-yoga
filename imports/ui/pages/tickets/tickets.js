@@ -370,13 +370,13 @@ Template.editTicket.events({
     });
   },
   "click .btn-remove"(e, t) {
-      e.preventDefault()
-      const index = $(e.target).attr("posisi");
-      let daftarWorker = t.daftarWorker.get();
-      if(index != undefined) {
-          daftarWorker.splice(index, 1);
-      }
-      t.daftarWorker.set(daftarWorker);
+    e.preventDefault()
+    const index = $(e.target).attr("posisi");
+    let daftarWorker = t.daftarWorker.get();
+    if(index != undefined) {
+        daftarWorker.splice(index, 1);
+    }
+    t.daftarWorker.set(daftarWorker);
   },
   "change #buktiTiket": function (e, t) {
   const buktiTiket = t.buktiTiket.get();
@@ -420,7 +420,7 @@ Template.editTicket.events({
     let pesanTambahan = "";
     console.log(status, t.dataTicket.get());
     if(status != t.dataTicket.get().status) {
-      pesanTambahan = `Tiket Diubah, Status Ticket Diubah menjadi ${status}`
+      pesanTambahan = `Tiket Diubah, Status Ticket Diubah Menjadi ${status}`
     }
     else{
       pesanTambahan = `Tiket Diubah`
@@ -589,6 +589,44 @@ Template.detailTicket.helpers({
   },
   dataTiket(){
     return Template.instance().dataTiket.get();
+  }
+})
+
+Template.chatTicket.onCreated(function() {
+  const self = this;
+  self.daftarChat = new ReactiveVar([]);
+  const id = FlowRouter.getParam("_id");
+  Meteor.call("tickets.getById", id, function (error, result) {
+    if (result) {
+      self.daftarChat.set(result.message);
+    } else {
+      console.log(error);
+    }
+  })
+})
+
+Template.chatTicket.helpers({
+  daftarChat() {
+    return Template.instance().daftarChat.get();
+  }
+})
+
+Template.chatTicket.events({
+  "click #btn_send"(e,t){
+    const pesan = $("#input_message").val();
+    const id = FlowRouter.getParam("_id");
+    const saveData = {
+      message: pesan,
+      createdAt: new Date()
+    }
+    Meteor.call("tickets.sendMessage", id, saveData, function (error, result) {
+      if (result) {
+        location.reload()
+      } else {
+        console.log(error);
+        alert(error)
+      }
+    })
   }
 })
 

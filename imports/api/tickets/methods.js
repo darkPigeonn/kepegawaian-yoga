@@ -23,7 +23,7 @@ Meteor.methods({
             _id: thisUser,
         });
         const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
-        const data = Tickets.find({partner: relatedEmployee.partnerCode})
+        const data = Tickets.find({partner: relatedEmployee.partnerCode, 'workers._id': relatedEmployee._id}).fetch()
         const dataPlus = data.map(element => {
             element.isOwned = element.createdBy === relatedEmployee._id ? 1 : 0;
             return element;
@@ -68,6 +68,18 @@ Meteor.methods({
     "tickets.delete"(id){
         const objectId = new Meteor.Collection.ObjectID(id);
         return Tickets.remove({_id: objectId});
+    },
+
+    "tickets.sendMessage"(id, data) {
+        const objectId = new Meteor.Collection.ObjectID(id);
+        const thisUser = Meteor.userId();
+        const relatedUser = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+        data.createdBy = thisUser;
+        data.createdByName = relatedEmployee.full_name
+        return Tickets.update({_id: objectId}, {$push: {message: data}});
     },
 
     "fileName.getAll" () {
