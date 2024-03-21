@@ -329,6 +329,13 @@ FlowRouter.route("/createEmployeeAdmin", {
   },
 });
 
+FlowRouter.route("/connectEmployeeAppUser", {
+  name: "connectEmployeeAppUser",
+  action() {
+    this.render("App_body", "connectEmployeeAppUser");
+  },
+})
+
 //DOCUMENTS
 FlowRouter.route("/documents", {
   name: "listDocument",

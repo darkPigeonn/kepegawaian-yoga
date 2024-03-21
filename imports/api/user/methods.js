@@ -181,5 +181,61 @@ Meteor.methods({
             historyMutasi: []
         }
         return Employee.insert(dataSave)
+    },
+
+    "users.getAppUsers"(){
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        partnerCode = adminPartner.partners[0];
+        return AppUsers.find({outlets: partnerCode}).fetch()
+    },
+
+    async "users.updateProfileIdAppUser"(data){
+        console.log(data);
+        //buat old data idProfile untuk jaga"
+        for (const iterator of data) {
+            const objectIdString = iterator.idAppUser.toString().slice(10, -2);
+            const objectId = new Meteor.Collection.ObjectID(objectIdString);
+            const cek = await AppUsers.findOne({_id : objectId});
+
+            const makeOldIdProfile = await AppUsers.update({
+                _id: objectId
+            },
+            {
+                $set: { oldIdProfile : cek.profileId}
+            })
+        }
+
+        let dataFail = [];
+        let flag = true;
+        
+
+        for (const iterator of data) {
+            try {
+                console.log(iterator.idEmployee);
+                const objectIdString = iterator.idAppUser.toString().slice(10, -2);
+                const objectId = new Meteor.Collection.ObjectID(objectIdString);
+                const updateProfileId = await AppUsers.update({
+                    _id : objectId
+                },
+                {
+                    $set: { profileId : iterator.idEmployee}
+                })
+            } catch (error) {
+                console.log(error);
+                flag = false;
+                dataFail.push(iterator.emailEmployee)
+            }
+        }
+        if(flag == false){
+            console.log("Ini adalah data yang error : ", dataFail);
+            return dataFail
+        }
+        else {
+            return "success"
+        }
     }
 })

@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { start } from "@popperjs/core";
 import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
-import { result, template } from "underscore";
+import { object, result, template } from "underscore";
 import { HTTP } from 'meteor/http';
 
 Template.listUser.onCreated(function () { 
@@ -487,3 +487,100 @@ Template.createEmployeeAdmin.events({
     });
   }
 });
+
+Template.connectEmployeeAppUser.onCreated(function() {
+  const self = this;
+  startSelect2()
+  self.dataEmployee = new ReactiveVar([]);
+  self.dataAppUser = new ReactiveVar([]);
+  self.dataConnect = new ReactiveVar([]);
+
+  Meteor.call("employee.getAll", function (error, result) { 
+    if(result){
+      self.dataEmployee.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+
+  Meteor.call("users.getAppUsers", function (error, result) { 
+    if(result){
+      self.dataAppUser.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+})
+
+Template.connectEmployeeAppUser.helpers({
+  dataEmployee(){
+    return Template.instance().dataEmployee.get();
+  },
+  dataAppUser(){
+    return Template.instance().dataAppUser.get();
+  },
+  dataConnect(){
+    return Template.instance().dataConnect.get();
+  }
+})
+
+Template.connectEmployeeAppUser.events({
+  "click #tambah"(e, t) {
+    const data = t.dataConnect.get();
+    console.log(data);
+    const dataPegawai = $("#input_pegawai").val();
+    const selectedOptions = $("#input_pegawai option:selected");
+    const selectedEmails = selectedOptions.map(function() {
+      return $(this).text().split('/')[0].trim(); // Mendapatkan email_address
+    }).get();
+    console.log(selectedEmails);
+    const dataAppUser = $("#input_appUser").val();
+    const selectedOptions2 = $("#input_appUser option:selected");
+    const selectedEmails2 = selectedOptions2.map(function() {
+      return $(this).text().split('/')[0].trim(); // Mendapatkan email_address
+    }).get();
+    console.log(selectedEmails2);
+    let dataConnectArr = [];
+    for (let index = 0; index < dataPegawai.length; index++) {
+      const element = dataPegawai[index];
+      const objek = {
+        idEmployee : element,
+        emailEmployee: selectedEmails[index],
+        idAppUser : dataAppUser[index],
+        emailAppUser: selectedEmails2[index]
+      }
+      console.log(objek);
+      dataConnectArr.push(objek);
+    }
+    console.log(dataConnectArr);
+    t.dataConnect.set(dataConnectArr)
+    // console.log(dataPegawai, dataAppUser);
+  },
+  "click .btn-remove"(e,t) {
+    e.preventDefault()
+    const index = $(e.target).attr("posisi");
+    let daftarConnect = t.dataConnect.get();
+    if(index != undefined) {
+      daftarConnect.splice(index, 1);
+    }
+    t.dataConnect.set(daftarConnect);
+  },
+  "click #btn-save"(e,t){
+    e.preventDefault();
+    const getData = t.dataConnect.get();
+    console.log(getData);
+    Meteor.call("users.updateProfileIdAppUser", getData, function(error ,result){
+      console.log(result, error);
+      if(result){
+        successAlert();
+        location.reload();
+      }
+      else{
+        console.log(error);
+        alert(error)
+      }
+    })
+  }
+})

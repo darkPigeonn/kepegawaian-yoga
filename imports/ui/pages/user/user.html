@@ -4,7 +4,8 @@
         <h1>Daftar User</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
-                <a href="/createUser" class="btn btn-primary">+ Tambah</a>
+                <a href="/createUser" class="btn btn-primary mr-2">+ Tambah</a>
+                <a href="/connectEmployeeAppUser" class="btn btn-primary">Hubungkan Data Pegawai</a>
             </div>
         </div>
         <div class="d-lg-block table-responsive">
@@ -49,7 +50,7 @@
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/createAdmin" class="btn btn-primary mr-2">+ Tambah</a>
-                <a href="/createEmployeeAdmin" class="btn btn-primary">Pegawai</a>
+                <a href="/createEmployeeAdmin" class="btn btn-primary mr-2">Pegawai</a>
             </div>
         </div>
         <div class="d-lg-block table-responsive">
@@ -292,4 +293,75 @@
             {{/if}}
         </tbody>
     </table>
+</template>
+
+<template name="connectEmployeeAppUser">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Hubungkan Employee ke AppUser</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Pegawai</label>
+                    <select id="input_pegawai" class="form-control select2" style="max-width: auto;" multiple>
+                        {{#each dataEmployee}}
+                            <option value="{{_id}}">{{email_address}} / {{ full_name }}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">App User</label>
+                    <select id="input_appUser" class="form-control select2" style="max-width: auto;" multiple>
+                        {{#each dataAppUser}}
+                            <option value="{{_id}}">{{email}} / {{ fullname }}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="tambah">Tambah</button>
+                </div>
+                <br>
+
+                    {{#if dataConnect}}
+                        <h4>Daftar Migrasi ID</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th>Nama Employee</th>
+                                    <th>Nama Akun App_User</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataConnect}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{i.emailEmployee}}
+                                        </td>
+                                        <td>
+                                            {{i.emailAppUser}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                                <i class="fa fa-trash btn-remove" posisi={{@index}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+        
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="btn-save">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
