@@ -416,6 +416,19 @@ Template.editTicket.events({
     const judul = $("#title").val();
     const deskripsi = $("#description").val();
     const priority = $('input[name=select-priority]:checked').val();
+    const status = $('input[name=select-status]:checked').val();
+    let pesanTambahan = "";
+    console.log(status, t.dataTicket.get());
+    if(status != t.dataTicket.get().status) {
+      pesanTambahan = `Tiket Diubah, Status Ticket Diubah menjadi ${status}`
+    }
+    else{
+      pesanTambahan = `Tiket Diubah`
+    }
+    const timeline = {
+      message: pesanTambahan,
+      createdAt: new Date()
+    }
     const daftarWorker = t.daftarWorker.get();
     const files = t.buktiTiket.get();
     const thisForm = {};
@@ -424,7 +437,7 @@ Template.editTicket.events({
     const id = FlowRouter.getParam("_id");
     Swal.fire({
       title: "Konfirmasi",
-      text: "Apakah anda ingin mengubah data tiket ini?",
+      text: "Apakah anda ingin mengubah data tiket ini? Bila status selesai, maka anda tidak bisa mengubah data tiket ini lagi!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Simpan",
@@ -497,18 +510,20 @@ Template.editTicket.events({
               description: deskripsi,
               priority,
               workers: daftarWorker,
-              images: linksBukti
+              images: linksBukti,
+              status
           }
           Meteor.call(
             "tickets.editTicket",
             id,
             data,
+            timeline,
             function (error, result) {
               if (result) {
                 Swal.close();
                 Swal.fire({
                   title: "Berhasil",
-                  text: "Data berhasil dibuat",
+                  text: "Data tiket berhasil diubah",
                   showConfirmButton: true,
                   allowOutsideClick: true,
                 });
@@ -519,7 +534,7 @@ Template.editTicket.events({
                 Swal.close();
                 Swal.fire({
                   title: "Gagal",
-                  text: "Data gagal dibuat",
+                  text: "Data tiket gagal diubah",
                   showConfirmButton: true,
                   allowOutsideClick: true,
                 });
@@ -529,6 +544,51 @@ Template.editTicket.events({
         }
       }
     })
+  }
+})
+
+Template.detailTicket.onCreated(function () {
+  const self = this;
+  self.dataTiket = new ReactiveVar();
+  self.buktiTiket = new ReactiveVar([]);
+  self.workers = new ReactiveVar();
+  self.daftarWorker = new ReactiveVar([]);
+  const id = FlowRouter.getParam("_id");
+  Meteor.call("tickets.getById", id, function (error, result) {
+    if (result) {
+      self.dataTiket.set(result);
+      self.buktiTiket.set(result.images);
+      let fileArray = [];
+      if(result.images.length != 0){
+        for (const data of result.images) {
+          const file = {
+            file:{
+                name: data.name
+            },
+            src: data.link,
+            onInsert: true
+          }
+          fileArray.push(file)
+        }
+      }
+      self.buktiTiket.set(fileArray);
+      let dataWorkers = [];
+      for (const iterator of result.workers) {
+        dataWorkers.push(iterator);
+      }
+      self.daftarWorker.set(dataWorkers)
+    } else {
+      console.log(error);
+    }
+  })
+})
+
+Template.detailTicket.helpers({
+  buktiTiket(){
+    return Template.instance().buktiTiket.get();
+  },
+  dataTiket(){
+    return Template.instance().dataTiket.get();
   }
 })
 

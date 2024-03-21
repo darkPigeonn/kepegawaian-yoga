@@ -29,13 +29,20 @@
                             <td> {{formatHRDate createdAt}}</td>
                             <td>
                                 {{#if equals isOwned 1}}
-                                    <a href="/tickets/edit/{{toMeteorId _id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
-                                    </a>
-                                    <a href="/tickets/detail/{{toMeteorId _id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
-                                    </a>
-                                    <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Delete</button>
+                                    {{#if equals status "Selesai"}}
+                                        <a href="/tickets/detail/{{toMeteorId _id}}">
+                                            <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                        </a>
+
+                                    {{else}}
+                                        <a href="/tickets/edit/{{toMeteorId _id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                        </a>
+                                        <a href="/tickets/detail/{{toMeteorId _id}}">
+                                            <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                        </a>
+                                        <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Delete</button>
+                                    {{/if}}
                                 {{else}}
                                     <a href="/employees/detail/{{toMeteorId _id}}">
                                         <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
@@ -139,7 +146,7 @@
 <template name="editTicket">
     <div class="container">
         <div class="section-title-page">
-            <h3>Buat Tiket Baru</h3>
+            <h3>Ubah Data Tiket</h3>
         </div>
         <div class="section-content-page">
             <div class="page">
@@ -199,6 +206,84 @@
                     </div>
                 </div>
 
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Status Tiket</label>
+                    <div class="d-flex gap-2">
+                        {{#if equals dataTicket.status "Dibuka"}}
+                            <div>
+                                <input type="radio" name="select-status" value="Dibuka" id="select-status" checked>
+                                <b class="fw-bold" style="color: #ff6363;">Dibuka</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Sedang Berjalan" id="select-status">
+                                <b class="fw-bold" style="color: #ffac74;">Sedang Berjalan</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Ditunda" id="select-status">
+                                <b class="fw-bold" style="color: #6adc6a;">Ditunda</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Selesai" id="select-status">
+                                <b class="fw-bold" style="color: #63a7ff;">Selesai</b>
+                            </div>
+                        {{/if}}
+                        {{#if equals dataTicket.status "Sedang Berjalan"}}
+                            <div>
+                                <input type="radio" name="select-status" value="Dibuka" id="select-status">
+                                <b class="fw-bold" style="color: #ff6363;">Dibuka</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Sedang Berjalan" id="select-status" checked>
+                                <b class="fw-bold" style="color: #ffac74;">Sedang Berjalan</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Ditunda" id="select-status">
+                                <b class="fw-bold" style="color: #6adc6a;">Ditunda</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Selesai" id="select-status">
+                                <b class="fw-bold" style="color: #63a7ff;">Selesai</b>
+                            </div>
+                        {{/if}}
+                        {{#if equals dataTicket.status "Ditunda"}}
+                            <div>
+                                <input type="radio" name="select-status" value="Dibuka" id="select-status">
+                                <b class="fw-bold" style="color: #ff6363;">Dibuka</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Sedang Berjalan" id="select-status">
+                                <b class="fw-bold" style="color: #ffac74;">Sedang Berjalan</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Ditunda" id="select-status" checked>
+                                <b class="fw-bold" style="color: #6adc6a;">Ditunda</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Selesai" id="select-status">
+                                <b class="fw-bold" style="color: #63a7ff;">Selesai</b>
+                            </div>
+                        {{/if}}
+                        {{#if equals dataTicket.status "Selesai"}}
+                            <div>
+                                <input type="radio" name="select-status" value="Dibuka" id="select-status">
+                                <b class="fw-bold" style="color: #ff6363;">Dibuka</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Sedang Berjalan" id="select-status">
+                                <b class="fw-bold" style="color: #ffac74;">Sedang Berjalan</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Ditunda" id="select-status">
+                                <b class="fw-bold" style="color: #6adc6a;">Ditunda</b>
+                            </div>
+                            <div>
+                                <input type="radio" name="select-status" value="Selesai" id="select-status" checked>
+                                <b class="fw-bold" style="color: #63a7ff;">Selesai</b>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+
                 <div class="form-group">
                     {{> inputMultipleFiles label="Bukti" id="buktiTiket" files=buktiTiket buttonLabel="Upload"}}
                 </div>
@@ -250,6 +335,178 @@
         </div>
     </div>
 </template>
+
+<template name="detailTicket">
+
+    <div class="content">
+        <div class="row mt-4 align-items-start justify-content-center">
+            <div class="field text-center">
+                <label for="judul" style="font-weight: bold; font-size: 24px;">Judul:</label>
+                <span id="judul" style="font-weight: bold; font-size: 24px; text-transform: capitalize;">{{dataTiket.title}}</span>
+            </div>
+            <div class="field mt-2 text-center">
+                <label for="tanggal" style="font-weight: bold; font-size: 24px;">Tanggal:</label>
+                <span id="tanggal" style="font-weight: bold; font-size: 24px;">{{formatHRDate createdAt}}</span>
+            </div>
+        </div>
+        <div class="my-5 mx-4">
+            <div class="row">
+                <div class="col-2">
+                    <label style="font-weight: bold; font-size: 16px;">Pembuat</label>
+                </div>
+                <div class="col">
+                    <span style="font-size: 16px; text-transform: capitalize;">{{dataTiket.createdByName}}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <label style="font-weight: bold; font-size: 16px;">Prioritas</label>
+                </div>
+                <div class="col">
+                    <span style="font-size: 16px; text-transform: capitalize;">{{dataTiket.priority}}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <label style="font-weight: bold; font-size: 16px;">Deskripsi</label>
+                </div>
+                <div class="col">
+                    <span style="font-size: 16px; text-transform: capitalize;">{{dataTiket.description}}</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <label style="font-weight: bold; font-size: 16px;">Status</label>
+                </div>
+                <div class="col">
+                    <span style="font-size: 16px; text-transform: capitalize;">{{dataTiket.status}}</span>
+                </div>
+            </div>
+        
+            <label style="font-weight: bold; font-size: 16px; margin-left: 9px;">Timeline </label><br>
+            <div class="d-lg-block table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 50vh; text-align: center">Pesan</th>
+                            <th scope="col" style="width: 50vh; text-align: center;">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                        {{#each dataTiket.timeline}}
+                            <tr>
+                                <td>
+                                    {{message}}
+                                </td>
+                                <td>
+                                    {{formatHRDate createdAt}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-lg-block table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 50vh; text-align: center">Nama</th>
+                            <th scope="col" style="width: 50vh; text-align: center">Pesan</th>
+                            <th scope="col" style="width: 50vh; text-align: center;">Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                        {{#each dataTiket.message}}
+                            <tr>
+                                <td>
+                                    {{createdByName}}
+                                </td>
+                                <td>
+                                    {{message}}
+                                </td>
+                                <td>
+                                    {{formatHRDate createdAt}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <label style="font-weight: bold; font-size: 16px; margin-left: 9px;">File </label><br>
+            <div class="d-lg-block table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 50vh; text-align: center">Judul</th>
+                            <th scope="col" style="width: 50vh; text-align: center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center">
+                        {{#each buktiTiket}}
+                            <tr>
+                                <td>
+                                   {{file.name}}
+                                </td>
+                                <td>
+                                    <a href = "{{src}}"><i class="fas fa-download"></i></a>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+            
+    <!-- </div> -->
+    <style>
+        .box {
+            width: 95%;
+            height: 80vh;
+            display: flex;
+            margin: auto;
+            margin-top: 2rem;
+            background-color: white;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (max-width: 768px) {
+            .box {
+                flex-direction: column;
+                height: auto;
+            }
+            .content {
+                flex: none;
+            }
+
+        }
+    </style>
+
+    <style scoped>
+        html,
+        body {
+            background-color: #F1F4F7;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</template>
+  
+  
+  
+  
 
 <!-- Template Upload File -->
 <template name="inputMultipleFiles">

@@ -57,11 +57,12 @@ Meteor.methods({
         return Tickets.insert(data);
     },
 
-    "tickets.editTicket"(id, data){
+    "tickets.editTicket"(id, data, timeline){
         check(id, String);
         check(data, Object);
+        check(timeline, Object)
         const objectId = new Meteor.Collection.ObjectID(id);
-        return Tickets.update({_id: objectId}, {$set: data})
+        return Tickets.update({_id: objectId}, {$set: data, $push: {timeline: timeline}})
     },
 
     "tickets.delete"(id){
