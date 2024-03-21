@@ -221,7 +221,7 @@ Template.createTicket.events({
             const fileName = files[index].file.name;
             const sendFileName = checkDuplicateFileName(fileName, allFileNames);
             const uploadData = {
-              fileName: sendFileName,
+              fileName: "kepegawaian/"+sendFileName,
               type: "image/png",
               Body: files[index].file
             }
@@ -466,19 +466,30 @@ Template.editTicket.events({
         }
         else{
           for (let index = 0; index < files.length; index++) {
-            const fileName = files[index].file.name;
-            const sendFileName = checkDuplicateFileName(fileName, allFileNames);
-            const uploadData = {
-              fileName: sendFileName,
-              type: "image/png",
-              Body: files[index].file
+
+            if(files[index].onInsert == true){
+              thisForm[files].push(
+                {
+                  name: files[index].file.name,
+                  link: files[index].src
+                }
+              )
             }
-            const linkUpload = await uploadFiles(uploadData);
-            thisForm[files].push(
-            {
-              name: files[index].file.name,
-              link: linkUpload
-            });
+            else{
+              const fileName = files[index].file.name;
+              const sendFileName = checkDuplicateFileName(fileName,allFileNames);
+              const uploadData = {
+                fileName: "kepegawaian/"+sendFileName,
+                type: "image/png",
+                Body: files[index].file
+                }
+              const linkUpload = await uploadFiles(uploadData);
+              thisForm[files].push(
+              {
+                name: files[index].file.name,
+                link: linkUpload
+              });
+            }
           }
           const linksBukti = thisForm[files];
           const data = {

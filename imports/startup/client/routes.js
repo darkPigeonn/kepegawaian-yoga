@@ -420,6 +420,12 @@ FlowRouter.route("/tickets/edit/:_id", {
     this.render("App_body", "editTicket");
   },
 });
+FlowRouter.route("/tickets/detail/:_id", {
+  name: "detailTicket",
+  action() {
+    this.render("App_body", "detailTicket");
+  },
+});
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {
