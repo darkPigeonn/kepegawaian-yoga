@@ -244,6 +244,9 @@
     .bg-blue {
       background-color: rgb(225 234 255) !important;
     }
+    .btnNavigation{
+      cursor: pointer;
+    }
     
     @media screen and (max-width: 767px) {
       .container-image, .container-image-none{
@@ -270,641 +273,1121 @@
   </style>
 
   <section class="mt-2">
-    <div class="d-block d-md-flex gap-4">
-      <!-- Container Image Profile -->
-      <div class="container-image card rounded-3">
-        {{#if myData.imageLink}}
-          <img src="{{myData.imageLink}}" class="card-img-top image-fit">
-        {{else}}
-          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top image-fit">
-        {{/if}}
-      </div>
-
-      <!-- Container Content -->
-      <div class="container-detail mt-4-custom">
-        <!-- Account -->
-        <div class="card detail-card rounded-3 bg-light shadow text-dark">
-          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-            <label class="pt-1">Akun</label>
-          </div>
-          <div class="card-body detail-body">
-            <div class="row row-cols-1 row-cols-md-2">
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-user"></i> 
-                      Username
-                    </p>
-                    {{#if myData.username}}
-                    <p class="open-sans text-dark">{{myData.username}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <p class="form-label open-sans text-dark fw-bold">
-                    <i class="fa fa-light fa-lock"></i>
-                    <label for="title">
-                      Password
-                    </label>
-                    <a href="/password/edit/{{myData._id}}">
-                      <i class="fa fa-light fa-pen-to-square text-secondary ms-2"></i>
-                    </a>
-                  </p>
-                  <label class="open-sans text-dark">******</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Personal Details -->
-        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
-          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-            <label class="pt-1">Data Pribadi</label>
-          </div>
-          <div class="card-body detail-body">
-            <div class="row row-cols-1 row-cols-md-2">
-              <div class="col-md-6">
-                  <div class="mb-3">
-                      <p class="form-label open-sans text-dark fw-bold">
-                        <i class="fa fa-light fa-address-card"></i> 
-                        Nama Lengkap
-                      </p>
-                      {{#if myData.fullName}}
-                      <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
-                      {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                      {{/if}}
-                  </div>
-                  <div class="mb-3">
-                      <p class="form-label open-sans text-dark fw-bold">
-                        <i class="fa fa-light fa-city"></i>
-                        Email
-                      </p>
-                      {{#if myData.email}}
-                      <p class="open-sans text-dark">{{capitalizeWord myData.email}}</p>
-                      {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                      {{/if}}
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-city"></i>
-                      Tempat Kelahiran
-                    </p>
-                    {{#if myData.pob}}
-                      <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
-                    {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                  </div>
-                  <div class="mb-3">
-                      <p class="form-label open-sans text-dark fw-bold">
-                        <i class="fa fa-light fa-cake-candles"></i>
-                        Tanggal Lahir
-                      </p>
-                      {{#if myData.dob}}
-                      <p class="open-sans text-dark">{{myData.dob}}</p>
-                      {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                      {{/if}}
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-map-location-dot"></i>
-                      Alamat
-                    </p>
-                    {{#if myData.address}}
-                      <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
-                    {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                  </div>
-                  <div class="mb-3">
-                      <p class="form-label open-sans text-dark fw-bold">
-                        <i class="fa fa-light fa-venus-mars"></i>
-                        Jenis Kelamin
-                      </p>
-                      {{#if myData.gender}}
-                        {{#if equals myData.gender "male"}}
-                          <p class="open-sans text-dark">Laki-Laki</p>
-                        {{else if equals myData.gender "female"}}
-                          <p class="open-sans text-dark">Perempuan</p>
-                        {{/if}}
-                      {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
-                      {{/if}}
-                  </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-phone"></i>
-                      Nomor Telepon
-                    </p>
-                    {{#if myData.phoneNumber}}
-                    <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-            </div>
-            <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
-            <div class="row row-cols-1 row-cols-md-2">
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-flag"></i>
-                      Kewarganegaraan
-                    </p>
-                    {{#if myData.nationality}}
-                    <p class="open-sans text-dark">{{myData.nationality}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-church"></i>
-                      Agama
-                    </p>
-                    {{#if myData.religion}}
-                    <p class="open-sans text-dark">{{myData.religion}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-            </div>
-            <div class="row row-cols-1 row-cols-md-2">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <p class="form-label open-sans text-dark fw-bold">
-                          <i class="fa fa-light fa-id-card"></i>
-                          NIK
-                        </p>
-                        {{#if myData.nik}}
-                        <p class="open-sans text-dark">{{myData.nik}}</p>
-                        {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
-                        {{/if}}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-location-dot"></i>
-                      Alamat KTP
-                    </p>
-                    {{#if myData.registeredAddress}}
-                    <p class="open-sans text-dark">{{myData.registeredAddress}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                  </div>
-                </div>
-            </div>
-            <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
-            <div class="row row-cols-1 row-cols-md-2">
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      <i class="fa fa-light fa-book"></i>
-                      Minat Penelitian
-                    </p>
-                    {{#if myData.researchInterest}}
-                    <p class="open-sans text-dark">
-                      {{myData.researchInterest}}
-                    </p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Professional Experience -->
-        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
-          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-            <label class="pt-1">Pengalaman Profesi</label>
-          </div>
-          <div class="card-body detail-body">
-            <h5 class="text-login-content fw-bold mb-4">Pengalaman Terbaru</h5>
-            <div class="row row-cols-1 row-cols-md-2">
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      NIDN / NIDK
-                    </p>
-                    {{#if myData.nidn}}
-                    <p class="open-sans text-dark">{{myData.nidn}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3">
-                    <p class="form-label open-sans text-dark fw-bold">
-                      Jabatan Saat Ini
-                    </p>
-                    {{#if myData.position}}
-                    <p class="open-sans text-dark">{{myData.position}}</p>
-                    {{else}}
-                    <p class="open-sans text-dark"><i>No Data</i></p>
-                    {{/if}}
-                </div>
-              </div>
-            </div>
-            <div class="row row-cols-1 row-cols-md-2">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <p class="form-label open-sans text-dark fw-bold">
-                          Kepangkatan
-                        </p>
-                        {{#if myData.academicRank}}
-                        <p class="open-sans text-dark">{{myData.academicRank}}</p>
-                        {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
-                        {{/if}}
-                    </div>
-                </div>
-            </div>
-            <h5 class="text-login-content fw-bold mt-4 mb-3">Riwayat Profesi</h5>
-            {{#if myData.listExperiences}}
-              <div class="accordion" id="accordionProfesi">
-                {{#each item in myData.listExperiences}}
-                  <div class="accordion-item" style="border: 1px solid lightgray;">
-                      <!-- Header -->
-                      <h2 class="accordion-header" >
-                          <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseProfesi{{@index}}" aria-expanded="true" aria-controls="collapseProfesi{{@index}}">
-                              {{capitalizeWord item.jobPosition}} - {{capitalizeWord item.institution}}
-                          </button>
-                      </h2>
-                      <!-- Content -->
-                      <div id="collapseProfesi{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingProfesi{{@index}}" data-parent="#accordionProfesi">
-                          <div class="accordion-body">
-                              <div class="row row-cols-1 row-cols-md-2">
-                                  <div class="col-md-6">
-                                      <div class="mb-3">
-                                          <p class="form-label open-sans text-dark fw-bold">
-                                              Jabatan
-                                          </p>
-                                          <p class="open-sans text-dark">{{item.jobPosition}}</p>
-                                      </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="mb-3">
-                                          <p class="form-label open-sans text-dark fw-bold">
-                                              Institusi
-                                          </p>
-                                          <p class="open-sans text-dark">{{item.institution}}</p>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row row-cols-1 row-cols-md-2">
-                                  <div class="col-md-6">
-                                      <div class="mb-3">
-                                          <p class="form-label open-sans text-dark fw-bold">
-                                              Tanggal Mulai
-                                          </p>
-                                          {{#if item.startDate}}
-                                          <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
-                                          {{else}}
-                                          <p class="open-sans text-dark"><i>No Data</i></p>
-                                          {{/if}}
-                                      </div>
-                                  </div>
-                                  <div class="col-md-6">
-                                      <div class="mb-3">
-                                          <p class="form-label open-sans text-dark fw-bold">
-                                              Tanggal Selesai
-                                          </p>
-                                          {{#if item.endDate}}
-                                          <p class="open-sans text-dark">{{formatHRDate item.endDate}}</p>
-                                          {{else}}
-                                          <p class="open-sans text-dark"><i>No Data</i></p>
-                                          {{/if}}
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                {{/each}}
-              </div>
-            {{else}}
-              No Previous Experience
-            {{/if}}
-          </div>
-        </div>
-
-        <!-- Educational History -->
-        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
-          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-            <label class="pt-1">Riwayat Edukasi</label>
-          </div>
-          <div class="card-body detail-body">
-            {{#if myData.listEducationalHistory}}
-              <div class="accordion" id="accordionEducation">
-                {{#each item in myData.listEducationalHistory}}
-                  <div class="accordion-item" style="border: 1px solid lightgray;">
-                    <!-- Header -->
-                    <h2 class="accordion-header" >
-                      <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseEducation{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
-                          {{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}
-                      </button>
-                    </h2>
-                    <!-- Content -->
-                    <div id="collapseEducation{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
-                      <div class="accordion-body">
-                        <div class="row row-cols-1 row-cols-md-2">
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Jenjang Pendidikan
-                                </p>
-                                {{#if item.educationLevel}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.educationLevel}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Bidang Studi
-                                </p>
-                                {{#if item.major}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Institusi
-                                </p>
-                                {{#if item.institution}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Gelar Kelulusan
-                                </p>
-                                {{#if item.graduateDegree}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.graduateDegree}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Judul Tesis
-                                </p>
-                                {{#if item.studyPublication}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.studyPublication}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Lembaga Domestik
-                                </p>
-                                {{#if item.domesticStatus}}
-                                  {{#if equals item.domesticStatus "local"}}
-                                    <p class="open-sans text-dark">Dalam Negeri</p>
-                                  {{else}}
-                                    <p class="open-sans text-dark">Luar Negeri</p>
-                                  {{/if}}
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Formal Status
-                                </p>
-                                {{#if item.formalStatus}}
-                                  {{#if equals item.formalStatus "formal"}}
-                                    <p class="open-sans text-dark">Formal</p>
-                                  {{else}}
-                                    <p class="open-sans text-dark">Tidak Formal</p>
-                                  {{/if}}
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row row-cols-1 row-cols-md-2">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <p class="form-label open-sans text-dark fw-bold">
-                                      Tanggal Mulai
-                                    </p>
-                                    {{#if item.dateStart}}
-                                    <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
-                                    {{else}}
-                                    <p class="open-sans text-dark"><i>No Data</i></p>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <p class="form-label open-sans text-dark fw-bold">
-                                      Tanggal Selesai
-                                    </p>
-                                    {{#if item.dateEnd}}
-                                    <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
-                                    {{else}}
-                                    <p class="open-sans text-dark"><i>No Data</i></p>
-                                    {{/if}}
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                {{/each}}
-              </div>
-            {{else}}
-              No Education History
-            {{/if}}
-          </div>
-        </div>
-
-        <!-- Certification -->
-        <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
-          <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-            <label class="pt-1">Sertifikasi</label>
-          </div>
-          <div class="card-body detail-body">
-            {{#if myData.listCertification}}
-              <div class="accordion" id="accordionCertification">
-                {{#each item in myData.listCertification}}
-                  <div class="accordion-item" style="border: 1px solid lightgray;">
-                    <!-- Header -->
-                    <h2 class="accordion-header" >
-                      <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseCertification{{@index}}" aria-expanded="true" aria-controls="collapseCertification{{@index}}">
-                        {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
-                      </button>
-                    </h2>
-                    <!-- Content -->
-                    <div id="collapseCertification{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingCertification{{@index}}" data-parent="#accordionCertification">
-                      <div class="accordion-body">
-                        <div class="row row-cols-1 row-cols-md-2">
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Tipe Sertifikasi
-                                </p>
-                                {{#if item.type}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Jurusan Sertifikasi
-                                </p>
-                                {{#if item.major}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Penyelenggara Sertifikasi
-                                </p>
-                                {{#if item.organizer}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Nomor Registrasi
-                                </p>
-                                {{#if item.registrationNumber}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.registrationNumber}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Nomor SK
-                                </p>
-                                {{#if item.skNumber}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.skNumber}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  File SK
-                                </p>
-                                {{#if item.fileLink}}
-                                <p class="open-sans text-dark"><a href="{{item.fileLink}}" class="link-{{@index}}">Download</a></p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Nilai
-                                </p>
-                                {{#if item.grade}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.grade}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row row-cols-1 row-cols-md-2">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <p class="form-label open-sans text-dark fw-bold">
-                                      Tanggal Mulai
-                                    </p>
-                                    {{#if item.dateStart}}
-                                    <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
-                                    {{else}}
-                                    <p class="open-sans text-dark"><i>No Data</i></p>
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <p class="form-label open-sans text-dark fw-bold">
-                                      Tanggal Selesai
-                                    </p>
-                                    {{#if item.dateEnd}}
-                                    <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
-                                    {{else}}
-                                    <p class="open-sans text-dark"><i>No Data</i></p>
-                                    {{/if}}
-                                </div>
-                            </div>
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                {{/each}}
-              </div>
-            {{else}}
-              No Certification
-            {{/if}}
-          </div>
-        </div>
+    <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2">
+      <div class="navigation-form d-flex gap-3">
+          <label class="text-nowrap btnNavigation {{#if equals formPage 1}}text-blue fw-bold {{/if}}" data-value="1" >1. Profil Biografis</label>
+          <label class="text-nowrap btnNavigation {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja Penugasan</label>
+          <label class="text-nowrap btnNavigation {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Profil Pendidikan</label>
+          <label class="text-nowrap btnNavigation {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Profil Penunjang</label>
+          <label class="text-nowrap btnNavigation {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Profil Pengabdian</label>
       </div>
     </div>
+    {{#if equals formPage 1}}
+      <div class="d-block d-md-flex gap-4">
+        <!-- Container Image Profile -->
+        <div class="container-image card rounded-3">
+          {{#if myData.imageLink}}
+            <img src="{{myData.imageLink}}" class="card-img-top image-fit">
+          {{else}}
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top image-fit">
+          {{/if}}
+        </div>
+
+        <!-- Container Content -->
+        <div class="container-detail mt-4-custom">
+          <!-- Account -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Akun</label>
+            </div>
+            <div class="card-body detail-body">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-user"></i> 
+                        Username
+                      </p>
+                      {{#if myData.username}}
+                      <p class="open-sans text-dark">{{myData.username}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <p class="form-label open-sans text-dark fw-bold">
+                      <i class="fa fa-light fa-lock"></i>
+                      <label for="title">
+                        Password
+                      </label>
+                      <a href="/password/edit/{{myData._id}}">
+                        <i class="fa fa-light fa-pen-to-square text-secondary ms-2"></i>
+                      </a>
+                    </p>
+                    <label class="open-sans text-dark">******</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Details -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Data Pribadi</label>
+            </div>
+            <div class="card-body detail-body">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-address-card"></i> 
+                          Nama Lengkap
+                        </p>
+                        {{#if myData.fullName}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
+                    </div>
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-city"></i>
+                          Email
+                        </p>
+                        {{#if myData.email}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.email}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-city"></i>
+                        Tempat Kelahiran
+                      </p>
+                      {{#if myData.pob}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                    </div>
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-cake-candles"></i>
+                          Tanggal Lahir
+                        </p>
+                        {{#if myData.dob}}
+                        <p class="open-sans text-dark">{{myData.dob}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-map-location-dot"></i>
+                        Alamat
+                      </p>
+                      {{#if myData.address}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                    </div>
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-venus-mars"></i>
+                          Jenis Kelamin
+                        </p>
+                        {{#if myData.gender}}
+                          {{#if equals myData.gender "male"}}
+                            <p class="open-sans text-dark">Laki-Laki</p>
+                          {{else if equals myData.gender "female"}}
+                            <p class="open-sans text-dark">Perempuan</p>
+                          {{/if}}
+                        {{else}}
+                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-phone"></i>
+                        Nomor Telepon
+                      </p>
+                      {{#if myData.phoneNumber}}
+                      <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+              </div>
+              <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-flag"></i>
+                        Kewarganegaraan
+                      </p>
+                      {{#if myData.nationality}}
+                      <p class="open-sans text-dark">{{myData.nationality}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-church"></i>
+                        Agama
+                      </p>
+                      {{#if myData.religion}}
+                      <p class="open-sans text-dark">{{myData.religion}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            <i class="fa fa-light fa-id-card"></i>
+                            NIK
+                          </p>
+                          {{#if myData.nik}}
+                          <p class="open-sans text-dark">{{myData.nik}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-location-dot"></i>
+                        Alamat KTP
+                      </p>
+                      {{#if myData.registeredAddress}}
+                      <p class="open-sans text-dark">{{myData.registeredAddress}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                    </div>
+                  </div>
+              </div>
+              <hr class="mt-3 mb-4" style="border: 1px solid lightgray;">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-book"></i>
+                        Minat Penelitian
+                      </p>
+                      {{#if myData.researchInterest}}
+                      <p class="open-sans text-dark">
+                        {{myData.researchInterest}}
+                      </p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Experience -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Pengalaman Profesi</label>
+            </div>
+            <div class="card-body detail-body">
+              <h5 class="text-login-content fw-bold mb-4">Pengalaman Terbaru</h5>
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        NIDN / NIDK
+                      </p>
+                      {{#if myData.nidn}}
+                      <p class="open-sans text-dark">{{myData.nidn}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        Jabatan Saat Ini
+                      </p>
+                      {{#if myData.position}}
+                      <p class="open-sans text-dark">{{myData.position}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      {{/if}}
+                  </div>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-6">
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                            Kepangkatan
+                          </p>
+                          {{#if myData.academicRank}}
+                          <p class="open-sans text-dark">{{myData.academicRank}}</p>
+                          {{else}}
+                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          {{/if}}
+                      </div>
+                  </div>
+              </div>
+              <h5 class="text-login-content fw-bold mt-4 mb-3">Riwayat Profesi</h5>
+              {{#if myData.listExperiences}}
+                <div class="accordion" id="accordionProfesi">
+                  {{#each item in myData.listExperiences}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                        <!-- Header -->
+                        <h2 class="accordion-header" >
+                            <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseProfesi{{@index}}" aria-expanded="true" aria-controls="collapseProfesi{{@index}}">
+                                {{capitalizeWord item.jobPosition}} - {{capitalizeWord item.institution}}
+                            </button>
+                        </h2>
+                        <!-- Content -->
+                        <div id="collapseProfesi{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingProfesi{{@index}}" data-parent="#accordionProfesi">
+                            <div class="accordion-body">
+                                <div class="row row-cols-1 row-cols-md-2">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <p class="form-label open-sans text-dark fw-bold">
+                                                Jabatan
+                                            </p>
+                                            <p class="open-sans text-dark">{{item.jobPosition}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <p class="form-label open-sans text-dark fw-bold">
+                                                Institusi
+                                            </p>
+                                            <p class="open-sans text-dark">{{item.institution}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row row-cols-1 row-cols-md-2">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <p class="form-label open-sans text-dark fw-bold">
+                                                Tanggal Mulai
+                                            </p>
+                                            {{#if item.startDate}}
+                                            <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
+                                            {{else}}
+                                            <p class="open-sans text-dark"><i>No Data</i></p>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <p class="form-label open-sans text-dark fw-bold">
+                                                Tanggal Selesai
+                                            </p>
+                                            {{#if item.endDate}}
+                                            <p class="open-sans text-dark">{{formatHRDate item.endDate}}</p>
+                                            {{else}}
+                                            <p class="open-sans text-dark"><i>No Data</i></p>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Previous Experience
+              {{/if}}
+            </div>
+          </div>
+
+          <!-- Educational History -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Edukasi</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listEducationalHistory}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listEducationalHistory}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseEducation{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
+                            {{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseEducation{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Jenjang Pendidikan
+                                  </p>
+                                  {{#if item.educationLevel}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.educationLevel}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Bidang Studi
+                                  </p>
+                                  {{#if item.major}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Institusi
+                                  </p>
+                                  {{#if item.institution}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Gelar Kelulusan
+                                  </p>
+                                  {{#if item.graduateDegree}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.graduateDegree}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Judul Tesis
+                                  </p>
+                                  {{#if item.studyPublication}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.studyPublication}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Lembaga Domestik
+                                  </p>
+                                  {{#if item.domesticStatus}}
+                                    {{#if equals item.domesticStatus "local"}}
+                                      <p class="open-sans text-dark">Dalam Negeri</p>
+                                    {{else}}
+                                      <p class="open-sans text-dark">Luar Negeri</p>
+                                    {{/if}}
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Formal Status
+                                  </p>
+                                  {{#if item.formalStatus}}
+                                    {{#if equals item.formalStatus "formal"}}
+                                      <p class="open-sans text-dark">Formal</p>
+                                    {{else}}
+                                      <p class="open-sans text-dark">Tidak Formal</p>
+                                    {{/if}}
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row row-cols-1 row-cols-md-2">
+                              <div class="col-md-6">
+                                  <div class="mb-3">
+                                      <p class="form-label open-sans text-dark fw-bold">
+                                        Tanggal Mulai
+                                      </p>
+                                      {{#if item.dateStart}}
+                                      <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                                      {{else}}
+                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      {{/if}}
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="mb-3">
+                                      <p class="form-label open-sans text-dark fw-bold">
+                                        Tanggal Selesai
+                                      </p>
+                                      {{#if item.dateEnd}}
+                                      <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                                      {{else}}
+                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      {{/if}}
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Education History
+              {{/if}}
+            </div>
+          </div>
+
+          <!-- Certification -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Sertifikasi</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listCertification}}
+                <div class="accordion" id="accordionCertification">
+                  {{#each item in myData.listCertification}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseCertification{{@index}}" aria-expanded="true" aria-controls="collapseCertification{{@index}}">
+                          {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseCertification{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingCertification{{@index}}" data-parent="#accordionCertification">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Tipe Sertifikasi
+                                  </p>
+                                  {{#if item.type}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Jurusan Sertifikasi
+                                  </p>
+                                  {{#if item.major}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Penyelenggara Sertifikasi
+                                  </p>
+                                  {{#if item.organizer}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Nomor Registrasi
+                                  </p>
+                                  {{#if item.registrationNumber}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.registrationNumber}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Nomor SK
+                                  </p>
+                                  {{#if item.skNumber}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.skNumber}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    File SK
+                                  </p>
+                                  {{#if item.fileLink}}
+                                  <p class="open-sans text-dark"><a href="{{item.fileLink}}" class="link-{{@index}}">Download</a></p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Nilai
+                                  </p>
+                                  {{#if item.grade}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.grade}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row row-cols-1 row-cols-md-2">
+                              <div class="col-md-6">
+                                  <div class="mb-3">
+                                      <p class="form-label open-sans text-dark fw-bold">
+                                        Tanggal Mulai
+                                      </p>
+                                      {{#if item.dateStart}}
+                                      <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
+                                      {{else}}
+                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      {{/if}}
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="mb-3">
+                                      <p class="form-label open-sans text-dark fw-bold">
+                                        Tanggal Selesai
+                                      </p>
+                                      {{#if item.dateEnd}}
+                                      <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                                      {{else}}
+                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      {{/if}}
+                                  </div>
+                              </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Certification
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if equals formPage 2}}
+      <div class="d-block d-md-flex gap-4">
+        <div class="container-image card rounded-3">
+          {{#if myData.imageLink}}
+            <img src="{{myData.imageLink}}" class="card-img-top image-fit">
+          {{else}}
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top image-fit">
+          {{/if}}
+        </div>
+
+        <!-- Container Content -->
+        <div class="container-detail mt-4-custom">
+          <!-- Account -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Kerjapenugasan</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listKerjaPenugasan}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listKerjaPenugasan}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseEducation{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
+                            {{capitalizeWord item.name}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseEducation{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Tempat
+                                  </p>
+                                  {{#if item.place}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.place}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Periode
+                                  </p>
+                                  {{#if item.period}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.period}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Keterangan
+                                  </p>
+                                  {{#if item.notes}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.notes}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Education History
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if equals formPage 3}}
+      <div class="d-block d-md-flex gap-4">
+        <div class="container-image card rounded-3">
+          {{#if myData.imageLink}}
+            <img src="{{myData.imageLink}}" class="card-img-top image-fit">
+          {{else}}
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="card-img-top image-fit">
+          {{/if}}
+        </div>
+
+        <!-- Container Content -->
+        <div class="container-detail mt-4-custom">
+          <!-- Account -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Pengajaran</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listPengajaran}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listPengajaran}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseEducation{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
+                            {{capitalizeWord item.matkul}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseEducation{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Periode Studi
+                                  </p>
+                                  {{#if item.ps}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.ps}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Jenis Mata Kuliah
+                                  </p>
+                                  {{#if item.type}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Bidang Keilmuan
+                                  </p>
+                                  {{#if item.bidangKeilmuan}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Jumlah Mahasiswa
+                                  </p>
+                                  {{#if item.mhsTotal}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.mhsTotal}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    SKS
+                                  </p>
+                                  {{#if item.SKS}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.SKS}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Education History
+              {{/if}}
+            </div>
+          </div>
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Bimbingan</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listBimbingan}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listBimbingan}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseEducation{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
+                            {{capitalizeWord item.name}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseEducation{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Judul
+                                  </p>
+                                  {{#if item.title}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Kategori Bimbingan
+                                  </p>
+                                  {{#if item.pembimbingCategory}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.pembimbingCategory}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Bidang Keilmuan
+                                  </p>
+                                  {{#if item.bidangKeilmuan}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Nama Lembaga
+                                  </p>
+                                  {{#if item.lembagaName}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.lembagaName}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Program Studi
+                                  </p>
+                                  {{#if item.programStudi}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.programStudi}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                              <div class="mb-3">
+                                <p class="form-label open-sans text-dark fw-bold">
+                                  Tahun Selesai
+                                </p>
+                                {{#if item.endDate}}
+                                <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
+                                {{else}}
+                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                {{/if}}
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Bimbingan History
+              {{/if}}
+            </div>
+            
+          </div>
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Pengujian</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listPengujian}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listPengujian}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapsePengujian{{@index}}" aria-expanded="true" aria-controls="collapsePengujian{{@index}}">
+                            {{capitalizeWord item.name}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapsePengujian{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Judul Pengujian
+                                  </p>
+                                  {{#if item.title}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Jenis Pengujian
+                                  </p>
+                                  {{#if item.type}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Kategori Kegiatan
+                                  </p>
+                                  {{#if item.category}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Bidang Keilmuan
+                                  </p>
+                                  {{#if item.bidangKeilmuan}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Nama Lembaga
+                                  </p>
+                                  {{#if item.lembaga}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.lembaga}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                              <div class="mb-3">
+                                <p class="form-label open-sans text-dark fw-bold">
+                                  Program Studi
+                                </p>
+                                {{#if item.ps}}
+                                <p class="open-sans text-dark">{{capitalizeWord item.ps}}</p>
+                                {{else}}
+                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                {{/if}}
+                              </div>
+                              <div class="mb-3">
+                                <p class="form-label open-sans text-dark fw-bold">
+                                  Tahun Selesai
+                                </p>
+                                {{#if item.endDate}}
+                                <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
+                                {{else}}
+                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Bimbingan History
+              {{/if}}
+            </div>
+            
+          </div>
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">List Bahan Ajar</label>
+            </div>
+            <div class="card-body detail-body">
+              {{#if myData.listBahanAjar}}
+                <div class="accordion" id="accordionEducation">
+                  {{#each item in myData.listBahanAjar}}
+                    <div class="accordion-item" style="border: 1px solid lightgray;">
+                      <!-- Header -->
+                      <h2 class="accordion-header" >
+                        <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseBahanAjar{{@index}}" aria-expanded="true" aria-controls="collapseEducation{{@index}}">
+                            {{capitalizeWord item.title}}
+                        </button>
+                      </h2>
+                      <!-- Content -->
+                      <div id="collapseBahanAjar{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
+                        <div class="accordion-body">
+                          <div class="row row-cols-1 row-cols-md-2">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    ISBN
+                                  </p>
+                                  {{#if item.isbn}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.isbn}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Tanggal Terbit
+                                  </p>
+                                  {{#if item.publishDate}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.publishDate}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                  <p class="form-label open-sans text-dark fw-bold">
+                                    Penerbit
+                                  </p>
+                                  {{#if item.publisher}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.publisher}}</p>
+                                  {{else}}
+                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  {{/if}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                No Bimbingan History
+              {{/if}}
+            </div>
+            
+          </div>
+        </div>       
+      </div>
+    {{/if}}
 
   </section>
 </template>

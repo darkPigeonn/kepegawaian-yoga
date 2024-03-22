@@ -14,7 +14,9 @@ Template.formLecturers.onCreated(function () {
     self.skImage = new ReactiveVar(false)
     self.listKerjaPenugasan = new ReactiveVar([])
     self.listPengajaran = new ReactiveVar([])
+    self.listPengujian = new ReactiveVar([])
     self.listBimbingan = new ReactiveVar([])
+    self.listBahanAjar = new ReactiveVar([])
     const lecturerId = FlowRouter.getParam("_id");
     const mode = lecturerId ? "edit" : "add";
     self.pageMode.set(mode);
@@ -39,6 +41,9 @@ Template.formLecturers.onRendered( function(){
 })
 
 Template.formLecturers.helpers({
+    listPengujian(){
+        return Template.instance().listPengujian.get()
+    },
     listBimbingan(){
         return Template.instance().listBimbingan.get()
     },
@@ -68,6 +73,9 @@ Template.formLecturers.helpers({
     },
     pageMode(){
         return Template.instance().pageMode.get();
+    },
+    listBahanAjar(){
+        return Template.instance().listBahanAjar.get()
     }
 });
 
@@ -240,6 +248,8 @@ Template.formLecturers.events({
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
         const listPengajaran = t.listPengajaran.get()
         const listBimbingan = t.listBimbingan.get()
+        const listPengujian = t.listPengujian.get()
+        const listBahanAjar = t.listBahanAjar.get()
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value){
@@ -261,9 +271,58 @@ Template.formLecturers.events({
                 } else if (identifier === "bimbingan"){
                     listBimbingan.splice(index, 1)
                     t.listBimbingan.set(listBimbingan)
+                } else if (identifier === "pengujian"){
+                    listPengujian.splice(index, 1)
+                    t.listPengujian.set(listPengujian)
+                } else if (identifier === "bahanAjar"){
+                    listBahanAjar.splice(index, 1)
+                    t.listBahanAjar.set(listBahanAjar)
                 }
             }
         })
+    },
+    "click .add-bahanAjar"(e, t){
+        e.preventDefault()
+        const listBahanAjar = t.listBahanAjar.get()
+        const title = $("#inputJudulBahanAjar").val()
+        const isbn = $("#inputIsbnBahanAjar").val()
+        const publishDate = $("#inputTanggalTerbitBahanAjar").val()
+        const publisher = $("#inputPenerbitBahanAjar").val()
+        const data = {
+            title,
+            isbn,
+            publishDate,
+            publisher
+        }
+        listBahanAjar.push(data)
+        t.listBahanAjar.set(listBahanAjar)
+    },
+    "click .add-pengujian" (e, t){
+        e.preventDefault()
+        const listPengujian = t.listPengujian.get()
+        const name = $("#inputPengujianName").val()
+        const type = $("#inputJenisPengujian").val()
+        const title = $("#inputJudulPengujian").val()
+        const category = $("#inputKategoriKegiatanPengujian").val()
+        const bidangKeilmuan = $("#inputBidangKeilmuanPengujian").val()
+        const ps = $("#inputProgramStudiPengujian").val()
+        const lembaga = $("#inputNamaLembagaPengujian").val()
+        const dateEnd = $("#inputTahunSelesaiPengujian").val()
+        
+        const data = {
+            name,
+            type,
+            title,
+            category,
+            bidangKeilmuan,
+            ps,
+            lembaga,
+            dateEnd
+        }
+
+        listPengujian.push(data)
+        t.listPengujian.set(listPengujian)
+
     },
     "click .add-kerjapenugasan"(e, t){
         e.preventDefault()
@@ -271,12 +330,12 @@ Template.formLecturers.events({
         const name = $("#inputName").val()
         const place = $("#inputPlace").val()
         const period = $("#inputPeriod").val()
-        const note = $("#inputNote").val()
+        const notes = $("#inputNotes").val()
         const data = {
             name,
             place,
             period,
-            note
+            notes
         }
 
         console.log(data)
@@ -375,6 +434,9 @@ Template.formLecturers.events({
         const listCertification = t.listCertification.get()
         const listEducationalHistory = t.listEducationalHistory.get()
         const listExperiences = t.listExperiences.get()
+        const listKerjaPenugasan = t.listKerjaPenugasan.get()
+        const listPengujian = t.listPengujian.get()
+        const listBahanAjar = t.listBahanAjar.get()
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value) {
@@ -382,6 +444,9 @@ Template.formLecturers.events({
                 formData.listCertification = listCertification
                 formData.listEducationalHistory = listEducationalHistory
                 formData.listExperiences = listExperiences
+                formData.listKerjaPenugasan = listKerjaPenugasan
+                formData.listPengujian = listPengujian
+                formData.listBahanAjar = listBahanAjar
 
                 // console.log(formData)
 

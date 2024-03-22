@@ -42,6 +42,7 @@ Template.cardHomeProfileDetail.helpers({
 Template.cardDetailProfileDosen.onCreated(function () { 
     const self = this;
     self.myData = new ReactiveVar({});
+    self.formPage = new ReactiveVar(1);
     const _id = FlowRouter.getParam("_id");
     if (_id) {
       Meteor.call("dosen.getDetails", _id,  function (error, result) {
@@ -62,6 +63,9 @@ Template.cardDetailProfileDosen.helpers({
     myData(){
         return Template.instance().myData.get();
     },
+    formPage(){
+      return Template.instance().formPage.get()
+    }
 });
 
 Template.cardDetailProfileDosen.events({
@@ -69,4 +73,8 @@ Template.cardDetailProfileDosen.events({
     e.preventDefault();
     window.open(e.target.src, '_blank');
   },
+  'click .btnNavigation' (e,t){
+    e.preventDefault()
+   t.formPage.set($(e.target).data("value"))
+  }
 })

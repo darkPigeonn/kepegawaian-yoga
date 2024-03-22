@@ -1005,6 +1005,219 @@
             {{/if}}
         </div>
     </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Pengujian Mahasiswa
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputPengujianName" class="fw-bold text-login-content">Nama Mahasiswa</label>
+                        <input type="text" class="form-control" id="inputPengujianName" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJenisPengujian" class="fw-bold text-login-content">Jenis Pengujian</label>
+                        <input type="text" class="form-control" id="inputJenisPengujian" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputJudulPengujian" class="fw-bold text-login-content">Judul Pengujian</label>
+                        <input type="text" class="form-control" id="inputJudulPengujian" placeholder="Ex: Regular Lecturer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputKategoriKegiatanPengujian" class="fw-bold text-login-content">Kategori Kegiatan</label>
+                        <input type="text" class="form-control" id="inputKategoriKegiatanPengujian" placeholder="Ex: Manajemen Pastoral" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBidangKeilmuanPengujian" class="fw-bold text-login-content">Bidang Keilmuan</label>
+                        <input type="text" class="form-control" id="inputBidangKeilmuanPengujian" placeholder="Ex: Manajemen Pastoral" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputProgramStudiPengujian" class="fw-bold text-login-content">Program Studi</label>
+                        <input type="text" class="form-control" id="inputProgramStudiPengujian" placeholder="Ex: Teologi Dasar" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNamaLembagaPengujian" class="fw-bold text-login-content">Nama Lembaga</label>
+                        <input type="text" class="form-control" id="inputNamaLembagaPengujian" placeholder="Ex: WM" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTahunSelesaiPengujian" class="fw-bold text-login-content">Semester dan Tahun Selesai</label>
+                        <input type="text" class="form-control" id="inputTahunSelesaiPengujian" placeholder="Ex: 2024" required>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 add-pengujian">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Riwayat Pengujian
+                        </button>
+                    </div>
+                    {{#if listPengujian}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">Daftar Riwayat Pengujian</label>
+                        {{#each item in listPengujian}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengujian" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="pengujian" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Judul Pengujian:</b> {{item.title}}</label>
+                                        <label class="col text-break"><b>Jenis Pengujian:</b> {{item.type}}</label>
+                                        <label class="col text-break"><b>Kategori Kegiatan:</b> {{item.category}}</label>
+                                        <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                        <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembaga}}</label>
+                                        <label class="col text-break"><b>Program Studi:</b> {{item.ps}}</label>
+                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputListPengajaran" class="fw-bold text-login-content">Daftar Riwayat Pengujian</label>
+                        {{#each item in listPengujian}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.name}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="pengujian" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="pengujian" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>Judul Pengujian:</b> {{item.title}}</label>
+                                        <label class="col text-break"><b>Jenis Pengujian:</b> {{item.type}}</label>
+                                        <label class="col text-break"><b>Kategori Kegiatan:</b> {{item.category}}</label>
+                                        <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
+                                        <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembaga}}</label>
+                                        <label class="col text-break"><b>Program Studi:</b> {{item.ps}}</label>
+                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.endDate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="4">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="card rounded-3 mt-4">
+        <div class="card-header bg-blue text-white">
+            Bahan Ajar
+        </div>
+        <div class="card-body">
+            <section class="p-2">
+                <form id="formLecturers">
+                    <div class="form-group">
+                        <label for="inputJudulBahanAjar" class="fw-bold text-login-content">Judul Bahan Ajar</label>
+                        <input type="text" class="form-control" id="inputJudulBahanAjar" placeholder="Ex: Sejarah Gereja" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsbnBahanAjar" class="fw-bold text-login-content">Bahan Ajar</label>
+                        <input type="text" class="form-control" id="inputIsbnBahanAjar" placeholder="Ex: 978-623-91562-2-0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTanggalTerbitBahanAjar" class="fw-bold text-login-content">Tanggal Terbit</label>
+                        <input type="text" class="form-control" id="inputTanggalTerbitBahanAjar" placeholder="Ex: 23 November 2016" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPenerbitBahanAjar" class="fw-bold text-login-content">Penerbit</label>
+                        <input type="text" class="form-control" id="inputPenerbitBahanAjar" placeholder="Ex: Example Press" required>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end mt-2 add-bahanAjar">
+                        <button class="btn btn-add btn-sm">
+                            <i class="fa fa-light fa-plus"></i>
+                            Tambah Bahan Ajar
+                        </button>
+                    </div>
+                    {{#if listBahanAjar}}
+                    <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                    <!-- Desktop -->
+                    <div class="form-group desktop-div">
+                        <label for="inputListExperience" class="fw-bold text-login-content">Daftar Riwayat Bahan Ajar</label>
+                        {{#each item in listBahanAjar}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.title}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="bimbingan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="bimbingan" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>ISBN:</b> {{item.isbn}}</label>
+                                        <label class="col text-break"><b>Tanggal Terbit:</b> {{item.publishDate}}</label>
+                                        <label class="col text-break"><b>Penerbit:</b> {{item.publisher}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <!-- Mobile -->
+                    <div class="form-group mobile-div">
+                        <label for="inputListPengajaran" class="fw-bold text-login-content">Daftar Riwayat Bahan Ajar</label>
+                        {{#each item in listBahanAjar}}
+                            <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                <div class="d-flex flex-wrap">
+                                    <div class="row row-cols-1">
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.title}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="bimbingan" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="bimbingan" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div>
+                                            <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        </div>
+                                        <label class="col text-break"><b>ISBN:</b> {{item.isbn}}</label>
+                                        <label class="col text-break"><b>Tanggal Terbit:</b> {{item.publishDate}}</label>
+                                        <label class="col text-break"><b>Penerbit:</b> {{item.publisher}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </form>
+            </section>
+            {{#if equals pageMode "edit"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-personal" type="button" value="4">Edit Data</button>
+                </div>
+            {{/if}}
+        </div>
+    </div>
     <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="5">
             <i class="fa fa-light fa-arrow-left btn-previous" value="5"></i>
