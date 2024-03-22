@@ -557,6 +557,73 @@
             </table>
         </div>
         {{/if}}
+        
+        {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
 
         <!-- <div class="d-lg-block">
             <table class="table table-responsive">
@@ -907,6 +974,60 @@
             </div>
             <br><br>
             <h3>Daftar Riwayat Review Surat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <!-- <tbody>
+                        {{#each dataKorespondensi}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 99}}
+                                        Ditolak
+                                    {{else}}
+                                        Sedang Direview
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody> -->
+                </table>
+            </div>
             <br><br>
             <h3>Daftar Semua Surat</h3>
             <div class="section-content-page">
@@ -1087,6 +1208,60 @@
             </div>
             <br><br>
             <h3>Daftar Riwayat Review Surat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <!-- <tbody>
+                        {{#each dataKorespondensi}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 99}}
+                                        Ditolak
+                                    {{else}}
+                                        Sedang Direview
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody> -->
+                </table>
+            </div>
         {{/if}}
     </div>
 </template>

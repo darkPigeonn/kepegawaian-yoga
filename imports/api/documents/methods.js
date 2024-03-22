@@ -470,6 +470,7 @@ Meteor.methods({
     const data = Letters.find({
       currentJabatan: role,
       partner: partnerCode,
+      status: { $ne: 10 }
     }).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
