@@ -1,6 +1,6 @@
 <template name="listKonfigurasi">
     <div class="container mt-4">
-        <div class="row justify-content-between">
+        <div class="row">
             <div class="col-auto">
                 <a href="/listKonfigurasi/listKategoriSurat"><button type="button" id="btn_categoryLetter" class="btn btn-primary btn-lg bg-dark">Kategori Surat</button></a>
             </div>
@@ -10,6 +10,12 @@
             <div class="col-auto">
                 <button type="button" class="btn btn-primary btn-lg bg-dark">Kategori</button>
             </div>
+
+            {{#if isInRole 'admin'}}
+                <div class="col-auto">
+                    <a href="/listKonfigurasi/createKategoriSurat"><button type="button" class="btn btn-primary btn-lg bg-dark">+ Tambah</button></a>
+                </div>
+            {{/if}}
         </div>
     </div>
 </template>
@@ -18,7 +24,7 @@
     <div class="container">
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
-                <a href="/listKonfigurasi/createKategoriSurat" class="btn btn-primary">+ Tambah</a>   
+                <a href="/listKonfigurasi/createKategoriSurat" class="btn btn-primary">+ Tambah</a>
             </div>
         </div>
         <div class="d-lg-block table-responsive">

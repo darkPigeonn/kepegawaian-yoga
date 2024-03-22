@@ -576,11 +576,11 @@
                         <td> {{name}} </td>
                         <td> {{formatHRDate tanggal}} </td>
                         <td> {{currentJabatan}} </td>
-                        <td> 
+                        <td>
                             <a href="/resepsionis/documents/details/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                             </a>
-                        </td> 
+                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -799,7 +799,7 @@
                                 {{setTableNumber @index}}
                             </td>
                             <td>
-    
+
                             </td>
                             <td>
                                 {{categoryName}}
@@ -861,7 +861,7 @@
                                 {{setTableNumber @index}}
                             </td>
                             <td>
-    
+
                             </td>
                             <td>
                                 {{categoryName}}
@@ -891,12 +891,12 @@
                                     <a href="/editKorespondensi/{{_id}}">
                                         <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
                                     </a>
-                                    <a href="/documents/details/{{_id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                    <a href="/detailKorespondensi/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                                     </a>
                                 {{else}}
-                                    <a href="/documents/details/{{_id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                    <a href="/detailKorespondensi/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                                     </a>
                                 {{/if}}
                             </td>
@@ -928,7 +928,7 @@
                                 {{setTableNumber @index}}
                             </td>
                             <td>
-    
+
                             </td>
                             <td>
                                 {{categoryName}}
@@ -954,7 +954,7 @@
                                 {{/if}}
                             </td>
                             <td>
-                                <a href="/documents/details/{{_id}}">
+                                <a href="/detailKorespondensi/{{_id}}">
                                     <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                                 </a>
                             </td>
@@ -984,7 +984,7 @@
                                 {{setTableNumber @index}}
                             </td>
                             <td>
-    
+
                             </td>
                             <td>
                                 {{categoryName}}
@@ -1010,7 +1010,7 @@
                                 {{/if}}
                             </td>
                             <td>
-                                <a href="/documents/details/{{_id}}">
+                                <a href="/detailKorespondensi/{{_id}}">
                                     <button class="btn btn-primary" type="button" id="btn_review">Review</button>
                                 </a>
                             </td>
@@ -1075,8 +1075,8 @@
                                     </a>
                                     <button class="btn btn-danger" type="button" id="btn_delete" data-id="{{_id}}">Delete</button>
                                 {{else}}
-                                    <a href="/documents/details/{{_id}}">
-                                        <button class="btn btn-danger" type="button" id="btn_details">Details</button>
+                                    <a href="/detailKorespondensi/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
                                     </a>
                                 {{/if}}
                             </td>
@@ -1123,8 +1123,8 @@
                     <label for="">Lampiran</label>
                     <input type="text" id="attach" class="form-control">
                 </div>
-        
-        
+
+
                 <div class="form-group">
                     <label for="">Isi surat</label>
                     <div id="toolbar-containerDescription"></div>
@@ -1132,7 +1132,7 @@
 						style="background-color: white;color: black;">
 					</div>
                 </div>
-        
+
                 {{#if equals jabatanLogin "sekretaris-keuskupan"}}
                     <div class="form-group">
                         <label>Alur</label>
@@ -1167,7 +1167,7 @@
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btn-remove" posisi={{@index}}>
-                                                <i class="fa fa-trash" posisi={{@index}}></i>
+                                                <i class="fa fa-trash" posisi={{@index}}>Hapus</i>
                                             </button>
                                         </td>
                                     </tr>
@@ -1177,7 +1177,7 @@
                         </div>
                     {{/if}}
                 {{/if}}
-        
+
                 <div class="form-actions">
                     <button class="btn btn-primary" id="submit">Simpan Draft</button>
                     <button class="btn btn-success" id="btn-send">Ajukan</button>
@@ -1219,8 +1219,8 @@
                     <label for="">Penerima</label>
                     <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}" disabled>
                 </div>
-        
-        
+
+
                 <div class="form-group">
                     <label for="">Lampiran</label>
                     <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}" disabled>
@@ -1229,13 +1229,13 @@
                     <label for="">Perihal</label>
                     <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}" disabled>
                 </div>
-        
-        
+
+
                 <div class="form-group">
                     <label for="">Isi surat</label>
                     {{{dataKorespondensi.desc}}}
                 </div>
-        
+
                 {{#if equals jabatanLogin "sekretaris-keuskupan"}}
                     <div class="form-group">
                         <label>Alur</label>
@@ -1256,8 +1256,8 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <th>Nomor</th>
-                                    <th>Jabatan</th>
-                                    <!-- <th>Action</th> -->
+                                    <th colspan="2">Jabatan</th>
+
                                 </thead>
                                 <tbody>
                                     {{#each i in daftarAlur}}
@@ -1268,11 +1268,11 @@
                                         <td>
                                             {{setJabatanFormat i}}
                                         </td>
-                                        <!-- <td>
-                                            <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                                <i class="fa fa-trash"></i>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{i}}>
+                                                <i class="fa fa-trash btn-remove" id="btn-remove" milik={{i}}></i>
                                             </button>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                     {{/each}}
                                 </tbody>
@@ -1321,8 +1321,8 @@
                     <label for="">Penerima</label>
                     <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}">
                 </div>
-        
-        
+
+
                 <div class="form-group">
                     <label for="">Lampiran</label>
                     <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}">
@@ -1331,8 +1331,8 @@
                     <label for="">Perihal</label>
                     <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}">
                 </div>
-        
-        
+
+
                 <div class="form-group">
                     <label for="">Isi surat</label>
                     <div id="toolbar-containerDescription"></div>
@@ -1340,7 +1340,7 @@
 						style="background-color: white;color: black;">
 					</div>
                 </div>
-        
+
                 {{#if equals jabatanLogin "sekretaris-keuskupan"}}
                     <div class="form-group">
                         <label>Alur</label>
@@ -1483,4 +1483,129 @@
             <button class="btn btn-success" id="btn-send">Ajukan</button>
         </div>
     </div>
+</template>
+
+<template name="detailKorespondensi">
+    <div class="container">
+        <body style="font-family: serif; background-color: #ccc; color: #000;">
+            <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
+                {{> letterKopTemplate}}
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2">Surabaya, {{formatHRDate letterData.createdAt }}</div>
+                </div>
+                <table style="font-family: serif;padding : 2px;margin-top: 5px;">
+                    <tr>
+                        <td>
+                            Nomor
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.numberOfLetter}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Lampiran
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.attachment}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Perihal
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.subject}}
+                        </td>
+                    </tr>
+
+                </table>
+                <br>
+                <table class="table-border" style="font-family: serif;padding : 2px">
+                    <tr>
+                        <td>
+                            Kepada Yth :
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 400px; font-weight: bold;">
+                            {{letterData.purpose}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Di Tempat
+                        </td>
+
+                    </tr>
+
+                    <br>
+
+                </table>
+
+                <table style="font-family: serif;padding : 2px; width: auto;">
+                    <tr>
+                        <td style="text-align: justify;">
+                            {{{letterData.desc}}}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </body>
+        <div class="mt-5">
+            {{#if isInRole 'chief,generalManager,praeses,admin,superadmin'}}
+            <button class="btn btn-primary" id="btn-approve" milik="{{letterData._id}}">Setujui</button>
+            <button class="btn btn-warning" id="btn-revisi">Revisi</button>
+
+            {{#if equals formSubmit 1}}
+            <div class="form">
+                <div class="form-group">
+                    <label for="">Catatan Revisi : </label>
+                    <textarea type="text" id="note" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" id="revisi-save">Simpan</button>
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+</template>
+
+<template name="letterKopTemplate">
+    <!-- <table width="100%">
+        <tr>
+            <td>
+                <img src="/img/headersuratimavi.png" width="50%" alt="kop-surat">
+            </td>
+        </tr>
+    </table> -->
+
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column">
+            <span>GEREJA KATOLIK</span>
+            <span>KEUSKUPAN SURABAYA</span>
+            <span>Jl. PolisiIstimewa 17, Surabaya 60265- Indonesia</span>
+            <span>Telp. (031)5677796 / 5615592- Fax (031) 5684004</span>
+            <span>E-mail: sekrupsby@sby.dnet.net.id</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="/assets/img/logo-ks.png" width="50%" alt="kop-surat">
+        </div>
+        <div class="d-flex flex-column" style="text-align: end;">
+            <span>CATHOLIC CHURCH</span>
+            <span>DIOCESE OF SURABAYA</span>
+            <span>17 Polisi Istimewa Str., Surabaya 60265 - Indonesia</span>
+            <span>Phone +62.31.5677796 / 5615592- Fax +62.31.5684004</span>
+            <span>E-mail: sekrupsby@sby.dnet.net.id</span>
+        </div>
+    </div>
+    <hr style="background-color : black; height: 3px;">
 </template>

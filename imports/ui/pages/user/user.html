@@ -97,64 +97,76 @@
         <div class="form-group mb-2">
             <label for="input_username">Username</label>
             <input type="text" id="input_username" class="form-control" style="max-width: auto;" required><br>
-            
+
             <label for="input_password">Password</label>
             <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
-            
+
             <label for="input_fullname">Nama Lengkap</label>
             <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" required><br>
-            
+
             <label for="input_partners">Partners</label>
             <select id="input_partners" class="form-control" style="max-width: auto;">
                 <option value="yoga">Yoga</option>
                 <option value="keuskupan">Keuskupan</option>
             </select>
-            
+
             <br>
-            
+
             <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_admin">Simpan</button>
         </div>
     </form>
 </template>
 
 <template name="createUser">
-    <h1>Tambah User</h1>
-    <form class="d-flex justify-content-center align-items-center vh-50">
-        <div class="form-group mb-2">
-            <label for="input_username">Username</label>
-            <input type="text" id="input_username" class="form-control" style="max-width: auto;" required><br>
-            
-            <label for="input_password">Password</label>
-            <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
-            
-            <label for="input_fullname">Nama Lengkap</label>
-            <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" required><br>
-            
-            <label for="input_roles">Roles</label>
-            {{#if equals partnerLogin "imavi"}}
-                <select id="input_roles" class="form-control" style="max-width: auto;">
-                    <option value="admin">Admin</option>
-                    <option value="staff">Staff</option>
-                </select>
-            {{else}}
-                <select id="input_roles" class="form-control" style="max-width: auto;">
-                    <option value="admin">Admin</option>
-                    <option value="resepsionis">Resepsionis</option>
-                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                    <option value="bidang">Bidang</option>
-                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                    <option value="dewan-pengurus">Dewan Pengurus</option>
-                    <option value="pengurus-inti">Pengurus Inti</option>
-                    <option value="administrasi-umum">Administrasi Umum</option>
-                    <option value="staff">Staff</option>
-                </select>
-            {{/if}}
-            
-            <br>
-            
-            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
+    <div class="container">
+        <div class="header-form">
+            <h3>Tambah Pengguna</h3>
         </div>
-    </form>
+        <form>
+            <div class="form-group">
+                <label for="input_username">Username</label>
+                <input type="text" id="input_username" class="form-control" style="max-width: auto;" required><br>
+            </div>
+            <div class="form-group">
+                <label for="input_password">Password</label>
+                <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
+            </div>
+            <div class="form-group">
+                <label for="input_fullname">Nama Lengkap</label>
+                <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" required><br>
+            </div>
+
+            <div class="form-group">
+                <label for="input_roles">Roles</label>
+                {{#if equals partnerLogin "imavi"}}
+                    <select id="input_roles" class="form-control" style="max-width: auto;">
+                        <option value="admin">Admin</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                {{else}}
+                    <select id="input_roles" class="form-control" style="max-width: auto;">
+                        <option value="admin">Admin</option>
+                        <option value="resepsionis">Resepsionis</option>
+                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                        <option value="bidang">Bidang</option>
+                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                        <option value="dewan-pengurus">Dewan Pengurus</option>
+                        <option value="pengurus-inti">Pengurus Inti</option>
+                        <option value="administrasi-umum">Administrasi Umum</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                {{/if}}
+            </div>
+
+
+
+
+                <br>
+
+                <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
+
+        </form>
+    </div>
 </template>
 
 <template name="editUser">
@@ -162,13 +174,13 @@
     <form class="d-flex justify-content-center align-items-center vh-50">
         <div class="form-group mb-2">
             <label for="input_username">Username</label>
-            <input type="text" id="input_username" class="form-control" style="max-width: auto;" value={{dataListUser.username}} required><br>
-            
+            <input type="text" id="input_username" class="form-control" value={{dataListUser.username}} required><br>
+
             <label for="input_fullname">Nama Lengkap</label>
-            <input type="text" id="input_fullname" class="form-control" style="max-width: auto;" value={{dataListUser.fullname}} required><br>
-            
+            <input type="text" id="input_fullname" class="form-control"  value={{dataListUser.fullname}} required><br>
+
             <label for="input_roles">Roles</label>
-            <select id="input_roles" class="form-control" style="max-width: auto;">
+            <select id="input_roles" class="form-control" >
                 {{#if dataListUser.roles}}
                     {{#each dataListUser.roles}}
                         {{#if equals dataListUser.roles "admin"}}
@@ -223,9 +235,9 @@
                     <option value="pengurus-inti">Pengurus Inti</option>
                     <option value="administrasi-umum">Administrasi Umum</option>
                 {{/if}}
-                
+
             </select>
-            
+
             <br>
             <button class="btn btn-primary" style="width: auto;" type="button" id="btn_edit_user">Simpan</button>
             <a href="/changePassUser/{{dataListUser._id}}" type="button" id="btn_change_password" class="btn btn-warning">Ganti Password</a>
@@ -261,7 +273,7 @@
             <div class="col-md-4">
                 <button class="btn btn-primary w-100" type="button" id="btnClearFilter">Reset Filter</button>
             </div>
-        </div>        
+        </div>
     </div>
     <table id="example" class="table table-bordered" cellspacing="0" width="100%">
         <thead>
@@ -358,7 +370,7 @@
                             </table>
                         </div>
                     {{/if}}
-        
+
                 <div class="form-actions">
                     <button class="btn btn-primary" id="btn-save">Simpan</button>
                 </div>

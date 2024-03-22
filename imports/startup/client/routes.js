@@ -491,3 +491,9 @@ FlowRouter.route("/listKonfigurasi/editKategoriSurat/:_id", {
     this.render("App_body", "editKategoriSurat");
   },
 });
+FlowRouter.route("/detailKorespondensi/:_id", {
+  name: "detailKorespondensi",
+  action() {
+    this.render("App_body", "detailKorespondensi");
+  },
+});

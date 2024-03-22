@@ -14,3 +14,12 @@
   display:flex;
   justify-content: center;
 }
+
+
+.header-form{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px #c6c6c6 solid;
+}

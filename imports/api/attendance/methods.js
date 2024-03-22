@@ -14,7 +14,12 @@ import { check } from "meteor/check";
 import { Employee } from "../employee/employee.js";
 
 Meteor.methods({
-    "staffsAttendance.getAll"() {
+    async "staffsAttendance.getAll"() {
+        const thisUser = await Meteor.users.findOne({_id : Meteor.userId});
+        if(!thisUser) {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+        console.log(queryPartnerCode);
         return StaffsAttendance.find().fetch();
     },
     "staffsAttendance.inThisMonth"(userId, startDate, endDate) {
@@ -68,7 +73,7 @@ Meteor.methods({
         },
     }).fetch();
 
-    
+
     // console.log(dataStaffsAttendance);
 
     const dataReturn = [];
@@ -114,7 +119,7 @@ Meteor.methods({
         },
     }).fetch();
 
-    
+
     // console.log(dataStaffsAttendance);
 
     const dataReturn = [];
@@ -149,11 +154,11 @@ Meteor.methods({
     check(id, String);
 
     const objectId = new Meteor.Collection.ObjectID(id);
-    
+
     const thisPresensi = await StaffsAttendance.findOne({
         "_id": objectId
     });
-    
+
     // const thisUser = await AppProfiles.findOne({
     //     "_id" : new Meteor.Collection.ObjectID(thisPresensi.userId)
     // })
@@ -189,7 +194,7 @@ Meteor.methods({
         }).fetch();
         // console.log(dataRekap);
         dataRekap =dataRekap.map(obj => obj.details).flat()
-        
+
     } else {
         dataRekap = MonthlyAttendance.findOne({
         'outlets' : code
@@ -199,7 +204,7 @@ Meteor.methods({
     }
 
     return dataRekap
-    
+
     },
     async "staffsAttendance.getRekapByUser"(userId, monthData) {
     check(userId, String);
@@ -215,13 +220,13 @@ Meteor.methods({
         'year': parseInt(year),
         'month': parseInt(month)
     });
-    
+
     const userMonthly = _.find(monthly.details, function (x) {
         return x.userId == userId
     })
 
     // console.log(userMonthly);
-    
+
     const startDate = moment(monthData).startOf("month");
     const endDate = moment(monthData).endOf("month");
 
@@ -233,8 +238,8 @@ Meteor.methods({
             $gte: new Date(startDate),
             $lte: new Date(endDate),
         },
-    }).fetch();   
-    
+    }).fetch();
+
     // console.log(dataRekap);
 
     const thisOutlet = Partner.findOne({
@@ -255,7 +260,7 @@ Meteor.methods({
     // console.log(detailSchedule);
 
     const listSchedules = detailSchedule.schedule;
-    
+
     _.each(dataRekap, function (x) {
         const day = moment(x.checkIn).day();
         const thisSchedule = _.find(listSchedules, function (y) {
@@ -266,38 +271,38 @@ Meteor.methods({
     })
     // console.log(userMonthly);
     // console.log(moment(monthData).startOf('month').toDate());
-    
+
     if (userMonthly) {
         userMonthly.schedule= detailSchedule.name,
         userMonthly.details = dataRekap
-        
+
         const presentaseKehadiran = (userMonthly.totalPresensi/monthly.activeDayWorking) * 100
-        
+
         userMonthly.presentaseKehadiran = presentaseKehadiran
         return userMonthly
     } else {
         return false;
     }
-    
+
     },
     "staffsAttendance.rekap"(totalDayOf, startDate, endDate) {
         //Get outlets berdasarkan admin
         const thisUser = Meteor.users.findOne({
           "_id" : this.userId
         });
-        
+
         // console.log(thisUser);
-    
+
         startDate = moment(startDate);
         endDate = moment(endDate);
         // console.log(startDate, endDate);
-    
+
         const totalDay = moment().weekdayCalc(startDate, endDate, [1, 2, 3, 4, 5,6]);
-    
+
         const activeWorkingDays = totalDay - parseInt(totalDayOf);
 
         // console.log(activeWorkingDays);
-    
+
         const rekap = [];
         // each outlets/partners
         _.each(thisUser.partners, function (outlet) {
@@ -312,7 +317,7 @@ Meteor.methods({
           }).fetch();
 
         //   console.log(dataStaffsAttendance, dataStaffsAttendance.length)
-    
+
           const dataReturn = [];
           //find user profile
           _.each(dataStaffsAttendance, function (x) {
@@ -331,7 +336,7 @@ Meteor.methods({
                     dataUser.fullName = userProfile.fullName;
                     dataUser.jabatan = userProfile.jabatan;
                     dataUser.unit = thisOutlet.name;
-        
+
                     //get data absensi
                     const dataStaffsAttendance = StaffsAttendance.find({
                     userId: x.profileId,
@@ -340,11 +345,11 @@ Meteor.methods({
                         $lte: new Date(endDate),
                     },
                     }).fetch();
-                    
+
                     if (dataStaffsAttendance) {
                         //cek late
                         const late = _.filter(dataStaffsAttendance, function (x) {
-                            return x.isLate 
+                            return x.isLate
                         })
                         if (late.length > 0) {
                             var timestamps = [];
@@ -362,9 +367,9 @@ Meteor.methods({
                     }
                     dataReturn.push(dataUser);
                 }
-                
+
               }
-              
+
             }
           });
           const dataNew = {
@@ -375,7 +380,7 @@ Meteor.methods({
             outlets: outlet,
             details: dataReturn,
           };
-    
+
           const checkRekap = MonthlyAttendance.findOne({
             month: moment(startDate).month() + 1,
             year: moment(startDate).year(),
@@ -404,12 +409,12 @@ Meteor.methods({
           year: rekap[0].month,
           details : details[0]
         }
-        
+
         return dataReturn;
       },
     "staffsAttendance.insertRekap"(data) {},
     "staffsAttendance.historyRekap"(code, filter) {
-    
+
         check(code, String);
         const thisUser = Meteor.users.findOne({
             '_id' : this.userId
@@ -425,7 +430,7 @@ Meteor.methods({
             outlets: {
                 $in: thisUser.partners
             }
-            }).fetch();  
+            }).fetch();
             dataReturn.activeDayWorking = dataRekap[0].activeDayWorking;
             dataReturn.dayOf = dataRekap.dayOf;
         } else {
@@ -586,7 +591,7 @@ Meteor.methods({
         }).fetch();
         return data;
     },
-    
+
     async getPartnersUser() {
         const thisUser = Meteor.users.findOne({_id: this.userId});
         return thisUser.partners;
