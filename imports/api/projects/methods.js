@@ -19,7 +19,7 @@ Meteor.methods({
       let findProjects;
       // Admin = lihat semua
       if (isAdmin) {
-        findProjects = Projects.find({}).fetch();
+        findProjects = Projects.find({partner: relatedUser.partners[0]}).fetch();
 
         const priorityOrder = { active: 0, 'on-hold': 1, completed: 2 };
         findProjects.sort((a, b) => {
@@ -122,6 +122,7 @@ Meteor.methods({
         status,
         members: updatedMembers,
         id_leader: thisUser,
+        partner: adminPartner.partners[0],
         createdAt: new Date(),
         createdBy: createdBy
       };

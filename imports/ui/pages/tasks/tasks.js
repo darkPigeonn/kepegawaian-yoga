@@ -117,7 +117,7 @@ Template.tasks_create.onCreated(function () {
         });
     }
 
-    Meteor.call("employee.getAllEmployee", function (error, result) {
+    Meteor.call("employee.getAll", function (error, result) {
         if (result) {
             self.employee.set(result);
         } else {

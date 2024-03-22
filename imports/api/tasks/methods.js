@@ -12,13 +12,13 @@ Meteor.methods({
         return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getAllUmum"(){
-        // const thisUser = Meteor.userId();
-        // const relatedUser = Meteor.users.findOne({
-        //     _id: thisUser,
-        // });
+        const thisUser = Meteor.userId();
+        const relatedUser = Meteor.users.findOne({
+            _id: thisUser,
+        });
         
         // const findTasks = Tasks.find({ id_project: 'umum', "members.email": relatedUser.emails[0].address}).fetch();        
-        const findTasks = Tasks.find({ id_project: 'umum'}).fetch();
+        const findTasks = Tasks.find({ id_project: 'umum', partner: relatedUser.partners[0]}).fetch();
 
         const priorityOrder = { high: 0, mid: 1, low: 2 };
         findTasks.sort((a, b) => {
@@ -207,6 +207,7 @@ Meteor.methods({
                 priority,
                 members: updatedMembers,
                 id_leader: thisUser,
+                partner: adminPartner.partners[0],
                 createdAt: new Date(),
                 createdBy: createdBy
             };
@@ -221,6 +222,7 @@ Meteor.methods({
                 project_type: "umum",
                 members: updatedMembers,
                 id_leader: thisUser,
+                partner: adminPartner.partners[0],
                 createdAt: new Date(),
                 createdBy: createdBy
             };

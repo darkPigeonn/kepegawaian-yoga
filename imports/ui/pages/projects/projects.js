@@ -108,7 +108,7 @@ Template.projects_create.onCreated(function () {
     const self = this;
     self.employee = new ReactiveVar();
     self.viewMode = new ReactiveVar("1");
-    Meteor.call("employee.getAllEmployee", function (error, result) {
+    Meteor.call("employee.getAll", function (error, result) {
       if (result) {
         self.employee.set(result);
         // startSelect2();
