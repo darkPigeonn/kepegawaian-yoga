@@ -195,6 +195,35 @@ Meteor.methods({
 
     async "users.updateProfileIdAppUser"(data){
         console.log(data);
+
+        for (const iterator of data) {
+            const objectIdString = iterator.idAppUser.toString().slice(10, -2);
+            const objectId = new Meteor.Collection.ObjectID(objectIdString);
+            let getEmployee = await Employee.findOne({_id: iterator.idEmployee});
+            const cek = await AppUsers.findOne({_id : objectId});
+            const objectIdProfile = new Meteor.Collection.ObjectID(cek.profileId);
+            const getAppProfiles = await AppProfiles.findOne({_id: objectIdProfile});
+            const oldIdProfile = getAppProfiles._id.toString().slice(10, -2);
+            delete getAppProfiles._id;
+            getEmployee = { ...getEmployee, ...getAppProfiles };
+
+            // Menambahkan field oldIdProfile ke dalam getEmployee
+            getEmployee.oldIdProfile = oldIdProfile;
+            if(getEmployee.isUpdated == undefined || getEmployee.isUpdated == null || getEmployee.isUpdated == false) {
+                getEmployee.isUpdated = false;
+            }
+
+            if(!getEmployee.isUpdated){
+                getEmployee.isUpdated = true;
+                const updateEmployee = await Employee.update({
+                    _id: iterator.idEmployee
+                },
+                {
+                    $set: getEmployee
+                })
+            }
+        }
+
         //buat old data idProfile untuk jaga"
         for (const iterator of data) {
             const objectIdString = iterator.idAppUser.toString().slice(10, -2);
@@ -211,8 +240,8 @@ Meteor.methods({
 
         let dataFail = [];
         let flag = true;
-        
 
+        //update profileId appUsers dengan employee
         for (const iterator of data) {
             try {
                 console.log(iterator.idEmployee);

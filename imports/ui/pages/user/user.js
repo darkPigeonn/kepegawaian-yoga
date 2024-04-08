@@ -182,7 +182,6 @@ Template.createUser.events({
 
 Template.createAdmin.events({
   "click #btn_save_admin"(e, t){
-    console.log("masuk");
     const username = $("#input_username").val();
     const password = $("#input_password").val();
     const partners = $("#input_partners").val();
@@ -412,7 +411,6 @@ Template.createEmployeeAdmin.events({
     const data = $('#input_data').val();
     const dataUser = t.filteredDataListUser.get();
     let filteredUsers
-    console.log(data.length);
     if(data.length >= 3) {
       if(type == "outlets"){
         for (let index = 0; index < dataUser.length; index++) {
@@ -529,19 +527,16 @@ Template.connectEmployeeAppUser.helpers({
 Template.connectEmployeeAppUser.events({
   "click #tambah"(e, t) {
     const data = t.dataConnect.get();
-    console.log(data);
     const dataPegawai = $("#input_pegawai").val();
     const selectedOptions = $("#input_pegawai option:selected");
     const selectedEmails = selectedOptions.map(function() {
       return $(this).text().split('/')[0].trim(); // Mendapatkan email_address
     }).get();
-    console.log(selectedEmails);
     const dataAppUser = $("#input_appUser").val();
     const selectedOptions2 = $("#input_appUser option:selected");
     const selectedEmails2 = selectedOptions2.map(function() {
       return $(this).text().split('/')[0].trim(); // Mendapatkan email_address
     }).get();
-    console.log(selectedEmails2);
     let dataConnectArr = [];
     for (let index = 0; index < dataPegawai.length; index++) {
       const element = dataPegawai[index];
@@ -551,10 +546,8 @@ Template.connectEmployeeAppUser.events({
         idAppUser : dataAppUser[index],
         emailAppUser: selectedEmails2[index]
       }
-      console.log(objek);
       dataConnectArr.push(objek);
     }
-    console.log(dataConnectArr);
     t.dataConnect.set(dataConnectArr)
     // console.log(dataPegawai, dataAppUser);
   },
@@ -570,7 +563,6 @@ Template.connectEmployeeAppUser.events({
   "click #btn-save"(e,t){
     e.preventDefault();
     const getData = t.dataConnect.get();
-    console.log(getData);
     Meteor.call("users.updateProfileIdAppUser", getData, function(error ,result){
       console.log(result, error);
       if(result){
