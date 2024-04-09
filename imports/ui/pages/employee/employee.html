@@ -1,7 +1,7 @@
 <template name="employee_page">
     <div class="container">
         <div class="mt-5">
-            <h1>Search</h1>
+            <h1>Pegawai</h1>
             <div class="d-flex mb-2">
                 <select id="input_type" class="form-select filter">
                     <option value="full_name">Nama</option>
@@ -49,8 +49,8 @@
                                 <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
                             </a>
                             <!-- <a href="/employees/remove/{{_id}}"> -->
-                                <button class="btn btn-danger" type="button" id="btn_delete"
-                                    data-id="{{_id}}">Delete</button>
+                            <button class="btn btn-danger" type="button" id="btn_delete"
+                                data-id="{{_id}}">Delete</button>
                             <!-- </a> -->
                         </td>
                     </tr>
@@ -64,164 +64,181 @@
 <template name="employee_create">
     <div class="container">
         <div class="title-page">
+            <span>Pegawai</span>
             <h3> Tambah Pegawai Baru </h3>
         </div>
         <br>
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <button class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}" value="1"
-                milik="{{viewMode}}"><button class="circle-number" value="1">1</button>Informasi Umum</button>
-            </li>
-            <li class="nav-item">
-              <button class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}" value="2"
-                milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan Pekerjaan</button>
-            </li>
-            <li class="nav-item">
-              <button class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}" value="3"
-                milik="{{viewMode}}"><button class="circle-number" value="3">3</button>Kontak Darurat</button>
-            </li>
-          </ul>          
-        <br>
-        <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}}">
-            <form>
-                <div class="form-group mb-2">
-                    <label>Nama Lengkap</label>
-                    <input type="text" id="input_fullName" class="form-control" required/>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor ID Pegawai (NIK / PASSPORT)</label>
-                    <input type="text" id="input_identificationNumber" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Kota Lahir</label>
-                    <input type="text" id="input_placeOfBirth" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tanggal Lahir</label>
-                    <input type="date" id="input_dateOfBirth" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Jenis Kelamin</label>
-                    <select id="input_gender" class="form-control">
-                        <option value="Pria">Pria</option>
-                        <option value="Wanita">Wanita</option>
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Alamat</label>
-                    <input type="text" id="input_address" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor Telepon</label>
-                    <input type="text" id="input_phoneNumber" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>E-mail</label>
-                    <input type="email" id="input_email" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Marital Status</label>
-                    <input type="text" id="input_maritalStatus" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Jumlah Anak</label>
-                    <input type="number" id="input_numberOfChildren" class="form-control" />
-                </div>
-                <!-- <div class="form-group mb-2">
-                    <label>Partner Code</label>
-                    <input type="text" id="input_partnerCode" class="form-control" />
-                </div> -->
-                <div class="form-group mb-2">
-                    {{> inputFilesV2 name="gambar" label="Upload" }}
-                </div>
-            </form>
-        </div>
-        <div class="{{#if equals viewMode '2'}}{{else}}d-none{{/if}}">
-            <form>
-                <div class="form-group mb-2">
-                    <label>Pendidikan Terakhir</label>
-                    <input type="text" id="input_highestEducation" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tempat Menempuh Pendidikan Terakhir</label>
-                    <input type="text" id="input_educationInstitution" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Major</label>
-                    <input type="text" id="input_majorInHighestEducation" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Degree</label>
-                    <input type="text" id="input_academicDegree" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Pengalaman Bekerja</label>
-                    <input type="text" id="input_previousWorkExperience" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Posisi Pekerjaan</label>
-                    <input type="text" id="input_jobPosition" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Departemen Unit</label>
-                    <select id="input_departementUnit" class="form-control">
-                        {{#each departements}}
-                        <option value={{name}}>{{name}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tanggal Mulai Bekerja</label>
-                    <input type="date" id="input_startDate" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Status Employment</label>
-                    <select id="input_employmentStatus" class="form-control">
-                        <option value="Pegawai Kontrak">Pegawai Kontrak</option>
-                        <option value="Pegawai Tetap">Pegawai Tetap</option>
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Gaji Pokok</label>
-                    <input type="text" id="input_baseSalery" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Uang Jajan</label>
-                    <input type="text" id="input_allowances" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Pengurangan Uang</label>
-                    <input type="text" id="input_deductions" class="form-control" />
-                </div>
-                <!-- <div class="form-group mb-2">
-                    <label>Pengalaman Employment</label>
-                    <input type="text" id="input_employmentHistory" class="form-control" />
-                </div> -->
-                <div class="form-group mb-2">
-                    <label>Golongan</label>
-                    <select id="input_golongan" class="form-control">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div class="{{#if equals viewMode '3'}}{{else}}d-none{{/if}}">
-            <form>
-                <div class="form-group mb-2">
-                    <label>Nama Kontak Darurat</label>
-                    <input type="text" id="input_emergencyContactName" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor Kontak Darurat</label>
-                    <input type="text" id="input_emergencyContactPhone" class="form-control" />
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
-                </div>
-            </form>
+        <div class="card p-5">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="1" milik="{{viewMode}}"><button class="circle-number" value="1">1</button>Data
+                        Pribadi</button>
+                </li>
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="2" milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan
+                        Pekerjaan</button>
+                </li>
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="3" milik="{{viewMode}}"><button class="circle-number" value="3">3</button>Kontak
+                        Darurat</button>
+                </li>
+            </ul>
+            <br>
+            <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}}">
+
+                <form>
+                    <div class="row">
+                        <div class="form-group mb-2 col-6">
+                            <label>Nama Lengkap</label>
+                            <input type="text" id="input_fullName" class="form-control" required />
+                        </div>
+                        <div class="form-group mb-2 col-6">
+                            <label>Nomor ID Pegawai (NIK / PASSPORT)</label>
+                            <input type="text" id="input_identificationNumber" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-2 col-4">
+                            <label>Kota Lahir</label>
+                            <input type="text" id="input_placeOfBirth" class="form-control" />
+                        </div>
+                        <div class="form-group mb-2 col-4">
+                            <label>Tanggal Lahir</label>
+                            <input type="date" id="input_dateOfBirth" class="form-control" />
+                        </div>
+                        <div class="form-group mb-2 col-4">
+                            <label>Jenis Kelamin</label>
+                            <select id="input_gender" class="form-control">
+                                <option value="Pria">Pria</option>
+                                <option value="Wanita">Wanita</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Alamat</label>
+                        <input type="text" id="input_address" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Nomor Telepon</label>
+                        <input type="text" id="input_phoneNumber" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>E-mail</label>
+                        <input type="email" id="input_email" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Status Pernikahan</label>
+                        <input type="text" id="input_maritalStatus" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Jumlah Anak</label>
+                        <input type="number" id="input_numberOfChildren" class="form-control" />
+                    </div>
+                    <!-- <div class="form-group mb-2">
+                        <label>Partner Code</label>
+                        <input type="text" id="input_partnerCode" class="form-control" />
+                    </div> -->
+                    <div class="form-group mb-2">
+                        {{> inputFilesV2 name="gambar" label="Upload" }}
+                    </div>
+                </form>
+            </div>
+            <div class="{{#if equals viewMode '2'}}{{else}}d-none{{/if}}">
+                <form>
+                    <div class="row">
+                        <div class="form-group mb-2 col-4">
+                            <label>Pendidikan Terakhir</label>
+                            <input type="text" id="input_highestEducation" class="form-control" />
+                        </div>
+                        <div class="form-group mb-2 col-4">
+                            <label>Nama Intansi Pendidikan Terakhir</label>
+                            <input type="text" id="input_educationInstitution" class="form-control" />
+                        </div>
+                        <div class="form-group mb-2 col-4">
+                            <label>Tahun Lulus</label>
+                            <input type="text" id="input_educationInstitution" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Major</label>
+                        <input type="text" id="input_majorInHighestEducation" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Degree</label>
+                        <input type="text" id="input_academicDegree" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Pengalaman Bekerja</label>
+                        <input type="text" id="input_previousWorkExperience" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Posisi Pekerjaan</label>
+                        <input type="text" id="input_jobPosition" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Departemen Unit</label>
+                        <select id="input_departementUnit" class="form-control">
+                            {{#each departements}}
+                            <option value={{name}}>{{name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Tanggal Mulai Bekerja</label>
+                        <input type="date" id="input_startDate" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Status Employment</label>
+                        <select id="input_employmentStatus" class="form-control">
+                            <option value="Pegawai Kontrak">Pegawai Kontrak</option>
+                            <option value="Pegawai Tetap">Pegawai Tetap</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Gaji Pokok</label>
+                        <input type="text" id="input_baseSalery" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Uang Jajan</label>
+                        <input type="text" id="input_allowances" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Pengurangan Uang</label>
+                        <input type="text" id="input_deductions" class="form-control" />
+                    </div>
+                    <!-- <div class="form-group mb-2">
+                        <label>Pengalaman Employment</label>
+                        <input type="text" id="input_employmentHistory" class="form-control" />
+                    </div> -->
+                    <div class="form-group mb-2">
+                        <label>Golongan</label>
+                        <select id="input_golongan" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="{{#if equals viewMode '3'}}{{else}}d-none{{/if}}">
+                <form>
+                    <div class="form-group mb-2">
+                        <label>Nama Kontak Darurat</label>
+                        <input type="text" id="input_emergencyContactName" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Nomor Kontak Darurat</label>
+                        <input type="text" id="input_emergencyContactPhone" class="form-control" />
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -248,26 +265,29 @@
                 </div>
                 {{#if file.name}}
                 <button class="btn btn-danger remove-image remove {{name}}" milik="{{name}}">
-              <i class="fa fa-trash {{name}}" milik="{{name}}"></i>
-            </button>
+                    <i class="fa fa-trash {{name}}" milik="{{name}}"></i>
+                </button>
                 {{/if}}
             </div>
             {{/each}}
         </div>
     </div>
     <style>
-    .circle-number {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: #007BFF; /* Customize the circle's background color */
-        border-color: #007BFF;
-        color: #fff; /* Customize the text color */
-        text-align: center;
-        line-height: 30px;
-        margin-right: 10px; /* Adjust the spacing between the number and the text */
-    }
+        .circle-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #007BFF;
+            /* Customize the circle's background color */
+            border-color: #007BFF;
+            color: #fff;
+            /* Customize the text color */
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            /* Adjust the spacing between the number and the text */
+        }
     </style>
 </template>
 
@@ -290,7 +310,8 @@
                         <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun User</button>
                     </div>
                 </div>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
+                </div>
                 <div class="bagianItems">
                     <!-- <ul class="nav flex-column">
                         <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
@@ -300,18 +321,19 @@
             </div>
             <div class="content">
                 <div class="contentAtas">
-                    <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/detail/{{employee._id}}">
+                    <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
+                            href="/employees/detail/{{employee._id}}">
                             {{employee.full_name}}</a></p>
                     <p style="font-size: 32px; font-weight: bold;">Personal</p>
                     <ul class="nav nav-tabs">
                         <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
                                     value="Informasi Umum" class="nav-link active"></a></li>
-                        <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input type="button"
-                                    value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
+                        <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input
+                                    type="button" value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
                         <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                     type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                        <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
-                            type="button" value="Konfigurasi" class="nav-link"></a></li>
+                        <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input type="button"
+                                    value="Konfigurasi" class="nav-link"></a></li>
                     </ul>
                 </div>
                 <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -319,7 +341,8 @@
                     <div class="contentBawah">
                         <div class="personalData" style=" display: flex;">
                             <div class="tulisanPersonalData">
-                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi</p>
+                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi
+                                </p>
                             </div>
                             <div class="isiPersonalData table-responsive">
                                 <table>
@@ -367,7 +390,8 @@
                     <div class="contentBawah-1">
                         <div class="personalData" style=" display: flex;">
                             <div class="tulisanPersonalData">
-                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan Alamat</p>
+                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan
+                                    Alamat</p>
                             </div>
                             <div class="isiPersonalData table-responsive">
                                 <table>
@@ -385,7 +409,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <div class="mobile-div">
         <div class="container">
@@ -396,7 +420,8 @@
                 <br><br>
                 <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun User</button>
                 <br><br>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
+                </div>
                 <br>
                 <label style="font-size: larger; font-weight: bold;">Informasi Umum</label>
                 <div class="profile-content-mobile">
@@ -426,7 +451,8 @@
                     </div>
                 </div>
                 <br>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
+                </div>
                 <br>
                 <label style="font-size: larger; font-weight: bold;">Pendidikan</label>
                 <div class="profile-content-mobile">
@@ -456,7 +482,8 @@
                     </div>
                 </div>
                 <br>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
+                </div>
                 <br>
                 <label style="font-size: larger; font-weight: bold;">Status Pegawai</label>
                 <div class="profile-content-mobile">
@@ -486,7 +513,8 @@
                     </div>
                 </div>
                 <br>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;"></div>
+                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
+                </div>
                 <br>
                 <label style="font-size: larger; font-weight: bold;">Kontak Darurat</label>
                 <div class="profile-content-mobile">
@@ -506,13 +534,13 @@
             </div>
         </div>
     </div>
-    
+
     <style>
-        .mobile-div{
+        .mobile-div {
             display: none;
         }
 
-        .desktop-div{
+        .desktop-div {
             display: block;
         }
 
@@ -618,6 +646,7 @@
             height: 100%;
             background-color: white;
         }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -643,13 +672,15 @@
             }
 
             .bagianItems {
-                display: none; /* Hide the sidebar items on small screens */
+                display: none;
+                /* Hide the sidebar items on small screens */
             }
 
             .tulisanPersonalData {
                 width: 100%;
             }
         }
+
         @media only screen and (max-width: 600px) {
             .desktop-div {
                 display: none;
@@ -658,6 +689,7 @@
             .mobile-div {
                 display: block;
             }
+
             .profile-card-mobile {
                 max-width: auto;
                 max-height: auto;
@@ -686,17 +718,21 @@
                 word-break: break-all;
                 word-wrap: break-word;
             }
-            .content-item{
+
+            .content-item {
                 word-break: break-all;
             }
+
             .isiPersonalData>table>tr>td:nth-child(1) {
                 width: 150px;
             }
+
             .tulisanKiriMobile {
-                width: 150px; 
-                vertical-align: top; 
+                width: 150px;
+                vertical-align: top;
                 font-weight: bold;
             }
+
             .tulisanKananMobile {
                 word-break: break-all;
                 vertical-align: top;
@@ -739,8 +775,9 @@
         </div>
         <div class="content">
             <div class="contentAtas">
-                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/detail/{{employee._id}}">
-                    {{employee.full_name}}</a></p>
+                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
+                        href="/employees/detail/{{employee._id}}">
+                        {{employee.full_name}}</a></p>
                 <p style="font-size: 32px; font-weight: bold;">Personal</p>
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
@@ -749,8 +786,8 @@
                                 value="Pendidikan dan Pekerjaan" class="nav-link active"></a></li>
                     <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                 type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
-                        type="button" value="Konfigurasi" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input type="button"
+                                value="Konfigurasi" class="nav-link"></a></li>
                 </ul>
             </div>
             <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -841,6 +878,7 @@
         .isiPersonalData>table>tr>td:nth-child(1) {
             width: 150px;
         }
+
         .box {
             width: 95%;
             height: 80vh;
@@ -939,6 +977,7 @@
             height: 100%;
             background-color: white;
         }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -964,7 +1003,8 @@
             }
 
             .bagianItems {
-                display: none; /* Hide the sidebar items on small screens */
+                display: none;
+                /* Hide the sidebar items on small screens */
             }
 
             .tulisanPersonalData {
@@ -972,7 +1012,8 @@
             }
 
             .isiPersonalData>table>tr>td:nth-child(1) {
-                width: auto; /* Allow the content to determine the width */
+                width: auto;
+                /* Allow the content to determine the width */
             }
         }
     </style>
@@ -1007,7 +1048,7 @@
                 <ul class="nav flex-column">
                     <!-- <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
                                 class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li> -->
-                    
+
                 </ul>
             </div>
         </div>
@@ -1026,8 +1067,9 @@
                 </ul>
             </div> -->
             <div class="contentAtas">
-                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/detail/{{employee._id}}">
-                    {{employee.full_name}}</a></p>
+                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
+                        href="/employees/detail/{{employee._id}}">
+                        {{employee.full_name}}</a></p>
                 <p style="font-size: 32px; font-weight: bold;">Personal</p>
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
@@ -1036,8 +1078,8 @@
                                 value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
                     <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                 type="button" value="Kontak Darurat" class="nav-link active"></a></li>
-                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
-                        type="button" value="Konfigurasi" class="nav-link"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input type="button"
+                                value="Konfigurasi" class="nav-link"></a></li>
                 </ul>
             </div>
             <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -1155,6 +1197,7 @@
             height: 100%;
             background-color: white;
         }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -1179,7 +1222,8 @@
             }
 
             .bagianItems {
-                display: none; /* Hide the sidebar items on small screens */
+                display: none;
+                /* Hide the sidebar items on small screens */
             }
 
             .tulisanPersonalData {
@@ -1187,7 +1231,8 @@
             }
 
             .isiPersonalData>table>tr>td:nth-child(1) {
-                width: auto; /* Allow the content to determine the width */
+                width: auto;
+                /* Allow the content to determine the width */
             }
         }
     </style>
@@ -1222,14 +1267,15 @@
                 <ul class="nav flex-column">
                     <!-- <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
                                 class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li> -->
-                    
+
                 </ul>
             </div>
         </div>
         <div class="content">
             <div class="contentAtas">
-                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a href="/employees/detail/{{employee._id}}">
-                    {{employee.full_name}}</a></p>
+                <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
+                        href="/employees/detail/{{employee._id}}">
+                        {{employee.full_name}}</a></p>
                 <p style="font-size: 32px; font-weight: bold;">Personal</p>
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
@@ -1238,8 +1284,8 @@
                                 value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
                     <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
                                 type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
-                        type="button" value="Konfigurasi" class="nav-link active"></a></li>
+                    <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input type="button"
+                                value="Konfigurasi" class="nav-link active"></a></li>
                 </ul>
             </div>
             <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
@@ -1374,6 +1420,7 @@
             height: 100%;
             background-color: white;
         }
+
         @media (max-width: 768px) {
             .box {
                 flex-direction: column;
@@ -1398,7 +1445,8 @@
             }
 
             .bagianItems {
-                display: none; /* Hide the sidebar items on small screens */
+                display: none;
+                /* Hide the sidebar items on small screens */
             }
 
             .tulisanPersonalData {
@@ -1406,7 +1454,8 @@
             }
 
             .isiPersonalData>table>tr>td:nth-child(1) {
-                width: auto; /* Allow the content to determine the width */
+                width: auto;
+                /* Allow the content to determine the width */
             }
         }
     </style>
@@ -1431,7 +1480,8 @@
                     milik="{{viewMode}}"><button class="circle-number" value="1">1</button>Informasi Umum</button></li>
             <li class="nav-item"><button
                     class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}" value="2"
-                    milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan Pekerjaan</button></li>
+                    milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan
+                    Pekerjaan</button></li>
             <li class="nav-item"><button
                     class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}" value="3"
                     milik="{{viewMode}}"><button class="circle-number" value="3">3</button>Kontak Darurat</button></li>
@@ -1679,12 +1729,13 @@
 
 <template name="upload_CSV">
     <br>
-    <a href="https://static.imavi.org/generals/template-pegawai.xlsx" class="btn btn-primary" style="width: 20vw">Unduh Template</a>
+    <a href="https://static.imavi.org/generals/template-pegawai.xlsx" class="btn btn-primary" style="width: 20vw">Unduh
+        Template</a>
     <br><br>
     <form id="csvForm">
         <div class="form-group mb-2">
-          <label for="csvFile">Pilih file CSV</label>
-          <input type="file" id="csvFile" accept=".csv" class="form-control" style="width: 20vw;" required>
+            <label for="csvFile">Pilih file CSV</label>
+            <input type="file" id="csvFile" accept=".csv" class="form-control" style="width: 20vw;" required>
         </div>
         <div class="table-responsive">
             <table class="table">
@@ -1713,9 +1764,9 @@
             </table>
         </div>
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary" style="width: auto;">Unggah</button>
+            <button type="submit" class="btn btn-primary" style="width: auto;">Unggah</button>
         </div>
-      </form>
+    </form>
 </template>
 
 <template name="comingSoon">
