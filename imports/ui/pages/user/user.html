@@ -223,6 +223,11 @@
                         {{else}}
                             <option value="administrasi-umum">Administrasi Umum</option>
                         {{/if}}
+                        {{#if equals dataListUser.roles "staff"}}
+                            <option value="staff" selected>Staff</option>
+                        {{else}}
+                            <option value="staff">Staff</option>
+                        {{/if}}
                     {{/each}}
 
                 {{else}}
@@ -234,6 +239,7 @@
                     <option value="dewan-pengurus">Dewan Pengurus</option>
                     <option value="pengurus-inti">Pengurus Inti</option>
                     <option value="administrasi-umum">Administrasi Umum</option>
+                    <option value="staff">staff</option>
                 {{/if}}
 
             </select>
