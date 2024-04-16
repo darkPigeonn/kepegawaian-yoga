@@ -107,7 +107,7 @@ Meteor.methods({
         check(id, String);
         check(dataSave, Object);
         console.log(dataSave);
-        return Meteor.users.update({ _id: id }, { $set: { username: dataSave.username, fullname: dataSave.fullname, roles: [dataSave.roles] } })
+        return Meteor.users.update({ _id: id }, { $set: { username: dataSave.username, 'emails.0.address': dataSave.username, fullname: dataSave.fullname, roles: [dataSave.roles] } })
     },
 
     "users.editPassword"(id, password){
