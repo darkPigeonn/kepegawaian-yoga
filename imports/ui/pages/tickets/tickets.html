@@ -514,7 +514,7 @@
         <div class="messages">
           {{#each daftarChat}}
             <div class="message sender">
-                <div class="meta">{{createdByName}} - {{formatHRDateShort createdAt}}</div>
+                <div class="meta">{{createdByName}} - {{formatHRDateShort createdAt}} {{formatTime createdAt}}</div>
                 {{message}}
             </div>
           {{/each}}
