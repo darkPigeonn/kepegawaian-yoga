@@ -453,6 +453,10 @@ Meteor.methods({
     check(id, String);
     check(password, String);
     const dataUser = await Meteor.users.findOne({profileId : id});
+    //TAMBAHKAN ERROR
+    if(!dataUser) {
+      throw new Meteor.Error(412, "Data User tidak ditemukan")
+    }
     const idUser = dataUser._id;
     Accounts.setPassword(idUser, password);
     return true;
