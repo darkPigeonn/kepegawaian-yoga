@@ -255,7 +255,7 @@ Template.createTicket.events({
                 location.reload();
                 history.back();
               } else {
-                // console.log(error);
+                console.log(error);
                 Swal.close();
                 Swal.fire({
                   title: "Gagal",
