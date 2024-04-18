@@ -42,7 +42,12 @@ Meteor.methods({
       createdBy: createdBy,
     };
 
-    return await Departement.insert(dataSave);
+    const cek = Departement.findOne({name: dataSave.name})
+    if(!cek) {
+      return Departement.insert(dataSave);
+    }
+    throw new Meteor.Error(404, "Nama Departement Sudah Ada")
+
   },
   "departement.update"(id, data){
     check(id, String);

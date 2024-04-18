@@ -81,7 +81,7 @@ Template.departement_create.events({
               // alert("Insert departement error");
               Swal.fire({
                 title: "Gagal",
-                text: "Data gagal dimasukkan",
+                text: error.reason,
                 showConfirmButton: true,
                 allowOutsideClick: true,
               });
