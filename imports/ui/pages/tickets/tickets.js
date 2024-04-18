@@ -259,7 +259,7 @@ Template.createTicket.events({
                 Swal.close();
                 Swal.fire({
                   title: "Gagal",
-                  text: "Data gagal dibuat",
+                  text: error.reason,
                   showConfirmButton: true,
                   allowOutsideClick: true,
                 });
