@@ -15,6 +15,7 @@ Meteor.methods({
 
         console.log("Partner Code : ", relatedUser.partners[0]);
         const data = Employee.find({partnerCode: relatedUser.partners[0]}).fetch()
+        console.log("Data Pekerja : ", data);
         return data;
     },
 
