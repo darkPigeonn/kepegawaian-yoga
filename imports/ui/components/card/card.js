@@ -47,6 +47,7 @@ Template.cardDetailProfileDosen.onCreated(function () {
     if (_id) {
       Meteor.call("dosen.getDetails", _id,  function (error, result) {
         if (result) {
+          console.log("hasil",result);
           self.myData.set(result);
         } else {
           console.log(error);
