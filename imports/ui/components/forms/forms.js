@@ -33,12 +33,16 @@ Template.formLecturers.onCreated(function () {
     self.listImaviStructure = new ReactiveVar([])
     self.listProfesi = new ReactiveVar([])
     self.listAward = new ReactiveVar([])
-
+    self.listCoachingLevel = new ReactiveVar([])
+    self.listStudentGuidance = new ReactiveVar([])
+    self.listresearchinterest = new ReactiveVar([])
 
     const lecturerId = FlowRouter.getParam("_id");
     const mode = lecturerId ? "edit" : "add";
     self.pageMode.set(mode);
 });
+
+
 
 Template.formLecturers.onRendered( function(){
     const context = Template.instance();
@@ -69,6 +73,9 @@ Template.formLecturers.onRendered( function(){
                 context.listImaviStructure.set(res.listImaviStructure)
                 context.listProfesi.set(res.listProfesi)
                 context.listAward.set(res.listAward)
+                context.listCoachingLevel.set(res.listCoachingLevel)
+                context.listStudentGuidance.set(res.listStudentGuidance)
+                context.listresearchinterest.set(res.listresearchinterest)
             
             }
         });
@@ -160,6 +167,15 @@ Template.formLecturers.helpers({
     },
     listAward(){
         return Template.instance().listAward.get()
+    },
+    listCoachingLevel(){
+        return Template.instance().listCoachingLevel.get()
+    },
+    listStudentGuidance(){
+        return Template.instance().listStudentGuidance.get()
+    },
+    listresearchinterest(){
+        return Template.instance().listresearchinterest.get()
     }
 });
 
@@ -261,11 +277,41 @@ Template.formLecturers.events({
         listPublicationTypes.push(data)
         t.listPublicationTypes.set(listPublicationTypes)
     },
+    "click .add-research-interest" (e,t){
+        e.preventDefault()
+        const listresearchinterest = t.listresearchinterest.get()
+        const title = $("#inputResearchInterest").val()
+       
+        const data ={
+           
+            title
+        }
+        listresearchinterest.push(data)
+        t.listresearchinterest.set(listresearchinterest)
+    },
+    "click .add-student-guidance" (e,t){
+        e.preventDefault()
+        const listStudentGuidance = t.listStudentGuidance.get()
+        const category = $("#inputCategoryActivity").val()
+        const title = $("#inputTitleActivity").val()
+        const cStudy = $("#inputCategoryStudy").val()
+        const semester =$("#inputSemester").val()
+     
+        const data ={
+            category,
+            title,
+            cStudy,
+            semester
+        }
+        listStudentGuidance.push(data)
+        t.listStudentGuidance.set(listStudentGuidance)
+    },
     "click .add-pengajaran" (e, t){
         e.preventDefault()
         const listPengajaran = t.listPengajaran.get()
         const matkul = $("#inputMataKuliah").val()
         const ps = $("#input-ps").val()
+        const semester = $("#inputSemesterStudy").val()
         const type = $("#input-jenis").val()
         const bidangKeilmuan = $("#inputBidangKeilmuan").val()
         const mhsTotal = $("#inputJumlahMahasiswa").val()
@@ -274,6 +320,7 @@ Template.formLecturers.events({
             type,
             matkul,
             ps,
+            semester,
             bidangKeilmuan,
             mhsTotal,
             sks
@@ -282,6 +329,8 @@ Template.formLecturers.events({
         listPengajaran.push(data)
         t.listPengajaran.set(listPengajaran)
     },
+
+
     "click .add-magazine" (e,t){
         e.preventDefault()
         const listMagazine = t.listMagazine.get()
@@ -335,14 +384,12 @@ Template.formLecturers.events({
         const title  = $("#inputJudulPaten").val()
         const category = $("#inputKategoriKegiatan").val()
         const cActivity = $("#inputJenisKegiatan").val()
-        const number = $("#input-number").val()
         const dateOfPublisher = $("#input-date").val()
   
         const data = {
             title,
             category,
             cActivity,
-            number,
             dateOfPublisher
     
         }
@@ -387,6 +434,21 @@ Template.formLecturers.events({
         // console.log(data)
         listKesejahteraan.push(data)
         t.listKesejahteraan.set(listKesejahteraan)
+    },
+
+    "click .add-coaching" (e,t){
+        e.preventDefault()
+        const listCoachingLevel = t.listCoachingLevel.get()
+        const coachingLevel = $("#inputCoachingLevel").val()
+        const place = $("#inputCoachingPlace").val()
+        const periode = $("#inputPeriode").val()
+        const data = {
+            coachingLevel,
+            place,
+            periode
+        }
+        listCoachingLevel.push(data)
+        t.listCoachingLevel.set(listCoachingLevel)
     },
 
     "click .add-tunjangan" (e, t){
@@ -458,7 +520,14 @@ Template.formLecturers.events({
         const noSkPenugasan = $("#inputNoSkPenugasan").val()
         const peran = $("#inputPeran").val()
         const startDate = $("#inputStartDate").val()
-        const endDate = $("#inputEndDate").val()
+        // const endDate = $("#inputEndDate").val()
+        let endDate = $("#inputEndDate").val();
+    
+        const endDateCheckbox = document.getElementById("endDateNow");
+        if (endDateCheckbox.checked) {
+            endDate = "Sampai Sekarang";
+        }
+    
         const data = {
             name,
             noSkPenugasan,
@@ -637,6 +706,10 @@ Template.formLecturers.events({
         const listImaviStructure = t.listImaviStructure.get()
         const listProfesi = t.listProfesi.get()
         const listAward = t.listAward.get()
+        const listresearchinterest = t.listresearchinterest.get()
+        const listStudentGuidance = t.listStudentGuidance.get()
+        const listCoachingLevel = t.listCoachingLevel.get()
+        
 
 
         confirmationAlertAsync().then(async function (result) {
@@ -713,7 +786,16 @@ Template.formLecturers.events({
                 } else if (identifier === "award"){
                     listAward.splice(index, 1)
                     t.listAward.set(listAward)
-                } 
+                } else if (identifier === "researchInterest"){
+                    listresearchinterest.splice(index, 1)
+                    t.listresearchinterest.set(listresearchinterest)
+                } else if (identifier === "coaching"){
+                    listCoachingLevel.splice(index, 1)
+                    t.listCoachingLevel.set(listCoachingLevel)
+                } else if(identifier === "guidanceStudent") {
+                    listStudentGuidance.splice(index,1)
+                    t.listStudentGuidance.set(listStudentGuidance)
+                }
             }
         })
     },
@@ -759,6 +841,7 @@ Template.formLecturers.events({
         listJournal.push(data)
         t.listJournal.set(listJournal)
     },
+
     "click .add-project"(e,t){
         e.preventDefault()
         const listProject = t.listProject.get()
@@ -852,29 +935,37 @@ Template.formLecturers.events({
         console.log(getValue)
         if (getValue == 2){
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+                formData.imageFile = $('#inputImageProfile')[0].files[0];
                 formData.username = $("#inputUsername").val();
                 formData.fullName = $("#inputFullname").val();
-                formData.address = $("#inputAddress").val();
-                formData.email = $("#inputEmail").val();
-                formData.phoneNumber = $("#inputPhoneNumber").val();
                 formData.pob = $("#inputPob").val();
                 formData.dob = $("#inputDob").val();
                 formData.gender = $("input[name=inputGender]:checked").val();
-                formData.nationality = $("#inputNationality").val();
-                formData.religion = $("#inputReligion").val();
                 formData.nik = $("#inputNik").val();
                 formData.registeredAddress = $("#inputRegisteredAddress").val();
-                formData.imageFile = $('#inputImageProfile')[0].files[0];
+                formData.address = $("#inputAddress").val();
+                formData.phoneNumber = $("#inputPhoneNumber").val();
+                formData.email = $("#inputEmail").val();
+                formData.religion = $("#inputReligion").val();
+                formData.nationality = $("#inputNationality").val();
+                formData.startDateImavi = $("#inputStartDateImaviLecture").val();
+                formData.statusImavi = $("#inputImaviStatus").val();
+                formData.nidn = $("#inputNidn").val();
+                formData.startDateLecture = $("#inputStartDateLecture").val();
+                formData.anotherStatus = $("#inputAnotherStatus").val();
+                formData.position = $("#inputPosition").val();
+                formData.startDatePosition = $("#inputStartdatePosition").val();
+                formData.academicRank = $("#inputAcademicRank").val();
+                formData.startDateAcademicRank = $("#inputdateStartPosition").val()
+
+               
                 t.formPage.set(getValue);
                 t.formData.set(formData)
             } else {
-                failAlert("Pastikan username, Nama, email, alamat, dan tempat lahir sudah diisi !")
+                failAlert("Pastikan username, Nama, Tempat Lahir, Tanggal Lahir,  Jenis Kelamin, NIK, Agama sudah diisi !")
             }
             
         } else if (getValue == 3){
-            formData.nidn = $("#inputNidn").val()
-            formData.position = $("#inputPosition").val()
-            formData.academicRank = $("#inputAcademicRank").val()
             formData.listExperience = $("#inputListExperience").val()
             t.formPage.set(getValue);
             t.formData.set(formData)
@@ -883,7 +974,6 @@ Template.formLecturers.events({
             t.formPage.set(getValue);
             t.formData.set(formData)
         } else if (getValue == 5){
-            formData.researchInterest = $("#inputResearchInterest").val()
             t.formPage.set(getValue);
             t.formData.set(formData)
         }
@@ -919,6 +1009,26 @@ Template.formLecturers.events({
         const listBahanAjar = t.listBahanAjar.get()
         const listProject = t.listProject.get()
         const listPublicationTypes = t.listPublicationTypes.get()
+        const listresearchinterest = t.listresearchinterest.get()
+        const listAward = t.listAward.get()
+        const listBimbingan = t.listBimbingan.get()
+        const listCoachingLevel = t.listCoachingLevel.get()
+        const listDedication = t.listDedication.get()
+        const listImaviStructure = t.listImaviStructure.get()
+        const listIpr=t.listIpr.get()
+        const listJournal=t.listJournal.get()
+        const listJournalManager=t.listJournalManager.get()
+        const listKesejahteraan = t.listKesejahteraan.get()
+        const listMagazine =t.listMagazine.get()
+        const listOtherPublication=t.listOtherPublication.get()
+        const listOthersMedia = t.listOthersMedia.get()
+        const listPengajaran = t.listPengajaran.get()
+        const listProfesi = t.listProfesi.get()
+        const listScholarship = t.listScholarship.get()
+        const listSpeaker = t.listSpeaker.get()
+        const listStudentGuidance = t.listStudentGuidance.get()
+        const listTunjangan =t.listTunjangan.get()
+    
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value) {
@@ -931,6 +1041,26 @@ Template.formLecturers.events({
                 formData.listBahanAjar = listBahanAjar
                 formData.listProject = listProject
                 formData.listPublicationTypes = listPublicationTypes
+                formData.listresearchinterest = listresearchinterest
+                formData.listAward = listAward
+                formData.listBimbingan=listBimbingan
+                formData.listCoachingLevel =listCoachingLevel
+                formData.listDedication = listDedication
+                formData.listImaviStructure = listImaviStructure
+                formData.listIpr=listIpr
+                formData.listJournal=listJournal
+                formData.listJournalManager=listJournalManager
+                formData.listKesejahteraan = listKesejahteraan
+                formData.listMagazine =listMagazine
+                formData.listOtherPublication=listOtherPublication
+                formData.listOthersMedia = listOthersMedia
+                formData.listPengajaran = listPengajaran
+                formData.listProfesi = listProfesi
+                formData.listScholarship = listScholarship
+                formData.listSpeaker = listSpeaker
+                formData.listStudentGuidance = listStudentGuidance
+                formData.listTunjangan =listTunjangan
+               
 
                 // console.log(formData)
 
@@ -981,17 +1111,30 @@ Template.formLecturers.events({
             if (result.value) {
                 if (getValue == 1){
                     if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
-                        formData._id = FlowRouter.getParam("_id");
+                        formData.imageFile = $('#inputImageProfile')[0].files[0];
                         formData.username = $("#inputUsername").val();
                         formData.fullName = $("#inputFullname").val();
-                        formData.address = $("#inputAddress").val();
-                        formData.email = $("#inputEmail").val();
-                        formData.phoneNumber = $("#inputPhoneNumber").val();
                         formData.pob = $("#inputPob").val();
                         formData.dob = $("#inputDob").val();
                         formData.gender = $("input[name=inputGender]:checked").val();
-                        formData.imageFile = $('#inputImageProfile')[0].files[0];
-
+                        formData.nik = $("#inputNik").val();
+                        formData.registeredAddress = $("#inputRegisteredAddress").val();
+                        formData.address = $("#inputAddress").val();
+                        formData.phoneNumber = $("#inputPhoneNumber").val();
+                        formData.email = $("#inputEmail").val();
+                        formData.religion = $("#inputReligion").val();
+                        formData.nationality = $("#inputNationality").val();
+                        formData.startDateImavi = $("#inputStartDateImaviLecture").val();
+                        formData.statusImavi = $("#inputImaviStatus").val();
+                        formData.nidn = $("#inputNidn").val();
+                        formData.startDateLecture = $("#inputStartDateLecture").val();
+                        formData.anotherStatus = $("#inputAnotherStatus").val();
+                        formData.position = $("#inputPosition").val();
+                        formData.startDatePosition = $("#inputStartdatePosition").val();
+                        formData.academicRank = $("#inputAcademicRank").val();
+                        formData.startDateAcademicRank = $("#inputdateStartPosition").val()
+        
+                       
                         if (formData.imageFile){
                             const uploadData = {
                                 type: 'dosen-profilePics',
@@ -1003,32 +1146,10 @@ Template.formLecturers.events({
                         }
                     } 
                     else {
-                        failAlert("Pastikan username, Nama, email, alamat, dan tempat lahir sudah diisi !");
+                        failAlert("Pastikan Username, Nama, Tempat Lahir, Tanggal Lahir,  Jenis Kelamin, NIK, Agama sudah diisi !");
                     }
                 }
-                else if(getValue == 2){
-                    if ($("#inputNik").val() !== "" && $("#inputRegisteredAddress").val() !== "") {
-                        formData._id = FlowRouter.getParam("_id");
-                        formData.nationality = $("#inputNationality").val();
-                        formData.religion = $("#inputReligion").val();
-                        formData.nik = $("#inputNik").val();
-                        formData.registeredAddress = $("#inputRegisteredAddress").val();
-                    }
-                    else{
-                        failAlert("Pastikan semua field telah terisi !");
-                    }
-                }
-                else if(getValue == 3){
-                    if ($("#inputNidn").val() !== "" && $("#inputPosition").val() !== "" && $("#inputAcademicRank").val() !== "") {
-                        formData._id = FlowRouter.getParam("_id")
-                        formData.nidn = $("#inputNidn").val();
-                        formData.position = $("#inputPosition").val();
-                        formData.academicRank = $("#inputAcademicRank").val();
-                    }
-                    else{
-                        failAlert("Pastikan semua field telah terisi !");
-                    }
-                }
+         
                 else if(getValue == 4){
                     formData._id = FlowRouter.getParam("_id");
                     const listExperiences = t.listExperiences.get();
