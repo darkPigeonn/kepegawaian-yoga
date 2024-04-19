@@ -33,6 +33,10 @@ Meteor.methods({
         const relatedUser = Meteor.users.findOne({
             _id: thisUser,
         });
+        if(relatedUser.roles[0] == "admin"){
+            const data = Tickets.find({partner: relatedUser.partners[0]}).fetch()
+            return data
+        }
         const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
         const data = Tickets.find({partner: relatedEmployee.partnerCode, $or: [
             { createdBy: relatedEmployee._id }, // Jika pengguna saat ini adalah pembuat tiket
