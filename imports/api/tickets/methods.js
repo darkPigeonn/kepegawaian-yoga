@@ -20,7 +20,7 @@ Meteor.methods({
         if(relatedUser.partners.length == 0 || relatedUser.partner == undefined || relatedUser.partner == null) {
             const getPartner = Employee.findOne({_id: relatedUser.profileId})
             partner = getPartner.partnerCode;
-            const data = Employee.find({partnerCode: relatedUser.partners[0]}).fetch();
+            const data = Employee.find({partnerCode: partner}).fetch();
             return data;
         }
         console.log("Partner Code : ", relatedUser.partners[0]);
