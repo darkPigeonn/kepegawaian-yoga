@@ -13,9 +13,18 @@ Meteor.methods({
             _id: thisUser,
         });
 
+        // if relatedUser tidak ada partner -> cari ke Employee demgan menggunakan profileId dari user
+        // ke employee
+        let partner
+        console.log(relatedUser.partners.length);
+        if(relatedUser.partners.length == 0 || relatedUser.partner == undefined || relatedUser.partner == null) {
+            const getPartner = Employee.findOne({_id: relatedUser.profileId})
+            partner = getPartner.partnerCode;
+            const data = Employee.find({partnerCode: relatedUser.partners[0]}).fetch();
+            return data;
+        }
         console.log("Partner Code : ", relatedUser.partners[0]);
-        const data = Employee.find({partnerCode: relatedUser.partners[0]}).fetch()
-        console.log("Data Pekerja : ", data);
+        const data = Employee.find({partnerCode: relatedUser.partners[0]}).fetch();
         return data;
     },
 
