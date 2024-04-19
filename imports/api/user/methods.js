@@ -7,6 +7,7 @@ import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
 import { Employee } from "../employee/employee";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
+import  generatePassword  from 'generate-password';
 Meteor.methods({
     "users.getAll"(){
         let partnerCode;
@@ -26,10 +27,18 @@ Meteor.methods({
 
         Roles.createRole(dataSend.role, {unlessExists: true});
 
+        const password = generatePassword.generate({
+            length: 12, // Panjang kata sandi
+            numbers: true, // Termasuk angka
+            symbols: true, // Termasuk simbol
+            uppercase: true, // Termasuk huruf besar
+            excludeSimilarCharacters: true, // Hindari karakter yang mirip (mis. 'i' dan 'l')
+        })
+    
         let newAccountData = {
             username: dataSend.username,
             email: dataSend.username,
-            password: dataSend.password,
+            password: password,
         };
         let _id;
         try {
@@ -64,10 +73,18 @@ Meteor.methods({
         Roles.createRole("admin", {unlessExists: true});
         // return
 
+        const password = generatePassword.generate({
+            length: 12, // Panjang kata sandi
+            numbers: true, // Termasuk angka
+            symbols: false, // Termasuk simbol
+            uppercase: true, // Termasuk huruf besar
+            excludeSimilarCharacters: true, // Hindari karakter yang mirip (mis. 'i' dan 'l')
+        })
+
         let newAccountData = {
             username: dataSend.username,
             email: dataSend.username,
-            password: dataSend.password,
+            password: password,
         };
         let _id;
         try {
@@ -81,7 +98,11 @@ Meteor.methods({
                 });
                 console.log(adminPartner);
                 partnerCode = adminPartner.partners;
-                return Meteor.users.update({ _id }, { $set: { roles: ["admin"], fullname: dataSend.fullname, partners: [dataSend.partners] } })
+                const update = Meteor.users.update({ _id }, { $set: { roles: ["admin"], fullname: dataSend.fullname, partners: [dataSend.partners] } })
+                if(!update.error){
+                    return password
+                }
+                return update
             }
 
         } catch (error) {

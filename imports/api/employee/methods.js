@@ -2,6 +2,7 @@ import { Employee } from "./employee";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Meteor } from 'meteor/meteor';
+import  generatePassword  from 'generate-password';
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -422,11 +423,18 @@ Meteor.methods({
   async "users.createAppMeteorEmployee"(dataSend){
     check(dataSend, Object);
     // console.log(dataSend);
+    const password = generatePassword.generate({
+      length: 12, // Panjang kata sandi
+      numbers: true, // Termasuk angka
+      symbols: false, // Termasuk simbol
+      uppercase: true, // Termasuk huruf besar
+      excludeSimilarCharacters: true, // Hindari karakter yang mirip (mis. 'i' dan 'l')
+    })
 
     let newAccountData = {
-        username: dataSend.username,
-        email: dataSend.username,
-        password: dataSend.password,
+      username: dataSend.username,
+      email: dataSend.username,
+      password: password,
     };
     let _id;
     try {
@@ -440,7 +448,11 @@ Meteor.methods({
         partnerCode = adminPartner.partners[0];
         let roles;
         if(partnerCode == "imavi") roles = "staff"
-        return Meteor.users.update({ _id }, { $set: {roles: [roles], fullname: dataSend.fullname, partners: [partnerCode], profileId: dataSend.idEmployee } })
+        const update = Meteor.users.update({ _id }, { $set: {roles: [roles], fullname: dataSend.fullname, partners: [partnerCode], profileId: dataSend.idEmployee } })
+        if(!update.error){
+          return password
+        }
+        return update
       }
 
     } catch (error) {

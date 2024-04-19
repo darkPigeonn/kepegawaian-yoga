@@ -183,13 +183,11 @@ Template.createUser.events({
 Template.createAdmin.events({
   "click #btn_save_admin"(e, t){
     const username = $("#input_username").val();
-    const password = $("#input_password").val();
     const partners = $("#input_partners").val();
     const fullname = $("#input_fullname").val();
 
     const dataSend = {
         username,
-        password,
         fullname,
         partners
     };
@@ -199,7 +197,7 @@ Template.createAdmin.events({
             // alert("Sukses");
             Swal.fire({
               title: "Berhasil",
-              text: "Data berhasil dimasukkan",
+              text: `Data berhasil dimasukkan dan memiliki password yaitu ${result}`,
               showConfirmButton: true,
               allowOutsideClick: true,
             }).then((result) => {

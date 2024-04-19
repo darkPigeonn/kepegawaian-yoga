@@ -583,7 +583,6 @@ Template.employee_create.events({
       
           const dataSend = {
               username : email,
-              password : email,
               fullname: fullName,
               role,
               idEmployee: id
@@ -602,7 +601,7 @@ Template.employee_create.events({
                   }
                   Swal.fire({
                     title: "Berhasil",
-                    text: `Data berhasil dimasukkan, user memiliki username ${dataSend.username} dan password ${dataSend.password}`,
+                    text: `Data berhasil dimasukkan, user memiliki username ${dataSend.username} dan password ${result}`,
                     showConfirmButton: true,
                     allowOutsideClick: true,
                   }).then((result) => {
