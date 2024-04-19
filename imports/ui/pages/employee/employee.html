@@ -23,24 +23,20 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">No</th>
+                        <th scope="col">NIY</th>
                         <th scope="col">Nama</th>
-                        <th scope="col">Jabatan</th>
-                        <!-- <th scope="col">Tanggal Lahir</th> -->
-                        <th scope="col">Tahun Masuk</th>
-                        <th scope="col">Departement</th>
+                        <th scope="col">Perwakilan</th>
+                        <th scope="col">Unit Kerja</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each employees}}
                     <tr>
-                        <td> {{nomorUrut @index}}</td>
-                        <td> {{full_name}} </td>
-                        <td> {{job_position}} </td>
-                        <!-- <td> {{formatHRDate dob}} </td> -->
-                        <td> {{formatHRDate start_date}} </td>
-                        <td> {{department_unit}} </td>
+                        <td> {{niy}}</td>
+                        <td> {{fullName}} </td>
+                        <td>{{unit.perwakilan}}</td>
+                        <td>{{unit.school}}</td>
                         <td>
                             <a href="/employees/edit/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
@@ -90,57 +86,139 @@
             <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}}">
 
                 <form>
-                    <div class="row">
-                        <div class="form-group mb-2 col-6">
-                            <label>Nama Lengkap</label>
-                            <input type="text" id="input_fullName" class="form-control" required />
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Data Diri</h3>
                         </div>
-                        <div class="form-group mb-2 col-6">
-                            <label>Nomor ID Pegawai (NIK / PASSPORT)</label>
-                            <input type="text" id="input_identificationNumber" class="form-control" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-6">
+                                    <label>Nama Lengkap</label>
+                                    <input type="text" id="input_fullName" class="form-control" required />
+                                </div>
+                                <div class="form-group mb-2 col-2">
+                                    <label>Gelar</label>
+                                    <input type="text" id="input_gelar" class="form-control" required />
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>NIK</label>
+                                    <input type="text" id="input_identificationNumber" class="form-control" />
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>Kota Lahir</label>
+                                    <input type="text" id="input_placeOfBirth" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Lahir</label>
+                                    <input type="date" id="input_dateOfBirth" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Agama</label>
+                                    <select id="input_religi" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Katolik</option>
+                                        <option>Kristen</option>
+                                        <option>Islam</option>
+                                        <option>Hindu</option>
+                                        <option>Budha</option>
+                                        <option>Konghucu</option>
+                                        <option>Aliran Kepercayaan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jenis Kelamin</label>
+                                    <select id="input_gender" class="form-control select2">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Laki-Laki</option>
+                                        <option>Wanita</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Golongan Darah</label>
+                                    <select id="input_golonganDarah" class="form-control select2">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>O</option>
+                                        <option>A</option>
+                                        <option>B</option>
+                                        <option>AB</option>
+                                        <option>Tidak Tau</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Nama Ibu Kandung</label>
+                                    <input type="text" id="input_motherName" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>NPWP</label>
+                                    <input type="text" id="input_npwp" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Alamat Domisili</label>
+                                    <input type="text" id="input_address" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Status Pernikahan</label>
+                                    <select class="form-control" id="select_marrital">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Belum Kawin</option>
+                                        <option>Kawin</option>
+                                        <option>Cerai Hidup</option>
+                                        <option>Cerai Mati</option>
+                                        <option>Biarawan</option>
+                                        <option>Biarawati</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jumlah Anak</label>
+                                    <input type="number" id="input_numberOfChildren" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Kode Pos</label>
+                                    <input type="number" id="input_postal" class="form-control" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group mb-2 col-4">
-                            <label>Kota Lahir</label>
-                            <input type="text" id="input_placeOfBirth" class="form-control" />
+
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Informasi Unit Kerja</h3>
                         </div>
-                        <div class="form-group mb-2 col-4">
-                            <label>Tanggal Lahir</label>
-                            <input type="date" id="input_dateOfBirth" class="form-control" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-4">
+                                    <label>Unit Kerja</label>
+                                    <select id="select_school" class="form-control">
+                                        <option>-- Pilih Unit Kerja --</option>
+                                        {{#each listSchool}}
+                                        <option data-milik="{{jenjang}}" value="{{_id}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4 col-4">
+                                    <label for="input_npsn">NPSN</label>
+                                    <input type="text" id="input_npsn" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jenjang</label>
+                                    <input type="text" id="input_jenjang" class="form-control" disabled />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Perwakilan</label>
+                                    <input type="text" id="input_perwakilan" class="form-control" disabled />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Kota/Kabupaten</label>
+                                    <input type="text" id="input_cityUnit" class="form-control" disabled />
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group mb-2 col-4">
-                            <label>Jenis Kelamin</label>
-                            <select id="input_gender" class="form-control">
-                                <option value="Pria">Pria</option>
-                                <option value="Wanita">Wanita</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="form-group mb-2">
-                        <label>Alamat</label>
-                        <input type="text" id="input_address" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Nomor Telepon</label>
-                        <input type="text" id="input_phoneNumber" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>E-mail</label>
-                        <input type="email" id="input_email" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Status Pernikahan</label>
-                        <input type="text" id="input_maritalStatus" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Jumlah Anak</label>
-                        <input type="number" id="input_numberOfChildren" class="form-control" />
-                    </div>
-                    <!-- <div class="form-group mb-2">
-                        <label>Partner Code</label>
-                        <input type="text" id="input_partnerCode" class="form-control" />
-                    </div> -->
+
+
                     <div class="form-group mb-2">
                         {{> inputFilesV2 name="gambar" label="Upload" }}
                     </div>
@@ -148,91 +226,255 @@
             </div>
             <div class="{{#if equals viewMode '2'}}{{else}}d-none{{/if}}">
                 <form>
-                    <div class="row">
-                        <div class="form-group mb-2 col-4">
-                            <label>Pendidikan Terakhir</label>
-                            <input type="text" id="input_highestEducation" class="form-control" />
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Pendidikan</h3>
                         </div>
-                        <div class="form-group mb-2 col-4">
-                            <label>Nama Intansi Pendidikan Terakhir</label>
-                            <input type="text" id="input_educationInstitution" class="form-control" />
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-6">
+                                    <label>Pendidikan Terakhir</label>
+                                    <select class="form-control select2" id="select_highEducation">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>SD </option>
+                                        <option>SMP </option>
+                                        <option>SMA </option>
+                                        <option>SMK </option>
+                                        <option>STM </option>
+                                        <option>SPG </option>
+                                        <option>SMPS </option>
+                                        <option>SMEA </option>
+                                        <option>D 1 </option>
+                                        <option>D 2 </option>
+                                        <option>D 3 </option>
+                                        <option>S 1 </option>
+                                        <option>S 2 </option>
+                                        <option>SMU </option>
+                                        <option>SMKI </option>
+                                        <option>-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Nama Intansi Pendidikan Terakhir</label>
+                                    <input type="text" id="input_educationInstitution" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Jurusan</label>
+                                    <input type="text" id="input_major" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Tahun Lulus</label>
+                                    <input type="number" id="input_educationGraduate" class="form-control" min="1900"
+                                        max="2024" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group mb-2 col-4">
-                            <label>Tahun Lulus</label>
-                            <input type="text" id="input_educationGraduate" class="form-control" />
+                    </div>
+
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Pekerjaan</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Mulai Bekerja</label>
+                                    <input type="date" id="input_startDateWorking" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>TMT Kerja Sesuai SK</label>
+                                    <input type="date" id="input_startDateWorkSk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Angkatan SK</label>
+                                    <input type="date" id="input_startDateAngkatanSk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Selesai Masa Berlaku SK</label>
+                                    <input type="date" id="input_endDateWorkSk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Status Pegawai</label>
+                                    <select id="input_employmentStatus" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Pegawai Tetap Yayasan (PTY)</option>
+                                        <option>Pegawai Tetap Perwakilan (PTP)</option>
+                                        <option>Pegawai Tidak Tetap (PTT)</option>
+                                        <option>Resign</option>
+                                        <option>Pensiun</option>
+                                        <option>Salah Unit Kerja</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>TUK</label>
+                                    <input type="text" id="input_tuk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Jabatan (Sesuai SK)</label>
+                                    <select class="form-control select2" id="selected_position">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Staf SDM</option>
+                                        <option>Staf Kependidikan</option>
+                                        <option>Staf Keuangan</option>
+                                        <option>Staf Legal</option>
+                                        <option>Staf Sarpras</option>
+                                        <option>Pelaksana Administrasi SDM</option>
+                                        <option>Pelaksana Administrasi Kependidikan</option>
+                                        <option>Pelaksana Administrasi Keuangan</option>
+                                        <option>Pelaksana Administrasi Legal</option>
+                                        <option>Pelaksana Administrasi Sarpras</option>
+                                        <option>Kepala Sekolah</option>
+                                        <option>Guru</option>
+                                        <option>Pelaksana Tata Usaha</option>
+                                        <option>Pelaksana Tata Usaha Keuangan</option>
+                                        <option>Pelaksana Tata Usaha UKS</option>
+                                        <option>Pelaksana Perpustakaan</option>
+                                        <option>Pelaksana Laboran</option>
+                                        <option>Pelaksana Toolman</option>
+                                        <option>Pelaksana Umum / Koperasi</option>
+                                        <option>Pelaksana Umum / Driver</option>
+                                        <option>Pembantu Pelaksana</option>
+                                        <option>Pembantu Pelaksana Keamanan</option>
+                                        <option>Pendamping Guru TK</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Keterangan Jabatan / Tugas Tambahan</label>
+                                    <input type="text" id="input_notePosition" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Golongan/RU</label>
+                                    <select class="form-control select2" id="selected_gol">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>I/a Juru Muda</option>
+                                        <option>I/b Juru Muda Tingkat I</option>
+                                        <option>I/c Juru</option>
+                                        <option>I/d Juru Tingkat I</option>
+                                        <option>I/a Pengatur Muda</option>
+                                        <option>I/b Pengatur Muda Tingkat I</option>
+                                        <option>I/c Pengatur</option>
+                                        <option>I/d Pengatur Tingkat I</option>
+                                        <option>I/a Penata Muda</option>
+                                        <option>I/b Penata Muda Tingkat I</option>
+                                        <option>I/c Penata</option>
+                                        <option>I/d Penata Tingkat I</option>
+                                        <option>V/a Pembina</option>
+                                        <option>V/b Pembina Tingkat I</option>
+                                        <option>a percobaan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>NUPTK</label>
+                                    <input type="text" id="input_nuptk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>No. Sertifikasi</label>
+                                    <input type="text" id="input_sertifikasiNumber" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>No. Sertf. Guru Penggerak</label>
+                                    <input type="text" id="input_sertifikasiNumber2" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>NUKS / NRKS</label>
+                                    <input type="text" id="input_nuks" class="form-control" />
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group mb-2">
-                        <label>Major</label>
-                        <input type="text" id="input_majorInHighestEducation" class="form-control" />
+
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Assuransi</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label>Kepesertaan BPJS Ketenagakerjaan : </label>
+                                    <input type="checkbox" id="input_bpjsTK" name="pilihan">
+                                    <label>Sudah</label>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Tanggal Kepesertaan (OPSIONAL)</label>
+                                    <input type="date" class="form-control" id="input_dateBpjsTK">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Upah yang didaftarkan</label>
+                                    <input type="text" class="form-control" id="input_amountBpjsTK">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>NPP</label>
+                                    <input type="text" class="form-control" id="input_npp">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Nama Perusahaan</label>
+                                    <input type="text" class="form-control" id="input_companyName">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label>Kepesertaan BPJS Kesehatan</label>
+                                    <select class="form-control select2" id="select_kepesertaanBpjsKes">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Lembaga Yayasan</option>
+                                        <option>Lembaga Lainya</option>
+                                        <option>Mandiri</option>
+                                        <option>Belum Mengikuti</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Tanggal Kepesertaan (OPSIONAL)</label>
+                                    <input type="date" class="form-control" id="input_dateBpjsKS">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>UMK yang didaftarkan</label>
+                                    <input type="text" class="form-control" id="input_amountBpjsKS">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Keterangan</label>
+                                    <input type="text" class="form-control" id="input_noteBpjsKS">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group mb-2">
-                        <label>Degree</label>
-                        <input type="text" id="input_academicDegree" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Pengalaman Bekerja</label>
-                        <input type="text" id="input_previousWorkExperience" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Posisi Pekerjaan</label>
-                        <input type="text" id="input_jobPosition" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Departemen Unit</label>
-                        <select id="input_departementUnit" class="form-control">
-                            {{#each departements}}
-                            <option value={{name}}>{{name}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Tanggal Mulai Bekerja</label>
-                        <input type="date" id="input_startDate" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Status Employment</label>
-                        <select id="input_employmentStatus" class="form-control">
-                            <option value="Pegawai Kontrak">Pegawai Kontrak</option>
-                            <option value="Pegawai Tetap">Pegawai Tetap</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Gaji Pokok</label>
-                        <input type="text" id="input_baseSalery" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Uang Jajan</label>
-                        <input type="text" id="input_allowances" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Pengurangan Uang</label>
-                        <input type="text" id="input_deductions" class="form-control" />
-                    </div>
+
+
+
                     <!-- <div class="form-group mb-2">
                         <label>Pengalaman Employment</label>
                         <input type="text" id="input_employmentHistory" class="form-control" />
                     </div> -->
-                    <div class="form-group mb-2">
-                        <label>Golongan</label>
-                        <select id="input_golongan" class="form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </div>
+
                 </form>
             </div>
             <div class="{{#if equals viewMode '3'}}{{else}}d-none{{/if}}">
                 <form>
-                    <div class="form-group mb-2">
-                        <label>Nama Kontak Darurat</label>
-                        <input type="text" id="input_emergencyContactName" class="form-control" />
-                    </div>
-                    <div class="form-group mb-2">
-                        <label>Nomor Kontak Darurat</label>
-                        <input type="text" id="input_emergencyContactPhone" class="form-control" />
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Kontak</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2">
+                                    <label>Nomor Telepon</label>
+                                    <input type="text" id="input_phoneNumber" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label>E-mail</label>
+                                    <input type="email" id="input_email" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label>Nama Kontak Darurat</label>
+                                    <input type="text" id="input_emergencyContactName" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label>Nomor Kontak Darurat</label>
+                                    <input type="text" id="input_emergencyContactPhone" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
@@ -1735,29 +1977,30 @@
     <form id="csvForm">
         <div class="form-group mb-2">
             <label for="csvFile">Pilih file CSV</label>
-            <input type="file" id="csvFile" accept=".csv" class="form-control" style="width: 20vw;" required>
+            <input type="file" id="csvFile" class="form-control" style="width: 20vw;" required>
         </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">No</th>
+                        <th scope="col">NIY</th>
                         <th scope="col">Nama</th>
                         <!-- <th scope="col">Tanggal Lahir</th> -->
-                        <th scope="col">Jabatan</th>
-                        <th scope="col">Tahun Masuk</th>
-                        <th scope="col">Departement</th>
+                        <th scope="col">Gelar</th>
+                        <th scope="col">Perwakilan</th>
+                        <th scope="col">Unit Kerja</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each items}}
                     <tr>
-                        <td>{{nomorUrut @index}}</td>
-                        <td>{{full_name}}</td>
+                        <td>{{niy}}</td>
+                        <td>{{fullName}}</td>
                         <!-- <td>{{formatHRDate dob}}</td> -->
-                        <td>{{job_position}}</td>
-                        <td>{{formatHRDate start_date}}</td>
-                        <td>{{department_unit}}</td>
+                        <td>{{gelar}}</td>
+                        <td>{{unit.perwakilan}}</td>
+                        <td>{{unit.school}}</td>
+
                     </tr>
                     {{/each}}
                 </tbody>

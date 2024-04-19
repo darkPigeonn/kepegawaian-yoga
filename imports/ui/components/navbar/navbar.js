@@ -1,40 +1,49 @@
 import "./navbar.html";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
-Template.navbar.onCreated(function () {  
-    const self = this;
-    self.jabatanLogin = new ReactiveVar();
-    const userId = Meteor.userId();
+Template.navbar.onCreated(function () {
+  const self = this;
+  self.jabatanLogin = new ReactiveVar();
+  self.partnerCode = new ReactiveVar();
+  const userId = Meteor.userId();
 
-    Meteor.call("employee.getDataLogin", userId, function (error, result) {  
-        if (result) {
-          const dataRole = result[0];
-          console.log(dataRole);
-          self.jabatanLogin.set(dataRole);
-        }
-        else{
-          console.log(error);
-        }
-    })
-})
+  Meteor.call("employee.getDataLogin", userId, function (error, result) {
+    if (result) {
+      const dataRole = result[0];
+      console.log(dataRole);
+      self.jabatanLogin.set(dataRole);
+    } else {
+      console.log(error);
+    }
+  });
+  Meteor.call("employee.partnerCode", function (error, result) {
+    if (result) {
+      self.partnerCode.set(result);
+    } else {
+      alert("Anda belum memiliki partner");
+    }
+  });
+});
 
 Template.navbar.helpers({
-    jabatanLogin() {
-        return Template.instance().jabatanLogin.get();
-    },
-})
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  },
+  isYoga() {
+    return Template.instance().partnerCode.get() === "yyg";
+  },
+});
 
 Template.navbar.events({
-    "click #btn_logout"(e, t) {
-      e.preventDefault();
-  
-        Meteor.logout(function (error) { 
-            if (error) {
-                console.log(error.reason);
-            }
-            else {
-                FlowRouter.go('App.home')
-            }
-        })
-    },
+  "click #btn_logout"(e, t) {
+    e.preventDefault();
+
+    Meteor.logout(function (error) {
+      if (error) {
+        console.log(error.reason);
+      } else {
+        FlowRouter.go("App.home");
+      }
+    });
+  },
 });

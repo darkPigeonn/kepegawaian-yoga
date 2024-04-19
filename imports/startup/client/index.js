@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
 import moment from "moment/moment.js";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import SlimSelect from "slim-select";
 
 isEmptyData = function (data) {
   let dataReturn = 0;
@@ -311,3 +312,11 @@ class MyUploadAdapter {
     }
   }
 }
+
+isLoading = function (params) {
+  if (params == true) {
+    $(".loading-container").css("display", "flex");
+  } else {
+    $(".loading-container").css("display", "none");
+  }
+};

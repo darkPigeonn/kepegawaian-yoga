@@ -180,13 +180,24 @@ Meteor.methods({
   },
 
   "employee.getDataLogin"(id) {
+    if (!id) {
+      id = this.userId;
+    }
     const data = Meteor.users.findOne({ _id: id });
     // console.log(data);
     return data.roles;
   },
+  "employee.partnerCode"() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(403, "Forbbiden");
+    }
+    return thisUser.partners[0];
+  },
 
   "korespondensi.create"(data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
+    const { category, note, purpose, attachment, subject, desc, dataAlur } =
+      data;
 
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
@@ -206,7 +217,7 @@ Meteor.methods({
     //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
     //masih belum bisa generate
-    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+    if (dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
         category,
         note,
@@ -222,8 +233,7 @@ Meteor.methods({
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
-    }
-    else {
+    } else {
       modelData = {
         category,
         note,
@@ -254,7 +264,8 @@ Meteor.methods({
   },
 
   "korespondensi.editSimpan"(id, data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
+    const { category, note, purpose, attachment, subject, desc, dataAlur } =
+      data;
 
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
@@ -274,7 +285,7 @@ Meteor.methods({
     //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
     //masih belum bisa generate
-    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+    if (dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
         category,
         note,
@@ -290,8 +301,7 @@ Meteor.methods({
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
-    }
-    else {
+    } else {
       modelData = {
         category,
         note,
@@ -322,7 +332,8 @@ Meteor.methods({
   },
 
   "korespondensi.save"(data) {
-    const {category, name, purpose, attachment, subject, desc, dataAlur } = data;
+    const { category, name, purpose, attachment, subject, desc, dataAlur } =
+      data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
@@ -342,7 +353,7 @@ Meteor.methods({
     //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
     //masih belum bisa generate
-    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+    if (dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
         category,
         name,
@@ -358,8 +369,7 @@ Meteor.methods({
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
-    }
-    else {
+    } else {
       modelData = {
         category,
         name,
@@ -390,7 +400,8 @@ Meteor.methods({
   },
 
   "korespondensi.editKirim"(id, data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
+    const { category, note, purpose, attachment, subject, desc, dataAlur } =
+      data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
@@ -411,7 +422,7 @@ Meteor.methods({
     //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
 
     //masih belum bisa generate
-    if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+    if (dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
       modelData = {
         category,
         note,
@@ -427,8 +438,7 @@ Meteor.methods({
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
-    }
-    else {
+    } else {
       modelData = {
         category,
         note,
@@ -470,12 +480,16 @@ Meteor.methods({
     const data = Letters.find({
       currentJabatan: role,
       partner: partnerCode,
-      status: { $ne: 10 }
+      status: { $ne: 10 },
     }).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      if(element.category!= "" || element.category != null || element.category != undefined) {
-        const dataKonfig = Configuration.findOne({_id: element.category})
+      if (
+        element.category != "" ||
+        element.category != null ||
+        element.category != undefined
+      ) {
+        const dataKonfig = Configuration.findOne({ _id: element.category });
         element.categoryName = dataKonfig.name;
       }
     }
@@ -486,12 +500,16 @@ Meteor.methods({
   "korespondensi.getByCreator"() {
     const thisUser = Meteor.userId();
     const data = Letters.find({
-      createdBy: thisUser
-    }).fetch()
+      createdBy: thisUser,
+    }).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      if(element.category!= "" || element.category != null || element.category != undefined) {
-        const dataKonfig = Configuration.findOne({_id: element.category})
+      if (
+        element.category != "" ||
+        element.category != null ||
+        element.category != undefined
+      ) {
+        const dataKonfig = Configuration.findOne({ _id: element.category });
         element.categoryName = dataKonfig.name;
       }
     }
@@ -499,21 +517,23 @@ Meteor.methods({
   },
 
   "korespondensi.getAll"() {
-    const data = Letters.find({},
-      { $sort: { createdAt: -1 } }
-    ).fetch();
+    const data = Letters.find({}, { $sort: { createdAt: -1 } }).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      if(element.category!= "" || element.category != null || element.category != undefined) {
-        const dataKonfig = Configuration.findOne({_id: element.category})
+      if (
+        element.category != "" ||
+        element.category != null ||
+        element.category != undefined
+      ) {
+        const dataKonfig = Configuration.findOne({ _id: element.category });
         element.categoryName = dataKonfig.name;
       }
     }
     return data;
   },
-  
+
   "korespondensi.getById"(id) {
-    const data = Letters.findOne({_id: id});
+    const data = Letters.findOne({ _id: id });
     return data;
   },
 
@@ -530,9 +550,13 @@ Meteor.methods({
     }).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
-      if(element.category!= "" || element.category != null || element.category != undefined) {
+      if (
+        element.category != "" ||
+        element.category != null ||
+        element.category != undefined
+      ) {
         console.log(element.category);
-        const dataKonfig = Configuration.findOne({_id: element.category})
+        const dataKonfig = Configuration.findOne({ _id: element.category });
         element.categoryName = dataKonfig.name;
       }
     }
@@ -541,30 +565,31 @@ Meteor.methods({
     });
   },
 
-  "korespondensi.updateAlur"(id, dataRow){
+  "korespondensi.updateAlur"(id, dataRow) {
     let dataAlurObject = [];
     for (let index = 0; index < dataRow.length; index++) {
       const element = dataRow[index];
       let dataAlur = {
-          order: index+1,
-          jabatan: element,
-          analisis: ""
-      }
-      dataAlurObject.push(dataAlur)
+        order: index + 1,
+        jabatan: element,
+        analisis: "",
+      };
+      dataAlurObject.push(dataAlur);
     }
-    return Letters.update({ _id: id }, 
-    { 
-        $push: { alur: { $each: dataAlurObject } }, 
-        $set: { 
-          currentOrder: 1, 
+    return Letters.update(
+      { _id: id },
+      {
+        $push: { alur: { $each: dataAlurObject } },
+        $set: {
+          currentOrder: 1,
           currentJabatan: dataAlurObject[0].jabatan,
-          status: 12
-        } 
-    }
-    )
+          status: 12,
+        },
+      }
+    );
   },
 
-  "korespondensi.delete"(id){
-    return Letters.remove({_id: id});
-  }
+  "korespondensi.delete"(id) {
+    return Letters.remove({ _id: id });
+  },
 });

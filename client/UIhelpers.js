@@ -49,24 +49,23 @@ Template.registerHelper("formatTime", function (context, options) {
 });
 
 Template.registerHelper("daysDifference", function (context, options) {
-  if (context) return moment(context).diff(moment(),'days');
+  if (context) return moment(context).diff(moment(), "days");
 });
 
 Template.registerHelper("dateToHTML", function (context, options) {
-  if (moment(context).isValid()) return moment(context).format(moment.HTML5_FMT.DATE)
-  return ''
+  if (moment(context).isValid())
+    return moment(context).format(moment.HTML5_FMT.DATE);
+  return "";
   // return moment(context).format("DD MMMM YYYY");
 });
 
-Template.registerHelper('toHTML', function (context, options) {
+Template.registerHelper("toHTML", function (context, options) {
   return $("<div>").html(context).text();
 });
 
-Template.registerHelper('includes', function (a, b) {
-  if(a && a.length && b) return a.includes(b);
+Template.registerHelper("includes", function (a, b) {
+  if (a && a.length && b) return a.includes(b);
 });
-
-
 
 // Template.registerHelper('formatRp', function (context, options) {
 //   if (context != 0) {
@@ -105,7 +104,9 @@ Template.registerHelper("fc_label", function (a) {
 });
 Template.registerHelper("capitalizeWord", function (a) {
   let text = a.toString();
-  return text.toLowerCase().replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+  return text
+    .toLowerCase()
+    .replace(/(^|\s)\S/g, (match) => match.toUpperCase());
 });
 Template.registerHelper("toMeteorId", function (context) {
   if (context && typeof context === "object") {
@@ -120,25 +121,27 @@ Template.registerHelper("setTableNumber", function (value) {
   let number = parseInt(value);
   return number + 1;
 });
-Template.registerHelper("setJabatanFormat", function (value) { 
-  let words = value.split('-');
+Template.registerHelper("setJabatanFormat", function (value) {
+  let words = value.split("-");
 
   // Mengonversi setiap kata menjadi huruf kapital untuk memulai
-  words = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  words = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  );
 
   // Menggabungkan kembali kata-kata dan memisahkannya dengan spasi
-  let result = words.join(' ');
+  let result = words.join(" ");
 
   return result;
-})
+});
 Template.registerHelper("formatFullname", function (value) {
-    let thisUser = Meteor.users.findOne({
-      _id: value,
-    });
-    console.log(thisUser);
-    if (thisUser) {
-      return thisUser.fullname;
-    }
+  let thisUser = Meteor.users.findOne({
+    _id: value,
+  });
+  console.log(thisUser);
+  if (thisUser) {
+    return thisUser.fullname;
+  }
 });
 Template.registerHelper("formatFullname", function (value) {
   if (value) {
@@ -182,6 +185,10 @@ Template.registerHelper("statusDetail", function (data) {
   return status;
 });
 
+Template.registerHelper("isInRoles", function (roles, role) {
+  console.log(roles);
+  return roles.includes(role);
+});
 // startSelect2 = function () {
 //   setTimeout(() => {
 //     $(".select2").select2();

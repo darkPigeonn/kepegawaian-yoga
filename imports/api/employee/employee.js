@@ -19,3 +19,29 @@ export const educationCategory = [
   { code: 50, label: "S2" },
   { code: 60, label: "S3" },
 ];
+
+export const EmployeeStatus = [
+  { label: "Pegawai Tetap Yayasan (PTY)", code: "pty" },
+  { label: "Pegawai Tetap Perwakilan (PTP)", code: "ptp" },
+  { label: "Pegawai Tidak Tetap (PTT)", code: "ptt" },
+  { label: "Resign", code: "resign" },
+  { label: "Pensiun", code: "pensiun" },
+  { label: "Salah Unit Kerja", code: "suk" },
+];
+
+export const EmployeeGolongan = [
+  { label: "I/a	Juru Muda", code: "I/a" },
+  { label: "I/b	Juru Muda Tingkat I", code: "I/b" },
+  { label: "I/c	Juru", code: "I/c" },
+  { label: "I/d	Juru Tingkat I", code: "I/d" },
+  { label: "II/a	Pengatur Muda", code: "II/a" },
+  { label: "II/b	Pengatur Muda Tingkat I", code: "II/b" },
+  { label: "II/c	Pengatur", code: "II/c" },
+  { label: "II/d	Pengatur Tingkat I", code: "II/d" },
+  { label: "III/a	Penata Muda", code: "III/a" },
+  { label: "III/b	Penata Muda Tingkat I", code: "III/b" },
+  { label: "III/c	Penata", code: "III/c" },
+  { label: "III/d	Penata Tingkat I", code: "III/d" },
+  { label: "IV/a	Pembina", code: "IV/a" },
+  { label: "IV/b	Pembina Tingkat I", code: "IV/b" },
+];

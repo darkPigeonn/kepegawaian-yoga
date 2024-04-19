@@ -1,6 +1,8 @@
 <template name="App_body">
+  {{> progressBar}}
   {{#if currentUser}}
   <section>
+
     {{> navbar}}
     <div class="container-fluid" style="height: 100%;">
       {{> yield}}
@@ -12037,4 +12039,14 @@
       color: #fff;
     }
   </style>
+</template>
+
+<template name="progressBar">
+  <!-- <div class="loadingPage">
+    <div class="loadingItem">
+    </div>
+  </div> -->
+  <div class="loading-container">
+    <div class="loader"></div>
+  </div>
 </template>

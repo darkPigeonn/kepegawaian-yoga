@@ -1,6 +1,7 @@
 <template name="listUser">
     <div class="container">
-        {{#if equals jabatanLogin "admin"}}
+
+        {{#if isInRoles currentUser.roles "admin"}}
         <h1>Daftar User</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
@@ -27,7 +28,7 @@
                         <td> {{username}} </td>
                         <!-- <td> {{emails}} </td> -->
                         {{#each i in emails}}
-                            <td> {{i.address}} </td>
+                        <td> {{i.address}} </td>
                         {{/each}}
                         <td> {{fullname}} </td>
                         <td> {{roles}} </td>
@@ -72,14 +73,14 @@
                         <td> {{username}} </td>
                         <!-- <td> {{emails}} </td> -->
                         {{#each i in emails}}
-                            <td> {{i.address}} </td>
+                        <td> {{i.address}} </td>
                         {{/each}}
                         <td> {{fullname}} </td>
                         <td> {{roles}} </td>
                         <td>
                             <!-- <a href="/user/remove/{{_id}}"> -->
-                                <button class="btn btn-danger" type="button" id="btn_delete"
-                                    data-id="{{_id}}">Delete</button>
+                            <button class="btn btn-danger" type="button" id="btn_delete"
+                                data-id="{{_id}}">Delete</button>
                             <!-- </a> -->
                         </td>
                     </tr>
@@ -139,31 +140,31 @@
             <div class="form-group">
                 <label for="input_roles">Roles</label>
                 {{#if equals partnerLogin "imavi"}}
-                    <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                    </select>
+                <select id="input_roles" class="form-control" style="max-width: auto;">
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
                 {{else}}
-                    <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="resepsionis">Resepsionis</option>
-                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                        <option value="bidang">Bidang</option>
-                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                        <option value="dewan-pengurus">Dewan Pengurus</option>
-                        <option value="pengurus-inti">Pengurus Inti</option>
-                        <option value="administrasi-umum">Administrasi Umum</option>
-                        <option value="staff">Staff</option>
-                    </select>
+                <select id="input_roles" class="form-control" style="max-width: auto;">
+                    <option value="admin">Admin</option>
+                    <option value="resepsionis">Resepsionis</option>
+                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                    <option value="bidang">Bidang</option>
+                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                    <option value="dewan-pengurus">Dewan Pengurus</option>
+                    <option value="pengurus-inti">Pengurus Inti</option>
+                    <option value="administrasi-umum">Administrasi Umum</option>
+                    <option value="staff">Staff</option>
+                </select>
                 {{/if}}
             </div>
 
 
 
 
-                <br>
+            <br>
 
-                <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
+            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
 
         </form>
     </div>
@@ -177,76 +178,77 @@
             <input type="text" id="input_username" class="form-control" value={{dataListUser.username}} required><br>
 
             <label for="input_fullname">Nama Lengkap</label>
-            <input type="text" id="input_fullname" class="form-control"  value={{dataListUser.fullname}} required><br>
+            <input type="text" id="input_fullname" class="form-control" value={{dataListUser.fullname}} required><br>
 
             <label for="input_roles">Roles</label>
-            <select id="input_roles" class="form-control" >
+            <select id="input_roles" class="form-control">
                 {{#if dataListUser.roles}}
-                    {{#each dataListUser.roles}}
-                        {{#if equals dataListUser.roles "admin"}}
-                            <option value="admin" selected>Admin</option>
-                        {{else}}
-                            <option value="admin">Admin</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "resepsionis"}}
-                            <option value="resepsionis" selected>Resepsionis</option>
-                        {{else}}
-                            <option value="resepsionis">Resepsionis</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "sekretaris-eksekutif"}}
-                            <option value="sekretaris-eksekutif" selected>Sekretaris Eksekutif</option>
-                        {{else}}
-                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "bidang"}}
-                            <option value="bidang" selected>Bidang</option>
-                        {{else}}
-                            <option value="bidang">Bidang</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "sekretaris-yayasan"}}
-                            <option value="sekretaris-yayasan" selected>Sekretaris Yayasan</option>
-                        {{else}}
-                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "dewan-pengurus"}}
-                            <option value="dewan-pengurus" selected>Dewan Pengurus</option>
-                        {{else}}
-                            <option value="dewan-pengurus">Dewan Pengurus</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "pengurus-inti"}}
-                            <option value="pengurus-inti" selected>Pengurus Inti</option>
-                        {{else}}
-                            <option value="pengurus-inti">Pengurus Inti</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "administrasi-umum"}}
-                            <option value="administrasi-umum" selected>Administrasi Umum</option>
-                        {{else}}
-                            <option value="administrasi-umum">Administrasi Umum</option>
-                        {{/if}}
-                        {{#if equals dataListUser.roles "staff"}}
-                            <option value="staff" selected>Staff</option>
-                        {{else}}
-                            <option value="staff">Staff</option>
-                        {{/if}}
-                    {{/each}}
+                {{#each dataListUser.roles}}
+                {{#if equals dataListUser.roles "admin"}}
+                <option value="admin" selected>Admin</option>
+                {{else}}
+                <option value="admin">Admin</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "resepsionis"}}
+                <option value="resepsionis" selected>Resepsionis</option>
+                {{else}}
+                <option value="resepsionis">Resepsionis</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "sekretaris-eksekutif"}}
+                <option value="sekretaris-eksekutif" selected>Sekretaris Eksekutif</option>
+                {{else}}
+                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "bidang"}}
+                <option value="bidang" selected>Bidang</option>
+                {{else}}
+                <option value="bidang">Bidang</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "sekretaris-yayasan"}}
+                <option value="sekretaris-yayasan" selected>Sekretaris Yayasan</option>
+                {{else}}
+                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "dewan-pengurus"}}
+                <option value="dewan-pengurus" selected>Dewan Pengurus</option>
+                {{else}}
+                <option value="dewan-pengurus">Dewan Pengurus</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "pengurus-inti"}}
+                <option value="pengurus-inti" selected>Pengurus Inti</option>
+                {{else}}
+                <option value="pengurus-inti">Pengurus Inti</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "administrasi-umum"}}
+                <option value="administrasi-umum" selected>Administrasi Umum</option>
+                {{else}}
+                <option value="administrasi-umum">Administrasi Umum</option>
+                {{/if}}
+                {{#if equals dataListUser.roles "staff"}}
+                <option value="staff" selected>Staff</option>
+                {{else}}
+                <option value="staff">Staff</option>
+                {{/if}}
+                {{/each}}
 
                 {{else}}
-                    <option value="admin">Admin</option>
-                    <option value="resepsionis">Resepsionis</option>
-                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                    <option value="bidang">Bidang</option>
-                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                    <option value="dewan-pengurus">Dewan Pengurus</option>
-                    <option value="pengurus-inti">Pengurus Inti</option>
-                    <option value="administrasi-umum">Administrasi Umum</option>
-                    <option value="staff">staff</option>
+                <option value="admin">Admin</option>
+                <option value="resepsionis">Resepsionis</option>
+                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                <option value="bidang">Bidang</option>
+                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                <option value="dewan-pengurus">Dewan Pengurus</option>
+                <option value="pengurus-inti">Pengurus Inti</option>
+                <option value="administrasi-umum">Administrasi Umum</option>
+                <option value="staff">staff</option>
                 {{/if}}
 
             </select>
 
             <br>
             <button class="btn btn-primary" style="width: auto;" type="button" id="btn_edit_user">Simpan</button>
-            <a href="/changePassUser/{{dataListUser._id}}" type="button" id="btn_change_password" class="btn btn-warning">Ganti Password</a>
+            <a href="/changePassUser/{{dataListUser._id}}" type="button" id="btn_change_password"
+                class="btn btn-warning">Ganti Password</a>
         </div>
     </form>
 </template>
@@ -257,7 +259,8 @@
         <div class="form-group mb-2">
             <label for="input_password">Password Baru</label>
             <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
-            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_edit_user_password">Simpan</button>
+            <button class="btn btn-primary" style="width: auto;" type="button"
+                id="btn_edit_user_password">Simpan</button>
         </div>
     </form>
 </template>
@@ -292,23 +295,24 @@
         </thead>
         <tbody>
             {{#if equals filtered '0'}}
-                {{#each dataListUser}}
-                    <tr>
-                        <td> {{email}} </td>
-                        <td> {{fullname}} </td>
-                        <td> {{outlets}} </td>
-                        <td><button class="btn btn-primary" type="button" id="btnCreateEmployee" data-id="{{_id}}">Buat Pegawai</button></td>
-                    </tr>
-                {{/each}}
+            {{#each dataListUser}}
+            <tr>
+                <td> {{email}} </td>
+                <td> {{fullname}} </td>
+                <td> {{outlets}} </td>
+                <td><button class="btn btn-primary" type="button" id="btnCreateEmployee" data-id="{{_id}}">Buat
+                        Pegawai</button></td>
+            </tr>
+            {{/each}}
             {{else}}
-                {{#each filteredDataListUser}}
-                    <tr>
-                        <td> {{email}} </td>
-                        <td> {{fullname}} </td>
-                        <td> {{outlets}} </td>
-                        <td><button class="btn btn-primary" type="button" id="btnCreateEmployee">Buat Pegawai</button></td>
-                    </tr>
-                {{/each}}
+            {{#each filteredDataListUser}}
+            <tr>
+                <td> {{email}} </td>
+                <td> {{fullname}} </td>
+                <td> {{outlets}} </td>
+                <td><button class="btn btn-primary" type="button" id="btnCreateEmployee">Buat Pegawai</button></td>
+            </tr>
+            {{/each}}
             {{/if}}
         </tbody>
     </table>
@@ -325,7 +329,7 @@
                     <label for="">Pegawai</label>
                     <select id="input_pegawai" class="form-control select2" style="max-width: auto;" multiple>
                         {{#each dataEmployee}}
-                            <option value="{{_id}}">{{email_address}} / {{ full_name }}</option>
+                        <option value="{{_id}}">{{email_address}} / {{ full_name }}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -333,7 +337,7 @@
                     <label for="">App User</label>
                     <select id="input_appUser" class="form-control select2" style="max-width: auto;" multiple>
                         {{#each dataAppUser}}
-                            <option value="{{_id}}">{{email}} / {{ fullname }}</option>
+                        <option value="{{_id}}">{{email}} / {{ fullname }}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -343,39 +347,39 @@
                 </div>
                 <br>
 
-                    {{#if dataConnect}}
-                        <h4>Daftar Migrasi ID</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <th>Nomor</th>
-                                    <th>Nama Employee</th>
-                                    <th>Nama Akun App_User</th>
-                                    <th>Actions</th>
-                                </thead>
-                                <tbody>
-                                    {{#each i in dataConnect}}
-                                    <tr>
-                                        <td>
-                                            {{setTableNumber @index}}
-                                        </td>
-                                        <td>
-                                            {{i.emailEmployee}}
-                                        </td>
-                                        <td>
-                                            {{i.emailAppUser}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
-                                                <i class="fa fa-trash btn-remove" posisi={{@index}}></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
-                        </div>
-                    {{/if}}
+                {{#if dataConnect}}
+                <h4>Daftar Migrasi ID</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>Nomor</th>
+                            <th>Nama Employee</th>
+                            <th>Nama Akun App_User</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            {{#each i in dataConnect}}
+                            <tr>
+                                <td>
+                                    {{setTableNumber @index}}
+                                </td>
+                                <td>
+                                    {{i.emailEmployee}}
+                                </td>
+                                <td>
+                                    {{i.emailAppUser}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                        <i class="fa fa-trash btn-remove" posisi={{@index}}></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
 
                 <div class="form-actions">
                     <button class="btn btn-primary" id="btn-save">Simpan</button>
