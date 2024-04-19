@@ -128,30 +128,34 @@
     </div>
 
     <hr>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>Status Pegawai</h3>
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <h3>Status Pegawai</h3>
+            {{#if summaryStatus}}
+            {{> chartBatang name='status' items=summaryStatus}}
+            {{/if}}
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <table class="table table-info">
-          <thead>
-            {{#each listItemStatus}}
-            <th>
-              {{label}}
-            </th>
-            {{/each}}
-          </thead>
-          <tbody>
-            <tr>
-              {{#each summaryStatus}}
-              <td>
-                {{total}} Pegawai
-              </td>
-              {{/each}}
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            {{#if summaryReligion}}
+            {{> chartPie name='Agama Pegawai' items=summaryReligion}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            {{#if summaryGender}}
+            {{> chartPie name='Berdasarkan Gender' items=summaryGender}}
+            {{/if}}
+          </div>
+        </div>
       </div>
     </div>
     <div class="card">

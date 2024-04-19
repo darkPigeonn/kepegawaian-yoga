@@ -9,6 +9,7 @@ import {
   EmployeeGolongan,
   EmployeeStatus,
 } from "../../../api/employee/employee.js";
+import { dataListInput } from "../../../api/user/user.js";
 
 Template.App_home.onCreated(function () {
   isLoading(true);
@@ -89,10 +90,23 @@ Template.home_admin.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   const userId = Meteor.userId();
 
+  self.summaryStatus = new ReactiveVar();
+
   Meteor.call("employee.getAll", function (error, result) {
     if (result) {
-      console.log(result);
       self.employees.set(result);
+
+      //summary status
+      let templateStatus = EmployeeStatus;
+
+      templateStatus.forEach((item) => {
+        const findItems = result.filter((employee) => {
+          return employee.pekerjaan.statusEmployee === item.label;
+        });
+        item.total = findItems.length;
+      });
+      console.log("summ", templateStatus);
+      self.summaryStatus.set(templateStatus);
     } else {
       console.log(error);
     }
@@ -155,19 +169,7 @@ Template.home_admin.helpers({
     ];
   },
   summaryStatus() {
-    let templateStatus = EmployeeStatus;
-    const listEmployees = Template.instance().employees.get();
-
-    if (listEmployees) {
-      templateStatus.forEach((item) => {
-        const findItems = listEmployees.filter((employee) => {
-          return employee.pekerjaan.statusEmployee === item.label;
-        });
-        item.total = findItems.length;
-      });
-      return templateStatus;
-    }
-    return [];
+    return Template.instance().summaryStatus.get();
   },
   summaryGolongan() {
     let temp = EmployeeGolongan;
@@ -207,6 +209,40 @@ Template.home_admin.helpers({
       console.log("group", groupTemp);
 
       return groupTemp;
+    }
+    return [];
+  },
+  summaryReligion() {
+    const listEmployees = Template.instance().employees.get();
+
+    if (listEmployees) {
+      const religion = listEmployees.reduce((acc, obj) => {
+        const key = obj.religion;
+        if (!acc[key]) {
+          acc[key] = { label: key, total: 0 };
+        }
+        acc[key].total++;
+        return acc;
+      }, {});
+
+      return Object.values(religion);
+    }
+    return [];
+  },
+  summaryGender() {
+    const listEmployees = Template.instance().employees.get();
+
+    if (listEmployees) {
+      const religion = listEmployees.reduce((acc, obj) => {
+        const key = obj.gender.toLowerCase();
+        if (!acc[key]) {
+          acc[key] = { label: key, total: 0 };
+        }
+        acc[key].total++;
+        return acc;
+      }, {});
+
+      return Object.values(religion);
     }
     return [];
   },
