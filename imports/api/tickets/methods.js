@@ -1,6 +1,7 @@
 import { Tickets } from "./tickets.js";
 import { Tasks } from "../tasks/tasks.js";
 import { Employee } from "../employee/employee";
+import { Letters } from "../documents/documents.js";
 import { Notifications } from "../notification/notification";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import { check } from "meteor/check";
@@ -112,6 +113,12 @@ Meteor.methods({
           for (const link of data.images) {
             fileName.push(link.name)
           }
+        }
+        const dataSurat = Letters.find().fetch();
+        for (const data of dataSurat) {
+            for (const link of data.arsip) {
+                fileName.push(link.name)
+            }
         }
         return fileName;
     },

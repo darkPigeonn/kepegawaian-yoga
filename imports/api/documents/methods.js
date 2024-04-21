@@ -224,6 +224,16 @@ Meteor.methods({
       };
     }
     else {
+      let dataAlurFinal = [];
+      for (let index = 0; index < dataAlur.length; index++) {
+        const element = dataAlur[index];
+        const data = {
+          order: index+1,
+          jabatan: element,
+          analisis: ""
+        }
+        dataAlurFinal.push(data);
+      }
       modelData = {
         category,
         note,
@@ -231,7 +241,7 @@ Meteor.methods({
         attachment,
         subject,
         desc,
-        alur: dataAlur,
+        alur: dataAlurFinal,
         status: 10,
         currentOrder: 0,
         currentJabatan: dataAlur[0],
@@ -241,6 +251,13 @@ Meteor.methods({
       };
     }
 
+    //buat timeline
+    const timeline = {
+      event: "created",
+      operator: thisUser._id,
+      operatorName: thisUser.fullname,
+      timestamp: new Date()
+    }
     //perlu penjagaan surat ini dibuat oleh siapa selain dari user
     //maksud nya seperti partner (Keuskupan) atau department
     //TINDAKAN:
@@ -250,12 +267,14 @@ Meteor.methods({
     //   modelData.partner = "default";
     // }
 
-    return Letters.insert(modelData);
+    const insert = Letters.insert(modelData);
+    return Letters.update({_id: insert}, {$push: {
+      timeline: timeline
+    }}, {upsert: true})
   },
 
   "korespondensi.editSimpan"(id, data) {
     const {category, note, purpose, attachment, subject, desc, dataAlur } = data;
-
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
 
@@ -287,8 +306,6 @@ Meteor.methods({
         currentOrder: 0,
         currentJabatan: "",
         partner: thisUser.partners[0],
-        createdAt: new Date(),
-        createdBy: thisUser._id,
       };
     }
     else {
@@ -302,11 +319,16 @@ Meteor.methods({
         alur: dataAlur,
         status: 10,
         currentOrder: 0,
-        currentJabatan: dataAlur[0],
+        currentJabatan: dataAlur[0].jabatan,
         partner: thisUser.partners[0],
-        createdAt: new Date(),
-        createdBy: thisUser._id,
       };
+    }
+
+    const timeline = {
+      event: "edited",
+      operator: thisUser._id,
+      operatorName: thisUser.fullname,
+      timestamp: new Date()
     }
 
     //perlu penjagaan surat ini dibuat oleh siapa selain dari user
@@ -318,7 +340,9 @@ Meteor.methods({
     //   modelData.partner = "default";
     // }
 
-    return Letters.update({ _id: id }, { $set: modelData });
+    return Letters.update({ _id: id }, { $set: modelData, $push: {
+      timeline: timeline
+    }});
   },
 
   "korespondensi.save"(data) {
@@ -360,6 +384,16 @@ Meteor.methods({
       };
     }
     else {
+      let dataAlurFinal = [];
+      for (let index = 0; index < dataAlur.length; index++) {
+        const element = dataAlur[index];
+        const data = {
+          order: index+1,
+          jabatan: element,
+          analisis: ""
+        }
+        dataAlurFinal.push(data);
+      }
       modelData = {
         category,
         name,
@@ -367,7 +401,7 @@ Meteor.methods({
         attachment,
         subject,
         desc,
-        alur: dataAlur,
+        alur: dataAlurFinal,
         status: 11,
         currentOrder: 1,
         currentJabatan: dataAlur[0],
@@ -375,6 +409,14 @@ Meteor.methods({
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
+    }
+
+    //buat timeline
+    const timeline = {
+      event: "submitted",
+      operator: thisUser._id,
+      operatorName: thisUser.fullname,
+      timestamp: new Date()
     }
 
     //perlu penjagaan surat ini dibuat oleh siapa selain dari user
@@ -386,7 +428,10 @@ Meteor.methods({
     //   modelData.partner = "default";
     // }
 
-    return Letters.insert(modelData);
+    const insert = Letters.insert(modelData);
+    return Letters.update({_id: insert}, {$push: {
+      timeline: timeline
+    }}, {upsert: true})
   },
 
   "korespondensi.editKirim"(id, data) {
@@ -439,11 +484,19 @@ Meteor.methods({
         alur: dataAlur,
         status: 11,
         currentOrder: 1,
-        currentJabatan: dataAlur[0],
+        currentJabatan: dataAlur[0].jabatan,
         partner: thisUser.partners[0],
         createdAt: new Date(),
         createdBy: thisUser._id,
       };
+    }
+
+    //buat timeline
+    const timeline = {
+      event: "submitted",
+      operator: thisUser._id,
+      operatorName: thisUser.fullname,
+      timestamp: new Date()
     }
 
     //perlu penjagaan surat ini dibuat oleh siapa selain dari user
@@ -455,7 +508,7 @@ Meteor.methods({
     //   modelData.partner = "default";
     // }
 
-    return Letters.update({ _id: id }, { $set: modelData });
+    return Letters.update({ _id: id }, { $set: modelData, $push: {timeline: timeline}});
   },
 
   "korespondensi.getByRoles"(role) {
@@ -552,6 +605,14 @@ Meteor.methods({
       }
       dataAlurObject.push(dataAlur)
     }
+    const idUser = Meteor.userId();
+    const thisUser = Meteor.users.findOne({ _id: idUser });
+    const timeline = {
+      event: "Setted Alur",
+      operator: thisUser._id,
+      operatorName: thisUser.fullname,
+      timestamp: new Date()
+    }
     return Letters.update({ _id: id }, 
     { 
         $push: { alur: { $each: dataAlurObject } }, 
@@ -559,12 +620,39 @@ Meteor.methods({
           currentOrder: 1, 
           currentJabatan: dataAlurObject[0].jabatan,
           status: 12
-        } 
+        } ,
+        $push: {
+          timeline: timeline
+        }
     }
     )
   },
 
   "korespondensi.delete"(id){
     return Letters.remove({_id: id});
+  },
+
+  "korespondensi.uploadArsip"(data, id) {
+    check(data, Object)
+    try {
+      const idUser = Meteor.userId();
+      const thisUser = Meteor.users.findOne({ _id: idUser });
+      const timeline = {
+        event: "Arsip Sended",
+        operator: thisUser._id,
+        operatorName: thisUser.fullname,
+        timestamp: new Date()
+      }
+      return Letters.update({_id: id}, {
+        $set: {
+          linksArsip: data.linksArsip
+        },
+        $push: {
+          timeline: timeline
+        }
+      })
+    } catch (error) {
+      throw new Meteor.Error(412, "Unggah File Arsip Gagal");
+    }
   }
 });

@@ -66,7 +66,28 @@ Template.registerHelper('includes', function (a, b) {
   if(a && a.length && b) return a.includes(b);
 });
 
+Template.registerHelper("formatHRDT", function (context, options) {
+  if (context)
+    // console.log(context)
+    // console.log(moment(context))
+    // return moment(context).format("DD MMM YYYY - HH:mm");
+    return (
+      dayjs(context).tz("Asia/Jakarta").locale("id").format("lll") + " WIB"
+    );
+});
 
+Template.registerHelper("formatD", function (context, options) {
+  if (context)
+    // console.log(context)
+    // console.log(moment(context))
+    return moment(context).format("MMM, DD");
+});
+Template.registerHelper("formatH", function (context, options) {
+  if (context)
+    // console.log(context)
+    // console.log(moment(context))
+    return moment(context).format("HH:mm");
+});
 
 // Template.registerHelper('formatRp', function (context, options) {
 //   if (context != 0) {

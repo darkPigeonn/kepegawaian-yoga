@@ -884,10 +884,14 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -946,26 +950,43 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
                             <td>
                                 {{#if equals status 10}}
-                                    <a href="/editKorespondensi/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
-                                    </a>
-                                    <a href="/detailKorespondensi/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
-                                    </a>
-                                {{else}}
-                                    <a href="/detailKorespondensi/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
-                                    </a>
-                                {{/if}}
+                                        <a href="/editKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                        </a>
+                                        <a href="/detailKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                        </a>
+
+                                    {{else}}
+                                        {{#if equals status 80}}
+                                            <a href="/editKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                            </a>
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                            </a>
+                                            <a href="/arsipKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
+                                            </a>
+                                        {{else}}
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                            </a>
+                                        {{/if}}
+                                    {{/if}}
                             </td>
                         </tr>
                         {{/each}}
@@ -986,8 +1007,8 @@
                         <th>Status</th>
                         <th>Aksi</th>
                     </thead>
-                    <!-- <tbody>
-                        {{#each dataKorespondensi}}
+                    <tbody>
+                        {{#each dataHistoryReviewer}}
                         <tr>
                             <td>
                                 {{setTableNumber @index}}
@@ -1011,10 +1032,14 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -1025,7 +1050,7 @@
                             </td>
                         </tr>
                         {{/each}}
-                    </tbody> -->
+                    </tbody>
                 </table>
             </div>
             <br><br>
@@ -1067,10 +1092,14 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -1123,10 +1152,14 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -1179,27 +1212,44 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
                             <td>
-                                {{#if equals status 10}}
-                                    <a href="/editKorespondensi/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
-                                    </a>
-                                    <a href="/detailKorespondensi/{{_id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
-                                    </a>
-                                    <button class="btn btn-danger" type="button" id="btn_delete" data-id="{{_id}}">Delete</button>
-                                {{else}}
-                                    <a href="/detailKorespondensi/{{_id}}">
-                                        <button class="btn btn-primary" type="button" id="btn_details">Details</button>
-                                    </a>
-                                {{/if}}
+                                <td>
+                                    {{#if equals status 10}}
+                                        <a href="/editKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                        </a>
+                                        <a href="/detailKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                        </a>
+                                    {{else}}
+                                        {{#if equals status 80}}
+                                            <a href="/editKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                            </a>
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                            </a>
+                                            <a href="/arsipKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
+                                            </a>
+                                        {{else}}
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Details</button>
+                                            </a>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
                             </td>
                         </tr>
                         {{/each}}
@@ -1220,8 +1270,8 @@
                         <th>Status</th>
                         <th>Aksi</th>
                     </thead>
-                    <!-- <tbody>
-                        {{#each dataKorespondensi}}
+                    <tbody>
+                        {{#each dataHistoryReviewer}}
                         <tr>
                             <td>
                                 {{setTableNumber @index}}
@@ -1245,10 +1295,14 @@
                                 {{#if equals status 10}}
                                     Draft
                                 {{else}}
-                                    {{#if equals status 99}}
-                                        Ditolak
+                                    {{#if equals status 80}}
+                                        Diterima
                                     {{else}}
-                                        Sedang Direview
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
                                     {{/if}}
                                 {{/if}}
                             </td>
@@ -1259,7 +1313,7 @@
                             </td>
                         </tr>
                         {{/each}}
-                    </tbody> -->
+                    </tbody>
                 </table>
             </div>
         {{/if}}
@@ -1546,7 +1600,7 @@
                                             {{setTableNumber @index}}
                                         </td>
                                         <td>
-                                            {{setJabatanFormat i}}
+                                            {{setJabatanFormat i.jabatan}}
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btn-remove" posisi={{@index}}>
@@ -1752,6 +1806,7 @@
             {{/if}}
         </div>
     </div>
+    {{ >timelineWorkProgram timelines=letterData.timeline }}
 </template>
 
 <template name="letterKopTemplate">
@@ -1783,4 +1838,294 @@
         </div>
     </div>
     <hr style="background-color : black; height: 3px;">
+</template>
+
+<template name="arsipKorespondensi">
+    <div class="arsip-container">
+        <h1 class="arsip-heading">Arsip Surat Korespondensi</h1>
+        <form class="upload-form">
+          <div class="upload-section">
+            {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+            <div class="form-actions">
+                <button class="btn btn-primary" id="btn-save">Simpan</button>
+            </div>
+          </div>
+        </form>
+    </div>
+    <br>
+    <div name="listArsipKorespondensi">
+        <label style="color: red;font-style: italic;">Catatan: Bila file PDF tidak terdapat review dalam jangka waktu lama , silahkan reload halaman ini</label>
+        {{#each arsipFile}}
+            <h2>{{name}}</h2>
+            <iframe id="previewDoc" style="width: 100%; height: 300px;"
+            src="https://docs.google.com/viewer?url={{link}}&embedded=true"></iframe>
+        {{/each}}
+    </div>
+    <style>
+        /* Stylesheet untuk tampilan arsipKorespondensi */
+        .arsip-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .arsip-heading {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        .form-actions {
+            margin-top: auto; /* Mendorong elemen ke bawah */
+            display: flex;
+            justify-content: flex-end; /* Mengatur tombol ke pojok kanan */
+        }
+
+        .btn-save {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+
+
+    </style>
+</template>  
+
+
+<template name="timelineWorkProgram">
+    <div class="box">
+      <ul id="first-list">
+        {{ #each timeline }}
+        <li>
+          <span></span>
+          <div class="title">{{ event }}</div>
+          <div class="name">{{ operatorName }}</div>
+          <div class="info">{{ formatHRDT timestamp }}</div>
+  
+          <div class="time">
+            <span>{{ formatD timestamp }}</span>
+            <span>{{ formatH timestamp }}</span>
+          </div>
+        </li>
+        {{ /each }}
+      </ul>
+    </div>
+  
+    <style>
+      .box {
+        background-color: darkgray;
+        /* margin:0 10%; */
+        overflow: hidden;
+        padding: 10px 0 40px 60px;
+        border-radius: 1%;
+      }
+  
+      .box ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        transition: all 0.5s linear;
+        top: 0;
+      }
+  
+      /* .box ul:last-of-type{top:80px} */
+  
+      .box ul:before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border: 1px dashed #000000;
+        position: absolute;
+        top: 0;
+        left: 30px
+      }
+  
+      .box ul li {
+        margin: 20px 60px 60px;
+        position: relative;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.3);
+        color: #000000;
+        border-radius: 10px;
+        line-height: 20px;
+        width: 50%
+      }
+  
+  
+      .box ul li>span {
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border: 1px solid #000000;
+        position: absolute;
+        top: 0;
+        left: -30px
+      }
+  
+      .box ul li>span:before,
+      .box ul li>span:after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #000000;
+        position: absolute;
+        left: -7.5px
+      }
+  
+      .box ul li>span:before {
+        top: -10px
+      }
+  
+      .box ul li>span:after {
+        top: 95%
+      }
+  
+      .box .title {
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 5px
+      }
+  
+      .box .info:first-letter {
+        text-transform: capitalize;
+        line-height: 1.7
+      }
+  
+      .box .name {
+        margin-top: 10px;
+        text-transform: capitalize;
+        font-style: italic;
+        margin-right: 20px
+      }
+  
+  
+      .box .time span {
+        position: absolute;
+        left: -100px;
+        color: #000000;
+        font-weight: bold;
+      }
+  
+      .box .time span:first-child {
+        top: -16px
+      }
+  
+      .box .time span:last-child {
+        top: 94%
+      }
+  
+      svg {
+        width: 20px;
+        height: 20px
+      }
+  
+      @keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-webkit-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-moz-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-o-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+    </style>
+</template>
+
+  <template name="inputMultipleFilesSurat">
+	<div class="form-group">
+	  <label for="">{{label}}</label>
+	  <div class="input-file-wrapper">
+		<input type="file" id="{{id}}" class="{{id}} mt-3 hide hidden d-none" name="filename"
+		  accept=".pdf, .doc, .docx" multiple>
+		<label class="btn btn-primary"
+		  for="{{ id }}">{{#if buttonLabel }}{{ buttonLabel}}{{else}}{{ label }}{{/if}}</label>
+	  </div>
+	  <div class="d-flex flex-row">
+		{{#each file in files}}
+            {{#if equals file.type 'image/png'}}
+                <div class="uploaded-image mr-2">
+                <img src="{{file.src}}">
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{else}}
+                <div class="uploaded-image mr-2">
+                <a download id="{{id}}-{{@index}}" href="{{file.src}}" target="_blank">
+                    <i class="fa fa-file"></i>
+                    <p class="file-name">{{file.file.name}}</p>
+                </a>
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{/if}}
+		{{/each}}
+	  </div>
+	</div>
 </template>

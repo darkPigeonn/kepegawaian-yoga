@@ -465,6 +465,12 @@ FlowRouter.route("/editKorespondensiAlur/:_id", {
     this.render("App_body", "editKorespondensiAlur");
   },
 });
+FlowRouter.route("/arsipKorespondensi/:_id", {
+  name: "arsipKorespondensi",
+  action() {
+    this.render("App_body", "arsipKorespondensi");
+  }
+});
 
 //konfigurasi
 FlowRouter.route("/listKonfigurasi/", {

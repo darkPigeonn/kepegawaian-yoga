@@ -547,6 +547,7 @@ Template.listKorespondensi.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.dataKorespondensi = new ReactiveVar();
   self.dataKorespondensiPembuat = new ReactiveVar();
+  self.dataHistoryReviewer = new ReactiveVar();
 
   const userId = Meteor.userId();
   if (userId) {
@@ -564,6 +565,14 @@ Template.listKorespondensi.onCreated(function () {
           }
         });
         //get history orang yang melakukan review
+        Meteor.call("korespondensi.getHistoryByPengisi", dataRole, function (error, result){
+          console.log(result);
+          if (result) {
+            self.dataHistoryReviewer.set(result);
+          } else {
+            console.log(error);
+          }
+        });
       } else {
         console.log(error);
       }
@@ -583,7 +592,7 @@ Template.listKorespondensi.onCreated(function () {
     } else {
       console.log(error);
     }
-  })
+  });
 });
 
 Template.listKorespondensi.helpers({
@@ -598,6 +607,9 @@ Template.listKorespondensi.helpers({
   },
   dataKorespondensiPembuat() {
     return Template.instance().dataKorespondensiPembuat.get();
+  },
+  dataHistoryReviewer() {
+    return Template.instance().dataHistoryReviewer.get();
   }
 });
 
@@ -897,6 +909,7 @@ Template.editKorespondensi.events({
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
     let dataAlur = t.daftarAlur.get();
+    console.log(dataAlur);
     const id = FlowRouter.getParam("_id");
     //categori
     const data = {
@@ -995,6 +1008,192 @@ Template.detailKorespondensi.events({
   }
 });
 
+Template.arsipKorespondensi.onCreated(function () {
+  const self = this;
+  self.buktiSurat = new ReactiveVar([]);
+  self.allFileNames = new ReactiveVar([]);
+  self.arsipFile = new ReactiveVar([]);
+  const id = FlowRouter.getParam("_id")
+  Meteor.call('fileName.getAll', function(error, result) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(result)
+      self.allFileNames.set(result)
+    }
+  })
+
+  Meteor.call('korespondensi.getById', id, function (error, result) {  
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log(result);
+      let arrayData = [];
+      if(result.linksArsip){
+        for (const iterator of result.linksArsip) {
+          arrayData.push(iterator)
+        }
+        self.arsipFile.set(arrayData)
+        console.log(self.arsipFile.get());
+      }
+    }
+  })
+
+})
+
+Template.arsipKorespondensi.helpers({
+  buktiSurat() {
+    return Template.instance().buktiSurat.get();
+  },
+  allFileNames(){
+    return Template.instance().allFileNames.get();
+  },
+  arsipFile(){
+    return Template.instance().arsipFile.get();
+  }
+})
+
+Template.arsipKorespondensi.events({
+  "change #buktiSurat": function (e, t) {
+    const buktiSurat = t.buktiSurat.get();
+    console.log(buktiSurat);
+    const files = $("#buktiSurat").prop("files");
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      if (file) {
+      const reader = new FileReader();
+      const body = {
+        file: file,
+      };
+      reader.addEventListener("load", function () {
+        body.src = this.result;
+        if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
+        $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
+          "href",
+          this.result
+        );
+        }
+      });
+      reader.readAsDataURL(file);
+      buktiSurat.push(body);
+      t.buktiSurat.set(buktiSurat);
+      }
+    }
+  },
+  "click .remove-buktiSurat": function (e, t) {
+    e.preventDefault();
+    const index = $(e.target).attr("milik");
+    const buktiSurat = t.buktiSurat.get();
+    buktiSurat.splice(parseInt(index), 1);
+    t.buktiSurat.set(buktiSurat);
+    // console.log(t.buktiSurat.get());
+  },
+  "click #btn-save"(e, t) {
+    e.preventDefault()
+    console.log("masuk");
+    const id = FlowRouter.getParam("_id");
+    const files = t.buktiSurat.get();
+    const thisForm = {};
+    thisForm[files] = [];
+    const allFileNames = t.allFileNames.get();
+    Swal.fire({
+      title: "Konfirmasi",
+      text: "Apakah anda ingin menyimpan data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Simpan",
+      cancelButtonText: "Batal"
+    }).then(async (result) => {
+      if(result.isConfirmed){
+        Swal.fire({
+          title: "Loading...",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        for (let index = 0; index < files.length; index++) {
+          const fileName = files[index].file.name;
+          const sendFileName = checkDuplicateFileName(fileName, allFileNames);
+          const uploadData = {
+            fileName: "kepegawaian/arsip-surat/"+sendFileName,
+            type: "image/png",
+            Body: files[index].file
+          }
+          const linkUpload = await uploadFiles(uploadData);
+          thisForm[files].push(
+          {
+            name: files[index].file.name,
+            link: linkUpload
+          });
+        }
+        const linksBukti = thisForm[files];
+        console.log(linksBukti);
+        const data = {
+          linksArsip: linksBukti
+        }
+        Meteor.call(
+          "korespondensi.uploadArsip",
+          data, id,
+          function (error, result) {
+            if (result) {
+              Swal.close();
+              Swal.fire({
+                title: "Berhasil",
+                text: "Data arsip berhasil dibuat",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              });
+              location.reload();
+              history.back();
+            } else {
+              console.log(error);
+              Swal.close();
+              Swal.fire({
+                title: "Gagal",
+                text: error.reason,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              });
+            }
+          }
+        );
+      }
+    })
+  }
+})
+
+Template.timelineWorkProgram.onCreated(function () {
+
+  this.timeline = new ReactiveVar();
+
+  this.autorun(() => {
+      const data = Template.currentData();
+      if (data && data.timelines) {
+        console.log("masuk");
+          this.timeline.set(data.timelines);
+      }
+  });
+});
+
+Template.timelineWorkProgram.helpers({
+  timeline() {
+    const timeline = Template.instance().timeline.get();
+    console.log(timeline);
+    return timeline;
+    if (timeline) {
+      // const a = timeline.sort((a, b) => a.timestamp - b.timestamp);
+      // return a;
+    }
+    else {
+      return []
+    }
+  }
+});
+
 // Template.letterKopTemplate.onCreated(function (){
 //   const self = this;
 //   self.thisUser = new ReactiveVar();
@@ -1005,3 +1204,45 @@ Template.detailKorespondensi.events({
 //     }
 //   });
 // });
+function checkDuplicateFileName(fileName, allFileNames) {
+	const result = allFileNames;
+	if(result.length == 0 || result == undefined){
+		return fileName;
+	}
+	for (let i = 0; i < result.length; i++) {
+		const element = result[i];
+		const randomString = generateRandomString(5)
+		if(fileName == element){
+			const finalName = addRandomString(fileName, randomString)
+			console.log(finalName);
+			return finalName;
+		}
+		else{
+			return fileName;
+		}
+	}
+}
+
+function generateRandomString(length) {
+	const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let randomString = "";
+  
+	for (let i = 0; i < length; i++) {
+	  const randomIndex = Math.floor(Math.random() * charset.length);
+	  randomString += charset.charAt(randomIndex);
+	}
+	return randomString;
+}
+
+function addRandomString(inputString, appendString){
+	const lastDotIndex = inputString.lastIndexOf('.');
+
+  if (lastDotIndex !== -1) {
+    // If a dot is found, insert the appendString before the last dot
+    const modifiedString = inputString.substring(0, lastDotIndex) + '-' + appendString + inputString.substring(lastDotIndex);
+    return modifiedString;
+  } else {
+    // If no dot is found, simply concatenate the appendString to the original string
+    return inputString + '|' + appendString;
+  }
+}
