@@ -43,15 +43,18 @@
                         <td>{{unit.perwakilan}}</td>
                         <td>{{unit.school}}</td>
                         <td>
-                            <a href="/employees/edit/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
-                            </a>
+
                             <a href="/employees/detail/{{_id}}">
-                                <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                <button class="btn btn-primary" type="button" id="btn_details"><i
+                                        class="fa fa-info-circle"></i></button>
+                            </a>
+                            <a href="/employees/edit/{{_id}}">
+                                <button class="btn btn-warning" type="button" id="btn_edit"><i
+                                        class="fa fa-edit"></i></button>
                             </a>
                             <!-- <a href="/employees/remove/{{_id}}"> -->
-                            <button class="btn btn-danger" type="button" id="btn_delete"
-                                data-id="{{_id}}">Delete</button>
+                            <button class="btn btn-danger" type="button" id="btn_delete" data-id="{{_id}}"><i
+                                    class="fa fa-trash"></i></button>
                             <!-- </a> -->
                         </td>
                     </tr>
@@ -556,19 +559,10 @@
                             </div>
                             <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.fullName}}
                             </p>
-                            <!-- <span>-</span> -->
-                            <!-- <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun Mobile</button>
-                            <br><br>
-                            <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun Website</button> -->
                         </div>
                     </div>
 
-                    <div class="bagianItems">
-                        <!-- <ul class="nav flex-column">
-                            <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
-                                        class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
-                        </ul> -->
-                    </div>
+
                 </div>
                 <div class="content">
                     <div class="contentAtas">
@@ -577,17 +571,16 @@
                                 {{employee.fullName}}</a></p>
                         <p style="font-size: 32px; font-weight: bold;">Personal</p>
                         <ul class="nav nav-tabs">
-                            <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
-                                        value="Informasi Umum" class="nav-link active"></a></li>
-                            <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input
-                                        type="button" value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
-                            <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
-                                        type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                            <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
-                                        type="button" value="Konfigurasi" class="nav-link"></a></li>
+                            <li class="nav-item"><a href="#" class="nav-link submenu active" milik="0">Informasi
+                                    Umum</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link submenu" milik="1">Pendidikan dan
+                                    Pekerjaan</a></li>
+                            <!-- <li class="nav-item"><a href="#" class="nav-link submenu" milik="2">Kontak Darurat</a></li>
+                            <li class="nav-item"><a href="#" class="nav-link submenu" milik="3">Konfigurasi</a></li> -->
                         </ul>
                     </div>
                     <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
+                    {{#if equals viewMode "0"}}
                     <div style="overflow: auto; height: 100%; width: 100%;">
                         <div class="contentBawah">
                             <div class="personalData">
@@ -728,6 +721,140 @@
                             </div>
                         </div>
                     </div>
+                    {{/if}}
+
+                    {{#if equals viewMode "1"}}
+                    <div style="overflow: auto; height: 100%; width: 100%;">
+                        <div class="contentBawah">
+                            <div class="personalData">
+                                <div class="tulisanPersonalData">
+                                    <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data
+                                        Pendidikan
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Pendidikan Terakhir</div>
+                                            <div class="value">{{employee.pendidikan.hightEducation}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Nama Institusi</div>
+                                            <div class="value">{{employee.pendidikan.nameIntitution}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Jurusan</div>
+                                            <div class="value">{{employee.pendidikan.major}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Tahun Lulus</div>
+                                            <div class="value">{{employee.pendidikan.yaerGraduated}}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
+                        <div class="contentBawah-1">
+                            <div class="personalData">
+                                <div class="tulisanPersonalData">
+                                    <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data
+                                        Pekerjaan
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Tanggal Mulai Kerja</div>
+                                            <div class="value">{{formatHRDate employee.pekerjaan.startDateWorking}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Masa Kerja</div>
+                                            <div class="value">{{employee.pekerjaan.workPeriod}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">TMT Kerja Sesuai SK</div>
+                                            <div class="value">{{employee.pekerjaan.startDateAngkatanSk}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Tanggal Angkatan SK</div>
+                                            <div class="value">{{employee.pekerjaan.startDateWorkSk}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Selesai Masa Berlaku SK</div>
+                                            <div class="value">{{employee.pekerjaan.endDateWorkSk}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Status Pegawai</div>
+                                            <div class="value">{{ employee.pekerjaan.statusEmployee}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">TUK</div>
+                                            <div class="value">{{ employee.pekerjaan.tuk}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Jabatan</div>
+                                            <div class="value">{{ employee.pekerjaan.position}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Keterangan Jabatan</div>
+                                            <div class="value">{{ employee.pekerjaan.positionNote}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Golongan/RU</div>
+                                            <div class="value">{{ employee.pekerjaan.gol}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">No. Sertifikasi</div>
+                                            <div class="value">{{ employee.pekerjaan.sertifikasiNumber}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">No. Sertf. Guru Penggerak</div>
+                                            <div class="value">{{ employee.pekerjaan.sertifikasiNumber2}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">NUKS / NRKS</div>
+                                            <div class="value">{{ employee.pekerjaan.nuptk}}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -1793,199 +1920,440 @@
 
 <template name="employee_edit">
     <div class="container">
-        <a href="/employees/mutation/{{employee._id}}" class="btn btn-primary">Mutasi</a>
+        <!-- <a href="/employees/mutation/{{employee._id}}" class="btn btn-primary">Mutasi</a> -->
         <br><br>
-        <ul class="nav nav-tabs">
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}" value="1"
-                    milik="{{viewMode}}"><button class="circle-number" value="1">1</button>Informasi Umum</button></li>
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}" value="2"
-                    milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan
-                    Pekerjaan</button></li>
-            <li class="nav-item"><button
-                    class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}" value="3"
-                    milik="{{viewMode}}"><button class="circle-number" value="3">3</button>Kontak Darurat</button></li>
-        </ul>
-        <br>
-        <div class="d-flex flex-column">
+        <div class="card p-5">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '1'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="1" milik="{{viewMode}}"><button class="circle-number" value="1">1</button>Data
+                        Pribadi</button>
+                </li>
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '2'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="2" milik="{{viewMode}}"><button class="circle-number" value="2">2</button>Pendidikan dan
+                        Pekerjaan</button>
+                </li>
+                <li class="nav-item">
+                    <button class="change-page {{#if equals viewMode '3'}} nav-link active {{else}} nav-link {{/if}}"
+                        value="3" milik="{{viewMode}}"><button class="circle-number" value="3">3</button>Kontak
+                        Darurat</button>
+                </li>
+            </ul>
+            <br>
             <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}}">
-                <div class="form-group mb-2">
-                    <label>Nama Lengkap</label>
-                    <input type="text" id="input_fullName" value="{{employee.full_name}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor ID Pegawai (NIK / PASSPORT)</label>
-                    <input type="text" id="input_identificationNumber" value="{{employee.identification_number}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Kota Lahir</label>
-                    <input type="text" id="input_placeOfBirth" value="{{employee.place_of_birth}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tanggal Lahir</label>
-                    <input type="date" id="input_dateOfBirth" value="{{dateToHTML employee.dob}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Jenis Kelamin</label>
-                    <select id="input_gender" class="form-control">
-                        {{#if equals employee.gender "Pria"}}
-                        <option value="Pria" selected>Pria</option>
-                        {{else}}
-                        <option value="Pria">Pria</option>
-                        {{/if}}
-                        {{#if equals employee.gender "Wanita"}}
-                        <option value="Wanita" selected>Wanita</option>
-                        {{else}}
-                        <option value="Wanita">Wanita</option>
-                        {{/if}}
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Alamat</label>
-                    <input type="text" id="input_address" value="{{employee.address}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor Telepon</label>
-                    <input type="text" id="input_phoneNumber" value="{{employee.phone_number}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>E-mail</label>
-                    <input type="email" id="input_email" value="{{employee.email_address}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Marital Status</label>
-                    <input type="text" id="input_maritalStatus" value="{{employee.marital_status}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Jumlah Anak</label>
-                    <input type="number" id="input_numberOfChildren" value="{{employee.number_of_children}}"
-                        class="form-control" />
-                </div>
-                <!-- <div class="form-group mb-2">
-                    <label>Partner Code</label>
-                    <input type="text" id="input_partnerCode" value="{{employee.partnerCode}}" class="form-control" />
-                </div> -->
-                <div class="form-group mb-2">
-                    {{> inputFilesV2 name="gambar" label="Upload" }}
-                </div>
+                {{> c_select}}
+                <form>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Data Diri</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="form-group mb-2 col-6">
+                                    <label>Nama Lengkap *</label>
+                                    <input type="text" id="input_fullName" class="form-control"
+                                        value="{{employee.fullName}}" required />
+                                </div>
+                                <div class="form-group mb-2 col-2">
+                                    <label>Gelar</label>
+                                    <input type="text" id="input_gelar" class="form-control" value="{{employee.gelar}}"
+                                        required />
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>NIK *</label>
+                                    <input type="text" id="input_identificationNumber" value="{{employee.nik}}"
+                                        class="form-control" />
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>Kota Lahir *</label>
+                                    <input type="text" id="input_placeOfBirth" class="form-control"
+                                        value="{{employee.pob}}" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Lahir *</label>
+                                    <input type="date" id="input_dateOfBirth" class="form-control"
+                                        value="{{valueDate employee.dob}}" required />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Agama</label>
+                                    <select id="input_religi" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Katolik</option>
+                                        <option>Kristen</option>
+                                        <option>Islam</option>
+                                        <option>Hindu</option>
+                                        <option>Budha</option>
+                                        <option>Konghucu</option>
+                                        <option>Aliran Kepercayaan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jenis Kelamin</label>
+                                    <select id="input_gender" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Laki-Laki</option>
+                                        <option>Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Golongan Darah</label>
+                                    <select id="input_golonganDarah" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>O</option>
+                                        <option>A</option>
+                                        <option>B</option>
+                                        <option>AB</option>
+                                        <option>Tidak Tau</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Nama Ibu Kandung</label>
+                                    <input type="text" id="input_motherName" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>NPWP</label>
+                                    <input type="text" id="input_npwp" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Alamat Domisili</label>
+                                    <input type="text" id="input_address" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Status Pernikahan</label>
+                                    <select class="form-control" id="select_marrital">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Belum Kawin</option>
+                                        <option>Kawin</option>
+                                        <option>Cerai Hidup</option>
+                                        <option>Cerai Mati</option>
+                                        <option>Biarawan</option>
+                                        <option>Biarawati</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jumlah Anak</label>
+                                    <input type="number" id="input_numberOfChildren" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Kode Pos</label>
+                                    <input type="number" id="input_postal" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Informasi Unit Kerja</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-4">
+                                    <label>Unit Kerja</label>
+                                    <select id="select_school" class="form-control select2">
+                                        {{#each listSchool}}
+                                        {{#if equals name employee.unit.school}}
+                                        <option data-milik="{{jenjang}}" value="{{_id}}" selected>{{name}}</option>
+                                        {{else}}
+                                        <option data-milik="{{jenjang}}" value="{{_id}}">{{name}}</option>
+                                        {{/if}}
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4 col-4">
+                                    <label for="input_npsn">NPSN</label>
+                                    <input type="text" id="input_npsn" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Jenjang</label>
+                                    <input type="text" id="input_jenjang" class="form-control" disabled />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Perwakilan</label>
+                                    <input type="text" id="input_perwakilan" class="form-control" disabled />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Kota/Kabupaten</label>
+                                    <input type="text" id="input_cityUnit" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        {{> inputFilesV2 name="gambar" label="Upload" }}
+                    </div>
+                </form>
             </div>
             <div class="{{#if equals viewMode '2'}}{{else}}d-none{{/if}}">
-                <div class="form-group mb-2">
-                    <label>Pendidikan Terakhir</label>
-                    <input type="text" id="input_highestEducation" value="{{employee.highest_education}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tempat Menempuh Pendidikan Terakhir</label>
-                    <input type="text" id="input_educationInstitution" value="{{employee.education_institution}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Major</label>
-                    <input type="text" id="input_majorInHighestEducation"
-                        value="{{employee.major_in_highest_education}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Degree</label>
-                    <input type="text" id="input_academicDegree" value="{{employee.academic_degree}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Pengalaman Bekerja</label>
-                    <input type="text" id="input_previousWorkExperience" value="{{employee.previous_work_experience}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Posisi Pekerjaan</label>
-                    <input type="text" id="input_jobPosition" value="{{employee.job_position}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Departemen Unit</label>
-                    <input type="text" id="input_departementUnit" value="{{employee.department_unit}}"
-                        class="form-control" disabled />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Tanggal Mulai Bekerja</label>
-                    <input type="date" id="input_startDate" value="{{dateToHTML employee.start_date}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Status Employment</label>
-                    <select id="input_employmentStatus" class="form-control">
-                        {{#if equals employee.employment_status "Pegawai Kontrak"}}
-                        <option value="Pegawai Kontrak" selected>Pegawai Kontrak</option>
-                        {{else}}
-                        <option value="Pegawai Kontrak">Pegawai Kontrak</option>
-                        {{/if}}
-                        {{#if equals employee.employment_status "Pegawai Tetap"}}
-                        <option value="Pegawai Tetap" selected>Pegawai Tetap</option>
-                        {{else}}
-                        <option value="Pegawai Tetap">Pegawai Tetap</option>
-                        {{/if}}
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label>Gaji Pokok</label>
-                    <input type="text" id="input_baseSalery" value="{{employee.base_salary}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Uang Jajan</label>
-                    <input type="text" id="input_allowances" value="{{employee.allowances}}" class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Pengurangan Uang</label>
-                    <input type="text" id="input_deductions" value="{{employee.deductions}}" class="form-control" />
-                </div>
-                <!-- <div class="form-group mb-2">
-                    <label>Pengalaman Employment</label>
-                    <input type="text" id="input_employmentHistory" value="{{employee.employment_history}}"
-                        class="form-control" />
-                </div> -->
-                <div class="form-group mb-2">
-                    <label>Golongan</label>
-                    <select id="input_golongan" class="form-control">
-                        {{#if equals employee.golongan "1"}}
-                        <option value="1" selected>1</option>
-                        {{else}}
-                        <option value="1">1</option>
-                        {{/if}}
-                        {{#if equals employee.golongan "2"}}
-                        <option value="2" selected>2</option>
-                        {{else}}
-                        <option value="2">2</option>
-                        {{/if}}
-                        {{#if equals employee.golongan "3"}}
-                        <option value="3" selected>3</option>
-                        {{else}}
-                        <option value="3">3</option>
-                        {{/if}}
-                        {{#if equals employee.golongan "4"}}
-                        <option value="4" selected>4</option>
-                        {{else}}
-                        <option value="4">4</option>
-                        {{/if}}
-                    </select>
-                </div>
+                {{> c_select}}
+                <form>
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Pendidikan</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-6">
+                                    <label>Pendidikan Terakhir</label>
+                                    <select class="form-control" id="select_highEducation">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>SD </option>
+                                        <option>SMP </option>
+                                        <option>SMA </option>
+                                        <option>SMK </option>
+                                        <option>STM </option>
+                                        <option>SPG </option>
+                                        <option>SMPS </option>
+                                        <option>SMEA </option>
+                                        <option>D 1 </option>
+                                        <option>D 2 </option>
+                                        <option>D 3 </option>
+                                        <option>S 1 </option>
+                                        <option>S 2 </option>
+                                        <option>SMU </option>
+                                        <option>SMKI </option>
+                                        <option>-</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Nama Intansi Pendidikan Terakhir</label>
+                                    <input type="text" id="input_educationInstitution" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Jurusan</label>
+                                    <input type="text" id="input_major" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Tahun Lulus</label>
+                                    <input type="number" id="input_educationGraduate" class="form-control" min="1900"
+                                        max="2024" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Pekerjaan</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Mulai Bekerja</label>
+                                    <input type="date" id="input_startDateWorking"
+                                        value="{{valueDate employee.pekerjaan.startDateWorking}}"
+                                        class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>TMT Kerja Sesuai SK</label>
+                                    <input type="date" id="input_startDateWorkSk"
+                                        value="{{valueDate employee.pekerjaan.startDateWorkSk}}" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Tanggal Angkatan SK</label>
+                                    <input type="date" id="input_startDateAngkatanSk"
+                                        value="{{valueDate employee.pekerjaan.startDateAngkatanSk}}"
+                                        class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Selesai Masa Berlaku SK</label>
+                                    <input type="date" id="input_endDateWorkSk" class="form-control"
+                                        value="{{valueDate employee.pekerjaan.workPeriod}}" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>Status Pegawai</label>
+                                    <select id="input_employmentStatus" class="form-control">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Pegawai Tetap Yayasan (PTY)</option>
+                                        <option>Pegawai Tetap Perwakilan (PTP)</option>
+                                        <option>Pegawai Tidak Tetap (PTT)</option>
+                                        <option>Resign</option>
+                                        <option>Pensiun</option>
+                                        <option>Salah Unit Kerja</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>TUK</label>
+                                    <input type="text" id="input_tuk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Jabatan (Sesuai SK)</label>
+                                    <select class="form-control" id="selected_position">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Staf SDM</option>
+                                        <option>Staf Kependidikan</option>
+                                        <option>Staf Keuangan</option>
+                                        <option>Staf Legal</option>
+                                        <option>Staf Sarpras</option>
+                                        <option>Pelaksana Administrasi SDM</option>
+                                        <option>Pelaksana Administrasi Kependidikan</option>
+                                        <option>Pelaksana Administrasi Keuangan</option>
+                                        <option>Pelaksana Administrasi Legal</option>
+                                        <option>Pelaksana Administrasi Sarpras</option>
+                                        <option>Kepala Sekolah</option>
+                                        <option>Guru</option>
+                                        <option>Pelaksana Tata Usaha</option>
+                                        <option>Pelaksana Tata Usaha Keuangan</option>
+                                        <option>Pelaksana Tata Usaha UKS</option>
+                                        <option>Pelaksana Perpustakaan</option>
+                                        <option>Pelaksana Laboran</option>
+                                        <option>Pelaksana Toolman</option>
+                                        <option>Pelaksana Umum / Koperasi</option>
+                                        <option>Pelaksana Umum / Driver</option>
+                                        <option>Pembantu Pelaksana</option>
+                                        <option>Pembantu Pelaksana Keamanan</option>
+                                        <option>Pendamping Guru TK</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Keterangan Jabatan / Tugas Tambahan</label>
+                                    <input type="text" id="input_notePosition" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>Golongan/RU</label>
+                                    <select class="form-control" id="selected_gol">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>I/a Juru Muda</option>
+                                        <option>I/b Juru Muda Tingkat I</option>
+                                        <option>I/c Juru</option>
+                                        <option>I/d Juru Tingkat I</option>
+                                        <option>I/a Pengatur Muda</option>
+                                        <option>I/b Pengatur Muda Tingkat I</option>
+                                        <option>I/c Pengatur</option>
+                                        <option>I/d Pengatur Tingkat I</option>
+                                        <option>I/a Penata Muda</option>
+                                        <option>I/b Penata Muda Tingkat I</option>
+                                        <option>I/c Penata</option>
+                                        <option>I/d Penata Tingkat I</option>
+                                        <option>V/a Pembina</option>
+                                        <option>V/b Pembina Tingkat I</option>
+                                        <option>a percobaan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 col-6">
+                                    <label>NUPTK</label>
+                                    <input type="text" id="input_nuptk" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>No. Sertifikasi</label>
+                                    <input type="text" id="input_sertifikasiNumber" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>No. Sertf. Guru Penggerak</label>
+                                    <input type="text" id="input_sertifikasiNumber2" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2 col-4">
+                                    <label>NUKS / NRKS</label>
+                                    <input type="text" id="input_nuks" class="form-control" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card my-2">
+                        <div class="card-header">
+                            <h3>Assuransi</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label>Kepesertaan BPJS Ketenagakerjaan : </label>
+                                    {{#if employee.pekerjaan.bpjsTK}}
+                                    <input type="checkbox" id="input_bpjsTK" name="pilihan" checked>
+                                    {{else}}
+                                    <input type="checkbox" id="input_bpjsTK" name="pilihan" checked>
+                                    {{/if}}
+                                    <label>Sudah</label>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Tanggal Kepesertaan (OPSIONAL)</label>
+                                    <input type="date" class="form-control" id="input_dateBpjsTK"
+                                        value="{{valueDate employee.pekerjaan.dateBpjsTK}}">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Upah yang didaftarkan</label>
+                                    <input type="text" class="form-control" id="input_amountBpjsTK">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>NPP</label>
+                                    <input type="text" class="form-control" id="input_npp">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Nama Perusahaan</label>
+                                    <input type="text" class="form-control" id="input_companyName">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label>Kepesertaan BPJS Kesehatan</label>
+                                    <select class="form-control" id="select_kepesertaanBpjsKes">
+                                        <option>-- Silahkan Pilih --</option>
+                                        <option>Lembaga Yayasan</option>
+                                        <option>Lembaga Lainya</option>
+                                        <option>Mandiri</option>
+                                        <option>Belum Mengikuti</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Tanggal Kepesertaan (OPSIONAL)</label>
+                                    <input type="date" class="form-control" id="input_dateBpjsKS"
+                                        value="{{valueDate employee.asuransi.dateBpjsKs}}">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>UMK yang didaftarkan</label>
+                                    <input type="text" class="form-control" id="input_amountBpjsKS">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label>Keterangan</label>
+                                    <input type="text" class="form-control" id="input_noteBpjsKS">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- <div class="form-group mb-2">
+                        <label>Pengalaman Employment</label>
+                        <input type="text" id="input_employmentHistory" class="form-control" />
+                    </div> -->
+
+                </form>
             </div>
             <div class="{{#if equals viewMode '3'}}{{else}}d-none{{/if}}">
-                <div class="form-group mb-2">
-                    <label>Nama Kontak Darurat</label>
-                    <input type="text" id="input_emergencyContactName" value="{{employee.emergency_contact_name}}"
-                        class="form-control" />
-                </div>
-                <div class="form-group mb-2">
-                    <label>Nomor Kontak Darurat</label>
-                    <input type="text" id="input_emergencyContactPhone" value="{{employee.emergency_contact_phone}}"
-                        class="form-control" />
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" id="btn_update">Simpan</button>
-                </div>
+                {{> c_select}}
+                <form>
+                    <div class="card my-4">
+                        <div class="card-header">
+                            <h3>Kontak</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group mb-2">
+                                    <label>Nomor Telepon</label>
+                                    <input type="text" id="input_phoneNumber" class="form-control" />
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label>E-mail</label>
+                                    <input type="email" id="input_email" class="form-control" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

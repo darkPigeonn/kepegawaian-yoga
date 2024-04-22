@@ -201,3 +201,8 @@ Template.registerHelper("usia", function (dob) {
 //   }, 200);
 //   // $(".firstSelect2").select2({ width: "100%" });
 // };
+
+Template.registerHelper("valueDate", function (dob) {
+  if (dob) moment.locale("id");
+  return moment(dob).format("YYYY-MM-DD");
+});

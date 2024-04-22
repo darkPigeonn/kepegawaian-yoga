@@ -539,6 +539,7 @@ Template.employee_detail.onCreated(function () {
   // self.viewMode = new ReactiveVar("1");
   const id = FlowRouter.getParam("_id");
   // console.log(id);
+  self.viewMode = new ReactiveVar("0");
 
   Meteor.call("employee.getBy", id, function (error, result) {
     if (result) {
@@ -554,9 +555,18 @@ Template.employee_detail.helpers({
   employee() {
     return Template.instance().employee.get();
   },
+  viewMode() {
+    return Template.instance().viewMode.get();
+  },
 });
 
 Template.employee_detail.events({
+  "click .submenu"(e, t) {
+    const milik = $(e.target).attr("milik");
+    $(".submenu").removeClass("active");
+    $(e.target).addClass("active");
+    t.viewMode.set(milik);
+  },
   "click #btn-tambah-akun"(e, t) {
     e.preventDefault();
     const fullName = t.employee.get().full_name;
@@ -862,15 +872,70 @@ Template.employee_edit.onCreated(function () {
   const self = this;
 
   self.employee = new ReactiveVar();
+  self.listSchool = new ReactiveVar();
   self.viewMode = new ReactiveVar("1");
   const id = FlowRouter.getParam("_id");
+
   // console.log(id);
   Meteor.call("employee.getBy", id, function (error, result) {
     if (result) {
       // console.log(result);
       self.employee.set(result);
+
+      // //set otomatis berdasarkan field input
+      // const listItem = Object.keys(result);
+      // for (let item of listItem) {
+      //   let field = result[item];
+      //   console.log(item, "=>", field);
+      //   $(`#input_${item}`).val("hallo");
+      // }
+
+      //set untuk selected
+      $("#input_religi").val(result.religion);
+      $("#input_gender").val(result.gender);
+      $("#input_golonganDara").val(result.blood);
+      $("#select_marrital").val(result.marital_status);
+      $("#input_employmentStatus").val(result.pekerjaan.statusEmployee);
+      $("#selected_position").val(result.pekerjaan.position);
+      $("#selected_gol").val(result.pekerjaan.gol);
+
+      // setTimeout(() => {
+      //   $("#select_school").val(result.unit.school);
+      //   alert(result.unit.school);
+      // }, 1000);
+
+      //input
+      $("#input_motherName").val(result.motherName);
+      $("#input_npwp").val(result.npwp);
+      $("#input_address").val(result.address);
+      $("#input_address").val(result.address);
+      $("#input_numberOfChildren").val(result.totalChildren);
+      $("#input_postal").val(result.postalCode);
+      //unit
+      $("#input_npsn").val(result.unit.npsn);
+      $("#input_jenjang").val(result.unit.jenjang);
+      $("#input_perwakilan").val(result.unit.perwakilan);
+      $("#input_cityUnit").val(result.unit.cityUnit);
+      //pekerjaan
+      $("#input_tuk").val(result.pekerjaan.tuk);
+      $("#input_tuk").val(result.pekerjaan.tuk);
+      $("#input_notePosition").val(result.pekerjaan.positionNote);
+      $("#input_nuptk").val(result.pekerjaan.nuptk);
+      $("#input_sertifikasiNumber").val(result.pekerjaan.sertifikasiNumber);
+      $("#input_sertifikasiNumber2").val(result.pekerjaan.sertifikasiNumber2);
+      $("#input_nuks").val(result.pekerjaan.nuks);
     } else {
       console.log(error);
+    }
+  });
+
+  //
+  Meteor.call("schools.getAll", function (error, result) {
+    if (result) {
+      self.listSchool.set(result);
+      // startSelect2();
+    } else {
+      console.log("Gagal", error);
     }
   });
 });
@@ -878,6 +943,9 @@ Template.employee_edit.onCreated(function () {
 Template.employee_edit.helpers({
   employee() {
     return Template.instance().employee.get();
+  },
+  listSchool() {
+    return Template.instance().listSchool.get();
   },
   viewMode() {
     return Template.instance().viewMode.get();
@@ -903,6 +971,25 @@ Template.employee_edit.events({
   "click .change-page"(e, t) {
     const val = $(e.target).val();
     t.viewMode.set(val);
+    const employee = t.employee.get();
+    if (t.viewMode.get() === "2") {
+      const pendidikan = employee.pendidikan;
+      $("#select_highEducation").val(pendidikan.hightEducation);
+      $("#input_educationInstitution").val(pendidikan.nameIntitution);
+      $("#input_major").val(pendidikan.major);
+      $("#input_educationGraduate").val(pendidikan.yearGraduated);
+      //bpjs
+      $("#input_amountBpjsTK").val(result.asuransi.amountBpjsTK ?? 0);
+      $("#input_npp").val(result.asuransi.npp);
+      $("#input_companyName").val(result.asuransi.companyName);
+      $("#select_kepesertaanBpjsKes").val(result.asuransi.bpjsKS);
+      $("#input_amountBpjsKS").val(result.asuransi.amountBpjsKS ?? 0);
+      $("#input_noteBpjsKS").val(result.asuransi.noteBpjsKS);
+    }
+    if (t.viewMode.get() === "3") {
+      $("#input_phoneNumber").val(result.asuransi.phoneNumber);
+      $("#input_emauk").val(result.asuransi.email);
+    }
   },
   async "click #btn_update"(e, t) {
     e.preventDefault();
@@ -1382,6 +1469,8 @@ Template.upload_CSV.events({
               amountBpjsKS: element[47],
               note: element[48],
             },
+            phoneNumber: element[24],
+            email: element[25],
           };
           dataJson.push(newData);
         }
