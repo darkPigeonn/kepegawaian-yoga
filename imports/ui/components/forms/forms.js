@@ -547,7 +547,11 @@ Template.formLecturers.events({
         const noSkPenugasan = $("#inputNoSkPenugasanOthers").val()
         const peran = $("#inputPeranOthers").val()
         const startDate = $("#inputStartDateOthers").val()
-        const endDate = $("#inputEndDateOthers").val()
+        let endDate = $("#inputEndDateOthers").val()
+        const endDateCheckbox = document.getElementById("endDateOthersNow");
+        if (endDateCheckbox.checked) {
+            endDate = "Sampai Sekarang";
+        }
         const data = {
             name,
             noSkPenugasan,
@@ -604,7 +608,11 @@ Template.formLecturers.events({
         const name  = $("#inputJabatanStruktural").val()
         const noSk = $("#inputNomorSkImavi").val()
         const startDate = $("#inputStartDateImavi").val()
-        const endDate = $("#inputEndDateImavi").val()
+        let endDate = $("#inputEndDateImavi").val()
+        const endDateCheckbox = document.getElementById("endDateImaviNow");
+        if (endDateCheckbox.checked) {
+            endDate = "Sampai Sekarang";
+        }
         const data = {
             name,
             noSk,

@@ -6,13 +6,13 @@
         <div class="navigation-form d-flex gap-3">
             {{#if lessThan formPage 5}}
                 <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Profil Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Profil Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Profil Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
             {{else}}
                 <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Profil Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
             {{/if}}
         </div>
     </div>
@@ -24,6 +24,7 @@
             <div class="card-header bg-blue text-white">
                 Data Pokok
             </div>
+
             <div class="card-body">
                 <section class="p-2">
                     <form id="formLecturers">
@@ -61,7 +62,7 @@
                             </div>
                             <div class="form-group col">
                                 <label for="inputDob" class="fw-bold text-login-content">Tanggal Lahir</label>
-                                <input type="date" class="form-control" value="{{formData.dob}}" id="inputDob"  required>
+                                <input type="date" class="form-control" value="{{formData.dob}}" id="inputDob" lang="id" required>
                             </div>
                         </div>
 
@@ -292,11 +293,7 @@
                             <input type="text" class="form-control" id="inputEducationInstitution" >
                         </div>
                         <div class="form-group">
-                            <label for="inputStudyPublication" class="fw-bold text-login-content">Judul Tesis</label>
-                            <input type="text" class="form-control" id="inputStudyPublication">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDomestic" class="fw-bold text-login-content">Lembaga Domestik</label>
+                            <label for="inputDomestic" class="fw-bold text-login-content">Kategori Institusi</label>
                             <div class="d-flex flex-wrap gap-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="inputDomestic" id="inputDomestic" value="dalam negeri">
@@ -312,12 +309,17 @@
                                 </div>
                             </div>
                         </div>
-                 
                         <div class="form-group">
                             <label for="inputEducationEnd" class="fw-bold text-login-content">Tahun Lulus</label>
                             <input type="text" class="form-control" id="inputEducationEnd">
                         </div>
                       
+                 
+                        <div class="form-group">
+                            <label for="inputStudyPublication" class="fw-bold text-login-content">Judul Tesis</label>
+                            <input type="text" class="form-control" id="inputStudyPublication">
+                        </div>
+                   
                         <div class="d-flex justify-content-end mt-2">
                             <button class="btn btn-add btn-sm" id="add-history">
                                 <i class="fa fa-light fa-plus"></i>
@@ -490,11 +492,11 @@
                 <section class="p-2">
                     <form id="formLecturers">
                         <div class="form-group">
-                            <label for="inputCertificationType" class="fw-bold text-login-content">Tipe Sertifikasi</label>
+                            <label for="inputCertificationType" class="fw-bold text-login-content">Jenis Sertifikasi</label>
                             <input type="text" class="form-control" id="inputCertificationType" >
                         </div>
                         <div class="form-group">
-                            <label for="inputCertificationMajor" class="fw-bold text-login-content">Jurusan Sertifikasi</label>
+                            <label for="inputCertificationMajor" class="fw-bold text-login-content">Bidang Studi</label>
                             <input type="text" class="form-control" id="inputCertificationMajor" >
                         </div>
                         <div class="form-group">
@@ -506,22 +508,26 @@
                             <input type="text" class="form-control" id="inputSkNumber">
                         </div>
                         <div class="form-group">
-                            <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
-                            <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv">
+                            <label for="inputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
+                            <input type="text" class="form-control" id="inputCertificationEnd">
                         </div>
                         <div class="form-group">
-                            <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara Sertifikasi</label>
+                            <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara</label>
                             <input type="text" class="form-control" id="inputCertificationOrganiser" >
                         </div>
+
+                                           
                         <div class="form-group">
                             <label for="inputCertificationGrade" class="fw-bold text-login-content">Nilai</label>
                             <input type="text" class="form-control" id="inputCertificationGrade" >
                         </div>
-                        <div class="form-group">
-                            <label for="inputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
-                            <input type="text" class="form-control" id="inputCertificationEnd">
-                        </div>
              
+                        <div class="form-group">
+                            <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
+                            <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv">
+                        </div>
+
+              
                         <div class="d-flex justify-content-end mt-2 add-certification">
                             <button class="btn btn-add btn-sm">
                                 <i class="fa fa-light fa-plus"></i>
@@ -624,7 +630,7 @@
 
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
-            Riwayat Kerjapenugasan
+            Riwayat Kerja/Penugasan
         </div>
         <div class="card-body">
             <section class="p-2">
@@ -778,6 +784,8 @@
                         <select id="input-jenis" class="form-select filter">
                             <option value="Wajib">Wajib</option>
                             <option value="Tidak Wajib">Tidak Wajib</option>
+                            <option value="Tugas Akhir">Tugas Akhir</option>
+                            <option value="Thesis">Thesis</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1003,7 +1011,12 @@
                     </div>
                     <div class="form-group">
                         <label for="inputJenisPengujian" class="fw-bold text-login-content">Jenis Pengujian</label>
-                        <input type="text" class="form-control" id="inputJenisPengujian" >
+                        <select id="inputJenisPengujian" class="form-select filter">
+                            <option value="Thesis">Thesis</option>
+                            <option value="Tugas Akhir">Tugas Akhir</option>
+                            <option value="Skripsi">Skripsi</option>
+                        </select>
+                        
                     </div>
                     <div class="form-group">
                         <label for="inputJudulPengujian" class="fw-bold text-login-content">Judul Pengujian</label>
@@ -1011,7 +1024,10 @@
                     </div>
                     <div class="form-group">
                         <label for="inputKategoriKegiatanPengujian" class="fw-bold text-login-content">Kategori Kegiatan</label>
-                        <input type="text" class="form-control" id="inputKategoriKegiatanPengujian">
+                        <select id="inputKategoriKegiatanPengujian" class="form-select filter">
+                            <option value="Ketua">Ketua</option>
+                            <option value="Anggota">Anggota</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="inputBidangKeilmuanPengujian" class="fw-bold text-login-content">Bidang Keilmuan</label>
@@ -2245,30 +2261,8 @@
                                 </label>
                             </div>
                         </div>
-                        <script>
-                           
-                                const endDateInput = document.getElementById("inputEndDate");
-                                const endDateCheckbox = document.getElementById("endDateNow");
+                      
                         
-                           
-                                endDateInput.addEventListener("change", function() {
-                                    if (endDateInput) {
-                                        endDateCheckbox.disabled = true;
-                                    } else {
-                                        endDateCheckbox.disabled = false;
-                                    }
-                                });
-                        
-                           
-                                endDateCheckbox.addEventListener("change", function() {
-                                    if (endDateCheckbox.checked) {
-                                        endDateInput.disabled = true;
-                                    } else {
-                                        endDateInput.disabled = false;
-                                    }
-                                });
-                            
-                        </script>
                     </div>
                     
 
@@ -2357,7 +2351,7 @@
             <section class="p-2">
                 <form id="formLecturers">
                     <div class="form-group">
-                        <label for="inputNamaJurnalOthers" class="fw-bold text-login-content">Nama Jurnal</label>
+                        <label for="inputNamaJurnalOthers" class="fw-bold text-login-content">Nama Media</label>
                         <input type="text" class="form-control" id="inputNamaJurnalOthers">
                     </div>
                     <div class="form-group">
@@ -2377,6 +2371,12 @@
                         <div class="form-group col">
                             <label for="inputEndDateOthers" class="fw-bold text-login-content">Tanggal Selesai</label>
                             <input type="date" class="form-control" id="inputEndDateOthers">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="endDateOthersNow">
+                                <label class="form-check-label" for="endDateOthersNow">
+                                    Sampai Sekarang
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mt-2 add-others-media">
@@ -2404,7 +2404,13 @@
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                     <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{formatHRDate item.startDate}}</label>
-                                    <label class="col text-break"><b>Tahun berakhir:</b> {{formatHRDate item.endDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b>
+                                        {{#if (equals item.endDate 'Sampai Sekarang')}}
+                                        Sampai Sekarang
+                                        {{else}}
+                                            {{formatHRDate item.endDate}}
+                                        {{/if}}
+                                    </label>
                                 </div>
                             </div>
                         {{/each}}
@@ -2450,7 +2456,7 @@
     <!-- Jabatan Struktural Imavi -->
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
-            Jabatan Struktural Imavi
+            Jabatan Struktural IMAVI
         </div>
         <div class="card-body">
             <section class="p-2">
@@ -2470,6 +2476,12 @@
                     <div class="form-group">
                         <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
                         <input type="text" class="form-control" id="inputEndDateImavi" >
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="endDateImaviNow">
+                            <label class="form-check-label" for="endDateImaviNow">
+                                Sampai Sekarang
+                            </label>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end mt-2 add-imavistructure">
                         <button class="btn btn-add btn-sm">
@@ -2495,7 +2507,13 @@
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                    <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                    <label class="col text-break"><b>Tahun berakhir:</b> 
+                                        {{#if (equals item.endDate 'Sampai Sekarang')}}
+                                        Sampai Sekarang
+                                        {{else}}
+                                            {{item.endDate}}
+                                        {{/if}}
+                                    </label>
                                 </div>
                             </div>
                         {{/each}}
@@ -2537,6 +2555,36 @@
         </div>
     </div>
 
+    <script>
+    
+        const endDateInputs = document.querySelectorAll("#inputEndDate, #inputEndDateOthers, #inputEndDateImavi");
+        const endDateCheckboxes = document.querySelectorAll("#endDateNow, #endDateOthersNow, #endDateImaviNow");
+    
+        endDateInputs.forEach(function(endDateInput) {
+            endDateInput.addEventListener("change", function() {
+                if (endDateInput.value) {
+                    const index = Array.from(endDateInputs).indexOf(endDateInput);
+                    endDateCheckboxes[index].disabled = true;
+                } else {
+                    const index = Array.from(endDateInputs).indexOf(endDateInput);
+                    endDateCheckboxes[index].disabled = false;
+                }
+            });
+        });
+ 
+        endDateCheckboxes.forEach(function(endDateCheckbox) {
+            endDateCheckbox.addEventListener("change", function() {
+                if (endDateCheckbox.checked) {
+                    const index = Array.from(endDateCheckboxes).indexOf(endDateCheckbox);
+                    endDateInputs[index].disabled = true;
+                } else {
+                    const index = Array.from(endDateCheckboxes).indexOf(endDateCheckbox);
+                    endDateInputs[index].disabled = false;
+                }
+            });
+        });
+    </script>
+
     <!-- Kegitan Profesi -->
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
@@ -2550,7 +2598,7 @@
                         <input type="text" class="form-control" id="inputNamaOrganisasi">
                     </div>
                     <div class="form-group">
-                        <label for="inputPeranProfesi" class="fw-bold text-login-content">Peran/Kedudukan Mulai Keanggotaan</label>
+                        <label for="inputPeranProfesi" class="fw-bold text-login-content">Peran/Kedudukan</label>
                         <input type="text" class="form-control" id="inputPeranProfesi">
                     </div>
                     <div class="form-group">
