@@ -17,7 +17,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Nama Lengkap</th>
                         <th scope="col">Roles</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,10 +33,10 @@
                         <td> {{roles}} </td>
                         <td>
                             <a href="/editUser/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
                             </a>
                             <button class="btn btn-danger" type="button" id="btn_delete"
-                                data-id="{{_id}}">Delete</button>
+                                data-id="{{_id}}">Hapus</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -62,7 +62,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Nama Lengkap</th>
                         <th scope="col">Roles</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +79,7 @@
                         <td>
                             <!-- <a href="/user/remove/{{_id}}"> -->
                                 <button class="btn btn-danger" type="button" id="btn_delete"
-                                    data-id="{{_id}}">Delete</button>
+                                    data-id="{{_id}}">Hapus</button>
                             <!-- </a> -->
                         </td>
                     </tr>
@@ -167,7 +167,7 @@
 </template>
 
 <template name="editUser">
-    <h1>Edit User</h1>
+    <h1>Ubah User</h1>
     <form class="d-flex justify-content-center align-items-center vh-50">
         <div class="form-group mb-2">
             <label for="input_username">Username</label>
@@ -249,7 +249,7 @@
 </template>
 
 <template name="changePassUser">
-    <h1>Edit Password User</h1>
+    <h1>Ubah Password User</h1>
     <form class="d-flex justify-content-center align-items-center vh-50">
         <div class="form-group mb-2">
             <label for="input_password">Password Baru</label>
@@ -284,7 +284,7 @@
                 <th>Email</th>
                 <th>Nama Lengkap</th>
                 <tH>Outlet</tH>
-                <th>Action</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -348,7 +348,7 @@
                                     <th>Nomor</th>
                                     <th>Nama Employee</th>
                                     <th>Nama Akun App_User</th>
-                                    <th>Actions</th>
+                                    <th>Aksi</th>
                                 </thead>
                                 <tbody>
                                     {{#each i in dataConnect}}

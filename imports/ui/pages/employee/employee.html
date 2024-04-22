@@ -15,7 +15,7 @@
         </div>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
-                <a href="/employees/uploadCSV" class="btn btn-primary mx-2"> Upload CSV</a>
+                <a href="/employees/uploadCSV" class="btn btn-primary mx-2"> Unggah CSV</a>
                 <a href="/employees/create" class="btn btn-primary">+ Tambah</a>
             </div>
         </div>
@@ -28,8 +28,8 @@
                         <th scope="col">Jabatan</th>
                         <!-- <th scope="col">Tanggal Lahir</th> -->
                         <th scope="col">Tahun Masuk</th>
-                        <th scope="col">Departement</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Departemen</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,14 +43,14 @@
                         <td> {{department_unit}} </td>
                         <td>
                             <a href="/employees/edit/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
                             </a>
                             <a href="/employees/detail/{{_id}}">
-                                <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
                             </a>
                             <!-- <a href="/employees/remove/{{_id}}"> -->
                             <button class="btn btn-danger" type="button" id="btn_delete"
-                                data-id="{{_id}}">Delete</button>
+                                data-id="{{_id}}">Hapus</button>
                             <!-- </a> -->
                         </td>
                     </tr>

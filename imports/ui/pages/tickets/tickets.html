@@ -15,7 +15,7 @@
                         <th scope="col">Status</th>
                         <th scope="col">Pembuat</th>
                         <th scope="col">Tanggal Dibuat</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,23 +31,23 @@
                                 {{#if equals isOwned 1}}
                                     {{#if equals status "Selesai"}}
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
-                                            <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                            <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
                                         </a>
                                     {{else}}
                                         <a href="/tickets/edit/{{toMeteorId _id}}">
                                             <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
                                         </a>
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
-                                            <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                            <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
                                         </a>
                                         <a href="/tickets/message/{{toMeteorId _id}}">
                                             <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
                                         </a>
-                                        <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Delete</button>
+                                        <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Hapus</button>
                                     {{/if}}
                                 {{else}}
                                     <a href="/tickets/detail/{{toMeteorId _id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Details</button>
+                                        <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
                                     </a>
                                     <a href="/tickets/message/{{toMeteorId _id}}">
                                         <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
