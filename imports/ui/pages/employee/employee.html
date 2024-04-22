@@ -1,6 +1,7 @@
 <template name="employee_page">
+    {{> loadingBar}}
     <div class="container">
-        <div class="mt-5">
+        <!-- <div class="mt-5">
             <h1>Pegawai</h1>
             <div class="d-flex mb-2">
                 <select id="input_type" class="form-select filter">
@@ -12,22 +13,25 @@
                 </select>
                 <input type="text" id="input_data" class="form-control filter" placeholder="Data" />
             </div>
-        </div>
+        </div> -->
+        {{#if isInRoles currentUser.roles 'admin'}}
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/employees/uploadCSV" class="btn btn-primary mx-2"> Upload CSV</a>
                 <a href="/employees/create" class="btn btn-primary">+ Tambah</a>
             </div>
         </div>
+        {{/if}}
         <div class="d-lg-block table-responsive">
-            <table class="table">
+            <table class="table" id="table-pegawai">
                 <thead>
                     <tr>
                         <th scope="col">NIY</th>
                         <th scope="col">Nama</th>
+                        <th scope="col">Jabatan</th>
                         <th scope="col">Perwakilan</th>
                         <th scope="col">Unit Kerja</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +39,7 @@
                     <tr>
                         <td> {{niy}}</td>
                         <td> {{fullName}} </td>
+                        <td> {{pekerjaan.position}} </td>
                         <td>{{unit.perwakilan}}</td>
                         <td>{{unit.school}}</td>
                         <td>
@@ -84,7 +89,7 @@
             </ul>
             <br>
             <div class="{{#if equals viewMode '1'}}{{else}}d-none{{/if}}">
-
+                {{> c_select}}
                 <form>
                     <div class="card">
                         <div class="card-header">
@@ -92,8 +97,9 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
+
                                 <div class="form-group mb-2 col-6">
-                                    <label>Nama Lengkap</label>
+                                    <label>Nama Lengkap *</label>
                                     <input type="text" id="input_fullName" class="form-control" required />
                                 </div>
                                 <div class="form-group mb-2 col-2">
@@ -102,21 +108,21 @@
                                 </div>
 
                                 <div class="form-group mb-2 col-4">
-                                    <label>NIK</label>
+                                    <label>NIK *</label>
                                     <input type="text" id="input_identificationNumber" class="form-control" />
                                 </div>
 
                                 <div class="form-group mb-2 col-4">
-                                    <label>Kota Lahir</label>
+                                    <label>Kota Lahir *</label>
                                     <input type="text" id="input_placeOfBirth" class="form-control" />
                                 </div>
                                 <div class="form-group mb-2 col-4">
-                                    <label>Tanggal Lahir</label>
-                                    <input type="date" id="input_dateOfBirth" class="form-control" />
+                                    <label>Tanggal Lahir *</label>
+                                    <input type="date" id="input_dateOfBirth" class="form-control" required />
                                 </div>
                                 <div class="form-group mb-2 col-4">
                                     <label>Agama</label>
-                                    <select id="input_religi" class="form-control">
+                                    <select id="input_religi" class="form-control select2">
                                         <option>-- Silahkan Pilih --</option>
                                         <option>Katolik</option>
                                         <option>Kristen</option>
@@ -160,7 +166,7 @@
                                 </div>
                                 <div class="form-group mb-2 col-4">
                                     <label>Status Pernikahan</label>
-                                    <select class="form-control" id="select_marrital">
+                                    <select class="form-control select2" id="select_marrital">
                                         <option>-- Silahkan Pilih --</option>
                                         <option>Belum Kawin</option>
                                         <option>Kawin</option>
@@ -191,7 +197,7 @@
                             <div class="row">
                                 <div class="form-group mb-2 col-4">
                                     <label>Unit Kerja</label>
-                                    <select id="select_school" class="form-control">
+                                    <select id="select_school" class="form-control select2">
                                         <option>-- Pilih Unit Kerja --</option>
                                         {{#each listSchool}}
                                         <option data-milik="{{jenjang}}" value="{{_id}}">{{name}}</option>
@@ -535,117 +541,188 @@
 
 <template name="employee_detail">
     <div class="desktop-div">
-        <div class="box">
-            <div class="sidebar">
-                <div class="bagianAvatar"
-                    style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                    <div style="text-align: center;">
-                        <div class="gambarAvatar"
-                            style="border: 1px solid black; width: 100px; height: 100px; border-radius: 100%; margin: auto;">
-                            <img src={{employee.linkGambar}}
-                                style="width: 100px; height: 100px; border-radius: 100%; margin: auto; object-fit: cover;">
+        <div class="card my-5">
+            <div class="row">
+                <div class="sidebar">
+                    <div class="bagianAvatar"
+                        style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                        <div style="text-align: center;">
+                            <div class="gambarAvatar"
+                                style="border: 1px solid black; width: 100px; height: 100px; border-radius: 100%; margin: auto;">
+                                <img src={{employee.linkGambar}}
+                                    style="width: 100px; height: 100px; border-radius: 100%; margin: auto; object-fit: cover;">
+                            </div>
+                            <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.fullName}}
+                            </p>
+                            <!-- <span>-</span> -->
+                            <!-- <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun Mobile</button>
+                            <br><br>
+                            <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun Website</button> -->
                         </div>
-                        <p style="margin-bottom: 5px; margin-top: 10px; font-weight: bold;">{{employee.full_name}}</p>
-                        <!-- <span>-</span> -->
-                        <button class="btn btn-primary" id="btn-tambah-akun">Buat Akun Mobile</button>
-                        <br><br>
-                        <button class="btn btn-primary" id="btn-tambah-akun-user">Buat Akun Website</button>
+                    </div>
+
+                    <div class="bagianItems">
+                        <!-- <ul class="nav flex-column">
+                            <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
+                                        class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
+                        </ul> -->
                     </div>
                 </div>
-                <div class="gap" style="border: 1px solid gray; margin-left: 20px; margin-right: 20px; width: auto;">
-                </div>
-                <div class="bagianItems">
-                    <!-- <ul class="nav flex-column">
-                        <li class="nav-item active"><a href="/employees/detail/{{employee._id}}"><i
-                                    class="fa-regular fa-user" style="padding-right: 3px;"></i> General</a></li>
-                    </ul> -->
-                </div>
-            </div>
-            <div class="content">
-                <div class="contentAtas">
-                    <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
-                            href="/employees/detail/{{employee._id}}">
-                            {{employee.full_name}}</a></p>
-                    <p style="font-size: 32px; font-weight: bold;">Personal</p>
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
-                                    value="Informasi Umum" class="nav-link active"></a></li>
-                        <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input
-                                    type="button" value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
-                        <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
-                                    type="button" value="Kontak Darurat" class="nav-link"></a></li>
-                        <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input type="button"
-                                    value="Konfigurasi" class="nav-link"></a></li>
-                    </ul>
-                </div>
-                <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
-                <div style="overflow: auto; height: 100%; width: 100%;">
-                    <div class="contentBawah">
-                        <div class="personalData" style=" display: flex;">
-                            <div class="tulisanPersonalData">
-                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data Pribadi
-                                </p>
-                            </div>
-                            <div class="isiPersonalData table-responsive">
-                                <table>
-                                    <tr style="padding-bottom: 20px; padding-top: 20px;">
-                                        <td style="padding:0px 15px 20px 15px;">Nama Lengkap</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.full_name}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px; width: 150px;">Nomor Telepon</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.phone_number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Email</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.email_address}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Kota Lahir</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.place_of_birth}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Tanggal Lahir</td>
-                                        <td style="padding:0 15px 20px 200px;">{{formatHRDate employee.dob}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Jenis Kelamin</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.gender}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Marital Status</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.marital_status}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Jumlah Anak</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.number_of_children}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Partner Kode</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.partnerCode}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                <div class="content">
+                    <div class="contentAtas">
+                        <p style="color: blue; margin: 0;"> <a href="/employees"> Pegawai</a> / <a
+                                href="/employees/detail/{{employee._id}}">
+                                {{employee.fullName}}</a></p>
+                        <p style="font-size: 32px; font-weight: bold;">Personal</p>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item"><a href="/employees/detail/{{employee._id}}"><input type="button"
+                                        value="Informasi Umum" class="nav-link active"></a></li>
+                            <li class="nav-item"><a href="/employees/detail/academicJob/{{employee._id}}"><input
+                                        type="button" value="Pendidikan dan Pekerjaan" class="nav-link"></a></li>
+                            <li class="nav-item"><a href="/employees/detail/emergencyContact/{{employee._id}}"><input
+                                        type="button" value="Kontak Darurat" class="nav-link"></a></li>
+                            <li class="nav-item"><a href="/employees/detail/config/{{employee._id}}"><input
+                                        type="button" value="Konfigurasi" class="nav-link"></a></li>
+                        </ul>
                     </div>
                     <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
-                    <div class="contentBawah-1">
-                        <div class="personalData" style=" display: flex;">
-                            <div class="tulisanPersonalData">
-                                <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Identitas dan
-                                    Alamat</p>
+                    <div style="overflow: auto; height: 100%; width: 100%;">
+                        <div class="contentBawah">
+                            <div class="personalData">
+                                <div class="tulisanPersonalData">
+                                    <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Data
+                                        Pribadi
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Nama Lengkap</div>
+                                            <div class="value">{{employee.fullName}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Gelar</div>
+                                            <div class="value">{{employee.gelar}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">NIK</div>
+                                            <div class="value">{{employee.nik}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Tempat Lahir</div>
+                                            <div class="value">{{employee.pob}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Tanggal Lahir</div>
+                                            <div class="value">{{formatHRDate employee.dob}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Usia</div>
+                                            <div class="value">{{usia employee.dob}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Jenis Kelamin</div>
+                                            <div class="value">{{employee.gender}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Agama</div>
+                                            <div class="value">{{employee.religion}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Golongan Darah</div>
+                                            <div class="value">{{employee.blood}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">NPWP</div>
+                                            <div class="value">{{employee.npwp}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Alamat Domisili</div>
+                                            <div class="value">{{employee.address}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Kode Pos</div>
+                                            <div class="value">{{employee.postalCode}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Status Pernikahan</div>
+                                            <div class="value">{{employee.marital_status}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Jumlah Anak</div>
+                                            <div class="value">{{employee.totalChildren}}</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="isiPersonalData table-responsive">
-                                <table>
-                                    <tr style="padding-bottom: 20px; padding-top: 20px;">
-                                        <td style="padding:0px 15px 20px 15px; width: 150px;">Nomor ID</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.identification_number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:0 15px 20px 15px;">Alamat</td>
-                                        <td style="padding:0 15px 20px 200px;">{{employee.address}}</td>
-                                    </tr>
-                                </table>
+                        </div>
+                        <div class="gap" style="border: 1px solid gray; margin: 10px 20px; width: auto;"></div>
+                        <div class="contentBawah-1">
+                            <div class="personalData">
+                                <div class="tulisanPersonalData">
+                                    <p style="color: black; font-weight: bold; font-size: 28px; width: 20vw;">Informasi
+                                        Unit Kerja
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Unit Kerja</div>
+                                            <div class="value">{{employee.unit.school}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">NPSN</div>
+                                            <div class="value">{{employee.unit.npsn}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Jenjang</div>
+                                            <div class="value">{{employee.unit.jenjang}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Perwakilan</div>
+                                            <div class="value">{{employee.unit.perwakilan}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="content-data">
+                                            <div class="label">Kota/Kabupaten</div>
+                                            <div class="value">{{ employee.unit.cityUnit}}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -805,7 +882,7 @@
             width: 100%;
             height: 100%;
             flex: 1;
-            border-right: 1px solid black;
+
         }
 
         .content {

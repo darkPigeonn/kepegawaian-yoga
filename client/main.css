@@ -118,3 +118,24 @@
 @keyframes l8-2{
   100% {transform:translate(0.1px)} 
 }
+
+
+input:required + label::after {
+  content: '*';
+  color: red;
+}
+input:required + label::before{
+  content: "* "
+}
+
+.content-data{
+  display:flex;
+  flex-direction:column;
+  margin-bottom : 10px;
+}
+.content-data .label{
+  color : grey;
+}
+.content-data .value{
+  font-size : 18px;
+}

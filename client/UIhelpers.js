@@ -186,8 +186,14 @@ Template.registerHelper("statusDetail", function (data) {
 });
 
 Template.registerHelper("isInRoles", function (roles, role) {
-  console.log(roles);
   return roles.includes(role);
+});
+
+Template.registerHelper("usia", function (dob) {
+  const today = new Date();
+  const selisih = today - dob;
+  var years = moment().diff(dob, "years", false);
+  return years;
 });
 // startSelect2 = function () {
 //   setTimeout(() => {

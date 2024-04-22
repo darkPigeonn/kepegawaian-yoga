@@ -1,6 +1,7 @@
 import "./employee.html";
 import "../../components/card/card";
 import "../../components/tables/tables";
+import "../../components/select/select";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import moment from "moment";
 import Swal from "sweetalert2";
@@ -13,7 +14,7 @@ import { startSelect2 } from "../../../startup/client";
 
 Template.employee_page.onCreated(function () {
   const self = this;
-
+  isLoading(true);
   self.employees = new ReactiveVar();
   self.filter = new ReactiveVar({
     type: "",
@@ -33,13 +34,18 @@ Template.employee_page.onCreated(function () {
   Meteor.call("employee.getDataLogin", userId, function (error, result) {
     if (result) {
       const dataRole = result[0];
-      console.log(dataRole);
       self.jabatanLogin.set(dataRole);
     } else {
       console.log(error);
     }
   });
-  isLoading(false);
+  setTimeout(() => {
+    new DataTable("#table-pegawai", {
+      responsive: true,
+      order: [[0, "asc"]],
+    });
+    isLoading(false);
+  }, 1000);
 });
 
 Template.employee_page.helpers({
@@ -166,7 +172,7 @@ Template.employee_create.onCreated(function () {
   Meteor.call("schools.getAll", function (error, result) {
     if (result) {
       self.listSchool.set(result);
-      startSelect2();
+      // startSelect2();
     } else {
       console.log("Gagal", error);
     }
@@ -208,9 +214,6 @@ Template.employee_create.events({
 
   "change #select_school": function (e, t) {
     const listSchool = t.listSchool.get();
-    var selectedOption = event.target.selectedOptions[0]; // Mendapatkan opsi yang dipilih
-    var dataMilikValue = selectedOption.getAttribute("data-milik"); // Mendapatkan nilai atribut data-milik
-    $("#input_jenjang").val(dataMilikValue);
 
     const id = e.target.value;
     const findSchool = listSchool.find((item) => {
@@ -223,7 +226,9 @@ Template.employee_create.events({
     $("#input_perwakilan").val(findSchool.unitName);
     $("#input_cityUnit").val(findSchool.city);
     $("#input_npsn").val(findSchool.npsn);
+    $("#input_jenjang").val(findSchool.jenjang);
   },
+
   async "click #btn_save"(e, t) {
     e.preventDefault();
     // info diri
@@ -232,7 +237,7 @@ Template.employee_create.events({
       gelar: $("#input_gelar").val(),
       nik: $("#input_identificationNumber").val(),
       pob: $("#input_placeOfBirth").val(),
-      dob: $("#input_dateOfBirth").val(),
+      dob: new Date($("#input_dateOfBirth").val()),
       religion: $("#input_religi").val(),
       gender: $("#input_gender").val(),
       blood: $("#input_golonganDarah").val(),

@@ -140,6 +140,7 @@ Template.home_admin.onCreated(function () {
     });
     isLoading(false);
   }, 1000);
+  isLoading(false);
 });
 Template.home_admin.helpers({
   employees() {

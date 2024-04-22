@@ -1,6 +1,9 @@
 import "./body.html";
 import "../../components/navbar/navbar.js";
 import { Meteor } from "meteor/meteor";
+Template.login_page.onCreated(function () {
+  isLoading(false);
+});
 Template.login_page.events({
   "click .submit"(e, t) {
     e.preventDefault();
