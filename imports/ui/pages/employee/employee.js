@@ -261,10 +261,10 @@ Template.employee_create.events({
         yearGraduated: $("#input_educationGraduate").val(),
       },
       pekerjaan: {
-        startDateWorking: $("#input_startDateWorking").val(),
-        startDateWorkSk: $("#input_startDateWorkSk").val(),
-        startDateAngkatanSk: $("#input_startDateAngkatanSk").val(),
-        endDateWorkSk: $("#input_endDateWorkSk").val(),
+        startDateWorking: new Date($("#input_startDateWorking").val()),
+        startDateWorkSk: new Date($("#input_startDateWorkSk").val()),
+        startDateAngkatanSk: new Date($("#input_startDateAngkatanSk").val()),
+        endDateWorkSk: new Date($("#input_endDateWorkSk").val()),
         statusEmployee: $("#input_employmentStatus").val(),
         tuk: $("#input_tuk").val(),
         position: $("#selected_position").val(),
@@ -276,124 +276,17 @@ Template.employee_create.events({
       },
       asuransi: {
         bpjsTK: $("#input_bpjsTK").val(),
-        startDateBpjsTK: $("#input_dateBpjsTK").val(),
+        startDateBpjsTK: new Date($("#input_dateBpjsTK").val()),
         amountBpjsTK: $("#input_amountBpjsTK").val(),
         npp: $("#input_npp").val(),
         companyName: $("#input_companyName").val(),
         bpjsKS: $("#select_kepesertaanBpjsKes").val(),
-        startDateBpjsKS: $("#input_dateBpjsKS").val(),
+        startDateBpjsKS: new Date( $("#input_dateBpjsKS").val()),
         amountBpjsKS: $("#input_amountBpjsKS").val(),
         note: $("#input_noteBpjsKS").val(),
       },
     };
 
-    console.log(formData);
-    return;
-
-    dob = new Date(dob);
-    start_date = new Date(start_date);
-    // console.log(isNumber(gajiPokok));
-    // console.log(full_name);
-
-    const dataForm = $(".form-control");
-    // console.log(dataForm);
-    let cek = false;
-    for (let index = 0; index < dataForm.length; index++) {
-      let data = dataForm[index].value;
-      // console.log(data);
-      if (dataForm[index].value == "") {
-        cek = true;
-      }
-    }
-    if (cek == true) {
-      Swal.fire({
-        title: "Gagal",
-        text: "Data harus diisi semua",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-
-    // console.log(base_salary, allowances, deductions);
-    // return;
-
-    if (!isNumber(emergency_contact_phone) || !isNumber(phone_number)) {
-      // console.log("gagal no telp masuk sini");
-      Swal.fire({
-        title: "Gagal",
-        text: "Nomor Telepon harus angka dan diisi",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-
-    if (!base_salary) {
-      // console.log("gagal uang masuk sini");
-      // alert("Gaji pokok atau Allowance harus angka");
-      Swal.fire({
-        title: "Gagal",
-        text: "Gaji pokok atau Allowance harus angka dan diisi",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-
-    emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
-    phone_number = formatPhoneNumber(phone_number);
-
-    const file = $(`#gambar`).prop("files");
-    console.log(file);
-    const thisForm = {};
-    thisForm[gambar] = "";
-    // console.log(file[0].name);
-    if (file[0]) {
-      const uploadData = {
-        fileName: "employee/" + file[0].name,
-        type: "image/png",
-        Body: file[0],
-      };
-      thisForm[gambar] = await uploadFiles(uploadData);
-    }
-
-    const linkGambar = thisForm[gambar];
-    if (!linkGambar) {
-      console.log("link url tidak ada");
-    }
-    console.log(linkGambar);
-    // console.log(linkGambar);
-    const data = {
-      full_name,
-      identification_number,
-      place_of_birth,
-      dob,
-      gender,
-      address,
-      phone_number,
-      email_address,
-      job_position,
-      department_unit,
-      start_date,
-      employment_status,
-      base_salary,
-      allowances,
-      deductions,
-      highest_education,
-      education_institution,
-      major_in_highest_education,
-      academic_degree,
-      previous_work_experience,
-      marital_status,
-      number_of_children,
-      emergency_contact_name,
-      emergency_contact_phone,
-      // employment_history,
-      // partnerCode,
-      linkGambar,
-      golongan,
-    };
     if (!linkGambar) {
       Swal.fire({
         title: "Warning",
@@ -405,7 +298,7 @@ Template.employee_create.events({
       }).then((result) => {
         if (result.isConfirmed) {
           data.linkGambar = "";
-          Meteor.call("employee.insert", data, function (error, result) {
+          Meteor.call("employee.insert", formData, function (error, result) {
             if (result) {
               // alert("Sukses");
               Swal.fire({
@@ -442,7 +335,7 @@ Template.employee_create.events({
         text: "Apakah anda ingin menyimpan data pegawai ini",
       }).then((result) => {
         if (result.isConfirmed) {
-          Meteor.call("employee.insert", data, function (error, result) {
+          Meteor.call("employee.insert", formData, function (error, result) {
             if (result) {
               // alert("Sukses");
               Swal.fire({
@@ -993,123 +886,61 @@ Template.employee_edit.events({
   },
   async "click #btn_update"(e, t) {
     e.preventDefault();
-
-    const full_name = $("#input_fullName").val();
-    const identification_number = $("#input_identificationNumber").val();
-    const place_of_birth = $("#input_placeOfBirth").val();
-    let dob = $("#input_dateOfBirth").val();
-    const gender = $("#input_gender").val();
-    const address = $("#input_address").val();
-    let phone_number = parseInt($("#input_phoneNumber").val());
-    const email_address = $("#input_email").val();
-    const job_position = $("#input_jobPosition").val();
-    const department_unit = $("#input_departementUnit").val();
-    let start_date = $("#input_startDate").val();
-    const employment_status = $("#input_employmentStatus").val();
-    const base_salary = parseInt($("#input_baseSalery").val());
-    const allowances = parseInt($("#input_allowances").val());
-    const deductions = parseInt($("#input_deductions").val());
-    const highest_education = $("#input_highestEducation").val();
-    const education_institution = $("#input_educationInstitution").val();
-    const major_in_highest_education = $(
-      "#input_majorInHighestEducation"
-    ).val();
-    const academic_degree = $("#input_academicDegree").val();
-    const previous_work_experience = $("#input_previousWorkExperience").val();
-    const marital_status = $("#input_maritalStatus").val();
-    const number_of_children = $("#input_numberOfChildren").val();
-    const emergency_contact_name = $("#input_emergencyContactName").val();
-    let emergency_contact_phone = parseInt(
-      $("#input_emergencyContactPhone").val()
-    );
-    // const employment_history = $("#input_employmentHistory").val();
-    // const partnerCode = $("#input_partnerCode").val();
-    const golongan = $("#input_golongan").val();
-    dob = new Date(dob);
-    start_date = new Date(start_date);
-
-    console.log(golongan);
-
     const id = FlowRouter.getParam("_id");
-    // console.log(id);
-    // return
-
-    const dataForm = $(".form-control");
-    // console.log(dataForm);
-    let cek = false;
-    for (let index = 0; index < dataForm.length; index++) {
-      let data = dataForm[index].value;
-      // console.log(data);
-      if (dataForm[index].value == "") {
-        cek = true;
-      }
-    }
-    if (cek == true) {
-      Swal.fire({
-        title: "Gagal",
-        text: "Data harus diisi semua",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-
-    console.log(base_salary);
-
-    if (base_salary == undefined || base_salary == null) {
-      // alert("Gaji pokok atau Allowance harus angka");
-      Swal.fire({
-        title: "Gagal",
-        text: "Gaji pokok atau Allowance harus angka dan diisi",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-    if (!isNumber(emergency_contact_phone) || !isNumber(phone_number)) {
-      Swal.fire({
-        title: "Gagal",
-        text: "Nomor Telepon harus angka dan diisi",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-      return;
-    }
-    emergency_contact_phone = formatPhoneNumber(emergency_contact_phone);
-    phone_number = formatPhoneNumber(phone_number);
-
-    const file = $(`#gambar`).prop("files");
-    console.log(file.length);
-    if (file.length == 0) {
-      const data = {
-        full_name,
-        identification_number,
-        place_of_birth,
-        dob,
-        gender,
-        address,
-        phone_number,
-        email_address,
-        job_position,
-        department_unit,
-        start_date,
-        employment_status,
-        base_salary,
-        allowances,
-        deductions,
-        highest_education,
-        education_institution,
-        major_in_highest_education,
-        academic_degree,
-        previous_work_experience,
-        marital_status,
-        number_of_children,
-        emergency_contact_name,
-        emergency_contact_phone,
-        // employment_history,
-        // partnerCode,
-        golongan,
-      };
+    const formData = {
+      fullName: $("#input_fullName").val(),
+      gelar: $("#input_gelar").val(),
+      nik: $("#input_identificationNumber").val(),
+      pob: $("#input_placeOfBirth").val(),
+      dob: new Date($("#input_dateOfBirth").val()),
+      religion: $("#input_religi").val(),
+      gender: $("#input_gender").val(),
+      blood: $("#input_golonganDarah").val(),
+      motherName: $("#input_motherName").val(),
+      npwp: $("#input_npwp").val(),
+      address: $("#input_address").val(),
+      marital_status: $("#select_marrital").val(),
+      totalChildren: $("#input_numberOfChildren").val(),
+      postalCode: $("#input_postal").val(),
+      unit: {
+        school: $("#select_school").val(),
+        npsn: $("#input_npsn").val(),
+        jenjang: $("#input_jenjang").val(),
+        perwakilan: $("#input_perwakilan").val(),
+        cityUnit: $("#input_cityUnit").val(),
+      },
+      pendidikan: {
+        hightEducation: $("#select_highEducation").val(),
+        nameIntitution: $("#input_educationInstitution").val(),
+        major: $("#input_major").val(),
+        yearGraduated: $("#input_educationGraduate").val(),
+      },
+      pekerjaan: {
+        startDateWorking: $("#input_startDateWorking").val(),
+        startDateWorkSk: $("#input_startDateWorkSk").val(),
+        startDateAngkatanSk: $("#input_startDateAngkatanSk").val(),
+        endDateWorkSk: $("#input_endDateWorkSk").val(),
+        statusEmployee: $("#input_employmentStatus").val(),
+        tuk: $("#input_tuk").val(),
+        position: $("#selected_position").val(),
+        gol: $("#selected_gol").val(),
+        nuptk: $("#input_nuptk").val(),
+        sertifikasiNumber: $("#input_sertifikasiNumber").val(),
+        sertifikasiNumber2: $("#input_sertifikasiNumber2").val(),
+        nuks: $("#input_nuks").val(),
+      },
+      asuransi: {
+        bpjsTK: $("#input_bpjsTK").val(),
+        startDateBpjsTK: $("#input_dateBpjsTK").val(),
+        amountBpjsTK: $("#input_amountBpjsTK").val(),
+        npp: $("#input_npp").val(),
+        companyName: $("#input_companyName").val(),
+        bpjsKS: $("#select_kepesertaanBpjsKes").val(),
+        startDateBpjsKS: $("#input_dateBpjsKS").val(),
+        amountBpjsKS: $("#input_amountBpjsKS").val(),
+        note: $("#input_noteBpjsKS").val(),
+      },
+    };
       Swal.fire({
         title: "Warning",
         icon: "warning",
@@ -1119,7 +950,7 @@ Template.employee_edit.events({
         text: "Apakah anda yakin ingin update data pegawai",
       }).then((result) => {
         if (result.isConfirmed) {
-          Meteor.call("employee.update", id, data, function (error, result) {
+          Meteor.call("employee.update", id, formData, function (error, result) {
             if (result) {
               // console.log(result);
               // alert("Sukses");
