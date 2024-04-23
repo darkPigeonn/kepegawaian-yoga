@@ -2261,13 +2261,9 @@
                                 </label>
                             </div>
                         </div>
-                      
+
                         
                     </div>
-                    
-
-                    
-
                     <div class="d-flex justify-content-end mt-2 add-journalManager">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -2324,7 +2320,13 @@
                                         </div>
                                         <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b> 
+                                            {{#if (equals item.endDate 'Sampai Sekarang')}}
+                                            Sampai Sekarang
+                                            {{else}}
+                                                {{formatHRDate item.endDate}}
+                                            {{/if}}
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -2405,10 +2407,10 @@
                                     <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{formatHRDate item.startDate}}</label>
                                     <label class="col text-break"><b>Tahun berakhir:</b>
-                                        {{#if (equals item.endDate 'Sampai Sekarang')}}
+                                        {{#if (equals item.endDateOtherMedia 'Sampai Sekarang')}}
                                         Sampai Sekarang
                                         {{else}}
-                                            {{formatHRDate item.endDate}}
+                                            {{formatHRDate item.endDateOtherMedia}}
                                         {{/if}}
                                     </label>
                                 </div>
@@ -2417,7 +2419,7 @@
                     </div>
                     <!-- Mobile -->
                     <div class="form-group mobile-div">
-                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Pengelola Media Lain</label>
+                        <label for="inputlistOthersMedia" class="fw-bold text-login-content">Daftar Pengelola Media Lain</label>
                         {{#each item in listOthersMedia}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
@@ -2435,7 +2437,13 @@
                                         </div>
                                         <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b>
+                                            {{#if (equals item.endDateOtherMedia 'Sampai Sekarang')}}
+                                            Sampai Sekarang
+                                            {{else}}
+                                                {{formatHRDate item.endDateOtherMedia}}
+                                            {{/if}}
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -2508,10 +2516,10 @@
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
                                     <label class="col text-break"><b>Tahun berakhir:</b> 
-                                        {{#if (equals item.endDate 'Sampai Sekarang')}}
+                                        {{#if (equals item.endDateImaviStructure 'Sampai Sekarang')}}
                                         Sampai Sekarang
                                         {{else}}
-                                            {{item.endDate}}
+                                            {{item.endDateImaviStructure}}
                                         {{/if}}
                                     </label>
                                 </div>
@@ -2537,7 +2545,13 @@
                                             <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                        <label class="col text-break"><b>Tahun berakhir:</b> {{item.endDate}}</label>
+                                        <label class="col text-break"><b>Tahun berakhir:</b>  
+                                            {{#if (equals item.endDateImaviStructure 'Sampai Sekarang')}}
+                                            Sampai Sekarang
+                                            {{else}}
+                                                {{item.endDateImaviStructure}}
+                                            {{/if}}
+                                        </label>
                                     </div>
                                 </div>
                             </div>

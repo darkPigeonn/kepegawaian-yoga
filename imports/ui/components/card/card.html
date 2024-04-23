@@ -313,7 +313,7 @@
                       {{#if myData.username}}
                       <p class="open-sans text-dark">{{myData.username}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -351,7 +351,7 @@
                         {{#if myData.fullName}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.fullName}}</p>
                         {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                         {{/if}}
                     </div>
                     <div class="mb-3">
@@ -362,7 +362,7 @@
                         {{#if myData.email}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.email}}</p>
                         {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                         {{/if}}
                     </div>
                 </div>
@@ -375,7 +375,7 @@
                       {{#if myData.pob}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.pob}}</p>
                       {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                     </div>
                     <div class="mb-3">
@@ -386,7 +386,7 @@
                         {{#if myData.dob}}
                         <p class="open-sans text-dark">{{myData.dob}}</p>
                         {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                         {{/if}}
                     </div>
                 </div>
@@ -399,7 +399,7 @@
                       {{#if myData.address}}
                         <p class="open-sans text-dark">{{capitalizeWord myData.address}}</p>
                       {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                     </div>
                     <div class="mb-3">
@@ -414,7 +414,7 @@
                             <p class="open-sans text-dark">Perempuan</p>
                           {{/if}}
                         {{else}}
-                        <p class="open-sans text-dark"><i>No Data</i></p>
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                         {{/if}}
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                       {{#if myData.phoneNumber}}
                       <p class="open-sans text-dark">{{myData.phoneNumber}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -443,7 +443,7 @@
                       {{#if myData.nationality}}
                       <p class="open-sans text-dark">{{myData.nationality}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -456,7 +456,7 @@
                       {{#if myData.religion}}
                       <p class="open-sans text-dark">{{myData.religion}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -471,7 +471,7 @@
                           {{#if myData.nik}}
                           <p class="open-sans text-dark">{{myData.nik}}</p>
                           {{else}}
-                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                           {{/if}}
                       </div>
                   </div>
@@ -484,7 +484,7 @@
                       {{#if myData.registeredAddress}}
                       <p class="open-sans text-dark">{{myData.registeredAddress}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                     </div>
                   </div>
@@ -497,12 +497,22 @@
                         <i class="fa fa-light fa-book"></i>
                         Minat Penelitian
                       </p>
-                      {{#if myData.researchInterest}}
-                      <p class="open-sans text-dark">
-                        {{myData.researchInterest}}
-                      </p>
+                      {{#if myData.listresearchinterest}}
+                      <div class="accordion" id="accordionProfesi">
+                        {{#each item in myData.listresearchinterest}}
+                          <div class="accordion-item" style="border: 1px solid lightgray;">
+                              <!-- Header -->
+                              <h5 class="accordion-header" >
+                                  <h5 class="text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapseProfesi{{@index}}" aria-expanded="true" aria-controls="collapseProfesi{{@index}}">
+                                      {{capitalizeWord item.title}}
+                                  </h5>
+                              </h5>
+                              
+                          </div>
+                        {{/each}}
+                      </div>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -526,7 +536,7 @@
                       {{#if myData.nidn}}
                       <p class="open-sans text-dark">{{myData.nidn}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -538,7 +548,7 @@
                       {{#if myData.position}}
                       <p class="open-sans text-dark">{{myData.position}}</p>
                       {{else}}
-                      <p class="open-sans text-dark"><i>No Data</i></p>
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                       {{/if}}
                   </div>
                 </div>
@@ -552,7 +562,7 @@
                           {{#if myData.academicRank}}
                           <p class="open-sans text-dark">{{myData.academicRank}}</p>
                           {{else}}
-                          <p class="open-sans text-dark"><i>No Data</i></p>
+                          <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                           {{/if}}
                       </div>
                   </div>
@@ -598,7 +608,7 @@
                                             {{#if item.startDate}}
                                             <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
                                             {{else}}
-                                            <p class="open-sans text-dark"><i>No Data</i></p>
+                                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                             {{/if}}
                                         </div>
                                     </div>
@@ -610,7 +620,7 @@
                                             {{#if item.endDate}}
                                             <p class="open-sans text-dark">{{formatHRDate item.endDate}}</p>
                                             {{else}}
-                                            <p class="open-sans text-dark"><i>No Data</i></p>
+                                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                             {{/if}}
                                         </div>
                                     </div>
@@ -654,7 +664,7 @@
                                   {{#if item.educationLevel}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.educationLevel}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -666,7 +676,7 @@
                                   {{#if item.major}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -678,7 +688,7 @@
                                   {{#if item.institution}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -690,7 +700,7 @@
                                   {{#if item.studyPublication}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.studyPublication}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -705,7 +715,7 @@
                                   
                       
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -720,7 +730,7 @@
                                       {{#if item.dateStart}}
                                       <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
                                       {{else}}
-                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                       {{/if}}
                                   </div>
                               </div>
@@ -732,7 +742,7 @@
                                       {{#if item.dateEnd}}
                                       <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
                                       {{else}}
-                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                       {{/if}}
                                   </div>
                               </div>
@@ -776,7 +786,7 @@
                                   {{#if item.type}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -788,7 +798,7 @@
                                   {{#if item.major}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -800,7 +810,7 @@
                                   {{#if item.organizer}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -812,7 +822,7 @@
                                   {{#if item.registrationNumber}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.registrationNumber}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -824,7 +834,7 @@
                                   {{#if item.skNumber}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.skNumber}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -836,7 +846,7 @@
                                   {{#if item.fileLink}}
                                   <p class="open-sans text-dark"><a href="{{item.fileLink}}" class="link-{{@index}}">Download</a></p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -848,7 +858,7 @@
                                   {{#if item.grade}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.grade}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -862,7 +872,7 @@
                                       {{#if item.dateEnd}}
                                       <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
                                       {{else}}
-                                      <p class="open-sans text-dark"><i>No Data</i></p>
+                                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                       {{/if}}
                                   </div>
                               </div>
@@ -922,7 +932,7 @@
                                   {{#if item.place}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.place}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -934,7 +944,7 @@
                                   {{#if item.period}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.period}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -946,7 +956,7 @@
                                   {{#if item.notes}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.notes}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1005,7 +1015,7 @@
                                   {{#if item.ps}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.ps}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1017,7 +1027,7 @@
                                   {{#if item.type}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1029,7 +1039,7 @@
                                   {{#if item.bidangKeilmuan}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1041,7 +1051,7 @@
                                   {{#if item.mhsTotal}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.mhsTotal}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1053,7 +1063,7 @@
                                   {{#if item.SKS}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.SKS}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1096,7 +1106,7 @@
                                   {{#if item.title}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1108,7 +1118,7 @@
                                   {{#if item.pembimbingCategory}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.pembimbingCategory}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1120,7 +1130,7 @@
                                   {{#if item.bidangKeilmuan}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1132,7 +1142,7 @@
                                   {{#if item.lembagaName}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.lembagaName}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1144,7 +1154,7 @@
                                   {{#if item.programStudi}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.programStudi}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                               <div class="mb-3">
@@ -1154,7 +1164,7 @@
                                 {{#if item.endDate}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                             </div>
@@ -1198,7 +1208,7 @@
                                   {{#if item.title}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1210,7 +1220,7 @@
                                   {{#if item.type}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1222,7 +1232,7 @@
                                   {{#if item.category}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1234,7 +1244,7 @@
                                   {{#if item.bidangKeilmuan}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.bidangKeilmuan}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1246,7 +1256,7 @@
                                   {{#if item.lembaga}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.lembaga}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                               <div class="mb-3">
@@ -1256,7 +1266,7 @@
                                 {{#if item.ps}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.ps}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                               </div>
                               <div class="mb-3">
@@ -1266,7 +1276,7 @@
                                 {{#if item.endDate}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                               </div>
                             </div>
@@ -1310,7 +1320,7 @@
                                   {{#if item.isbn}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.isbn}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1322,7 +1332,7 @@
                                   {{#if item.publishDate}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.publishDate}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1334,7 +1344,7 @@
                                   {{#if item.publisher}}
                                   <p class="open-sans text-dark">{{capitalizeWord item.publisher}}</p>
                                   {{else}}
-                                  <p class="open-sans text-dark"><i>No Data</i></p>
+                                  <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
                               </div>
                             </div>
@@ -1396,7 +1406,7 @@
                                 {{#if item.study}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.study}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1408,7 +1418,7 @@
                                 {{#if item.year}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1420,7 +1430,7 @@
                                 {{#if item.duration}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.duration}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1432,7 +1442,7 @@
                                 {{#if item.link}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.link}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1475,7 +1485,7 @@
                                 {{#if item.title}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1488,7 +1498,7 @@
                                 {{#if item.isbn}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.isbn}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1500,7 +1510,7 @@
                                 {{#if item.publisher}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.publisher}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1512,7 +1522,7 @@
                                 {{#if item.city}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.city}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                             <div class="mb-3">
@@ -1522,7 +1532,7 @@
                               {{#if item.endDate}}
                               <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                               {{else}}
-                              <p class="open-sans text-dark"><i>No Data</i></p>
+                              <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                               {{/if}}
                           </div>
                           </div>
@@ -1565,7 +1575,7 @@
                                 {{#if item.title}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1577,7 +1587,7 @@
                                 {{#if item.doi}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.doi}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1589,7 +1599,7 @@
                                 {{#if item.name}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.name}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1601,7 +1611,7 @@
                                 {{#if item.volume}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.volume}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1613,7 +1623,7 @@
                                 {{#if item.number}}
                                 <p class="open-sans text-dark">{{item.number}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                             <div class="mb-3">
@@ -1623,7 +1633,7 @@
                               {{#if item.year}}
                               <p class="open-sans text-dark">{{item.year}}</p>
                               {{else}}
-                              <p class="open-sans text-dark"><i>No Data</i></p>
+                              <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                               {{/if}}
                             </div>
                             <div class="mb-3">
@@ -1633,7 +1643,7 @@
                               {{#if item.cJournal}}
                               <p class="open-sans text-dark">{{capitalizeWord item.cJournal}}</p>
                               {{else}}
-                              <p class="open-sans text-dark"><i>No Data</i></p>
+                              <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                               {{/if}}
                             </div>
                             <div class="mb-3">
@@ -1643,7 +1653,7 @@
                               {{#if item.link}}
                               <p class="open-sans text-dark">{{capitalizeWord item.link}}</p>
                               {{else}}
-                              <p class="open-sans text-dark"><i>No Data</i></p>
+                              <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                               {{/if}}
                             </div>
                           </div>
@@ -1686,7 +1696,7 @@
                                 {{#if item.name}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.name}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1698,7 +1708,7 @@
                                 {{#if item.volume}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.volume}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1710,7 +1720,7 @@
                                 {{#if item.number}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.number}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1722,7 +1732,7 @@
                                 {{#if item.dateOfPublisher}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.dateOfPublisher}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1734,7 +1744,7 @@
                                 {{#if item.year}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1746,7 +1756,7 @@
                                 {{#if item.link}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.link}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1792,7 +1802,7 @@
                                 {{#if item.name}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.name}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1804,7 +1814,7 @@
                                 {{#if item.volume}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.volume}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1816,7 +1826,7 @@
                                 {{#if item.number}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.number}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1828,7 +1838,7 @@
                                 {{#if item.dateOfPublisher}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.dateOfPublisher}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1840,7 +1850,7 @@
                                 {{#if item.year}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1852,7 +1862,7 @@
                                 {{#if item.link}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.link}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1898,7 +1908,7 @@
                                 {{#if item.category}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1910,7 +1920,7 @@
                                 {{#if item.cActivity}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.cActivity}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1922,7 +1932,7 @@
                                 {{#if item.number}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.number}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1934,7 +1944,7 @@
                                 {{#if item.dateOfPublisher}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.dateOfPublisher}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -1946,7 +1956,7 @@
                                 {{#if item.year}}
                                 <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                                 {{else}}
-                                <p class="open-sans text-dark"><i>No Data</i></p>
+                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
                             </div>
                           </div>
@@ -2011,7 +2021,7 @@
                                {{#if item.category}}
                                <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2023,7 +2033,7 @@
                                {{#if item.startYear}}
                                <p class="open-sans text-dark">{{capitalizeWord item.startYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2035,7 +2045,7 @@
                                {{#if item.endYear}}
                                <p class="open-sans text-dark">{{capitalizeWord item.endYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2079,7 +2089,7 @@
                                {{#if item.category}}
                                <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2092,7 +2102,7 @@
                                {{#if item.organizer}}
                                <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2104,7 +2114,7 @@
                                {{#if item.startYear}}
                                <p class="open-sans text-dark">{{capitalizeWord item.startYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2116,7 +2126,7 @@
                                {{#if item.endYear}}
                                <p class="open-sans text-dark">{{capitalizeWord item.endYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                        
@@ -2161,7 +2171,7 @@
                                {{#if item.type}}
                                <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2173,7 +2183,7 @@
                                {{#if item.institution}}
                                <p class="open-sans text-dark">{{capitalizeWord item.institution}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2185,7 +2195,7 @@
                                {{#if item.source}}
                                <p class="open-sans text-dark">{{capitalizeWord item.source}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2197,7 +2207,7 @@
                                {{#if item.startYear}}
                                <p class="open-sans text-dark">{{capitalizeWord item.startYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2209,7 +2219,7 @@
                                {{#if item.endYear}}
                                <p class="open-sans text-dark">{{item.endYear}}</p>
                                {{else}}
-                               <p class="open-sans text-dark"><i>No Data</i></p>
+                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                {{/if}}
                            </div>
                          </div>
@@ -2270,7 +2280,7 @@
                              {{#if item.theme}}
                              <p class="open-sans text-dark">{{capitalizeWord item.theme}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2282,7 +2292,7 @@
                              {{#if item.year}}
                              <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2294,7 +2304,7 @@
                              {{#if item.duration}}
                              <p class="open-sans text-dark">{{capitalizeWord item.duration}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2339,7 +2349,7 @@
                              {{#if item.title}}
                              <p class="open-sans text-dark">{{capitalizeWord item.title}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2352,7 +2362,7 @@
                              {{#if item.conference}}
                              <p class="open-sans text-dark">{{capitalizeWord item.conference}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2364,7 +2374,7 @@
                              {{#if item.organizer}}
                              <p class="open-sans text-dark">{{capitalizeWord item.organizer}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                        </div>
@@ -2376,7 +2386,7 @@
                              {{#if item.endYear}}
                              <p class="open-sans text-dark">{{ item.date}}</p>
                              {{else}}
-                             <p class="open-sans text-dark"><i>No Data</i></p>
+                             <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
                          </div>
                      
@@ -2421,7 +2431,7 @@
                             {{#if item.noSkPenugasan}}
                             <p class="open-sans text-dark">{{capitalizeWord item.noSkPenugasan}}</p>
                             {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
+                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                             {{/if}}
                         </div>
                       </div>
@@ -2433,7 +2443,7 @@
                             {{#if item.peran}}
                             <p class="open-sans text-dark">{{capitalizeWord item.peran}}</p>
                             {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
+                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                             {{/if}}
                         </div>
                       </div>
@@ -2445,7 +2455,7 @@
                             {{#if item.startDate}}
                             <p class="open-sans text-dark">{{item.startDate}}</p>
                             {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
+                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                             {{/if}}
                         </div>
                       </div>
@@ -2457,7 +2467,7 @@
                             {{#if item.endDate}}
                             <p class="open-sans text-dark">{{ item.endDate}}</p>
                             {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
+                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                             {{/if}}
                         </div>
                       </div>
@@ -2473,6 +2483,8 @@
         {{/if}}
      </div>
 </div>
+
+<!-- Pengelola Media Lain -->
 
 <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
      <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
@@ -2499,9 +2511,9 @@
                              No. SK Penulisan
                            </p>
                            {{#if item.type}}
-                           <p class="open-sans text-dark">{{capitalizeWord item.noSkPenugasan}}</p>
+                           <p class="open-sans text-dark">{{item.noSkPenugasan}}</p>
                            {{else}}
-                           <p class="open-sans text-dark"><i>No Data</i></p>
+                           <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                            {{/if}}
                        </div>
                      </div>
@@ -2513,7 +2525,7 @@
                            {{#if item.institution}}
                            <p class="open-sans text-dark">{{capitalizeWord item.peran}}</p>
                            {{else}}
-                           <p class="open-sans text-dark"><i>No Data</i></p>
+                           <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                            {{/if}}
                        </div>
                      </div>
@@ -2523,24 +2535,29 @@
                              Terhitung Mulai
                            </p>
                            {{#if item.source}}
-                           <p class="open-sans text-dark">{{ item.startDate}}</p>
+                           <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
                            {{else}}
-                           <p class="open-sans text-dark"><i>No Data</i></p>
+                           <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                            {{/if}}
                        </div>
                      </div>
                      <div class="col-md-6">
-                       <div class="mb-3">
-                           <p class="form-label open-sans text-dark fw-bold">
-                             Tanggal Selesai
-                           </p>
-                           {{#if item.endDate}}
-                           <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
-                           {{else}}
-                           <p class="open-sans text-dark"><i>No Data</i></p>
-                           {{/if}}
-                       </div>
-                     </div>
+                      <div class="mb-3">
+                          <p class="form-label open-sans text-dark fw-bold">
+                              Tanggal Selesai
+                          </p>
+                          {{#if (equals item.endDateOtherMedia 'Sampai Sekarang')}}
+                              <p class="open-sans text-dark">Sampai Sekarang</p>
+                          {{else}}
+                              {{#if item.endDateOtherMedia}}
+                                  <p class="open-sans text-dark"><i>{{formatHRDate item.endDateOtherMedia}}</i></p>
+                              {{else}}
+                                  <p class="open-sans text-dark">Tidak ada data</p>
+                              {{/if}}
+                          {{/if}}
+                      </div>
+                  </div>
+                  
                      
                    </div>
                  </div>
@@ -2551,85 +2568,6 @@
        {{else}}
          No Pengelola Media Lain 
        {{/if}}
-     </div>
-     <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
-      <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
-        <label class="pt-1">Pengelola Media Lain</label>
-      </div>
-      <div class="card-body detail-body">
-        {{#if myData.listOthersMedia}}
-          <div class="accordion" id="accordionEducation">
-            {{#each item in myData.listOthersMedia}}
-              <div class="accordion-item" style="border: 1px solid lightgray;">
-                <!-- Header -->
-                <h2 class="accordion-header" >
-                  <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapsePengujian{{@index}}" aria-expanded="true" aria-controls="collapsePengujian{{@index}}">
-                      {{capitalizeWord item.name}}
-                  </button>
-                </h2>
-                <!-- Content -->
-                <div id="collapsePengujian{{@index}}" class="accordion-collapse collapse" aria-labelledby="headingEducation{{@index}}" data-parent="#accordionEducation">
-                  <div class="accordion-body">
-                    <div class="row row-cols-1 row-cols-md-2">
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                            <p class="form-label open-sans text-dark fw-bold">
-                              No. SK Penulisan
-                            </p>
-                            {{#if item.type}}
-                            <p class="open-sans text-dark">{{capitalizeWord item.noSkPenugasan}}</p>
-                            {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
-                            {{/if}}
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                            <p class="form-label open-sans text-dark fw-bold">
-                              Peran
-                            </p>
-                            {{#if item.institution}}
-                            <p class="open-sans text-dark">{{capitalizeWord item.peran}}</p>
-                            {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
-                            {{/if}}
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                            <p class="form-label open-sans text-dark fw-bold">
-                              Terhitung Mulai
-                            </p>
-                            {{#if item.source}}
-                            <p class="open-sans text-dark">{{ item.startDate}}</p>
-                            {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
-                            {{/if}}
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mb-3">
-                            <p class="form-label open-sans text-dark fw-bold">
-                              Tanggal Selesai
-                            </p>
-                            {{#if item.endDate}}
-                            <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
-                            {{else}}
-                            <p class="open-sans text-dark"><i>No Data</i></p>
-                            {{/if}}
-                        </div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            {{/each}}
-          </div>
-        {{else}}
-          No Pengelola Media Lain 
-        {{/if}}
-      </div>
      </div>
 </div>
 
@@ -2661,7 +2599,7 @@
                      {{#if item.noSk}}
                      <p class="open-sans text-dark">{{capitalizeWord item.noSk}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2673,7 +2611,7 @@
                      {{#if item.institution}}
                      <p class="open-sans text-dark">{{item.startDate}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2685,7 +2623,7 @@
                      {{#if item.endDate}}
                      <p class="open-sans text-dark">{{ item.endDate}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2730,7 +2668,7 @@
                      {{#if item.peran}}
                      <p class="open-sans text-dark">{{capitalizeWord item.peran}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2742,7 +2680,7 @@
                      {{#if item.startDate}}
                      <p class="open-sans text-dark">{{capitalizeWord item.startDate}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2754,7 +2692,7 @@
                      {{#if item.endDate}}
                      <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2766,7 +2704,7 @@
                      {{#if item.instansi}}
                      <p class="open-sans text-dark">{{capitalizeWord item.instansi}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2810,7 +2748,7 @@
                      {{#if item.type}}
                      <p class="open-sans text-dark">{{capitalizeWord item.type}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2822,7 +2760,7 @@
                      {{#if item.year}}
                      <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>
@@ -2834,7 +2772,7 @@
                      {{#if item.instansi}}
                      <p class="open-sans text-dark">{{capitalizeWord item.instansi}}</p>
                      {{else}}
-                     <p class="open-sans text-dark"><i>No Data</i></p>
+                     <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                      {{/if}}
                  </div>
                </div>

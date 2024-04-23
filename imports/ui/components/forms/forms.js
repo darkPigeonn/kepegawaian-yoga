@@ -82,6 +82,8 @@ Template.formLecturers.onRendered( function(){
     }
 })
 
+
+
 Template.formLecturers.helpers({
     listPengujian(){
         return Template.instance().listPengujian.get()
@@ -179,7 +181,10 @@ Template.formLecturers.helpers({
     }
 });
 
+
+
 Template.formLecturers.events({
+    
     "change #inputFileSk" (e, t){
         e.preventDefault();
         const file = e.target.files[0]
@@ -218,6 +223,7 @@ Template.formLecturers.events({
           $('#inputImageProfile').attr('src', '#')
         }
     },
+
     'click #remove-profile' (e, t){
         e.preventDefault()
         $('#inputImageProfile').attr('src', "")
@@ -226,34 +232,28 @@ Template.formLecturers.events({
         delete formData.imageLink
         t.formData.set(formData)
     },
+
     "click #add-history" (e, t){
         e.preventDefault()
         const listEducationalHistory = t.listEducationalHistory.get()
         const educationLevel = $("#inputEducationLevel").val()
         const major = $("#inputEducationMajor").val()
         const institution = $("#inputEducationInstitution").val()
-        // const graduateDegree = $("#inputGraduateDegree").val()
         const studyPublication = $("#inputStudyPublication").val()
         const domesticStatus = $("input[name=inputDomestic]:checked").val()
-        // const formalStatus = $("input[name=inputFormalStatus]:checked").val()
-        const dateEnd = $("#inputEducationEnd").val()
-      
-        
+        const dateEnd = $("#inputEducationEnd").val()  
         const data = {
             educationLevel,
             major,
             institution,
             domesticStatus,
-            // graduateDegree,
             studyPublication,
-            // formalStatus,
             dateEnd,
-           
+        
         }
 
         listEducationalHistory.push(data)
         t.listEducationalHistory.set(listEducationalHistory)
-        // console.log(t.listEducationalHistory.get());
     },
     "click .add-publication" (e,t){
         e.preventDefault()
@@ -281,9 +281,7 @@ Template.formLecturers.events({
         e.preventDefault()
         const listresearchinterest = t.listresearchinterest.get()
         const title = $("#inputResearchInterest").val()
-       
         const data ={
-           
             title
         }
         listresearchinterest.push(data)
@@ -393,7 +391,6 @@ Template.formLecturers.events({
             dateOfPublisher
     
         }
-        // console.log(data)
         listIpr.push(data)
         t.listIpr.set(listIpr)
     },
@@ -514,56 +511,85 @@ Template.formLecturers.events({
     },
 
     "click .add-journalManager" (e, t){
-        e.preventDefault()
-        const listJournalManager = t.listJournalManager.get()
-        const name  = $("#inputNamaJurnal").val()
-        const noSkPenugasan = $("#inputNoSkPenugasan").val()
-        const peran = $("#inputPeran").val()
-        const startDate = $("#inputStartDate").val()
-        // const endDate = $("#inputEndDate").val()
-        let endDate = $("#inputEndDate").val();
-    
-        const endDateCheckbox = document.getElementById("endDateNow");
-        if (endDateCheckbox.checked) {
+        e.preventDefault();
+        const listJournalManager = t.listJournalManager.get();
+        const name  = $("#inputNamaJurnal").val();
+        const noSkPenugasan = $("#inputNoSkPenugasan").val();
+        const peran = $("#inputPeran").val();
+        const startDate = $("#inputStartDate").val();
+        let endDate;
+        const endDateCheckboxJournal = $("#endDateNow").prop("checked");
+        if (endDateCheckboxJournal) {
             endDate = "Sampai Sekarang";
+        } else {
+            endDate = $("#inputEndDate").val();
         }
-    
         const data = {
             name,
             noSkPenugasan,
             peran,
             startDate,
             endDate           
-        }
-        // console.log(data)
-        listJournalManager.push(data)
-        t.listJournalManager.set(listJournalManager)
+        };
+        listJournalManager.push(data);
+        t.listJournalManager.set(listJournalManager);
     },
-
+    
     "click .add-others-media" (e, t){
-        e.preventDefault()
-        const listOthersMedia = t.listOthersMedia.get()
-        const name  = $("#inputNamaJurnalOthers").val()
-        const noSkPenugasan = $("#inputNoSkPenugasanOthers").val()
-        const peran = $("#inputPeranOthers").val()
-        const startDate = $("#inputStartDateOthers").val()
-        let endDate = $("#inputEndDateOthers").val()
-        const endDateCheckbox = document.getElementById("endDateOthersNow");
-        if (endDateCheckbox.checked) {
-            endDate = "Sampai Sekarang";
+        e.preventDefault();
+        const listOthersMedia = t.listOthersMedia.get();
+        const name  = $("#inputNamaJurnalOthers").val();
+        const noSkPenugasan = $("#inputNoSkPenugasanOthers").val();
+        const peran = $("#inputPeranOthers").val();
+        const startDate = $("#inputStartDateOthers").val();
+        // const endDateImaviStructure = $("inputEndDateImavi").val();
+
+        let endDateOtherMedia;
+        const endDateCheckboxOther = $("#endDateOthersNow").prop("checked");
+        if (endDateCheckboxOther) {
+            endDateOtherMedia = "Sampai Sekarang";
+        }else {
+            endDateOtherMedia = $("#inputEndDateOthers").val();
         }
         const data = {
             name,
             noSkPenugasan,
             peran,
             startDate,
-            endDate,           
+            endDateOtherMedia           
+        };
+        listOthersMedia.push(data);
+        t.listOthersMedia.set(listOthersMedia);
+    },
+    
+    "click .add-imavistructure" (e, t){
+        e.preventDefault();
+        const listImaviStructure = t.listImaviStructure.get();
+        const name  = $("#inputJabatanStruktural").val();
+        const noSk = $("#inputNomorSkImavi").val();
+        const startDate = $("#inputStartDateImavi").val();
+        // const endDateImaviStructure = $("inputEndDateImavi").val();
+
+        let endDateImaviStructure;
+        const endDateCheckboxImavi = $("#endDateImaviNow").prop("checked");
+        if (endDateCheckboxImavi) {
+            endDateImaviStructure = "Sampai Sekarang";
+        }else {
+            endDateImaviStructure = $("#inputEndDateImavi").val();
         }
-        // console.log(data)
-        listOthersMedia.push(data)
-        t.listOthersMedia.set(listOthersMedia)
+        const data = {
+            name,
+            noSk,
+            startDate,
+            endDateImaviStructure
+        };
+        listImaviStructure.push(data);
+        t.listImaviStructure.set(listImaviStructure);
     },
 
+
+
+    
     "click .add-profesi" (e, t){
         e.preventDefault()
         const listProfesi = t.listProfesi.get()
@@ -583,6 +609,7 @@ Template.formLecturers.events({
         listProfesi.push(data)
         t.listProfesi.set(listProfesi)
     },
+    
 
     "click .add-award" (e, t){
         e.preventDefault()
@@ -602,27 +629,7 @@ Template.formLecturers.events({
         t.listAward.set(listAward)
     },
 
-    "click .add-imavistructure" (e, t){
-        e.preventDefault()
-        const listImaviStructure = t.listImaviStructure.get()
-        const name  = $("#inputJabatanStruktural").val()
-        const noSk = $("#inputNomorSkImavi").val()
-        const startDate = $("#inputStartDateImavi").val()
-        let endDate = $("#inputEndDateImavi").val()
-        const endDateCheckbox = document.getElementById("endDateImaviNow");
-        if (endDateCheckbox.checked) {
-            endDate = "Sampai Sekarang";
-        }
-        const data = {
-            name,
-            noSk,
-            startDate,
-            endDate,
-        }
-        // console.log(data)
-        listImaviStructure.push(data)
-        t.listImaviStructure.set(listImaviStructure)
-    },
+
     "click .add-bimbingan" (e, t){
         e.preventDefault()
         const listBimbingan = t.listBimbingan.get()
