@@ -10,7 +10,11 @@ import XLSX from "xlsx";
 import Papa, { parse } from "papaparse";
 import { result } from "underscore";
 import { HTTP } from "meteor/http";
-import { startSelect2 } from "../../../startup/client";
+import {
+  enterLoading,
+  exitLoading,
+  startSelect2,
+} from "../../../startup/client";
 
 Template.employee_page.onCreated(function () {
   const self = this;
@@ -281,7 +285,7 @@ Template.employee_create.events({
         npp: $("#input_npp").val(),
         companyName: $("#input_companyName").val(),
         bpjsKS: $("#select_kepesertaanBpjsKes").val(),
-        startDateBpjsKS: new Date( $("#input_dateBpjsKS").val()),
+        startDateBpjsKS: new Date($("#input_dateBpjsKS").val()),
         amountBpjsKS: $("#input_amountBpjsKS").val(),
         note: $("#input_noteBpjsKS").val(),
       },
@@ -786,7 +790,7 @@ Template.employee_edit.onCreated(function () {
       //set untuk selected
       $("#input_religi").val(result.religion);
       $("#input_gender").val(result.gender);
-      $("#input_golonganDara").val(result.blood);
+      $("#input_golonganDarah").val(result.blood);
       $("#select_marrital").val(result.marital_status);
       $("#input_employmentStatus").val(result.pekerjaan.statusEmployee);
       $("#selected_position").val(result.pekerjaan.position);
@@ -941,174 +945,42 @@ Template.employee_edit.events({
         note: $("#input_noteBpjsKS").val(),
       },
     };
-      Swal.fire({
-        title: "Warning",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Iya",
-        cancelButtonText: "Tidak",
-        text: "Apakah anda yakin ingin update data pegawai",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Meteor.call("employee.update", id, formData, function (error, result) {
-            if (result) {
-              // console.log(result);
-              // alert("Sukses");
-              Swal.fire({
-                title: "Berhasil",
-                text: "Data berhasil diupdate",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  history.back();
-                }
-              });
-            } else {
-              // alert("Update employee error");
-              Swal.fire({
-                title: "Gagal",
-                text: "Data gagal diupdate",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
-              console.log(error);
-            }
-          });
-        }
-      });
-    } else {
-      const thisForm = {};
-      thisForm[gambar] = "";
-      // console.log(file[0].name);
-      if (file[0]) {
-        const uploadData = {
-          fileName: "employee/" + file[0].name,
-          type: "image/png",
-          Body: file[0],
-        };
-        thisForm[gambar] = await uploadFiles(uploadData);
-        const linkGambar = thisForm[gambar];
-        console.log(linkGambar);
-        const data = {
-          full_name,
-          identification_number,
-          place_of_birth,
-          dob,
-          gender,
-          address,
-          phone_number,
-          email_address,
-          job_position,
-          department_unit,
-          start_date,
-          employment_status,
-          base_salary,
-          allowances,
-          deductions,
-          highest_education,
-          education_institution,
-          major_in_highest_education,
-          academic_degree,
-          previous_work_experience,
-          marital_status,
-          number_of_children,
-          emergency_contact_name,
-          emergency_contact_phone,
-          // employment_history,
-          // partnerCode,
-          linkGambar,
-          golongan,
-        };
-        if (!linkGambar) {
-          Swal.fire({
-            title: "Warning",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Iya",
-            cancelButtonText: "Tidak",
-            text: "Gambar gagal diupload, apakah anda ingin melanjutkan update data pegawai",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              linkGambar = "";
-              Meteor.call(
-                "employee.updateWithPicture",
-                id,
-                data,
-                function (error, result) {
-                  if (result) {
-                    // console.log(result);
-                    // alert("Sukses");
-                    Swal.fire({
-                      title: "Berhasil",
-                      text: "Data berhasil diupdate",
-                      showConfirmButton: true,
-                      allowOutsideClick: true,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        location.reload();
-                      }
-                    });
-                  } else {
-                    // alert("Update employee error");
-                    Swal.fire({
-                      title: "Gagal",
-                      text: "Data gagal diupdate",
-                      showConfirmButton: true,
-                      allowOutsideClick: true,
-                    });
-                    console.log(error);
-                  }
-                }
-              );
-            }
-          });
-        } else {
-          console.log(linkGambar);
-          Swal.fire({
-            title: "Warning",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Iya",
-            cancelButtonText: "Tidak",
-            text: "Apakah anda yakin ingin melakukan update data pegawai",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Meteor.call(
-                "employee.updateWithPicture",
-                id,
-                data,
-                function (error, result) {
-                  if (result) {
-                    // console.log(result);
-                    // alert("Sukses");
-                    Swal.fire({
-                      title: "Berhasil",
-                      text: "Data berhasil diupdate",
-                      showConfirmButton: true,
-                      allowOutsideClick: true,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        location.reload();
-                      }
-                    });
-                  } else {
-                    // alert("Update employee error");
-                    Swal.fire({
-                      title: "Gagal",
-                      text: "Data gagal diupdate",
-                      showConfirmButton: true,
-                      allowOutsideClick: true,
-                    });
-                    console.log(error);
-                  }
-                }
-              );
-            }
-          });
-        }
+    Swal.fire({
+      title: "Warning",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+      text: "Apakah anda yakin ingin update data pegawai",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("employee.update", id, formData, function (error, result) {
+          if (result) {
+            // console.log(result);
+            // alert("Sukses");
+            Swal.fire({
+              title: "Berhasil",
+              text: "Data berhasil diupdate",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.back();
+              }
+            });
+          } else {
+            // alert("Update employee error");
+            Swal.fire({
+              title: "Gagal",
+              text: "Data gagal diupdate",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            console.log(error);
+          }
+        });
       }
-    }
+    });
   },
 });
 
@@ -1403,13 +1275,17 @@ Template.upload_CSV.events({
   },
   "submit #csvForm"(e, t) {
     e.preventDefault();
+    enterLoading();
     //Pakai Yoga dulu
     const items = t.items.get();
     Meteor.call("employee.insertXlsx", items, function (error, result) {
       if (result) {
         alert("Berhasil");
+        FlowRouter.go("/");
+        exitLoading();
       } else {
         alert("error");
+        exitLoading();
       }
     });
 

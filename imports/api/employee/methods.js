@@ -2,6 +2,7 @@ import { Employee } from "./employee";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
+import { Schools } from "../yoga/schools/schools";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -53,13 +54,11 @@ Meteor.methods({
       _id: thisUser,
     });
     partnerCode = adminPartner.partners[0];
-    console.log(adminPartner);
+
     return Employee.find(
       { partnerCode: partnerCode },
       { sort: { createdAt: 1 } }
     ).fetch();
-    // console.log(data);
-    // return data;
   },
   "employee.getAllEmployee"() {
     return Employee.find(
@@ -387,83 +386,61 @@ Meteor.methods({
 
   "employee.update"(id, data) {
     let {
-      full_name,
-      identification_number,
-      place_of_birth,
+      fullName,
+      gelar,
+      nik,
+      pob,
       dob,
+      religion,
       gender,
+      blood,
+      motherName,
+      npwp,
       address,
-      phone_number,
-      email_address,
-      job_position,
-      department_unit,
-      start_date,
-      employment_status,
-      base_salary,
-      allowances,
-      deductions,
-      highest_education,
-      education_institution,
-      major_in_highest_education,
-      academic_degree,
-      previous_work_experience,
       marital_status,
-      number_of_children,
-      emergency_contact_name,
-      emergency_contact_phone,
-      employment_history,
-      golongan,
+      totalChildren,
+      postalCode,
+      unit: { school, npsn, jenjang, perwakilan, cityUnit },
+      pendidikan: { hightEducation, nameIntitution, major, yearGraduated },
+      pekerjaan: {
+        startDateWorking,
+        startDateWorkSk,
+        startDateAngkatanSk,
+        endDateWorkSk,
+        statusEmployee,
+        tuk,
+        position,
+        gol,
+        nuptk,
+        sertifikasiNumber,
+        sertifikasiNumber2,
+        nuks,
+      },
+      asuransi: {
+        bpjsTK,
+        startDateBpjsTK,
+        amountBpjsTK,
+        npp,
+        companyName,
+        bpjsKS,
+        startDateBpjsKS,
+        amountBpjsKS,
+        note,
+      },
     } = data;
-    check(full_name, String);
-    check(identification_number, String);
-    check(gender, String);
-    check(address, String);
-    check(email_address, String);
-    check(job_position, String);
-    check(department_unit, String);
-    check(employment_status, String);
-    check(highest_education, String);
-    check(education_institution, String);
-    check(major_in_highest_education, String);
-    check(academic_degree, String);
-    check(previous_work_experience, String);
-    check(marital_status, String);
-    check(emergency_contact_name, String);
-    // check(employment_history, String);
-
-    // dob = new Date(dob);
-    // start_date = new Date(start_date);
-
-    const dataSave = {
-      full_name,
-      identification_number,
-      place_of_birth,
-      dob,
-      gender,
-      address,
-      phone_number,
-      email_address,
-      job_position,
-      department_unit,
-      start_date,
-      employment_status,
-      base_salary,
-      allowances,
-      deductions,
-      highest_education,
-      education_institution,
-      major_in_highest_education,
-      academic_degree,
-      previous_work_experience,
-      marital_status,
-      number_of_children,
-      emergency_contact_name,
-      emergency_contact_phone,
-      // employment_history,
-      golongan,
-    };
-    // console.log(dataSave, id);
-    return Employee.update({ _id: id }, { $set: dataSave });
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Acccess");
+    }
+    //unit kerja
+    const employeeSchool = Schools.findOne({ _id: data.unit.school });
+    if (employeeSchool) {
+      data.unit.school = employeeSchool.name;
+      data.unit.schoolId = employeeSchool._id;
+    }
+    data.updatedAt = new Date();
+    data.updatedBy = thisUser._id;
+    return Employee.update({ _id: id }, { $set: data });
   },
 
   "employee.updateWithPicture"(id, data) {

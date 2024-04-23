@@ -320,3 +320,9 @@ isLoading = function (params) {
     $(".loading-container").css("display", "none");
   }
 };
+export const enterLoading = function () {
+  $("button").attr("disabled", true);
+};
+export const exitLoading = function () {
+  $("button").attr("disabled", false);
+};

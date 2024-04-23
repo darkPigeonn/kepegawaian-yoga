@@ -17,7 +17,7 @@
         {{#if isInRoles currentUser.roles 'admin'}}
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
-                <a href="/employees/uploadCSV" class="btn btn-primary mx-2"> Upload CSV</a>
+                <a href="/employees/uploadCSV" class="btn btn-primary mx-2"> Upload Excel</a>
                 <a href="/employees/create" class="btn btn-primary">+ Tambah</a>
             </div>
         </div>
@@ -2350,11 +2350,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
-                    </div>
+
                 </form>
             </div>
+        </div>
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="submit" id="btn_update">Simpan</button>
         </div>
     </div>
 </template>
@@ -2418,12 +2419,12 @@
 
 <template name="upload_CSV">
     <br>
-    <a href="https://static.imavi.org/generals/template-pegawai.xlsx" class="btn btn-primary" style="width: 20vw">Unduh
-        Template</a>
+    <!-- <a href="https://static.imavi.org/generals/template-pegawai.xlsx" class="btn btn-primary" style="width: 20vw">Unduh
+        Template</a> -->
     <br><br>
     <form id="csvForm">
         <div class="form-group mb-2">
-            <label for="csvFile">Pilih file CSV</label>
+            <label for="csvFile">Pilih file Excel</label>
             <input type="file" id="csvFile" class="form-control" style="width: 20vw;" required>
         </div>
         <div class="table-responsive">
