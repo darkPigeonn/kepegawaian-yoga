@@ -22,8 +22,6 @@ FlowRouter.notFound = {
   },
 };
 
-
-
 // Notification
 FlowRouter.route("/notification", {
   name: "notificationPage",
