@@ -78,13 +78,13 @@
           {{#each i in dataDosen}}
           <tr>
             <td>
-              {{@index}}
+              {{increment  @index}}
             </td>
             <td>
               {{capitalizeWord i.profile.fullName}} 
             </td>
             <td>
-              {{capitalizeWord i.profile.email}}
+              {{capitalizeWordLower i.profile.email}}
             </td>
             <td>
               {{formatHRDate i.profile.dob}}

@@ -160,7 +160,7 @@
                         <i class="fa fa-light fa-cake-candles"></i>
                         Tanggal Lahir
                       </p>
-                      <p class="open-sans text-dark">{{myData.dob}}</p>
+                      <p class="open-sans text-dark">{{formatHRDate myData.dob}}</p>
                   </div>
                   <div class="mb-3">
                       <p class="form-label open-sans text-dark fw-bold">
@@ -384,7 +384,7 @@
                           Tanggal Lahir
                         </p>
                         {{#if myData.dob}}
-                        <p class="open-sans text-dark">{{myData.dob}}</p>
+                        <p class="open-sans text-dark">{{formatHRDate myData.dob}}</p>
                         {{else}}
                         <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                         {{/if}}
@@ -722,25 +722,14 @@
                 
                           </div>
                           <div class="row row-cols-1 row-cols-md-2">
+                  
                               <div class="col-md-6">
                                   <div class="mb-3">
                                       <p class="form-label open-sans text-dark fw-bold">
-                                        Tanggal Mulai
-                                      </p>
-                                      {{#if item.dateStart}}
-                                      <p class="open-sans text-dark">{{formatHRDate item.dateStart}}</p>
-                                      {{else}}
-                                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
-                                      {{/if}}
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="mb-3">
-                                      <p class="form-label open-sans text-dark fw-bold">
-                                        Tanggal Selesai
+                                        Tahun Selesai
                                       </p>
                                       {{#if item.dateEnd}}
-                                      <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                                      <p class="open-sans text-dark">{{item.dateEnd}}</p>
                                       {{else}}
                                       <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                       {{/if}}
@@ -870,7 +859,7 @@
                                         Tahun Sertifikasi
                                       </p>
                                       {{#if item.dateEnd}}
-                                      <p class="open-sans text-dark">{{formatHRDate item.dateEnd}}</p>
+                                      <p class="open-sans text-dark">{{item.dateEnd}}</p>
                                       {{else}}
                                       <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                       {{/if}}
@@ -1060,8 +1049,8 @@
                                   <p class="form-label open-sans text-dark fw-bold">
                                     SKS
                                   </p>
-                                  {{#if item.SKS}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.SKS}}</p>
+                                  {{#if item.sks}}
+                                  <p class="open-sans text-dark">{{item.sks}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
@@ -1273,8 +1262,8 @@
                                 <p class="form-label open-sans text-dark fw-bold">
                                   Tahun Selesai
                                 </p>
-                                {{#if item.endDate}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.endDate}}</p>
+                                {{#if item.dateEnd}}
+                                <p class="open-sans text-dark">{{item.dateEnd}}</p>
                                 {{else}}
                                 <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                 {{/if}}
@@ -1330,7 +1319,7 @@
                                     Tanggal Terbit
                                   </p>
                                   {{#if item.publishDate}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.publishDate}}</p>
+                                  <p class="open-sans text-dark">{{formatHRDate item.publishDate}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
@@ -1529,8 +1518,8 @@
                               <p class="form-label open-sans text-dark fw-bold">
                                 Tahun Terbit
                               </p>
-                              {{#if item.endDate}}
-                              <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
+                              {{#if item.year}}
+                              <p class="open-sans text-dark">{{item.year}}</p>
                               {{else}}
                               <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                               {{/if}}
@@ -1560,7 +1549,7 @@
                     <!-- Header -->
                     <h2 class="accordion-header" >
                       <button class="accordion-button text-white bg-blue open-sans text-dark fw-bold" type="button" data-toggle="collapse" data-target="#collapsePengujian{{@index}}" aria-expanded="true" aria-controls="collapsePengujian{{@index}}">
-                          {{capitalizeWord item.Category}}
+                          {{capitalizeWord item.title}}
                       </button>
                     </h2>
                     <!-- Content -->
@@ -1924,18 +1913,7 @@
                                 {{/if}}
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Nomor
-                                </p>
-                                {{#if item.number}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.number}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
+
                           <div class="col-md-6">
                             <div class="mb-3">
                                 <p class="form-label open-sans text-dark fw-bold">
@@ -1948,18 +1926,7 @@
                                 {{/if}}
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
-                                <p class="form-label open-sans text-dark fw-bold">
-                                  Tahun Terbit
-                                </p>
-                                {{#if item.year}}
-                                <p class="open-sans text-dark">{{capitalizeWord item.year}}</p>
-                                {{else}}
-                                <p class="open-sans text-dark"><i>Tidak ada data</i></p>
-                                {{/if}}
-                            </div>
-                          </div>
+
                         
                          
                         </div>
@@ -2383,8 +2350,8 @@
                              <p class="form-label open-sans text-dark fw-bold">
                                Tanggal Pelaksanaan
                              </p>
-                             {{#if item.endYear}}
-                             <p class="open-sans text-dark">{{ item.date}}</p>
+                             {{#if item.date}}
+                             <p class="open-sans text-dark">{{formatHRDate item.date}}</p>
                              {{else}}
                              <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                              {{/if}}
@@ -2510,7 +2477,7 @@
                            <p class="form-label open-sans text-dark fw-bold">
                              No. SK Penulisan
                            </p>
-                           {{#if item.type}}
+                           {{#if item.noSkPenugasan}}
                            <p class="open-sans text-dark">{{item.noSkPenugasan}}</p>
                            {{else}}
                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
@@ -2522,7 +2489,7 @@
                            <p class="form-label open-sans text-dark fw-bold">
                              Peran
                            </p>
-                           {{#if item.institution}}
+                           {{#if item.peran}}
                            <p class="open-sans text-dark">{{capitalizeWord item.peran}}</p>
                            {{else}}
                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
@@ -2534,8 +2501,8 @@
                            <p class="form-label open-sans text-dark fw-bold">
                              Terhitung Mulai
                            </p>
-                           {{#if item.source}}
-                           <p class="open-sans text-dark">{{formatHRDate item.startDate}}</p>
+                           {{#if item.startDate}}
+                           <p class="open-sans text-dark">{{item.startDate}}</p>
                            {{else}}
                            <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                            {{/if}}

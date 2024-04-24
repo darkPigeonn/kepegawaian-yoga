@@ -6,7 +6,7 @@ Template.formLecturers.onCreated(function () {
     const self = this;
     self.formPage = new ReactiveVar(1);
     self.formData = new ReactiveVar({});
-    self.listExperiences = new ReactiveVar([])
+    // self.listExperiences = new ReactiveVar([])
     self.listEducationalHistory = new ReactiveVar([])
     self.listCertification = new ReactiveVar([])
     self.submitType = new ReactiveVar(self.data.submitType)
@@ -42,8 +42,6 @@ Template.formLecturers.onCreated(function () {
     self.pageMode.set(mode);
 });
 
-
-
 Template.formLecturers.onRendered( function(){
     const context = Template.instance();
     if (this.submitType.get() === 2) {
@@ -54,9 +52,14 @@ Template.formLecturers.onRendered( function(){
                 history.back();
             } else {
                 context.formData.set(res)
-                context.listExperiences.set(res.listExperiences)
+                // context.listExperiences.set(res.listExperiences)
                 context.listEducationalHistory.set(res.listEducationalHistory)
                 context.listCertification.set(res.listCertification)
+                context.listKerjaPenugasan.set(res.listKerjaPenugasan)
+                context.listPengajaran.set(res.listPengajaran)
+                context.listBimbingan.set(res.listBimbingan)
+                context.listPengujian.set(res.listPengujian)
+                context.listBahanAjar.set(res.listBahanAjar)
                 context.listProject.set(res.listProject)
                 context.listPublicationTypes.set(res.listPublicationTypes)
                 context.listJournal.set(res.listJournal)
@@ -73,10 +76,9 @@ Template.formLecturers.onRendered( function(){
                 context.listImaviStructure.set(res.listImaviStructure)
                 context.listProfesi.set(res.listProfesi)
                 context.listAward.set(res.listAward)
-                context.listCoachingLevel.set(res.listCoachingLevel)
-                context.listStudentGuidance.set(res.listStudentGuidance)
                 context.listresearchinterest.set(res.listresearchinterest)
-            
+                context.listStudentGuidance.set(res.listStudentGuidance)
+                context.listCoachingLevel.set(res.listCoachingLevel)
             }
         });
     }
@@ -106,9 +108,9 @@ Template.formLecturers.helpers({
     formData(){
         return Template.instance().formData.get()
     },
-    listExperiences(){
-        return Template.instance().listExperiences.get()
-    },
+    // listExperiences(){
+    //     return Template.instance().listExperiences.get()
+    // },
     listEducationalHistory(){
         return Template.instance().listEducationalHistory.get()
     },
@@ -328,7 +330,6 @@ Template.formLecturers.events({
         t.listPengajaran.set(listPengajaran)
     },
 
-
     "click .add-magazine" (e,t){
         e.preventDefault()
         const listMagazine = t.listMagazine.get()
@@ -498,7 +499,6 @@ Template.formLecturers.events({
         const organizer = $("#inputOrganizerName").val()
         const date = $("#yearDateInput").val()
         const data = {
-            listSpeaker,
             category,
             title,
             conference,
@@ -512,6 +512,7 @@ Template.formLecturers.events({
 
     "click .add-journalManager" (e, t){
         e.preventDefault();
+        console.log("Add Journal Manager clicked");
         const listJournalManager = t.listJournalManager.get();
         const name  = $("#inputNamaJurnal").val();
         const noSkPenugasan = $("#inputNoSkPenugasan").val();
@@ -537,6 +538,7 @@ Template.formLecturers.events({
     
     "click .add-others-media" (e, t){
         e.preventDefault();
+        console.log("Add Other Media clicked");
         const listOthersMedia = t.listOthersMedia.get();
         const name  = $("#inputNamaJurnalOthers").val();
         const noSkPenugasan = $("#inputNoSkPenugasanOthers").val();
@@ -564,6 +566,7 @@ Template.formLecturers.events({
     
     "click .add-imavistructure" (e, t){
         e.preventDefault();
+        console.log("Add Imavi Struktur clicked");
         const listImaviStructure = t.listImaviStructure.get();
         const name  = $("#inputJabatanStruktural").val();
         const noSk = $("#inputNomorSkImavi").val();
@@ -587,9 +590,6 @@ Template.formLecturers.events({
         t.listImaviStructure.set(listImaviStructure);
     },
 
-
-
-    
     "click .add-profesi" (e, t){
         e.preventDefault()
         const listProfesi = t.listProfesi.get()
@@ -692,11 +692,117 @@ Template.formLecturers.events({
         }
       
     },
+
+    "click .add-bahanAjar"(e, t){
+        e.preventDefault()
+        const listBahanAjar = t.listBahanAjar.get()
+        const title = $("#inputJudulBahanAjar").val()
+        const isbn = $("#inputIsbnBahanAjar").val()
+        const publishDate = $("#inputTanggalTerbitBahanAjar").val()
+        const publisher = $("#inputPenerbitBahanAjar").val()
+        const data = {
+            title,
+            isbn,
+            publishDate,
+            publisher
+        }
+        listBahanAjar.push(data)
+        t.listBahanAjar.set(listBahanAjar)
+    },
+    "click .add-journal"(e,t){
+        e.preventDefault()
+        const listJournal = t.listJournal.get()
+        const category =$("#inputJenisPenulisan").val()
+        const title = $("#inputJudulJournal").val()
+        const doi =  $("#inputDoi").val()
+        const name =  $("#inputNama").val()
+        const volume =  $("#inputVolume").val()
+        const number =  $("#inputNomor").val()
+        const year =  $("#inputYearJournal").val()
+        const cJournal =  $("#inputCategoryJournal").val()
+        const link =  $("#inputURLJournal").val()
+        const data = {
+            category,
+            title,
+            doi,
+            name,
+            volume,
+            number,
+            year,
+            cJournal,
+            link
+        }
+        listJournal.push(data)
+        t.listJournal.set(listJournal)
+    },
+    "click .add-project"(e,t){
+        e.preventDefault()
+        const listProject = t.listProject.get()
+        const title = $("#inputJudul").val()
+        const study = $("#inputBidangKeilmuan").val()
+        const year = $("#inputTahunPelaksanaan").val()
+        const duration = $("#inputLamaKegiatan").val()
+        const link  = $("#inputStatus").val()
+        const data = {
+            title,
+            study,
+            year,
+            duration,
+            link
+        } 
+        listProject.push(data)
+        t.listProject.set(listProject) 
+    },
+    "click .add-pengujian" (e, t){
+        e.preventDefault()
+        const listPengujian = t.listPengujian.get()
+        const name = $("#inputPengujianName").val()
+        const type = $("#inputJenisPengujian").val()
+        const title = $("#inputJudulPengujian").val()
+        const category = $("#inputKategoriKegiatanPengujian").val()
+        const bidangKeilmuan = $("#inputBidangKeilmuanPengujian").val()
+        const ps = $("#inputProgramStudiPengujian").val()
+        const lembaga = $("#inputNamaLembagaPengujian").val()
+        const dateEnd = $("#inputTahunSelesaiPengujian").val()
+        
+        const data = {
+            name,
+            type,
+            title,
+            category,
+            bidangKeilmuan,
+            ps,
+            lembaga,
+            dateEnd
+        }
+
+        listPengujian.push(data)
+        t.listPengujian.set(listPengujian)
+
+    },
+    "click .add-kerjapenugasan"(e, t){
+        e.preventDefault()
+        const listKerjaPenugasan = t.listKerjaPenugasan.get()
+        const name = $("#inputName").val()
+        const place = $("#inputPlace").val()
+        const period = $("#inputPeriod").val()
+        const notes = $("#inputNotes").val()
+        const data = {
+            name,
+            place,
+            period,
+            notes
+        }
+
+        console.log(data)
+        listKerjaPenugasan.push(data)
+        t.listKerjaPenugasan.set(listKerjaPenugasan)
+    },
     "click .remove-list" (e, t){
         e.preventDefault()
         const index = $(e.target).data("milik")
         const identifier = $(e.target).data("id");
-        const listExperiences = t.listExperiences.get()
+        // const listExperiences = t.listExperiences.get()
         const listEducationalHistory = t.listEducationalHistory.get()
         const listCertification = t.listCertification.get()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
@@ -713,7 +819,6 @@ Template.formLecturers.events({
         const listScholarship = t.listScholarship.get()
         const listKesejahteraan = t.listKesejahteraan.get()
         const listTunjangan = t.listTunjangan.get()
-
         const listDedication = t.listDedication.get()
         const listSpeaker = t.listSpeaker.get()
         const listJournalManager = t.listJournalManager.get()
@@ -729,10 +834,10 @@ Template.formLecturers.events({
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value){
-                if (identifier === "experiences"){
-                    listExperiences.splice(index, 1)
-                    t.listExperiences.set(listExperiences)
-                } else if (identifier === "education"){
+                // if (identifier === "experiences"){
+                //     listExperiences.splice(index, 1)
+                //     t.listExperiences.set(listExperiences)
+                if (identifier === "education"){
                     listEducationalHistory.splice(index, 1)
                     t.listEducationalHistory.set(listEducationalHistory)
                 } else if (identifier === "certification") {
@@ -814,129 +919,7 @@ Template.formLecturers.events({
             }
         })
     },
-    "click .add-bahanAjar"(e, t){
-        e.preventDefault()
-        const listBahanAjar = t.listBahanAjar.get()
-        const title = $("#inputJudulBahanAjar").val()
-        const isbn = $("#inputIsbnBahanAjar").val()
-        const publishDate = $("#inputTanggalTerbitBahanAjar").val()
-        const publisher = $("#inputPenerbitBahanAjar").val()
-        const data = {
-            title,
-            isbn,
-            publishDate,
-            publisher
-        }
-        listBahanAjar.push(data)
-        t.listBahanAjar.set(listBahanAjar)
-    },
-    "click .add-journal"(e,t){
-        e.preventDefault()
-        const listJournal = t.listJournal.get()
-        const category =$("#inputJenisPenulisan").val()
-        const title = $("#inputJudulJournal").val()
-        const doi =  $("#inputDoi").val()
-        const name =  $("#inputNama").val()
-        const volume =  $("#inputVolume").val()
-        const number =  $("#inputNomor").val()
-        const year =  $("#inputYearJournal").val()
-        const cJournal =  $("#inputCategoryJournal").val()
-        const link =  $("#inputURLJournal").val()
-        const data = {
-            category,
-            title,
-            doi,
-            name,
-            volume,
-            number,
-            year,
-            cJournal,
-            link
-        }
-        listJournal.push(data)
-        t.listJournal.set(listJournal)
-    },
-
-    "click .add-project"(e,t){
-        e.preventDefault()
-        const listProject = t.listProject.get()
-        const title = $("#inputJudul").val()
-        const study = $("#inputBidangKeilmuan").val()
-        const year = $("#inputTahunPelaksanaan").val()
-        const duration = $("#inputLamaKegiatan").val()
-        const link  = $("#inputStatus").val()
-        const data = {
-            title,
-            study,
-            year,
-            duration,
-            link
-        } 
-        listProject.push(data)
-        t.listProject.set(listProject) 
-    },
-    "click .add-pengujian" (e, t){
-        e.preventDefault()
-        const listPengujian = t.listPengujian.get()
-        const name = $("#inputPengujianName").val()
-        const type = $("#inputJenisPengujian").val()
-        const title = $("#inputJudulPengujian").val()
-        const category = $("#inputKategoriKegiatanPengujian").val()
-        const bidangKeilmuan = $("#inputBidangKeilmuanPengujian").val()
-        const ps = $("#inputProgramStudiPengujian").val()
-        const lembaga = $("#inputNamaLembagaPengujian").val()
-        const dateEnd = $("#inputTahunSelesaiPengujian").val()
-        
-        const data = {
-            name,
-            type,
-            title,
-            category,
-            bidangKeilmuan,
-            ps,
-            lembaga,
-            dateEnd
-        }
-
-        listPengujian.push(data)
-        t.listPengujian.set(listPengujian)
-
-    },
-    "click .add-kerjapenugasan"(e, t){
-        e.preventDefault()
-        const listKerjaPenugasan = t.listKerjaPenugasan.get()
-        const name = $("#inputName").val()
-        const place = $("#inputPlace").val()
-        const period = $("#inputPeriod").val()
-        const notes = $("#inputNotes").val()
-        const data = {
-            name,
-            place,
-            period,
-            notes
-        }
-
-        console.log(data)
-        listKerjaPenugasan.push(data)
-        t.listKerjaPenugasan.set(listKerjaPenugasan)
-    },
-    "click #add-experience" (e, t){
-        e.preventDefault()
-        const listExperiences = t.listExperiences.get()
-        const jobPosition = $("#inputJobPosition").val()
-        const institution = $("#inputInstitution").val()
-        const startDate = $("#inputStartDate").val()
-        const endDate = $("#inputEndDate").val()
-        const data = {
-            jobPosition,
-            institution,
-            startDate,
-            endDate
-        }
-        listExperiences.push(data)
-        t.listExperiences.set(listExperiences)
-        // console.log(t.listExperiences.get())
-    },
+  
     'click .btnNavigation' (e, t){
         e.preventDefault()
         const getValue = $(e.target).attr('data-value');
@@ -965,15 +948,15 @@ Template.formLecturers.events({
                 formData.nationality = $("#inputNationality").val();
                 formData.startDateImavi = $("#inputStartDateImaviLecture").val();
                 formData.statusImavi = $("#inputImaviStatus").val();
-                formData.nidn = $("#inputNidn").val();
                 formData.startDateLecture = $("#inputStartDateLecture").val();
+                formData.nidn = $("#inputNidn").val();
+                formData.startDateLectureOther = $("#inputStartDateLectureOther").val();
                 formData.anotherStatus = $("#inputAnotherStatus").val();
+                formData.startDateAnotherStatus = $("#inputAnotherStartDate").val();
                 formData.position = $("#inputPosition").val();
                 formData.startDatePosition = $("#inputStartdatePosition").val();
                 formData.academicRank = $("#inputAcademicRank").val();
-                formData.startDateAcademicRank = $("#inputdateStartPosition").val()
-
-               
+                formData.startDateAcademicRank = $("#inputdateStartPosition").val();               
                 t.formPage.set(getValue);
                 t.formData.set(formData)
             } else {
@@ -981,11 +964,9 @@ Template.formLecturers.events({
             }
             
         } else if (getValue == 3){
-            formData.listExperience = $("#inputListExperience").val()
             t.formPage.set(getValue);
             t.formData.set(formData)
         } else if (getValue == 4){
-            formData.listEducationalHistory = $("#inputListHistory").val()
             t.formPage.set(getValue);
             t.formData.set(formData)
         } else if (getValue == 5){
@@ -995,16 +976,7 @@ Template.formLecturers.events({
         else if (getValue == 6){
             t.formPage.set(getValue);
             t.formData.set(formData)
-        } else if (getValue == 7){
-            t.formPage.set(getValue);
-            t.formData.set(formData)
-        } else if (getValue == 8){
-            t.formPage.set(getValue);
-            t.formData.set(formData)
-        } else if (getValue == 9){
-            t.formPage.set(getValue);
-            t.formData.set(formData)
-        }
+        } 
     },
     'click .btn-previous' (e, t){
         e.preventDefault()
@@ -1014,11 +986,9 @@ Template.formLecturers.events({
     async 'click #btn-submit' (e, t){
         e.preventDefault()
         const submitType = t.submitType.get()
-        const researchInterest = $("#inputResearchInterest").val()
         const formData = t.formData.get()
         const listCertification = t.listCertification.get()
         const listEducationalHistory = t.listEducationalHistory.get()
-        const listExperiences = t.listExperiences.get()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
         const listPengujian = t.listPengujian.get()
         const listBahanAjar = t.listBahanAjar.get()
@@ -1047,10 +1017,8 @@ Template.formLecturers.events({
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value) {
-                formData.researchInterest = researchInterest
                 formData.listCertification = listCertification
                 formData.listEducationalHistory = listEducationalHistory
-                formData.listExperiences = listExperiences
                 formData.listKerjaPenugasan = listKerjaPenugasan
                 formData.listPengujian = listPengujian
                 formData.listBahanAjar = listBahanAjar
@@ -1077,7 +1045,7 @@ Template.formLecturers.events({
                 formData.listTunjangan =listTunjangan
                
 
-                // console.log(formData)
+                console.log(formData)
 
                 if (formData.imageFile){
                     const uploadData = {
@@ -1141,13 +1109,15 @@ Template.formLecturers.events({
                         formData.nationality = $("#inputNationality").val();
                         formData.startDateImavi = $("#inputStartDateImaviLecture").val();
                         formData.statusImavi = $("#inputImaviStatus").val();
-                        formData.nidn = $("#inputNidn").val();
                         formData.startDateLecture = $("#inputStartDateLecture").val();
+                        formData.nidn = $("#inputNidn").val();
+                        formData.startDateLectureOther = $("#inputStartDateLectureOther").val();
                         formData.anotherStatus = $("#inputAnotherStatus").val();
+                        formData.startDateAnotherStatus = $("#inputAnotherStartDate").val();
                         formData.position = $("#inputPosition").val();
                         formData.startDatePosition = $("#inputStartdatePosition").val();
                         formData.academicRank = $("#inputAcademicRank").val();
-                        formData.startDateAcademicRank = $("#inputdateStartPosition").val()
+                        formData.startDateAcademicRank = $("#inputdateStartPosition").val();
         
                        
                         if (formData.imageFile){
@@ -1165,39 +1135,6 @@ Template.formLecturers.events({
                     }
                 }
          
-                else if(getValue == 4){
-                    formData._id = FlowRouter.getParam("_id");
-                    const listExperiences = t.listExperiences.get();
-                    formData.listExperiences = listExperiences;
-                }
-                else if(getValue == 5){
-                    formData._id = FlowRouter.getParam("_id");
-                    const listEducationalHistory = t.listEducationalHistory.get();
-                    formData.listEducationalHistory = listEducationalHistory;
-                }
-                else if(getValue == 6){
-                    formData._id = FlowRouter.getParam("_id");
-                    const listCertification = t.listCertification.get();
-                    formData.listCertification = listCertification;
-                    for (const iterator of formData.listCertification) {
-                        // console.log(iterator)
-                        if (iterator.skFile){
-                            const uploadData = {
-                                type: 'dosen-sk',
-                                Body: iterator.skFile
-                            };
-                            const fileLink = await uploadFiles(uploadData)
-                            iterator.fileLink = fileLink
-                            delete iterator.skFile
-                        }
-                    }
-                }
-                else if(getValue == 7){
-                    formData._id = FlowRouter.getParam("_id");
-                    const researchInterest = $("#inputResearchInterest").val();
-                    formData.researchInterest = researchInterest;
-                }
-
                 Meteor.call("dosen.update", formData, async function (err, res) {
                     if (err) {
                         failAlert(err);

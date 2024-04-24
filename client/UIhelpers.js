@@ -2,6 +2,10 @@ import Intl from "intl";
 import "intl/locale-data/jsonp/id-ID";
 import moment from "moment";
 
+Handlebars.registerHelper('increment', function(value) {
+  return value + 1;
+});
+
 Template.registerHelper("formatRp", function (context, options) {
   if (context)
     return new Intl.NumberFormat("id-ID", {
@@ -38,6 +42,8 @@ Template.registerHelper(
     return dataReturn;
   }
 );
+
+
 
 Template.registerHelper("formatHRDate", function (context, options) {
   if (context) moment.locale("id");
@@ -112,6 +118,12 @@ Template.registerHelper("capitalizeWord", function (a) {
   let text = a.toString();
   return text.toLowerCase().replace(/(^|\s)\S/g, (match) => match.toUpperCase());
 });
+
+Template.registerHelper("capitalizeWordLower", function (a) {
+  let text = a.toString();
+  return text.toLowerCase().replace(/(^\w{1})|(\s\w{1})/g, (match) => match.toLowerCase());
+});
+
 Template.registerHelper("toMeteorId", function (context) {
   if (context && typeof context === "object") {
     const meteorId = context.toHexString();

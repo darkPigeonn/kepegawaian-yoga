@@ -4,7 +4,6 @@ import { check } from "meteor/check";
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from "meteor/http";
 import { Email } from "meteor/email"
-
 import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
 export const Lecturers = new Mongo.Collection("lecturers", { idGeneration: 'MONGO' });
@@ -24,19 +23,30 @@ Meteor.methods({
         // console.log(response.data)
     },
     "users.changePassword" (body){
+        const thisUser = Meteor.users.findOne({_id: this.userId});
+        console.log(thisUser);
+        if (!thisUser){
+            throw new Meteor.Error(404,'No Access');
+        }
         const user = Meteor.users.findOne({_id: body.userId});
         const newPassword = body.newPassword;
         const oldPassword = {
             digest: Package.sha.SHA256(body.old),
             algorithm: "sha-256",
         };
-        const result = Accounts._checkPassword(user, oldPassword);
-
-        if (!result.error) {
+        if (thisUser.roles.includes("admin")){
             Accounts.setPassword(body.userId, newPassword);
-        } else {
-            throw new Meteor.Error('invalid-old-password', 'Invalid old password', { logout: false });
+        }else{
+            const result = Accounts._checkPassword(user, oldPassword);
+
+            if (!result.error) {
+                Accounts.setPassword(body.userId, newPassword);
+            } else {
+                throw new Meteor.Error('invalid-old-password', 'Invalid old password', { logout: false });
+            }
         }
+
+      
     },
     "employee.checkToken" (resetToken){
        const user = Meteor.users.findOne({resetToken})

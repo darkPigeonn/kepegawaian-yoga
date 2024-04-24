@@ -132,17 +132,17 @@
 
                         <div class="form-group">
                             <label for="inputStartDateImaviLecture" class="fw-bold text-login-content">Tanggal Mulai jadi Dosen IMAVI</label>
-                            <input type="date" class="form-control" id="inputStartDateImaviLecture" >
+                            <input type="date" class="form-control" id="inputStartDateImaviLecture" value="{{formData.startDateImavi}}">
                         </div>
 
                         <div class="form-group">
                             <label for="inputImaviStatus" class="fw-bold text-login-content">Status Dosen di Imavi</label>
-                            <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.nationality}}">
+                            <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}">
                         </div>
 
                         <div class="form-group">
                             <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai status Dosen</label>
-                            <input type="date" class="form-control" id="inputStartDateLecture">
+                            <input type="date" class="form-control" id="inputStartDateLecture" value="{{formData.startDateLecture}}">
                         </div>
 
                         <div class="form-group">
@@ -152,17 +152,17 @@
 
                         <div class="form-group">
                             <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai jadi Dosen di Lembaga lain</label>
-                            <input type="date" class="form-control" id="inputStartDateLecture">
+                            <input type="date" class="form-control" id="inputStartDateLectureOther" value="{{formData.startDateLectureOther}}">
                         </div>
 
                         <div class="form-group">
                             <label for="inputAnotherStatus" class="fw-bold text-login-content">Status Dosen di Lembaga Lain</label>
-                            <input type="text" class="form-control" id="inputAnotherStatus" value="{{formData.anotherstatus}}">
+                            <input type="text" class="form-control" id="inputAnotherStatus" value="{{formData.anotherStatus}}">
                         </div>
 
                         <div class="form-group">
                             <label for="inputAnotherStartDate" class="fw-bold text-login-content">Tanggal Mulai Status Dosen di Lembaga lain</label>
-                            <input type="date" class="form-control" id="inputAnotherStartDate">
+                            <input type="date" class="form-control" id="inputAnotherStartDate" value="{{formData.startDateAnotherStatus}}">
                         </div>
 
                         <div class="form-group">
@@ -172,7 +172,7 @@
 
                         <div class="form-group">
                             <label for="inputStartdatePosition" class="fw-bold text-login-content">Tanggal Mulai Jabatan</label>
-                            <input type="date" class="form-control" id="inputStartdatePosition">
+                            <input type="date" class="form-control" id="inputStartdatePosition" value="{{formData.startDatePosition}}">
                         </div>
 
                         <div class="form-group">
@@ -182,7 +182,7 @@
 
                         <div class="form-group ">
                             <label for="inputDateStartPosition" class="fw-bold text-login-content">Tanggal Mulai Kepangkatan</label>
-                            <input type="date" class="form-control" id="inputdateStartPosition">
+                            <input type="date" class="form-control" id="inputdateStartPosition" value="{{formData.startDateAcademicRank}}">
                         </div>                        
                     </form>
                 </section>
@@ -2482,14 +2482,22 @@
                         <input type="text" class="form-control" id="inputStartDateImavi">
                     </div>
                     <div class="form-group">
-                        <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
-                        <input type="text" class="form-control" id="inputEndDateImavi" >
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="endDateImaviNow">
-                            <label class="form-check-label" for="endDateImaviNow">
-                                Sampai Sekarang
-                            </label>
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
+                                <input type="text" class="form-control" id="inputEndDateImavi" >
+                            </div>
+
+                            <div class="form-group col">
+                                <input class="form-check-input" type="checkbox" id="endDateImaviNow">
+                                <label class="form-check-label" for="endDateImaviNow">
+                                    Sampai Sekarang
+                                </label>
+                            </div>
+                            
                         </div>
+                       
+                     
                     </div>
                     <div class="d-flex justify-content-end mt-2 add-imavistructure">
                         <button class="btn btn-add btn-sm">
@@ -2568,36 +2576,6 @@
             {{/if}}
         </div>
     </div>
-
-    <script>
-    
-        const endDateInputs = document.querySelectorAll("#inputEndDate, #inputEndDateOthers, #inputEndDateImavi");
-        const endDateCheckboxes = document.querySelectorAll("#endDateNow, #endDateOthersNow, #endDateImaviNow");
-    
-        endDateInputs.forEach(function(endDateInput) {
-            endDateInput.addEventListener("change", function() {
-                if (endDateInput.value) {
-                    const index = Array.from(endDateInputs).indexOf(endDateInput);
-                    endDateCheckboxes[index].disabled = true;
-                } else {
-                    const index = Array.from(endDateInputs).indexOf(endDateInput);
-                    endDateCheckboxes[index].disabled = false;
-                }
-            });
-        });
- 
-        endDateCheckboxes.forEach(function(endDateCheckbox) {
-            endDateCheckbox.addEventListener("change", function() {
-                if (endDateCheckbox.checked) {
-                    const index = Array.from(endDateCheckboxes).indexOf(endDateCheckbox);
-                    endDateInputs[index].disabled = true;
-                } else {
-                    const index = Array.from(endDateCheckboxes).indexOf(endDateCheckbox);
-                    endDateInputs[index].disabled = false;
-                }
-            });
-        });
-    </script>
 
     <!-- Kegitan Profesi -->
     <div class="card rounded-3 mt-4">
@@ -3192,17 +3170,17 @@
     <div class="container page page-create-student poppins-regular py-4">
         <div class="d-flex align-items-center flex-wrap gap-3">
             <i class="fa fa-solid fa-chevron-left text-secondary hover-icon"></i>
-            <h4 class="text-login-content fw-bold py-2 mb-0">Back</h4>
+            <h4 class="text-login-content fw-bold py-2 mb-0">Kembali</h4>
         </div>
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
-                Change Password
+                Ubah Kata Sandi
             </div>
             <div class="card-body">
                 <section class="p-2">
                     <form id="edit-user-form">
                         <div class="form-group">
-                            <label for="inputPassword" class="fw-bold text-login-content">Current Password</label>
+                            <label for="inputPassword" class="fw-bold text-login-content">Kata sandi Lama</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="old-password" name="inputPassword"  value="{{ thisUser.password }}" required>
                                 <div class="input-group-append">
@@ -3213,7 +3191,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword" class="fw-bold text-login-content">New Password</label>
+                            <label for="inputPassword" class="fw-bold text-login-content">Kata sandi baru</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="new-password" name="inputPassword"  value="{{ thisUser.password }}" required>
                                 <div class="input-group-append">
@@ -3224,7 +3202,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword" class="fw-bold text-login-content">Confirm Password</label>
+                            <label for="inputPassword" class="fw-bold text-login-content">Ulang kata sandi baru</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="confirmation-password" name="inputPassword"  value="{{ thisUser.password }}" required>
                                 <div class="input-group-append">
