@@ -244,6 +244,13 @@ Template.formLecturers.events({
         const studyPublication = $("#inputStudyPublication").val()
         const domesticStatus = $("input[name=inputDomestic]:checked").val()
         const dateEnd = $("#inputEducationEnd").val()  
+        const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
+
+        if (!isValidDateEnd) {
+            failAlert("Input Date End harus terdiri dari 4 digit angka.");
+            return;
+        }
+
         const data = {
             educationLevel,
             major,
@@ -267,6 +274,12 @@ Template.formLecturers.events({
         const city = $("#inputKotaPenerbit").val()
         const year = $("#inputTahunTerbit").val()
         const link = $("#inputURL").val()
+        const isValidYear = /^[0-9]{4}$/.test(year); 
+
+        if (!isValidYear) {
+            failAlert("Input Tahun Terbit harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data ={
             category,
             title,
@@ -316,6 +329,12 @@ Template.formLecturers.events({
         const bidangKeilmuan = $("#inputBidangKeilmuan").val()
         const mhsTotal = $("#inputJumlahMahasiswa").val()
         const sks = $("#inputSks").val()
+        const isValidSKS = /^[0-9]+$/.test(sks);
+
+        if (!isValidSKS) {
+            failAlert("Input SKS hanya boleh berupa angka.");
+            return;
+        }
         const data = {
             type,
             matkul,
@@ -340,6 +359,12 @@ Template.formLecturers.events({
         const dateOfPublisher = $("#date_input").val()
         const year = $("#year_input").val()
         const link = $("#link_input").val()
+        const isValidYear = /^[0-9]{4}$/.test(year); 
+
+        if (!isValidYear) {
+            failAlert("Input Tahun Terbit harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             title,
             name,
@@ -403,6 +428,19 @@ Template.formLecturers.events({
         const category = $("#input-beasiswa-category").val()
         const startYear = $("#input-start-year").val()
         const endYear = $("#input-end-year").val()
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+
+        if (!isValidStartYear) {
+            failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
+            return;
+        }
+
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+
+        if (!isValidEndYear) {
+            failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             name,
             category,
@@ -422,6 +460,19 @@ Template.formLecturers.events({
         const organizer = $("#input-organizer").val()
         const startYear = $("#start-year-input").val()
         const endYear = $("#end-year-input").val()
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+
+        if (!isValidStartYear) {
+            failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
+            return;
+        }
+
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+
+        if (!isValidEndYear) {
+            failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             serviceName,
             category,
@@ -440,6 +491,12 @@ Template.formLecturers.events({
         const coachingLevel = $("#inputCoachingLevel").val()
         const place = $("#inputCoachingPlace").val()
         const periode = $("#inputPeriode").val()
+        const isValidPeriode = /^[0-9-]+$/.test(periode);
+
+        if (!isValidPeriode) {
+            failAlert("Input Periode hanya boleh berisi angka dan simbol -.");
+            return;
+        }
         const data = {
             coachingLevel,
             place,
@@ -458,6 +515,19 @@ Template.formLecturers.events({
         const source = $("#input-funding-source").val()
         const startYear = $("#input-year-start").val()
         const endYear = $("#input-year-end").val()
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+
+        if (!isValidStartYear) {
+            failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
+            return;
+        }
+
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+
+        if (!isValidEndYear) {
+            failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             name,
             type,
@@ -640,6 +710,12 @@ Template.formLecturers.events({
         const programStudi = $("#inputProgramStudi").val()
         const lembagaName = $("#inputNamaLembaga").val()
         const endDate = $("#inputTahun").val()
+        const isValidEndDate = /^[0-9]{4}$/.test(endDate); 
+
+        if (!isValidEndDate) {
+            failAlert("Input Tahun harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             name,
             title,
@@ -665,6 +741,20 @@ Template.formLecturers.events({
         // const dateStart = $("#inputCertificationStart").val()
         const dateEnd = $("#inputCertificationEnd").val()
         const file = $("#inputFileSk").prop("files")[0]
+        const isValidRegistrationNumber = /^\d+$/.test(registrationNumber); // Hanya angka
+
+        if (!isValidRegistrationNumber) {
+            failAlert("Nomor Registrasi hanya boleh berisi angka.");
+            return;
+        }
+
+        
+        const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
+
+        if (!isValidDateEnd) {
+            failAlert("Input Date End harus terdiri dari 4 digit angka.");
+            return;
+        }
         const data = {
             type,
             major,
@@ -764,6 +854,7 @@ Template.formLecturers.events({
         const ps = $("#inputProgramStudiPengujian").val()
         const lembaga = $("#inputNamaLembagaPengujian").val()
         const dateEnd = $("#inputTahunSelesaiPengujian").val()
+        const semester = $("#inputSemesterPengujian").val()
         
         const data = {
             name,
@@ -773,7 +864,8 @@ Template.formLecturers.events({
             bidangKeilmuan,
             ps,
             lembaga,
-            dateEnd
+            dateEnd,
+            semester
         }
 
         listPengujian.push(data)
@@ -787,6 +879,13 @@ Template.formLecturers.events({
         const place = $("#inputPlace").val()
         const period = $("#inputPeriod").val()
         const notes = $("#inputNotes").val()
+        const isValidPeriode = /^[0-9-]+$/.test(period); // Hanya angka dan simbol -
+
+        if (!isValidPeriode) {
+            alert("Input Periode hanya boleh berisi angka dan simbol -.");
+            return;
+        }
+  
         const data = {
             name,
             place,
@@ -929,10 +1028,55 @@ Template.formLecturers.events({
         e.preventDefault()
         const formData = t.formData.get();
         // console.log(formData);
+
         const getValue = $(e.currentTarget).val();
-        console.log(getValue)
+        // console.log(getValue)
         if (getValue == 2){
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+                const username = $("#inputUsername").val();
+                const fullName = $("#inputFullname").val();
+                const phoneNumber = $("#inputPhoneNumber").val(); 
+                const nik = $("#inputNik").val();
+                const email = $("#inputEmail").val();
+                const nidn = $("#inputNidn").val(); 
+        
+                const isValidUsername = /^[a-zA-Z0-9]{6,20}$/.test(username);
+                const isValidFullName = /^[a-zA-Z\s]+$/.test(fullName);
+                const isValidPhoneNumber = /^[0-9]+$/.test(phoneNumber);
+                const isValidNIK = /^\d{16}$/.test(nik);
+                const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+                const isValidNIDN = /^\d{10}$/.test(nidn);
+                let errorMessage = "";
+        
+                if (!isValidUsername) {
+                    errorMessage += "Username tidak valid.\n";
+                }
+            
+                if (!isValidFullName) {
+                    errorMessage += "Nama lengkap tidak valid.\n";
+                }
+            
+                if (!isValidPhoneNumber) {
+                    errorMessage += "Nomor telepon tidak valid.\n";
+                }
+            
+                if (!isValidNIK) {
+                    errorMessage += "NIK harus terdiri dari 16 digit angka.\n";
+                }
+            
+                if (!isValidEmail) {
+                    errorMessage += "Email tidak valid.\n";
+                }
+            
+                if (!isValidNIDN) {
+                    errorMessage += "NIDN harus terdiri dari 10 digit angka.\n";
+                }
+            
+                if (errorMessage !== "") {
+                    failAlert("Inputan anda salah. Mohon periksa:\n" + errorMessage);
+                    return;
+                }
+            
                 formData.imageFile = $('#inputImageProfile')[0].files[0];
                 formData.username = $("#inputUsername").val();
                 formData.fullName = $("#inputFullname").val();

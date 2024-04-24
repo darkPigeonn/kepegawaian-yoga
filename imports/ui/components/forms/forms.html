@@ -7,11 +7,11 @@
             {{#if lessThan formPage 5}}
                 <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Profil Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Profil Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Profil Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
             {{else}}
-                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Profil Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
             {{/if}}
         </div>
@@ -48,7 +48,7 @@
 
                         <div class="form-group">
                             <label for="inputUsername" class="fw-bold text-login-content">Username</label>
-                            <input type="text" value="{{formData.username}}" class="form-control" id="inputUsername" required>
+                            <input type="text" value="{{formData.username}}" class="form-control" id="inputUsername"  pattern="[a-zA-Z0-9]{6,20}" required>
                         </div>
                         <div class="form-group">
                             <label for="inputFullname" class="fw-bold text-login-content">Nama Lengkap</label>
@@ -136,12 +136,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputImaviStatus" class="fw-bold text-login-content">Status Dosen di Imavi</label>
+                            <label for="inputImaviStatus" class="fw-bold text-login-content">Status Dosen di IMAVI</label>
                             <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}">
                         </div>
 
                         <div class="form-group">
-                            <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai status Dosen</label>
+                            <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai Status Dosen</label>
                             <input type="date" class="form-control" id="inputStartDateLecture" value="{{formData.startDateLecture}}">
                         </div>
 
@@ -518,7 +518,7 @@
 
                                            
                         <div class="form-group">
-                            <label for="inputCertificationGrade" class="fw-bold text-login-content">Nilai</label>
+                            <label for="inputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
                             <input type="text" class="form-control" id="inputCertificationGrade" >
                         </div>
              
@@ -636,7 +636,7 @@
             <section class="p-2">
                 <form id="formLecturers">
                     <div class="form-group">
-                        <label for="inputName" class="fw-bold text-login-content">Nama tugas</label>
+                        <label for="inputName" class="fw-bold text-login-content">Nama Tugas</label>
                         <input type="text" class="form-control" id="inputName">
                     </div>
                     <div class="form-group">
@@ -757,7 +757,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="fw-bold text-login-content">Periode Studi</label>
+                        <label class="fw-bold text-login-content">Tahun Ajaran</label>
                         <select id="input-ps" class="form-select filter">
                          
                         </select>
@@ -783,13 +783,13 @@
                         <label class="fw-bold text-login-content">Jenis Mata Kuliah</label>
                         <select id="input-jenis" class="form-select filter">
                             <option value="Wajib">Wajib</option>
-                            <option value="Tidak Wajib">Tidak Wajib</option>
+                            <option value="Tidak Wajib">Pilihan</option>
                             <option value="Tugas Akhir">Tugas Akhir</option>
                             <option value="Thesis">Thesis</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang keilmuan</label>
+                        <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang Keilmuan</label>
                         <input type="text" class="form-control" id="inputBidangKeilmuan">
                     </div>
                     <div class="form-group">
@@ -823,7 +823,7 @@
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                    <label class="col text-break"><b>Periode Studi:</b> {{item.ps}}/{{item.semester}}</label>
+                                    <label class="col text-break"><b>Periode Studi:</b> {{item.ps}} - {{item.semester}}</label>
                                     <label class="col text-break"><b>Jenis Mata Kuliah:</b> {{item.type}}</label>
                                     <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
                                     <label class="col text-break"><b>Jumlah Mahasiswa:</b> {{item.mhsTotal}}</label>
@@ -850,7 +850,7 @@
                                         <div>
                                             <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
-                                        <label class="col text-break"><b>Periode Studi:</b> {{item.ps}}</label>
+                                        <label class="col text-break"><b>Periode Studi:</b> {{item.ps}} - {{item.semester}}</label>
                                         <label class="col text-break"><b>Jenis Mata Kuliah:</b> {{item.type}}</label>
                                         <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
                                         <label class="col text-break"><b>Jumlah Mahasiswa:</b> {{item.mhsTotal}}</label>
@@ -896,7 +896,7 @@
                         <input type="text" class="form-control" id="inputJudul">
                     </div>
                     <div class="form-group">
-                        <label class="fw-bold text-login-content">Kategori pembimbing</label>
+                        <label class="fw-bold text-login-content">Kategori Kegiatan</label>
                         <select id="input-jenis-pembimbing" class="form-select filter">
                             <option value="Thesis">Pembimbing Utama</option>
                             <option value="Tugas Akhir">Pembimbing Pendamping</option>
@@ -1041,10 +1041,36 @@
                         <label for="inputNamaLembagaPengujian" class="fw-bold text-login-content">Nama Lembaga</label>
                         <input type="text" class="form-control" id="inputNamaLembagaPengujian" >
                     </div>
-                    <div class="form-group">
-                        <label for="inputTahunSelesaiPengujian" class="fw-bold text-login-content">Semester dan Tahun Selesai</label>
-                        <input type="text" class="form-control" id="inputTahunSelesaiPengujian" >
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputSemesterPengujian" class="fw-bold text-login-content">Semester</label>
+                            <select class="form-control" id="inputSemesterPengujian">
+                                <option value="genap">Genap</option>
+                                <option value="gasal">Gasal</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col">
+                            <label for="inputTahunSelesaiPengujian" class="fw-bold text-login-content">Tahun Selesai</label>
+                            <select id="inputTahunSelesaiPengujian" class="form-select filter"></select>
+                        </div>
+
+                        <script>
+                            var currentYear = new Date().getFullYear();
+                            var startYear = 2011;
+                            var selectElement = document.getElementById("inputTahunSelesaiPengujian");
+                            
+                            for (var i = currentYear; i >= startYear; i--) {
+                                var option = document.createElement("option");
+                                nilai = i + 1;
+                                option.text = i + "/" + nilai ;
+                                option.value = i + "/" + nilai;
+                                selectElement.appendChild(option);
+                            }
+                        </script>
+                        
                     </div>
+                
                     <div class="d-flex justify-content-end mt-2 add-pengujian">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -1077,7 +1103,7 @@
                                         <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
                                         <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembaga}}</label>
                                         <label class="col text-break"><b>Program Studi:</b> {{item.ps}}</label>
-                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.dateEnd}}</label>
+                                        <label class="col text-break"><b>Semester dan Tahun Selesai:</b>{{capitalizeWord item.semester}} - {{item.dateEnd}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -1107,7 +1133,7 @@
                                         <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
                                         <label class="col text-break"><b>Nama Lembaga:</b> {{item.lembaga}}</label>
                                         <label class="col text-break"><b>Program Studi:</b> {{item.ps}}</label>
-                                        <label class="col text-break"><b>Tahun Selesai:</b> {{item.dateEnd}}</label>
+                                        <label class="col text-break"><b>Semester dan Tahun Selesai:</b>{{capitalizeWord item.semester}} - {{item.dateEnd}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -1350,7 +1376,7 @@
                         <input type="text" class="form-control" id="inputJudul">
                     </div>
                     <div class="form-group">
-                        <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang keilmuan</label>
+                        <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang Keilmuan</label>
                         <input type="text" class="form-control" id="inputBidangKeilmuan" >
                     </div>
                    
@@ -1806,7 +1832,7 @@
     <!-- Terbitan Lainnya -->
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
-            Terbitan lainnya
+            Terbitan Lainnya
         </div>
         <div class="card-body">
             <section class="p-2">
@@ -2502,14 +2528,14 @@
                     <div class="d-flex justify-content-end mt-2 add-imavistructure">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
-                            Tambah Jabatan Struktural Imavi
+                            Tambah Jabatan Struktural IMAVI
                         </button>
                     </div>
                     {{#if listImaviStructure}}
                     <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
                     <!-- Desktop -->
                     <div class="form-group desktop-div">
-                        <label for="inputListImaviStructure" class="fw-bold text-login-content">Daftar Jabatan Struktural Imavi</label>
+                        <label for="inputListImaviStructure" class="fw-bold text-login-content">Daftar Jabatan Struktural IMAVI</label>
                         {{#each item in listImaviStructure}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
@@ -2536,7 +2562,7 @@
                     </div>
                     <!-- Mobile -->
                     <div class="form-group mobile-div">
-                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar Imavi Structure</label>
+                        <label for="inputlistJournal" class="fw-bold text-login-content">Daftar IMAVI Structure</label>
                         {{#each item in listImaviStructure}}
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div class="d-flex flex-wrap">
