@@ -597,14 +597,14 @@ Template.configurasiList.events({
     const selectedSchedules = $("#inputShiftPairings").val();
     const selectedEmployees = $("#inputEmployeesPairings").val();
     const selectUnitForm = $("#selectUnitForm").val();
-
     if (selectUnitForm.length > 0) {
       for (let index = 0; index < selectUnitForm.length; index++) {
-        const selectPartner = selectUnitForm[index];
+        // ERROR KARENA YANG DITEMBAK DATA OUTLETS DI EMPLOYEE, SEDANGKAN DATA EMPLOYEE TIDAK ADA OUTLETS
+        // DIRUBAH KE _ID KARENA JIKA PAKAI PARTNERCODE, MAKA DATA YANG KELUAR DI TABLE AKAN KELUAR SEMUA YANG IMAVI
+        // const selectPartner = selectUnitForm[index];
         const employees = t.employees.get();
-
         const employeesFilter = _.filter(employees, function (data) {
-          return data.outlets.includes(selectPartner);
+          return data._id.includes(selectedEmployees._id);
         });
         console.log(employeesFilter);
 
