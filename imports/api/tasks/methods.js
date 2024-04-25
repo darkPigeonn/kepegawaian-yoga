@@ -212,13 +212,20 @@ Meteor.methods({
         check(updatedMembers, Array);
         check(notifType, String);
         check(messages, String);
-
+        
         let createdBy;
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
+        
         createdBy = adminPartner.fullname;
+        //Masukkan data pembuat ke members nya juga
+        updatedMembers.push({
+            id: adminPartner.profileId,
+            name: adminPartner.fullName,
+            email: adminPartner.username,
+        })
 
         let dataSave = "";
 

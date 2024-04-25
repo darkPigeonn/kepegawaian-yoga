@@ -113,6 +113,13 @@ Meteor.methods({
         _id: thisUser,
       });
       createdBy = adminPartner.fullname;
+
+      //Masukkan data pembuat ke members nya juga
+      updatedMembers.push({
+        id: adminPartner.profileId,
+        name: adminPartner.fullName,
+        email: adminPartner.username,
+    })
     
       const dataSave = { 
         nama_project,
