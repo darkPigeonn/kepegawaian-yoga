@@ -16,24 +16,48 @@ Meteor.methods({
         const relatedUser = Meteor.users.findOne({
             _id: thisUser,
         });
+        // ADMIN DAPAT MELIHAT SEMUA TASK YANG ADA
+        if(relatedUser.roles[0] == "admin"){
+            const findTasks = Tasks.find({partner: relatedUser.partners[0]}).fetch();
+
+            const priorityOrder = { high: 0, mid: 1, low: 2 };
+            findTasks.sort((a, b) => {
+                const priorityA = priorityOrder[a.priority];
+                const priorityB = priorityOrder[b.priority];
+
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                } else {
+                    return a.deadline - b.deadline;
+                }
+            });
+
+            return findTasks;
+        }
+        else {
+            const dataEmployee = Employee.findOne({_id: relatedUser.profileId})
+            const findTasks = Tasks.find({members: {
+                $elemMatch: {
+                    id: dataEmployee._id
+                }
+            }}).fetch();
+
+            const priorityOrder = { high: 0, mid: 1, low: 2 };
+            findTasks.sort((a, b) => {
+                const priorityA = priorityOrder[a.priority];
+                const priorityB = priorityOrder[b.priority];
+    
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                } else {
+                    return a.deadline - b.deadline;
+                }
+            });
+    
+            return findTasks;
+            // return Tasks.find({id_project: 'umum'},{sort: {createdAt: -1}}).fetch();
+        }    
         
-        // const findTasks = Tasks.find({ id_project: 'umum', "members.email": relatedUser.emails[0].address}).fetch();        
-        const findTasks = Tasks.find({ id_project: 'umum', partner: relatedUser.partners[0]}).fetch();
-
-        const priorityOrder = { high: 0, mid: 1, low: 2 };
-        findTasks.sort((a, b) => {
-            const priorityA = priorityOrder[a.priority];
-            const priorityB = priorityOrder[b.priority];
-
-            if (priorityA !== priorityB) {
-                return priorityA - priorityB;
-            } else {
-                return a.deadline - b.deadline;
-            }
-        });
-
-        return findTasks;
-        // return Tasks.find({id_project: 'umum'},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getThisTask"(id){
         check(id, String);
