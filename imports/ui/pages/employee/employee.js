@@ -1570,3 +1570,39 @@ function convert2number(data) {
   let temp = data.replace(/\./g, ""); // merubah . jadi ""
   return parseFloat(temp);
 }
+
+Template.employeeSearch.onCreated(function (error, result) {
+  const self = this;
+
+  self.listEmployee = new ReactiveVar();
+  self.listEmployeeSearch = new ReactiveVar();
+
+  Meteor.call("employee.getAll", function (error, result) {
+    if (result) {
+      self.listEmployee.set(result);
+    }
+  });
+});
+Template.employeeSearch.helpers({
+  listEmployeeSearch() {
+    return Template.instance().listEmployeeSearch.get();
+  },
+});
+Template.employeeSearch.events({
+  "keyup #input-name"(e, t) {
+    const value = e.target.value;
+    if (value.length < 4) {
+      return false;
+    }
+    const master = t.listEmployee.get();
+    const searchEmployee = master.filter((item) => {
+      return item.fullName.toLowerCase().includes(value.toLowerCase());
+    });
+
+    if (searchEmployee.length > 0) {
+      t.listEmployeeSearch.set(searchEmployee);
+    } else {
+      t.listEmployeeSearch.set();
+    }
+  },
+});

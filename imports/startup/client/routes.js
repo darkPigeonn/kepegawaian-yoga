@@ -111,6 +111,12 @@ FlowRouter.route("/employees/detail/config/:_id", {
     this.render("App_body", "employee_detail_config");
   },
 });
+FlowRouter.route("/employees/search", {
+  name: "employeeSearch",
+  action() {
+    this.render("App_body", "employeeSearch");
+  },
+});
 FlowRouter.route("/employees/soon", {
   name: "comingSoon",
   action() {
@@ -334,7 +340,7 @@ FlowRouter.route("/connectEmployeeAppUser", {
   action() {
     this.render("App_body", "connectEmployeeAppUser");
   },
-})
+});
 
 //DOCUMENTS
 FlowRouter.route("/documents", {
@@ -438,7 +444,7 @@ FlowRouter.route("/tickets/message/:_id", {
   action() {
     this.render("App_body", "chatTicket");
   },
-})
+});
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {

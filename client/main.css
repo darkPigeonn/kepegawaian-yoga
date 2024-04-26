@@ -139,3 +139,13 @@ input:required + label::before{
 .content-data .value{
   font-size : 18px;
 }
+
+.btn-logout {
+  border-left : 1px solid black !important;
+}
+.dropdown-toggle::after{
+  display: none !important;
+}
+a .summary {
+  text-decoration: none;
+}

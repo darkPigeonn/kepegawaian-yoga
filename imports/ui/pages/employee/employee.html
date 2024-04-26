@@ -792,13 +792,13 @@
                                     <div class="col-4">
                                         <div class="content-data">
                                             <div class="label">Tanggal Angkatan SK</div>
-                                            <div class="value">{{employee.pekerjaan.startDateWorkSk}}</div>
+                                            <div class="value">{{formatHRDate employee.pekerjaan.startDateWorkSk}}</div>
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="content-data">
                                             <div class="label">Selesai Masa Berlaku SK</div>
-                                            <div class="value">{{employee.pekerjaan.endDateWorkSk}}</div>
+                                            <div class="value">{{formatHRDate employee.pekerjaan.endDateWorkSk}}</div>
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -2462,4 +2462,57 @@
 
 <template name="comingSoon">
     <strong>COMING SOON</strong>
+</template>
+
+<template name="employeeSearch">
+    <div class="container">
+        <div class="contentAtas">
+            <p style="color: blue; margin: 0;"> <a href="/"> Beranda</a> / <a href="/employees/search">
+                    Cari Pegawai</a></p>
+        </div>
+        <hr>
+        <div class="page-body">
+            <div class="form-group">
+                <label>Cari Pegawai</label>
+                <input class="form-control" type="text" id="input-name"
+                    placeholder="Silahkan input minimal 3 karakter..." />
+            </div>
+
+            {{#if listEmployeeSearch}}
+            ada
+            <table class="table" id="table-pegawai">
+                <thead>
+                    <tr>
+                        <th scope="col">NIY</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Jabatan</th>
+                        <th scope="col">Perwakilan</th>
+                        <th scope="col">Unit Kerja</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each listEmployeeSearch}}
+                    <tr>
+                        <td> {{niy}}</td>
+                        <td> {{fullName}} </td>
+                        <td> {{pekerjaan.position}} </td>
+                        <td>{{unit.perwakilan}}</td>
+                        <td>{{unit.school}}</td>
+                        <td>
+
+                            <a href="/employees/detail/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details"><i
+                                        class="fa fa-info-circle"></i></button>
+                            </a>
+
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+            {{/if}}
+        </div>
+    </div>
 </template>

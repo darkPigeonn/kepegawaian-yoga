@@ -1,6 +1,6 @@
 import "./navbar.html";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-
+import Swal from "sweetalert2";
 Template.navbar.onCreated(function () {
   const self = this;
   self.jabatanLogin = new ReactiveVar();
@@ -38,11 +38,29 @@ Template.navbar.events({
   "click #btn_logout"(e, t) {
     e.preventDefault();
 
-    Meteor.logout(function (error) {
-      if (error) {
-        console.log(error.reason);
-      } else {
-        FlowRouter.go("App.home");
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda akan diarahkan ke halaman login",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.logout(function (error) {
+          if (error) {
+            console.log(error.reason);
+          } else {
+            Swal.fire({
+              title: "Berhasil!",
+              text: "Anda berhasil keluar.",
+              icon: "success",
+            });
+            FlowRouter.go("App.home");
+          }
+        });
       }
     });
   },
