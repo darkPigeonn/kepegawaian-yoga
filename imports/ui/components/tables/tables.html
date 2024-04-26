@@ -52,6 +52,7 @@
 </template>
 
 <template name="tableListDosen">
+
   <div class="card rounded-3 poppins-regular p-4 my-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
       <h3 class="text-login-content fw-bold pt-1">Daftar Dosen</h3>
@@ -68,7 +69,7 @@
           <tr>
             <th scope="col" class="text-login-content fw-bold">No</th>
             <th scope="col" class="text-login-content fw-bold">Nama</th>
-            <th scope="col" class="text-login-content fw-bold">Email</th>
+            <th scope="col" class="text-login-content fw-bold">No Telepon</th>
             <th scope="col" class="text-login-content fw-bold">Tanggal Lahir</th>
             <th scope="col" class="text-login-content fw-bold">Jenis Kelamin</th>
             <th scope="col" class="text-login-content fw-bold">Actions</th>
@@ -84,8 +85,9 @@
               {{capitalizeWord i.profile.fullName}} 
             </td>
             <td>
-              {{capitalizeWordLower i.profile.email}}
+              {{capitalizeWord i.profile.phoneNumber}} 
             </td>
+  
             <td>
               {{formatHRDate i.profile.dob}}
             </td>

@@ -1,6 +1,7 @@
 import Intl from "intl";
 import "intl/locale-data/jsonp/id-ID";
 import moment from "moment";
+import 'moment/locale/id';
 
 Handlebars.registerHelper('increment', function(value) {
   return value + 1;
@@ -15,7 +16,9 @@ Template.registerHelper("formatRp", function (context, options) {
   else {
     return "Rp. 0";
   }
+
 });
+
 
 Template.registerHelper("lessThan", function (a, b) {
   return a < b;
@@ -43,11 +46,9 @@ Template.registerHelper(
   }
 );
 
-
-
-Template.registerHelper("formatHRDate", function (context, options) {
-  if (context) moment.locale("id");
-  return moment(context).format("DD MMMM YYYY");
+Template.registerHelper("formatHRDate", function (context, options) { 
+  if (context) moment.locale('id');
+  return moment(context).format("D MMMM YYYY");
 });
 
 Template.registerHelper("formatHRDateShort", function (context, options) {
@@ -157,9 +158,19 @@ Template.registerHelper("formatFullname", function (value) {
       return thisUser.fullname;
     }
 });
-Template.registerHelper("isInRoles", function(roles){
-  return isInRoles(roles);
+Template.registerHelper("isInRoles", function(roles) {
+  if (Meteor.user() && Meteor.user().roles.includes("dosen")) {
+    return true;
+} else {
+    return isInRoles(roles);
+  }
+
+  r
+  
 });
+
+
+
 Template.registerHelper("formatFullname", function (value) {
   if (value) {
     let thisUser = Meteor.users.findOne({
@@ -172,6 +183,7 @@ Template.registerHelper("formatFullname", function (value) {
     return "Sine Nomine";
   }
 });
+
 Template.registerHelper("statusDetail", function (data) {
   let status = "";
   switch (data) {

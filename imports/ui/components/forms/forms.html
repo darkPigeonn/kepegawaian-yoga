@@ -1,19 +1,23 @@
+
+
 <template name="formLecturers">
+
     <!-- Component Forms Add Lecturers Requirement Parameter when using this component: -->
     <!-- 1. formPage -> for selecting category of the page -->
     <!-- 2. type -> for add / edit page -->
-    <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2">
+    <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2" style="width: 100%; overflow-x: auto;">
         <div class="navigation-form d-flex gap-3">
-            {{#if lessThan formPage 5}}
+           
                 <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-            {{else}}
+           
+                <!-- <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i> -->
+                <!-- <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i> -->
                 <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
                 <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
-            {{/if}}
+         
         </div>
     </div>
 
@@ -106,7 +110,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputAddress" class="fw-bold text-login-content">Alamat Domisi</label>
+                            <label for="inputAddress" class="fw-bold text-login-content">Alamat Domisili</label>
                             <input type="text" class="form-control"  value="{{formData.address}}" id="inputAddress">
                         </div>
 
@@ -114,11 +118,64 @@
                             <label for="inputPhoneNumber" class="fw-bold text-login-content">Nomor Telepon</label>
                             <input type="tel" class="form-control"  value="{{formData.phoneNumber}}" id="inputPhoneNumber">
                         </div>
-             
-                        <div class="form-group">
-                            <label for="inputEmail" class="fw-bold text-login-content">Email</label>
-                            <input type="text" class="form-control" value="{{formData.email}}" id="inputEmail">
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group">
+                                <label for="inputEmail" class="fw-bold text-login-content">Email</label>
+                                <input type="text" class="form-control" value="{{formData.email}}" id="inputEmail">
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <button class="btn btn-add btn-sm" id="add-email">
+                                    <i class="fa fa-light fa-plus"></i>
+                                    Tambah Email
+                                </button>
+                            </div>
+
+                        {{#if listEmail}}
+                        <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                        <!-- Desktop -->
+                        <div class="form-group desktop-div">
+                            <label for="inputListEmail" class="fw-bold text-login-content">Daftar Email</label>
+                            {{#each item in listEmail}}
+                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                    <div class="d-flex flex-wrap">
+                                        <div class="w-60 row row-cols-1 mx-0">
+                                            <label class="col text-break fw-bold">{{capitalizeWordLower item.email}}</label>
+    
+                                        </div>
+                                       
+                                    </div>
+
+                                    <div class="d-flex justify-content-end bottom-0 me-2">
+                                        <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="email" data-milik="{{@index}}">
+                                            <i class="fa fa-solid fa-trash remove-list" data-id="email" data-milik="{{@index}}"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {{/each}}
                         </div>
+                        <!-- Mobile -->
+                        <div class="form-group mobile-div">
+                            <label for="inputListEmail" class="fw-bold text-login-content">Daftar Email</label>
+                            {{#each item in listEmail}}
+                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="fw-bold text-break">{{capitalizeWordLower item.email}}</p>
+                                           
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="d-flex justify-content-end bottom-0 me-2">
+                                        <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="email" data-milik="{{@index}}">
+                                            <i class="fa fa-solid fa-trash remove-list" data-id="email" data-milik="{{@index}}"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        </div>
+                    
 
                         <div class="form-group">
                             <label for="inputReligion" class="fw-bold text-login-content">Agama</label>
@@ -131,15 +188,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputStartDateImaviLecture" class="fw-bold text-login-content">Tanggal Mulai jadi Dosen IMAVI</label>
+                            <label for="inputStartDateImaviLecture" class="fw-bold text-login-content">Tanggal Mulai Menjadi Dosen IMAVI</label>
                             <input type="date" class="form-control" id="inputStartDateImaviLecture" value="{{formData.startDateImavi}}">
                         </div>
 
                         <div class="form-group">
                             <label for="inputImaviStatus" class="fw-bold text-login-content">Status Dosen di IMAVI</label>
-                            <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}">
+                            {{#if isInRoles true}}
+                                <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}" disabled>
+                            {{else}}
+                                <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}">
+                            {{/if}}
                         </div>
-
+                        
+                        
                         <div class="form-group">
                             <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai Status Dosen</label>
                             <input type="date" class="form-control" id="inputStartDateLecture" value="{{formData.startDateLecture}}">
@@ -151,7 +213,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai jadi Dosen di Lembaga lain</label>
+                            <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai Menjadi Dosen di Lembaga lain</label>
                             <input type="date" class="form-control" id="inputStartDateLectureOther" value="{{formData.startDateLectureOther}}">
                         </div>
 
@@ -199,7 +261,7 @@
         <!-- Minat penelitian -->
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
-                Bidang Penelitian Yang Diminati
+                Bidang Penelitian yang Diminati
             </div>
             <div class="card-body">
                 <section class="p-2">
@@ -316,7 +378,7 @@
                       
                  
                         <div class="form-group">
-                            <label for="inputStudyPublication" class="fw-bold text-login-content">Judul Tesis</label>
+                            <label for="inputStudyPublication" class="fw-bold text-login-content">Judul Skripsi/Thesis</label>
                             <input type="text" class="form-control" id="inputStudyPublication">
                         </div>
                    
@@ -336,7 +398,7 @@
                                     <div class="d-flex flex-wrap">
                                         <div class="w-60 row row-cols-1 mx-0">
                                             <label class="col text-break fw-bold">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</label>
-                                            <label class="col text-break mt-2"><b>Judul Tesis: </b> {{capitalizeWord item.studyPublication}}</label>
+                                            <label class="col text-break mt-2"><b>Judul Skripsi/Thesis: </b> {{capitalizeWord item.studyPublication}}</label>
                                         </div>
                                         <div class="w-40">
                                             <div class="d-flex justify-content-end flex-row gap-2 me-2">
@@ -365,7 +427,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <p class="fw-bold text-break">{{capitalizeWord item.educationLevel}} - {{capitalizeWord item.major}}</p>
-                                            <p class="text-break"><b>Judul Tesis: </b> {{capitalizeWord item.studyPublication}}</p>
+                                            <p class="text-break"><b>Judul Skripsi/Thesis: </b> {{capitalizeWord item.studyPublication}}</p>
                                             <p><b>Kelulusan: </b>{{capitalizeWord item.institution}} <b>(Institusi {{capitalizeWord item.domesticStatus}})</b></p>
                                         </div>
                                         <div class="col-6">
@@ -1274,8 +1336,24 @@
 
                     <div class="form-group">
                         <label for="inputSemester" class="fw-bold text-login-content">Semester</label>
-                        <input type="text" class="form-control" id="inputSemester">
+                        <select id="inputSemester" class="form-select filter">
+                         
+                        </select>                    
                     </div>
+                    <script>
+                        var currentYear = new Date().getFullYear();
+                        var startYear = 2011;
+                        var selectElement = document.getElementById("inputSemester");
+                        
+                        for (var i = currentYear; i >= startYear; i--) {
+                            var option = document.createElement("option");
+                            nilai = i + 1;
+                            option.text = i + "/" + nilai ;
+                            option.value = i + "/" + nilai;
+                            selectElement.appendChild(option);
+                        }
+                    </script>
+
                     
                     <div class="d-flex justify-content-end mt-2 add-student-guidance">
                         <button class="btn btn-add btn-sm">
@@ -1966,7 +2044,7 @@
                
                     <div class="form-group">
                         <label for="input-date" class="fw-bold text-login-content">Tanggal Terbit</label>
-                        <input type="text" class="form-control" id="input-date">
+                        <input type="date" class="form-control" id="input-date">
                     </div>
                     
                     <div class="d-flex justify-content-end mt-2 add-paten">
@@ -1995,7 +2073,7 @@
                                     <label class="col text-break"><b>Judul:</b> {{item.title}}</label>
                                     <label class="col text-break"><b>Kategori Kegiatan:</b> {{item.category}}</label>
                                     <label class="col text-break"><b>Jenis Kegiatan:</b> {{item.cActivity}}</label>
-                                    <label class="col text-break"><b>Tanggal terbit:</b> {{item.dateOfPublisher}}</label>
+                                    <label class="col text-break"><b>Tanggal terbit:</b> {{formatHRDate item.dateOfPublisher}}</label>
 
                                 </div>
                             </div>
@@ -3035,6 +3113,20 @@
                         <label for="input-nominal" class="fw-bold text-login-content">Nominal</label>
                         <input type="text" class="form-control" id="input-nominal" >
                     </div>
+                    <script>
+                
+                        function formatRupiah(angka) {
+                            var reverse = angka.toString().split('').reverse().join(''),
+                                ribuan = reverse.match(/\d{1,3}/g);
+                            ribuan = ribuan.join('.').split('').reverse().join('');
+                            return 'Rp. ' + ribuan;
+                        }
+                    
+                        document.getElementById('input-nominal').addEventListener('input', function () {
+                            var nominal = parseInt(this.value.replace(/[^0-9]/g, '')); 
+                            this.value = formatRupiah(nominal);
+                        });
+                    </script>
                     <div class="form-group">
                         <label for="input-year-start" class="fw-bold text-login-content">Tahun Mulai</label>
                         <input type="text" class="form-control" id="input-year-start" >
@@ -3070,6 +3162,7 @@
                                     <label class="col text-break"><b>Jenis Tunjangan:</b> {{item.type}}</label>
                                     <label class="col text-break"><b>Instasi Pemberi Tunjuangan:</b> {{item.institution}}</label>
                                     <label class="col text-break"><b>Sumber Dana:</b> {{item.source}}</label>
+                                    <label class="col text-break"><b>Nominal:</b> {{formatRp item.nominal}}</label>
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{item.startYear}}</label>
                                     <label class="col text-break"><b>Tahun berakhir:</b> {{item.endYear}}</label>
                                 </div>
@@ -3097,6 +3190,7 @@
                                         <label class="col text-break"><b>Jenis Tunjangan:</b> {{item.type}}</label>
                                         <label class="col text-break"><b>Instasi Pemberi Tunjuangan:</b> {{item.institution}}</label>
                                         <label class="col text-break"><b>Sumber Dana:</b> {{item.source}}</label>
+                                        <label class="col text-break"><b>Nominal:</b> {{formatRp item.nominal}}</label>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startYear}}</label>
                                         <label class="col text-break"><b>Tahun berakhir:</b> {{item.endYear}}</label>
                                     </div>

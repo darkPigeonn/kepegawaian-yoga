@@ -36,6 +36,7 @@ Template.formLecturers.onCreated(function () {
     self.listCoachingLevel = new ReactiveVar([])
     self.listStudentGuidance = new ReactiveVar([])
     self.listresearchinterest = new ReactiveVar([])
+    self.listEmail = new ReactiveVar([])
 
     const lecturerId = FlowRouter.getParam("_id");
     const mode = lecturerId ? "edit" : "add";
@@ -79,6 +80,7 @@ Template.formLecturers.onRendered( function(){
                 context.listresearchinterest.set(res.listresearchinterest)
                 context.listStudentGuidance.set(res.listStudentGuidance)
                 context.listCoachingLevel.set(res.listCoachingLevel)
+                context.listEmail.set(res.listEmail)
             }
         });
     }
@@ -180,6 +182,9 @@ Template.formLecturers.helpers({
     },
     listresearchinterest(){
         return Template.instance().listresearchinterest.get()
+    },
+    listEmail(){
+        return Template.instance().listEmail.get()
     }
 });
 
@@ -233,6 +238,21 @@ Template.formLecturers.events({
         const formData = t.formData.get()
         delete formData.imageLink
         t.formData.set(formData)
+    },
+    "click #add-email" (e, t){
+        e.preventDefault()
+        const listEmail = t.listEmail.get()
+        const email = $("#inputEmail").val()
+        const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+        if (!isValidEmail) {
+            failAlert("Input Email Anda Salah Harus Ada @.");
+            return;
+        }
+        const data = {
+           email
+        }
+        listEmail.push(data)
+        t.listEmail.set(listEmail)
     },
 
     "click #add-history" (e, t){
@@ -441,6 +461,10 @@ Template.formLecturers.events({
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
             return;
         }
+        if (parseInt(startYear) > parseInt(endYear)) {
+            failAlert("Input Tahun Mulai tidak boleh lebih besar dari Tahun Selesai.");
+            return;
+        }
         const data = {
             name,
             category,
@@ -471,6 +495,10 @@ Template.formLecturers.events({
 
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
+        if (parseInt(startYear) > parseInt(endYear)) {
+            failAlert("Input Tahun Mulai tidak boleh lebih besar dari Tahun Selesai.");
             return;
         }
         const data = {
@@ -515,17 +543,30 @@ Template.formLecturers.events({
         const source = $("#input-funding-source").val()
         const startYear = $("#input-year-start").val()
         const endYear = $("#input-year-end").val()
+        let nominal = $("#input-nominal").val()
+    
+        nominal = nominal.replace(/\D/g, '');
+    
+        if (!/^\d+$/.test(nominal)) {
+            failAlert("Nominal harus berupa angka.");
+            return;
+        }
+    
         const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
-
+    
         if (!isValidStartYear) {
             failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
             return;
         }
-
+    
         const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
-
+    
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
+        if (parseInt(startYear) > parseInt(endYear)) {
+            failAlert("Input Tahun Mulai tidak boleh lebih besar dari Tahun Selesai.");
             return;
         }
         const data = {
@@ -534,12 +575,14 @@ Template.formLecturers.events({
             institution,
             source,
             startYear,
-            endYear
+            endYear,
+            nominal: parseInt(nominal)
         }
         // console.log(data)
         listTunjangan.push(data)
         t.listTunjangan.set(listTunjangan)
     },
+    
 
     "click .add-Dedication" (e, t){
         e.preventDefault()
@@ -928,6 +971,7 @@ Template.formLecturers.events({
         const listresearchinterest = t.listresearchinterest.get()
         const listStudentGuidance = t.listStudentGuidance.get()
         const listCoachingLevel = t.listCoachingLevel.get()
+        const listEmail = t.listEmail.get()
         
 
 
@@ -1014,6 +1058,9 @@ Template.formLecturers.events({
                 } else if(identifier === "guidanceStudent") {
                     listStudentGuidance.splice(index,1)
                     t.listStudentGuidance.set(listStudentGuidance)
+                } else if(identifier === "email") {
+                    listEmail.splice(index,1)
+                    t.listEmail.set(listEmail)
                 }
             }
         })
@@ -1032,19 +1079,17 @@ Template.formLecturers.events({
         const getValue = $(e.currentTarget).val();
         // console.log(getValue)
         if (getValue == 2){
-            if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+            if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
                 const username = $("#inputUsername").val();
                 const fullName = $("#inputFullname").val();
                 const phoneNumber = $("#inputPhoneNumber").val(); 
                 const nik = $("#inputNik").val();
-                const email = $("#inputEmail").val();
                 const nidn = $("#inputNidn").val(); 
         
                 const isValidUsername = /^[a-zA-Z0-9]{6,20}$/.test(username);
                 const isValidFullName = /^[a-zA-Z\s]+$/.test(fullName);
                 const isValidPhoneNumber = /^[0-9]+$/.test(phoneNumber);
                 const isValidNIK = /^\d{16}$/.test(nik);
-                const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
                 const isValidNIDN = /^\d{10}$/.test(nidn);
                 let errorMessage = "";
         
@@ -1063,10 +1108,7 @@ Template.formLecturers.events({
                 if (!isValidNIK) {
                     errorMessage += "NIK harus terdiri dari 16 digit angka.\n";
                 }
-            
-                if (!isValidEmail) {
-                    errorMessage += "Email tidak valid.\n";
-                }
+         
             
                 if (!isValidNIDN) {
                     errorMessage += "NIDN harus terdiri dari 10 digit angka.\n";
@@ -1087,7 +1129,6 @@ Template.formLecturers.events({
                 formData.registeredAddress = $("#inputRegisteredAddress").val();
                 formData.address = $("#inputAddress").val();
                 formData.phoneNumber = $("#inputPhoneNumber").val();
-                formData.email = $("#inputEmail").val();
                 formData.religion = $("#inputReligion").val();
                 formData.nationality = $("#inputNationality").val();
                 formData.startDateImavi = $("#inputStartDateImaviLecture").val();
@@ -1157,6 +1198,7 @@ Template.formLecturers.events({
         const listSpeaker = t.listSpeaker.get()
         const listStudentGuidance = t.listStudentGuidance.get()
         const listTunjangan =t.listTunjangan.get()
+        const listEmail = t.listEmail.get()
     
 
         confirmationAlertAsync().then(async function (result) {
@@ -1187,6 +1229,7 @@ Template.formLecturers.events({
                 formData.listSpeaker = listSpeaker
                 formData.listStudentGuidance = listStudentGuidance
                 formData.listTunjangan =listTunjangan
+                formData.listEmail = listEmail
                
 
                 console.log(formData)
@@ -1248,7 +1291,6 @@ Template.formLecturers.events({
                         formData.registeredAddress = $("#inputRegisteredAddress").val();
                         formData.address = $("#inputAddress").val();
                         formData.phoneNumber = $("#inputPhoneNumber").val();
-                        formData.email = $("#inputEmail").val();
                         formData.religion = $("#inputReligion").val();
                         formData.nationality = $("#inputNationality").val();
                         formData.startDateImavi = $("#inputStartDateImaviLecture").val();

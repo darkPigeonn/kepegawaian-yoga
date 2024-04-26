@@ -20,7 +20,7 @@
     "intl": "^1.2.5",
     "jquery": "^3.6.0",
     "meteor-node-stubs": "^1.2.9",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "moment-weekday-calc": "^1.1.4",
     "mongodb": "^6.2.0",
     "mup": "^1.5.10",
