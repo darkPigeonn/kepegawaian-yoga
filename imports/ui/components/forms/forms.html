@@ -8,15 +8,12 @@
     <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2" style="width: 100%; overflow-x: auto;">
         <div class="navigation-form d-flex gap-3">
            
-                <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-           
-                <!-- <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i> -->
-                <!-- <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i> -->
-                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
+                <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}"  data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+                <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
          
         </div>
     </div>
@@ -2255,8 +2252,13 @@
                     </div>
                     <div class="row row-cols-1 row-cols-md-2">
                         <div class="form-group col">
-                            <label for="yearDateInput" class="fw-bold text-login-content">Tanggal Pelaksanaan</label>
+                            <label for="yearDateInput" class="fw-bold text-login-content">Tanggal Awal Pelaksanaan</label>
                             <input type="date" class="form-control" id="yearDateInput" >
+                        </div>
+                        -
+                        <div class="form-group col">
+                            <label for="yearDateInputEnd" class="fw-bold text-login-content">Tanggal Akhir Pelaksanaan</label>
+                            <input type="date" class="form-control" id="yearDateInputEnd" >
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mt-2">
@@ -2285,7 +2287,7 @@
                                     <label class="col text-break"><b>Judul Makalah:</b> {{item.title}}</label>
                                     <label class="col text-break"><b>Nama Temu Ilmiah:</b> {{item.conference}}</label>
                                     <label class="col text-break"><b>Penyelenggara:</b> {{item.organizer}}</label>
-                                    <label class="col text-break"><b>Tanggal Pelaksanaan:</b> {{formatHRDate item.date}}</label>
+                                    <label class="col text-break"><b>Tanggal Pelaksanaan:</b> {{formatHRDate item.date}} - {{formatHRDate item.dateEnd}}</label>
                                 </div>
                             </div>
                         {{/each}}

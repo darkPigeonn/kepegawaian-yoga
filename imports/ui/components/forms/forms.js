@@ -611,12 +611,14 @@ Template.formLecturers.events({
         const conference = $("#inputAcademicConferenceName").val()
         const organizer = $("#inputOrganizerName").val()
         const date = $("#yearDateInput").val()
+        const dateEnd =  $("#yearDateInputEnd").val()
         const data = {
             category,
             title,
             conference,
             organizer,
-            date
+            date,
+            dateEnd
         }
         // console.log(data)
         listSpeaker.push(data)
