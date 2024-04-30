@@ -298,6 +298,7 @@ Meteor.methods({
                 newDataSave.token.push(dataUser.token_fcm)
                 newDataSave.title = "Tugas Baru Menanti Anda!"
                 newDataSave.description = "Anda memiliki tugas baru yang ditugaskan"
+                console.log(newDataSave.token, newDataSave.title, newDataSave.description);
             }
         }
         let runNotif = true;

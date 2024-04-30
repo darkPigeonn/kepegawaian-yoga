@@ -52,11 +52,35 @@ Meteor.methods({
   "departement.update"(id, data){
     check(id, String);
 
-    let {name, description} = data;
+    let {name, description, leader} = data;
+    const thisUser = Meteor.userId();
+    const adminPartner = Meteor.users.findOne({
+      _id: thisUser,
+    });
+    const leaderDepartement = Employee.findOne({_id: leader});
+
+    const timeline = {
+      event: `Set Leader Departement to ${leaderDepartement.full_name}`,
+      operator: adminPartner._id,
+      operatorName: adminPartner.fullname,
+      timestamp: new Date()
+    }
+
+    const headDepartement = {
+      id: leader,
+      name: leaderDepartement.full_name
+    }
 
     return Departement.update(
       { _id: id },
-      { $set: {name: name, description: description}}
+      { $set: {name: name, description: description, headDepartement: headDepartement}, $push: {timeline: timeline}}
     );
+  },
+  "departement.getEmployee"(){
+    const thisUser = Meteor.userId();
+    const adminPartner = Meteor.users.findOne({
+      _id: thisUser,
+    });
+    return Employee.find({partnerCode: adminPartner.partners[0]}).fetch();
   }
 });

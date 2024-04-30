@@ -50,12 +50,19 @@
 </template>
 
 <template name="departement_edit">
-    <form style="display: flex; justify-content: center; align-items: center; height: 40vh;">
+    <form style="display: flex; justify-content: center; align-items: center; height: 60vh;">
         <div class="form-group mb-2">
-            <label>Nama Departemen Baru</label>
+            <label>Nama Departemen</label>
             <input type="text" id="input_name" style="width: 20vw" class="form-control" value={{departement.name}}><br>
             <label>Description</label>
             <input type="text" id="input_description" style="width: 20vw" class="form-control" value={{departement.description}}><br>
+            <label>Ketua Departemen</label>
+            <select id="input_headDepartement" class="form-select">
+                {{#each dataEmployee}}  
+                    <option value="{{_id}}">{{full_name}} / {{email_address}}</option>
+                {{/each}}
+            </select>
+            <br>
             <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_departement">Simpan</button>
         </div>
     </form>
@@ -105,7 +112,12 @@
               </tbody>
             </table>
             <br>
-            <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : -</label>
+            {{#if departement.headDepartement}}
+                <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : {{departement.headDepartement.name}}</label>
+            {{else}}
+                <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : -</label>
+            {{/if}}
+
             <br><br>
             <label style="font-weight: bold; font-size: larger; color: black;">Anggota Departemen</label>
             <br>
