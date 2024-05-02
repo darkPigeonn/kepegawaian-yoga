@@ -115,6 +115,7 @@
                             <label for="inputPhoneNumber" class="fw-bold text-login-content">Nomor Telepon</label>
                             <input type="tel" class="form-control"  value="{{formData.phoneNumber}}" id="inputPhoneNumber">
                         </div>
+                        <!-- email -->
                         <div class="row row-cols-1 row-cols-md-2">
                             <div class="form-group">
                                 <label for="inputEmail" class="fw-bold text-login-content">Email</label>
@@ -146,6 +147,10 @@
                                         <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="email" data-milik="{{@index}}">
                                             <i class="fa fa-solid fa-trash remove-list" data-id="email" data-milik="{{@index}}"></i>
                                         </button>
+                                        <button class="btn btn-edit btn-primary btn-sm edit-email" data-id="email" data-milik="{{@index}}">
+                                            <i class="fa fa-solid fa-pencil edit-email" data-id="email" data-milik="{{@index}}"></i>
+                                        </button>
+                                        
                                     </div>
                                 </div>
                             {{/each}}
@@ -330,6 +335,34 @@
             </div>
         </div>
 
+        
+    <!-- Elemen pop-up form edit -->
+    <div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editEmailModalLabel">Edit Email</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <!-- Form edit email -->
+            <form id="editEmailForm">
+                <!-- Input untuk data email -->
+                <div class="form-group">
+                    <label for="editInputEmail" class="fw-bold text-login-content">Email</label>
+                    <input type="text" class="form-control" id="editInputEmail" >
+                </div>
+             
+                <!-- Tombol untuk menyimpan perubahan -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary save-email">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
         <!-- Riwayat pendidikan -->
 
         <div class="card rounded-3 mt-4">
@@ -412,6 +445,9 @@
                                         <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="education" data-milik="{{@index}}">
                                             <i class="fa fa-solid fa-trash remove-list" data-id="education" data-milik="{{@index}}"></i>
                                         </button>
+                                        <button class="btn btn-edit btn-primary btn-sm edit-history" data-id="educationHistory" data-milik="{{@index}}">
+                                            <i class="fa fa-solid fa-pencil edit-history" data-id="educationHistory" data-milik="{{@index}}"></i>
+                                        </button>
                                     </div>
                                 </div>
                             {{/each}}
@@ -434,6 +470,9 @@
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" type="button" data-id="education" data-milik="{{@index}}">
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="education" data-milik="{{@index}}"></i>
                                             </button>
+                                            <button class="btn btn-edit btn-primary btn-sm edit-history" data-id="educationHistory" data-milik="{{@index}}">
+                                                <i class="fa fa-solid fa-pencil edit-history" data-id="educationHistory" data-milik="{{@index}}"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -449,6 +488,67 @@
                     </div>
                 {{/if}}
             </div>
+        </div>
+
+        <!-- Elemen pop-up form edit -->
+        <div class="modal fade" id="editEducationHistoryModal" tabindex="-1" aria-labelledby="editEducationHistoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEducationHistoryModalLabel">Edit Riwayat Pendidikan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form edit pembicara -->
+                <form id="editEducationHistoryForm">
+                    <!-- Input untuk data riwayat pendidikan -->
+                    <div class="form-group">
+                        <label for="editInputEducationLevel" class="fw-bold text-login-content">Jenjang Pendidikan</label>
+                        <input type="text" class="form-control" id="editInputEducationLevel" >
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputEducationMajor" class="fw-bold text-login-content">Bidang Studi</label>
+                        <input type="text" class="form-control" id="editInputEducationMajor" >
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputEducationInstitution" class="fw-bold text-login-content">Institusi</label>
+                        <input type="text" class="form-control" id="editInputEducationInstitution" >
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputDomestic" class="fw-bold text-login-content">Kategori Institusi</label>
+                        <div class="d-flex flex-wrap gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="editInputDomestic" id="editInputDomestic" value="dalam negeri">
+                                <label class="form-check-label">
+                                    Dalam Negeri
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="editInputDomestic" id="editInputDomestic" value="luar negeri">
+                                <label class="form-check-label">
+                                    Luar Negeri
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputEducationEnd" class="fw-bold text-login-content">Tahun Lulus</label>
+                        <input type="text" class="form-control" id="editInputEducationEnd">
+                    </div>
+                  
+             
+                    <div class="form-group">
+                        <label for="editInputStudyPublication" class="fw-bold text-login-content">Judul Skripsi/Thesis</label>
+                        <input type="text" class="form-control" id="editInputStudyPublication">
+                    </div>
+                    <!-- Tombol untuk menyimpan perubahan -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-history">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
         </div>
 
         <!-- Riwayat Pembinaan -->
@@ -1601,6 +1701,9 @@
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="publicationTypes" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="publicationTypes" data-milik="{{@index}}"></i>
                                             </button>
+                                            <button class="btn btn-edit btn-primary btn-sm edit-publication" data-id="publication" data-milik="{{@index}}">
+                                                <i class="fa fa-solid fa-pencil edit-publication" data-id="publication" data-milik="{{@index}}"></i>
+                                            </button>
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
@@ -1656,6 +1759,58 @@
             {{/if}}
         </div>
     </div>
+    <div class="modal fade" id="editPublicationModal" tabindex="-1" aria-labelledby="editPublicationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPublicationModalLabel">Edit Publikasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form edit publikasi -->
+                <form id="editPublicationForm">
+                    <!-- Input untuk data publikasi -->
+                    <div class="form-group">
+                        <label for="editInputJenisKarya" class="fw-bold text-login-content">Jenis Karya</label>
+                        <select class="form-select filter" id="editInputJenisKarya">
+                            <option value="Buku">Buku</option>
+                            <option value="Karya Kolektif sebagai Kontributor">Karya Kolektif sebagai Kontributor</option>
+                            <option value="Karya Kolektif sebagai Editor">Karya Kolektif sebagai Editor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputJudul" class="fw-bold text-login-content">Judul</label>
+                        <input type="text" class="form-control" id="editInputJudul">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputIsbn" class="fw-bold text-login-content">ISBN</label>
+                        <input type="text" class="form-control" id="editInputIsbn">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputPenerbit" class="fw-bold text-login-content">Penerbit</label>
+                        <input type="text" class="form-control" id="editInputPenerbit" >
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputKotaPenerbit" class="fw-bold text-login-content">Kota Penerbit</label>
+                        <input type="text" class="form-control" id="editInputKotaPenerbit">
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputTahunTerbit" class="fw-bold text-login-content">Tahun Terbit</label>
+                        <input type="text" class="form-control" id="editInputTahunTerbit" >
+                    </div>
+                    <div class="form-group">
+                        <label for="editInputURL" class="fw-bold text-login-content">Link Url</label>
+                        <input type="text" class="form-control" id="editInputURL">
+                    </div>
+                    <!-- Tombol untuk menyimpan perubahan -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-publication">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
 
     <!-- Jurnal Ilmiah -->
     
@@ -2281,6 +2436,9 @@
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="speaker" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="speaker" data-milik="{{@index}}"></i>
                                             </button>
+                                            <button class="btn btn-edit btn-primary btn-sm edit-speaker" data-id="speaker" data-milik="{{@index}}">
+                                                <i class="fa fa-solid fa-pencil edit-speaker" data-id="speaker" data-milik="{{@index}}"></i>
+                                            </button>
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
@@ -2330,6 +2488,56 @@
             {{/if}}
         </div>
     </div>
+
+    <!-- Elemen pop-up form edit -->
+    <div class="modal fade" id="editSpeakerModal" tabindex="-1" aria-labelledby="editSpeakerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editSpeakerModalLabel">Edit Pembicara</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <!-- Form edit pembicara -->
+            <form id="editSpeakerForm">
+                <!-- Input untuk data pembicara -->
+                <div class="form-group">
+                    <label for="editInputCategory" class="fw-bold text-login-content">Kategori Kegiatan</label>
+                    <input type="text" class="form-control" id="editInputCategory" >
+                </div>
+                <div class="form-group">
+                    <label for="editInputPaperTitle" class="fw-bold text-login-content">Judul Makalah</label>
+                    <input type="text" class="form-control" id="editInputPaperTitle">
+                </div>
+                <div class="form-group">
+                    <label for="editInputAcademicConferenceName" class="fw-bold text-login-content">Nama Temu Ilmiah</label>
+                    <input type="text" class="form-control" id="editInputAcademicConferenceName">
+                </div>
+                <div class="form-group">
+                    <label for="editInputOrganizerName" class="fw-bold text-login-content">Penyelenggara</label>
+                    <input type="text" class="form-control" id="editInputOrganizerName" >
+                </div>
+                <div class="row row-cols-1 row-cols-md-2">
+                    <div class="form-group col">
+                        <label for="editYearDateInput" class="fw-bold text-login-content">Tanggal Awal Pelaksanaan</label>
+                        <input type="date" class="form-control" id="editYearDateInput" >
+                    </div>
+                    -
+                    <div class="form-group col">
+                        <label for="editYearDateInputEnd" class="fw-bold text-login-content">Tanggal Akhir Pelaksanaan</label>
+                        <input type="date" class="form-control" id="editYearDateInputEnd" >
+                    </div>
+                </div>
+                <!-- Tombol untuk menyimpan perubahan -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary save-speaker">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
 
     <!-- Pengelola Jurnal -->
     <div class="card rounded-3 mt-4">

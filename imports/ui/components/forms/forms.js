@@ -1,5 +1,7 @@
 import "./forms.html";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
+import { Session } from 'meteor/session';
+
 
 
 Template.formLecturers.onCreated(function () {
@@ -254,6 +256,32 @@ Template.formLecturers.events({
         listEmail.push(data)
         t.listEmail.set(listEmail)
     },
+    'click .edit-email'(e, t) {
+    e.preventDefault();
+    const index = $(e.currentTarget).data('milik');
+    const email = t.listEmail.get()[index];
+    $("#editInputEmail").val(email.email);
+    $('#editEmailModal').modal('show');
+    Session.set('editedEmailIndex', index);
+    },
+
+    'click .save-email'(e, t) {
+    e.preventDefault();
+    const editedEmailIndex = Session.get('editedEmailIndex');
+    const listEmail = t.listEmail.get();
+
+    const email = $("#editInputEmail").val();
+    listEmail[editedEmailIndex] = {
+        email
+    };
+
+    t.listEmail.set(listEmail);
+    $('#editEmailModal').modal('hide');
+
+    Session.set('editedEmailIndex', undefined);
+    successAlert("Email berhasil diubah");
+    },
+
 
     "click #add-history" (e, t){
         e.preventDefault()
@@ -284,6 +312,46 @@ Template.formLecturers.events({
         listEducationalHistory.push(data)
         t.listEducationalHistory.set(listEducationalHistory)
     },
+    'click .edit-history'(e,t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const educationHistory = t.listEducationalHistory.get()[index];
+
+        $("#editInputEducationLevel").val(educationHistory.educationLevel);
+        $("#editInputEducationMajor").val(educationHistory.major);
+        $("#editInputEducationInstitution").val(educationHistory.institution);
+        $("#editInputStudyPublication").val(educationHistory.domesticStatus);
+        $("input[name=EditInputDomestic]:checked").val(educationHistory.studyPublication)
+        $("#EditInputEducationEnd").val(educationHistory.dateEnd);
+        
+        $('#editEducationHistoryModal').modal('show');
+        Session.set('editedEducationHistoryIndex',index);
+
+    },
+    'click .save-history'(e,t){
+        e.preventDefault();
+        const editedEducationHistoryIndex = Session.get('editedEducationHistoryIndex');
+        const listEducationalHistory = t.listEducationalHistory.get();
+
+        const educationLevel = $("#editInputEducationLevel").val()
+        const major = $("#editInputEducationMajor").val()
+        const institution = $("#editInputEducationInstitution").val()
+        const studyPublication = $("#editIinputStudyPublication").val()
+        const domesticStatus = $("input[name=editInputDomestic]:checked").val()
+        const dateEnd = $("#editInputEducationEnd").val()  
+
+        listEducationalHistory[editedEducationHistoryIndex] = {
+            educationLevel,
+            major,
+            institution,
+            studyPublication,
+            domesticStatus,
+            dateEnd
+        }
+        t.listEducationalHistory.set(listEducationalHistory);
+        $('#editEducationHistoryModal').modal('hide');
+        Session.set('editedEducationHistoryIndex',undefined);
+    },
     "click .add-publication" (e,t){
         e.preventDefault()
         const listPublicationTypes = t.listPublicationTypes.get()
@@ -312,6 +380,49 @@ Template.formLecturers.events({
         listPublicationTypes.push(data)
         t.listPublicationTypes.set(listPublicationTypes)
     },
+    "click .edit-publication"(e,t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const publication = t.listPublicationTypes.get()[index];
+        $("#editInputJenisKarya").val(publication.category)
+        $("#editInputJudul").val(publication.title)
+        $("#editInputIsbn").val(publication.isbn)
+        $("#editInputPenerbit").val(publication.publisher)
+        $("#editInputKotaPenerbit").val(publication.city)
+        $("#editInputTahunTerbit").val(publication.year)
+        $("#editInputURL").val(publication.link)
+
+        $('#editPublicationModal').modal('show');
+        Session.set('editedPublicationIndex',index);
+
+    },
+    "click .save-publication"(e,t){
+        e.preventDefault();
+        const editedPublicationIndex = Session.get('editedPublicationIndex')
+        const listPublicationTypes = t.listPublicationTypes.get();
+
+        const category = $("#editInputJenisKarya").val()
+        const title = $("#editInputJudul").val()
+        const isbn = $("#editInputIsbn").val()
+        const publisher =$("#editInputPenerbit").val()
+        const city = $("#editInputKotaPenerbit").val()
+        const year = $("#editInputTahunTerbit").val()
+        const link = $("#editInputURL").val()
+
+        listPublicationTypes[editedPublicationIndex] ={
+            category,
+            title,
+            isbn,
+            publisher,
+            city,
+            year,
+            link
+        };
+
+        t.listPublicationTypes.set(listPublicationTypes);
+        $('#editPublicationModal').modal('hide');
+        Session.set('editedPublicationIndex',undefined);
+    },
     "click .add-research-interest" (e,t){
         e.preventDefault()
         const listresearchinterest = t.listresearchinterest.get()
@@ -321,6 +432,11 @@ Template.formLecturers.events({
         }
         listresearchinterest.push(data)
         t.listresearchinterest.set(listresearchinterest)
+    },
+    "click .edit-research-interest"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        
     },
     "click .add-student-guidance" (e,t){
         e.preventDefault()
@@ -624,6 +740,52 @@ Template.formLecturers.events({
         listSpeaker.push(data)
         t.listSpeaker.set(listSpeaker)
     },
+    'click .edit-speaker'(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const speaker = t.listSpeaker.get()[index];
+
+        $("#editInputCategory").val(speaker.category);
+        $("#editInputPaperTitle").val(speaker.title);
+        $("#editInputAcademicConferenceName").val(speaker.conference);
+        $("#editInputOrganizerName").val(speaker.organizer);
+        $("#editYearDateInput").val(speaker.date);
+        $("#editYearDateInputEnd").val(speaker.dateEnd);
+
+        $('#editSpeakerModal').modal('show');
+
+        Session.set('editedSpeakerIndex', index);
+    },
+    'click .save-speaker'(e, t) {
+        e.preventDefault();
+        const editedSpeakerIndex = Session.get('editedSpeakerIndex');
+        const listSpeaker = t.listSpeaker.get();
+
+        const category  = $("#editInputCategory").val();
+        const title = $("#editInputPaperTitle").val();
+        const conference = $("#editInputAcademicConferenceName").val();
+        const organizer = $("#editInputOrganizerName").val();
+        const date = $("#editYearDateInput").val();
+        const dateEnd =  $("#editYearDateInputEnd").val();
+
+        listSpeaker[editedSpeakerIndex] = {
+            category,
+            title,
+            conference,
+            organizer,
+            date,
+            dateEnd
+        };
+
+        t.listSpeaker.set(listSpeaker);
+
+        $('#editSpeakerModal').modal('hide');
+
+        Session.set('editedSpeakerIndex', undefined);
+    },
+
+
+    
 
     "click .add-journalManager" (e, t){
         e.preventDefault();
