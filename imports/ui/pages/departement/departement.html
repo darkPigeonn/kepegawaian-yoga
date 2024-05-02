@@ -57,9 +57,9 @@
             <label>Description</label>
             <input type="text" id="input_description" style="width: 20vw" class="form-control" value={{departement.description}}><br>
             <label>Ketua Departemen</label>
-            <select id="input_headDepartement" class="form-select">
+            <select id="input_headDepartment" class="form-select">
                 {{#each dataEmployee}}
-                    {{#if equals departement.headDepartement.id _id}}
+                    {{#if equals departement.headDepartment.id _id}}
                     <option value="{{_id}}" selected>{{full_name}} / {{email_address}}</option>
                     {{else}}
                     <option value="{{_id}}">{{full_name}} / {{email_address}}</option>
@@ -116,8 +116,8 @@
               </tbody>
             </table>
             <br>
-            {{#if departement.headDepartement}}
-                <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : {{departement.headDepartement.name}}</label>
+            {{#if departement.headDepartment}}
+                <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : {{departement.headDepartment.name}}</label>
             {{else}}
                 <label style="font-weight: bold; font-size: larger; color: black;">Kepala Departemen : -</label>
             {{/if}}
