@@ -71,10 +71,13 @@ Meteor.methods({
       name: leaderDepartement.full_name
     }
 
-    return Departement.update(
+    const getDepartementName = Departement.findOne({_id: id});
+    const updateDepartementEmployee = Employee.update({department_unit: getDepartementName.name}, {$set: {department_unit: name}}, {multi: true});
+    const updateDepartement = Departement.update(
       { _id: id },
       { $set: {name: name, description: description, headDepartement: headDepartement}, $push: {timeline: timeline}}
     );
+    return updateDepartement;
   },
   "departement.getEmployee"(){
     const thisUser = Meteor.userId();
