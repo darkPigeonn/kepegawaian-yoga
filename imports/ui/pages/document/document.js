@@ -386,6 +386,7 @@ Template.createKorespondensi.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.categoryLetters = new ReactiveVar();
   const jenis = "kategori-surat"
+  self.isSKLetter = new ReactiveVar();
   setTimeout(() => {
     startSelect2();
   },500)
@@ -436,9 +437,15 @@ Template.createKorespondensi.helpers({
   },
   categoryLetters() {
     return Template.instance().categoryLetters.get();
+  },
+  isSKLetter() {
+    return Template.instance().isSKLetter.get();
   }
 })
 Template.createKorespondensi.events({
+  "change #category"(e, t) {
+    console.log("masuk");
+  },
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
     const dataRow = t.daftarAlur.get();

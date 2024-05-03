@@ -98,8 +98,8 @@ Template.createKategoriSurat.events({
             location.reload();
             history.back();
           } else {
-            alert("Penyimpanan Data Gagal");
-            console.log(error);
+            alert(error.reason);
+            console.log(error.reason);
           }
         }
       );
