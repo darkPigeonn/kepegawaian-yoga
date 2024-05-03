@@ -1,3 +1,4 @@
+import { css } from "jquery";
 import "./forms.html";
 import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 import { Session } from 'meteor/session';
@@ -264,7 +265,6 @@ Template.formLecturers.events({
     $('#editEmailModal').modal('show');
     Session.set('editedEmailIndex', index);
     },
-
     'click .save-email'(e, t) {
     e.preventDefault();
     const editedEmailIndex = Session.get('editedEmailIndex');
@@ -436,7 +436,28 @@ Template.formLecturers.events({
     "click .edit-research-interest"(e,t){
         e.preventDefault()
         const index = $(e.currentTarget).data('milik');
+        const researchInterest = t.listresearchinterest.get()[index];
+        $("#editInputResearchInterest").val(researchInterest.title)
+
+        $('#editResearchInterestModal').modal('show');
+        Session.set('editedResearchInterestIndex',index);
+
         
+    },
+    "click .save-research-interest" (e,t){
+        e.preventDefault();
+        const editedResearchInterestIndex = Session.get('editedResearchInterestIndex')
+        const listresearchinterest = t.listresearchinterest.get();
+
+        const title = $("#editInputResearchInterest").val()
+
+        listresearchinterest[editedResearchInterestIndex] ={
+            title
+        }
+        t.listresearchinterest.set(listresearchinterest);
+        $('#editResearchInterestModal').modal('hide');
+        Session.set('editedResearchInterestIndex',undefined);
+
     },
     "click .add-student-guidance" (e,t){
         e.preventDefault()
@@ -454,6 +475,38 @@ Template.formLecturers.events({
         }
         listStudentGuidance.push(data)
         t.listStudentGuidance.set(listStudentGuidance)
+    },
+    "click .edit-student-guidance"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const studentGuidance = t.listStudentGuidance.get()[index];
+        $("#editInputCategoryActivity").val(studentGuidance.category)
+        $("#editInputTitleActivity").val(studentGuidance.title)
+        $("#editInputCategoryStudy").val(studentGuidance.cStudy)
+        $("#editInputSemester").val(studentGuidance.semester)
+        $('#editStudentGuidanceModal').modal('show');
+        Session.set('editedStudentGuidanceIndex',index);
+
+
+    },
+    "click .save-student-guidance"(e,t){
+        e.preventDefault();
+        const editedStudentGuidanceIndex = Session.get('editedStudentGuidanceIndex')
+        const listStudentGuidance = t.listStudentGuidance.get();
+        const category = $("#editInputCategoryActivity").val()
+        const title    = $("#editInputTitleActivity").val()
+        const cStudy   = $("#editInputCategoryStudy").val()
+        const semester = $("#editInputSemester").val()
+
+        listStudentGuidance[editedStudentGuidanceIndex] = {
+            category,
+            title,
+            cStudy,
+            semester
+        }
+        t.listStudentGuidance.set(listStudentGuidance)
+        $('#editStudentGuidanceModal').modal('hide');
+        Session.set('editedStudentGuidanceIndex',undefined)
     },
     "click .add-pengajaran" (e, t){
         e.preventDefault()
@@ -484,7 +537,49 @@ Template.formLecturers.events({
         listPengajaran.push(data)
         t.listPengajaran.set(listPengajaran)
     },
+    "click .edit-pengajaran"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const pengajaran     = t.listPengajaran.get()[index];
+        $("#editInputMataKuliah").val(pengajaran.type)
+        $("#editInput-ps").val(pengajaran.matkul)
+        $("#editInputSemesterStudy").val(pengajaran.ps)
+        $("#editInput-jenis").val(pengajaran.semester)
+        $("#editInputBidangKeilmuan").val(pengajaran.bidangKeilmuan)
+        $("#editInputJumlahMahasiswa").val(pengajaran.mhsTotal)
+        $("#editInputSks").val(pengajaran.sks)
 
+        $('#editPengajaranModal').modal('show');
+
+        Session.set('editedPengajaranIndex',index);
+        
+    },
+    "click .save-pengajaran"(e,t){
+        e.preventDefault();
+        const editedPengajaranIndex = Session.get('editedPengajaranIndex')
+        const listPengajaran = t.listPengajaran.get()
+        const matkul         = $("#editInputMataKuliah").val()
+        const ps             = $("#editInput-ps").val()
+        const semester       = $("#editInputSemesterStudy").val()
+        const type           = $("#editInput-jenis").val()
+        const bidangKeilmuan = $("#editInputBidangKeilmuan").val()
+        const mhsTotal       = $("#editInputJumlahMahasiswa").val()
+        const sks            = $("#editInputSks").val()
+
+        listPengajaran[editedPengajaranIndex] = {
+            matkul,
+            ps,
+            semester,
+            type,
+            bidangKeilmuan,
+            mhsTotal,
+            sks
+        }
+        t.listPengajaran.set(listPengajaran)
+        $('#editPengajaranModal').modal('hide');
+        Session.set('editedPengajaranIndex',undefined)
+
+    },
     "click .add-magazine" (e,t){
         e.preventDefault()
         const listMagazine = t.listMagazine.get()
@@ -514,6 +609,49 @@ Template.formLecturers.events({
         listMagazine.push(data)
         t.listMagazine.set(listMagazine)
     },
+    "click .edit-magazine"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const magazine = t.listMagazine.get()[index];
+        $("#editTitle_input").val(magazine.title)
+        $("#editInput_name").val(magazine.name)
+        $("#editVolume_input").val(magazine.volume)
+        $("#editNumber_input").val(magazine.number)
+        $("#editDate_input").val(magazine.dateOfPublisher)
+        $("#editYear_input").val(magazine.year)
+        $("#editLink_input").val(magazine.link)
+
+
+
+        $('#editMagazineModal').modal('show');
+        Session.set('editedMagazineIndex',index);
+    },
+    "click .save-magazine"(e,t){
+        e.preventDefault();
+        const editedMagazineIndex = Session.get('editedMagazineIndex')
+        const listMagazine = t.listMagazine.get();
+        const title  = $("#editTitle_input").val()
+        const name = $("#editInput_name").val()
+        const volume = $("#editVolume_input").val()
+        const number = $("#editNumber_input").val()
+        const dateOfPublisher = $("#editDate_input").val()
+        const year = $("#editYear_input").val()
+        const link = $("#editLink_input").val()
+    
+
+        listMagazine[editedMagazineIndex] = {
+            title,
+            name,
+            volume,
+            number,
+            dateOfPublisher,
+            year,
+            link
+        }
+        t.listMagazine.set(listMagazine)
+        $('#editMagazineModal').modal('hide');
+        Session.set('editedMagazineIndex',undefined)
+    },
     "click .add-otherPublication" (e,t){
         e.preventDefault()
         const listOtherPublication = t.listOtherPublication.get()
@@ -537,7 +675,49 @@ Template.formLecturers.events({
         listOtherPublication.push(data)
         t.listOtherPublication.set(listOtherPublication)
     },
-  
+    "click .edit-otherPublication"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const otherPublication = t.listOtherPublication.get()[index];
+        $("#editInputTitle_input").val(otherPublication.title)
+        $("#editInput_media_name").val(otherPublication.name)
+        $("#editInput_volume").val(otherPublication.volume)
+        $("#editInput_number").val(otherPublication.number)
+        $("#editInput_date").val(otherPublication.dateOfPublisher)
+        $("#editInput_year").val(otherPublication.year)
+        $("#editInput_link").val(otherPublication.link)
+
+
+
+        $('#editOtherPublicationModal').modal('show');
+        Session.set('editedOtherPublicationIndex',index);
+    },
+    "click .save-otherPublication"(e,t){
+        e.preventDefault();
+        const editedOtherPublicationIndex = Session.get('editedOtherPublicationIndex')
+        const listOtherPublication = t.listOtherPublication.get();
+        const title     = $("#editInputTitle_input").val()
+        const name      = $("#editInput_media_name").val()
+        const volume    = $("#editInput_volume").val()
+        const number    = $("#editInput_number").val()
+        const dateOfPublisher = $("#editInput_date").val()
+        const year = $("#editInput_year").val()
+        const link = $("#editInput_link").val()
+    
+
+        listOtherPublication[editedOtherPublicationIndex] = {
+            title,
+            name,
+            volume,
+            number,
+            dateOfPublisher,
+            year,
+            link
+        }
+        t.listOtherPublication.set(listOtherPublication)
+        $('#editOtherPublicationModal').modal('hide');
+        Session.set('editedOtherPublicationIndex',undefined)
+    },
     "click .add-paten" (e, t){
         e.preventDefault()
         const listIpr = t.listIpr.get()
@@ -555,6 +735,38 @@ Template.formLecturers.events({
         }
         listIpr.push(data)
         t.listIpr.set(listIpr)
+    },
+    "click .edit-paten"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const paten = t.listIpr.get()[index];
+        $("#editInputJudulPaten").val(paten.title)
+        $("#editInputKategoriKegiatan").val(paten.category)
+        $("#editInputJenisKegiatan").val(paten.cActivity)
+        $("#editInput-date").val(paten.dateOfPublisher)
+
+        $('#editPatenModal').modal('show');
+        Session.set('editedPatenIndex',index);
+
+    },
+    "click .save-paten"(e,t){
+        e.preventDefault()
+        const editedPatenIndex = Session.get('editedPatenIndex')
+        const listIpr           = t.listIpr.get();
+        const title             = $("#editInputJudulPaten").val()
+        const category          = $("#editInputKategoriKegiatan").val()
+        const cActivity         = $("#editInputJenisKegiatan").val()
+        const dateOfPublisher   = $("#editInput-date").val()
+
+        listIpr[editedPatenIndex] ={
+            title,
+            category,
+            cActivity,
+            dateOfPublisher
+        }
+        t.listIpr.set(listIpr);
+        $('#editPatenModal').modal('hide');
+        Session.set('editedPatenIndex',undefined)
     },
 
     "click .add-scholarship" (e, t){
@@ -590,6 +802,38 @@ Template.formLecturers.events({
         // console.log(data)
         listScholarship.push(data)
         t.listScholarship.set(listScholarship)
+    },
+    "click .edit-scholarship"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const scholarship = t.listScholarship.get()[index];
+        $("#editInput-beasiswa-name").val(scholarship.name)
+        $("#editInput-beasiswa-category").val(scholarship.category)
+        $("#editInput-start-year").val(scholarship.startYear)
+        $("#editInput-end-year").val(scholarship.endYear)
+
+        $('#editScholarshipModal').modal('show');
+        Session.set('editedScholarshipIndex',index);
+    },
+
+    "click .save-scholarship"(e,t){
+        e.preventDefault()
+        const editedScholarshipIndex = Session.get('editedScholarshipIndex')
+        const listScholarship   = t.listScholarship.get();
+        const name      = $("#editInput-beasiswa-name").val()
+        const category  = $("#editInput-beasiswa-category").val()
+        const startYear = $("#editInput-start-year").val()
+        const endYear   = $("#editInput-end-year").val()
+
+        listScholarship[editedScholarshipIndex] ={
+            name,
+            category,
+            startYear,
+            endYear
+        }
+        t.listScholarship.set(listScholarship);
+        $('#editScholarshipModal').modal('hide');
+        Session.set('editedScholarshipIndex',undefined)
     },
 
     "click .add-kesejahteraan" (e, t){
@@ -629,6 +873,43 @@ Template.formLecturers.events({
         t.listKesejahteraan.set(listKesejahteraan)
     },
 
+    "click .edit-kesejahteraan"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik');
+        const kesejahteraan = t.listKesejahteraan.get()[index];
+        $("#editInput-service-name").val(kesejahteraan.serviceName)
+        $("#editInput-category-service").val(kesejahteraan.category)
+        $("#editInput-organizer").val(kesejahteraan.organizer)
+        $("#editStart-year-input").val(kesejahteraan.startYear)
+        $("#editEnd-year-input").val(kesejahteraan.endYear)
+
+        $('#editKesejahteraanModal').modal('show');
+        Session.set('editedKesejahteraanIndex',index);
+
+    },
+    "click .save-kesejahteraan"(e,t){
+        e.preventDefault()
+        const editedKesejahteraanIndex = Session.get('editedKesejahteraanIndex')
+        const listKesejahteraan = t.listKesejahteraan.get();
+
+        const serviceName  = $("#editInput-service-name").val()
+        const category     = $("#editInput-category-service").val()
+        const organizer    = $("#editInput-organizer").val()
+        const startYear    = $("#editStart-year-input").val()
+        const endYear      = $("#editEnd-year-input").val()
+        
+        listKesejahteraan[editedKesejahteraanIndex] = {
+            serviceName,
+            category,
+            organizer,
+            startYear,
+            endYear
+        }
+        t.listKesejahteraan.set(listKesejahteraan);
+        $('#editKesejahteraanModal').modal('hide');
+        Session.set('editedKesejahteraanIndex',undefined)
+    },
+
     "click .add-coaching" (e,t){
         e.preventDefault()
         const listCoachingLevel = t.listCoachingLevel.get()
@@ -648,6 +929,38 @@ Template.formLecturers.events({
         }
         listCoachingLevel.push(data)
         t.listCoachingLevel.set(listCoachingLevel)
+    },
+    "click .edit-coaching"(e,t){
+        e.preventDefault
+        const index = $(e.currentTarget).data('milik');
+        const coaching = t.listCoachingLevel.get()[index];
+        $("#editInputCoachingLevel").val(coaching.coachingLevel)
+        $("#editInputCoachingPlace").val(coaching.place)
+        $("#editInputPeriode").val(coaching.periode)
+
+        $('#editCoachingModal').modal('show');
+        Session.set('editedCoachingIndex',index);
+
+    },
+    "click .save-coaching"(e,t){
+        e.preventDefault()
+        const editedCoachingIndex = Session.get('editedCoachingIndex')
+        const listCoachingLevel = t.listCoachingLevel.get();
+        const coachingLevel = $("#editInputCoachingLevel").val()
+        const place         = $("#editInputCoachingPlace").val()
+        const periode       = $("#editInputPeriode").val()
+
+        listCoachingLevel[editedCoachingIndex] = {
+            coachingLevel,
+            place,
+            periode
+        }
+        t.listCoachingLevel.set(listCoachingLevel);
+        $('#editCoachingModal').modal('hide');
+        Session.set('editedCoachingIndex',undefined)
+
+        
+        
     },
 
     "click .add-tunjangan" (e, t){
@@ -698,6 +1011,71 @@ Template.formLecturers.events({
         listTunjangan.push(data)
         t.listTunjangan.set(listTunjangan)
     },
+    "click .edit-tunjangan"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik')
+        const tunjangan = t.listTunjangan.get()[index];
+
+        $("#editInput-allowance").val(tunjangan.name)
+        $("#editInput-allowance-type").val(tunjangan.type)
+        $("#editInput-institution").val(tunjangan.institution)
+        $("#editInput-funding-source").val(tunjangan.source)
+        $("#editInput-year-start").val(tunjangan.startYear)
+        $("#editInput-year-end").val(tunjangan.endYear)
+        $("#editInput-nominal").val(tunjangan.nominal)
+
+        $('#editTunjanganModal').modal('show');
+        Session.set('editedTunjanganIndex',index); 
+    },
+    "click .save-tunjangan"(e,t){
+        e.preventDefault()
+        const editedTunjanganIndex = Session.get('editedTunjanganIndex')
+        const listTunjangan = t.listTunjangan.get();
+        const name         = $("#editInput-allowance").val()
+        const type         = $("#editInput-allowance-type").val()
+        const institution  = $("#editInput-institution").val()
+        const source       = $("#editInput-funding-source").val()
+        const startYear    = $("#editInput-year-start").val()
+        const endYear      = $("#editInput-year-end").val()
+        let nominal        = $("#editInput-nominal").val()
+    
+        nominal = nominal.replace(/\D/g, '');
+    
+        if (!/^\d+$/.test(nominal)) {
+            failAlert("Nominal harus berupa angka.");
+            return;
+        }
+    
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+    
+        if (!isValidStartYear) {
+            failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
+            return;
+        }
+    
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+    
+        if (!isValidEndYear) {
+            failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
+            return;
+        }
+        if (parseInt(startYear) > parseInt(endYear)) {
+            failAlert("Input Tahun Mulai tidak boleh lebih besar dari Tahun Selesai.");
+            return;
+        }
+        listTunjangan[editedTunjanganIndex]={
+            name,
+            type,
+            institution,
+            source,
+            startYear,
+            endYear,
+            nominal: parseInt(nominal)
+        }
+        t.listTunjangan.set(listTunjangan);
+        $('#editTunjanganModal').modal('hide');
+        Session.set('editedTunjanganIndex',undefined);
+    },
     
 
     "click .add-Dedication" (e, t){
@@ -717,6 +1095,40 @@ Template.formLecturers.events({
         // console.log(data)
         listDedication.push(data)
         t.listDedication.set(listDedication)
+    },
+    "click .edit-Dedication"(e,t){
+        e.preventDefault()
+        const index = $(e.currentTarget).data('milik')
+        const dedication = t.listDedication.get()[index];
+    
+        $("#editInputActivityName").val(dedication.name)
+        $("#editInputActivityTheme").val(dedication.theme)
+        $("#editInputYearActivity").val(dedication.year)
+        $("#editInputDuration").val(dedication.duration)
+    
+        $('#editDedicationModal').modal('show');
+        Session.set('editedDedicationIndex',index); 
+    },
+    "click .save-Dedication"(e,t){
+        e.preventDefault()
+        const editedDedicationIndex = Session.get('editedDedicationIndex')
+        const listDedication = t.listDedication.get();
+        const name         = $("#editInputActivityName").val()
+        const theme        = $("#editInputActivityTheme").val()
+        const year         = $("#editInputYearActivity").val()
+        const duration     = $("#editInputDuration").val()
+    
+        const data = {
+            name,
+            theme,
+            year,
+            duration
+        }
+    
+        listDedication[editedDedicationIndex] = data;
+        t.listDedication.set(listDedication);
+        $('#editDedicationModal').modal('hide');
+        Session.set('editedDedicationIndex', undefined);
     },
 
     "click .add-speaker" (e, t){
@@ -812,6 +1224,53 @@ Template.formLecturers.events({
         listJournalManager.push(data);
         t.listJournalManager.set(listJournalManager);
     },
+    "click .edit-journalManager"(e,t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const journalManager = t.listJournalManager.get()[index];
+    
+        $("#editInputNamaJurnal").val(journalManager.name);
+        $("#editInputNoSkPenugasan").val(journalManager.noSkPenugasan);
+        $("#editInputPeran").val(journalManager.peran);
+        $("#editInputStartDate").val(journalManager.startDate);
+        if (journalManager.endDate === "Sampai Sekarang") {
+            $("#endDateNowEdit").prop("checked", true);
+            $("#editInputEndDate").prop("disabled", true);
+        } else {
+            $("#editInputEndDate").val(journalManager.endDate);
+        }
+    
+        $('#editJournalManagerModal').modal('show');
+        Session.set('editedJournalManagerIndex', index); 
+    },
+    "click .save-journalManager"(e,t){
+        e.preventDefault();
+        const editedJournalManagerIndex = Session.get('editedJournalManagerIndex');
+        const listJournalManager = t.listJournalManager.get();
+        const name           = $("#editInputNamaJurnal").val();
+        const noSkPenugasan = $("#editInputNoSkPenugasan").val();
+        const peran          = $("#editInputPeran").val();
+        const startDate      = $("#editInputStartDate").val();
+        let endDate;
+        const endDateCheckboxJournal = $("#endDateNowEdit").prop("checked");
+        if (endDateCheckboxJournal) {
+            endDate = "Sampai Sekarang";
+        } else {
+            endDate = $("#editInputEndDate").val();
+        }
+        const data = {
+            name,
+            noSkPenugasan,
+            peran,
+            startDate,
+            endDate
+        };
+    
+        listJournalManager[editedJournalManagerIndex] = data;
+        t.listJournalManager.set(listJournalManager);
+        $('#editJournalManagerModal').modal('hide');
+        Session.set('editedJournalManagerIndex', undefined);
+    },
     
     "click .add-others-media" (e, t){
         e.preventDefault();
@@ -840,7 +1299,54 @@ Template.formLecturers.events({
         listOthersMedia.push(data);
         t.listOthersMedia.set(listOthersMedia);
     },
+    "click .edit-others-media"(e,t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const othersMedia = t.listOthersMedia.get()[index];
     
+        $("#editInputNamaJurnalOthers").val(othersMedia.name);
+        $("#editInputNoSkPenugasanOthers").val(othersMedia.noSkPenugasan);
+        $("#editInputPeranOthers").val(othersMedia.peran);
+        $("#editInputStartDateOthers").val(othersMedia.startDate);
+        if (othersMedia.endDateOtherMedia === "Sampai Sekarang") {
+            $("#endDateOthersNowEdit").prop("checked", true);
+            $("#editInputEndDateOthers").prop("disabled", true);
+        } else {
+            $("#editInputEndDateOthers").val(othersMedia.endDateOtherMedia);
+        }
+    
+        $('#editOthersMediaModal').modal('show');
+        Session.set('editedOthersMediaIndex', index); 
+    },
+    
+    "click .save-others-media"(e,t){
+        e.preventDefault();
+        const editedOthersMediaIndex = Session.get('editedOthersMediaIndex');
+        const listOthersMedia = t.listOthersMedia.get();
+        const name           = $("#editInputNamaJurnalOthers").val();
+        const noSkPenugasan = $("#editInputNoSkPenugasanOthers").val();
+        const peran          = $("#editInputPeranOthers").val();
+        const startDate      = $("#editInputStartDateOthers").val();
+        let endDateOtherMedia;
+        const endDateCheckboxOther = $("#endDateOthersNowEdit").prop("checked");
+        if (endDateCheckboxOther) {
+            endDateOtherMedia = "Sampai Sekarang";
+        } else {
+            endDateOtherMedia = $("#editInputEndDateOthers").val();
+        }
+        const data = {
+            name,
+            noSkPenugasan,
+            peran,
+            startDate,
+            endDateOtherMedia
+        };
+    
+        listOthersMedia[editedOthersMediaIndex] = data;
+        t.listOthersMedia.set(listOthersMedia);
+        $('#editOthersMediaModal').modal('hide');
+        Session.set('editedOthersMediaIndex', undefined);
+    },
     "click .add-imavistructure" (e, t){
         e.preventDefault();
         console.log("Add Imavi Struktur clicked");
@@ -866,6 +1372,51 @@ Template.formLecturers.events({
         listImaviStructure.push(data);
         t.listImaviStructure.set(listImaviStructure);
     },
+    "click .edit-imavistructure"(e,t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const imaviStructure = t.listImaviStructure.get()[index];
+    
+        $("#editInputJabatanStruktural").val(imaviStructure.name);
+        $("#editInputNomorSkImavi").val(imaviStructure.noSk);
+        $("#editInputStartDateImavi").val(imaviStructure.startDate);
+        if (imaviStructure.endDateImaviStructure === "Sampai Sekarang") {
+            $("#endDateImaviNowEdit").prop("checked", true);
+            $("#editInputEndDateImavi").prop("disabled", true);
+        } else {
+            $("#editInputEndDateImavi").val(imaviStructure.endDateImaviStructure);
+        }
+    
+        $('#editImaviStructureModal').modal('show');
+        Session.set('editedImaviStructureIndex', index); 
+    },
+    
+    "click .save-imavistructure"(e,t){
+        e.preventDefault();
+        const editedImaviStructureIndex = Session.get('editedImaviStructureIndex');
+        const listImaviStructure = t.listImaviStructure.get();
+        const name           = $("#editInputJabatanStruktural").val();
+        const noSk          = $("#editInputNomorSkImavi").val();
+        const startDate      = $("#editInputStartDateImavi").val();
+        let endDateImaviStructure;
+        const endDateCheckboxImavi = $("#endDateImaviNowEdit").prop("checked");
+        if (endDateCheckboxImavi) {
+            endDateImaviStructure = "Sampai Sekarang";
+        } else {
+            endDateImaviStructure = $("#editInputEndDateImavi").val();
+        }
+        const data = {
+            name,
+            noSk,
+            startDate,
+            endDateImaviStructure
+        };
+    
+        listImaviStructure[editedImaviStructureIndex] = data;
+        t.listImaviStructure.set(listImaviStructure);
+        $('#editImaviStructureModal').modal('hide');
+        Session.set('editedImaviStructureIndex', undefined);
+    },
 
     "click .add-profesi" (e, t){
         e.preventDefault()
@@ -886,6 +1437,45 @@ Template.formLecturers.events({
         listProfesi.push(data)
         t.listProfesi.set(listProfesi)
     },
+    "click .edit-profesi" (e, t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const profesi = t.listProfesi.get()[index];
+        
+        $("#editInputNamaOrganisasi").val(profesi.name);
+        $("#editInputPeranProfesi").val(profesi.peran);
+        $("#editInputStartDateProfesi").val(profesi.startDate);
+        $("#editInputEndDateProfesi").val(profesi.endDate);
+        $("#editInputInstansiProfesi").val(profesi.instansi);
+        
+        $('#editProfesiModal').modal('show');
+        Session.set('editedProfesiIndex', index); 
+    },
+    
+    "click .save-profesi" (e, t){
+        e.preventDefault();
+        const editedProfesiIndex = Session.get('editedProfesiIndex');
+        const listProfesi = t.listProfesi.get();
+        const name = $("#editInputNamaOrganisasi").val();
+        const peran = $("#editInputPeranProfesi").val();
+        const startDate = $("#editInputStartDateProfesi").val();
+        const endDate = $("#editInputEndDateProfesi").val();
+        const instansi = $("#editInputInstansiProfesi").val();
+        
+        const data = {
+            name,
+            peran,
+            startDate,
+            endDate,
+            instansi
+        };
+        
+        listProfesi[editedProfesiIndex] = data;
+        t.listProfesi.set(listProfesi);
+        $('#editProfesiModal').modal('hide');
+        Session.set('editedProfesiIndex', undefined);
+    },
+    
     
 
     "click .add-award" (e, t){
@@ -905,6 +1495,43 @@ Template.formLecturers.events({
         listAward.push(data)
         t.listAward.set(listAward)
     },
+
+    "click .edit-award" (e, t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const award = t.listAward.get()[index];
+        
+        $("#editInputNamaPenghargaan").val(award.name);
+        $("#editInputJenisPenghargaan").val(award.type);
+        $("#editInputTahunPenghargaan").val(award.year);
+        $("#editInputInstansiPenghargaan").val(award.instansi);
+        
+        $('#editAwardModal').modal('show');
+        Session.set('editedAwardIndex', index); 
+    },
+    
+    "click .save-award" (e, t){
+        e.preventDefault();
+        const editedAwardIndex = Session.get('editedAwardIndex');
+        const listAward = t.listAward.get();
+        const name = $("#editInputNamaPenghargaan").val();
+        const type = $("#editInputJenisPenghargaan").val();
+        const year = $("#editInputTahunPenghargaan").val();
+        const instansi = $("#editInputInstansiPenghargaan").val();
+        
+        const data = {
+            name,
+            type,
+            year,
+            instansi
+        };
+        
+        listAward[editedAwardIndex] = data;
+        t.listAward.set(listAward);
+        $('#editAwardModal').modal('hide');
+        Session.set('editedAwardIndex', undefined);
+    },
+    
 
 
     "click .add-bimbingan" (e, t){
@@ -936,6 +1563,58 @@ Template.formLecturers.events({
         listBimbingan.push(data)
         t.listBimbingan.set(listBimbingan)
     },
+    "click .edit-bimbingan" (e, t){
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const bimbingan = t.listBimbingan.get()[index];
+        
+        $("#editInputName").val(bimbingan.name);
+        $("#editInputJudul").val(bimbingan.title);
+        $("#editInput-jenis-pembimbing").val(bimbingan.pembimbingCategory);
+        $("#editInputBidangKeilmuanPembimbing").val(bimbingan.bidangKeilmuan);
+        $("#editInputProgramStudi").val(bimbingan.programStudi);
+        $("#editInputNamaLembaga").val(bimbingan.lembagaName);
+        $("#editInputTahun").val(bimbingan.endDate);
+        
+        $('#editBimbinganModal').modal('show');
+        Session.set('editedBimbinganIndex', index); 
+    },
+    
+    "click .save-bimbingan" (e, t){
+        e.preventDefault();
+        const editedBimbinganIndex = Session.get('editedBimbinganIndex');
+        const listBimbingan = t.listBimbingan.get();
+        const name = $("#editInputName").val();
+        const title = $("#editInputJudul").val();
+        const pembimbingCategory = $("#editInput-jenis-pembimbing").val();
+        const bidangKeilmuan = $("#editInputBidangKeilmuanPembimbing").val();
+        const programStudi = $("#editInputProgramStudi").val();
+        const lembagaName = $("#editInputNamaLembaga").val();
+        const endDate = $("#editInputTahun").val();
+        
+        const isValidEndDate = /^[0-9]{4}$/.test(endDate); 
+    
+        if (!isValidEndDate) {
+            failAlert("Input Tahun harus terdiri dari 4 digit angka.");
+            return;
+        }
+        
+        const data = {
+            name,
+            title,
+            pembimbingCategory,
+            programStudi,
+            bidangKeilmuan,
+            lembagaName,
+            endDate
+        };
+        
+        listBimbingan[editedBimbinganIndex] = data;
+        t.listBimbingan.set(listBimbingan);
+        $('#editBimbinganModal').modal('hide');
+        Session.set('editedBimbinganIndex', undefined);
+    },
+    
     "click .add-certification" (e, t){
         e.preventDefault()
         const listCertification = t.listCertification.get()
@@ -989,6 +1668,65 @@ Template.formLecturers.events({
         }
       
     },
+    "click .edit-certification"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const certification = t.listCertification.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputCertificationType").val(certification.type);
+        $("#editInputCertificationMajor").val(certification.major);
+        $("#editInputRegistrationNumber").val(certification.registrationNumber);
+        $("#editInputSkNumber").val(certification.skNumber);
+        $("#editInputCertificationOrganiser").val(certification.organizer);
+        $("#editInputCertificationGrade").val(certification.grade);
+        $("#editInputCertificationEnd").val(certification.dateEnd);
+    
+        $('#editCertificationModal').modal('show');
+        Session.set('editedCertificationIndex', index);
+    },
+    
+    "click .save-certification"(e, t) {
+        e.preventDefault();
+        const editedCertificationIndex = Session.get('editedCertificationIndex');
+        const listCertification = t.listCertification.get();
+        const type = $("#editInputCertificationType").val();
+        const major = $("#editInputCertificationMajor").val();
+        const registrationNumber = $("#editInputRegistrationNumber").val();
+        const skNumber = $("#editInputSkNumber").val();
+        const organizer = $("#editInputCertificationOrganiser").val();
+        const grade = $("#editInputCertificationGrade").val();
+        const dateEnd = $("#editInputCertificationEnd").val();
+    
+        const isValidRegistrationNumber = /^\d+$/.test(registrationNumber); // Hanya angka
+        if (!isValidRegistrationNumber) {
+            failAlert("Nomor Registrasi hanya boleh berisi angka.");
+            return;
+        }
+    
+        const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
+        if (!isValidDateEnd) {
+            failAlert("Input Date End harus terdiri dari 4 digit angka.");
+            return;
+        }
+    
+        const data = {
+            type,
+            major,
+            registrationNumber,
+            skNumber,
+            organizer,
+            grade,
+            dateEnd
+        };
+    
+        listCertification[editedCertificationIndex] = data;
+        t.listCertification.set(listCertification);
+        $('#editCertificationModal').modal('hide');
+        Session.set('editedCertificationIndex', undefined);
+    },
+
+    
 
     "click .add-bahanAjar"(e, t){
         e.preventDefault()
@@ -1006,6 +1744,43 @@ Template.formLecturers.events({
         listBahanAjar.push(data)
         t.listBahanAjar.set(listBahanAjar)
     },
+    "click .edit-bahanAjar"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const bahanAjar = t.listBahanAjar.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputJudulBahanAjar").val(bahanAjar.title);
+        $("#editInputIsbnBahanAjar").val(bahanAjar.isbn);
+        $("#editInputTanggalTerbitBahanAjar").val(bahanAjar.publishDate);
+        $("#editInputPenerbitBahanAjar").val(bahanAjar.publisher);
+    
+        $('#editBahanAjarModal').modal('show');
+        Session.set('editedBahanAjarIndex', index);
+    },
+    
+    "click .save-bahanAjar"(e, t) {
+        e.preventDefault();
+        const editedBahanAjarIndex = Session.get('editedBahanAjarIndex');
+        const listBahanAjar = t.listBahanAjar.get();
+        const title = $("#editInputJudulBahanAjar").val();
+        const isbn = $("#editInputIsbnBahanAjar").val();
+        const publishDate = $("#editInputTanggalTerbitBahanAjar").val();
+        const publisher = $("#editInputPenerbitBahanAjar").val();
+    
+        const data = {
+            title,
+            isbn,
+            publishDate,
+            publisher
+        };
+    
+        listBahanAjar[editedBahanAjarIndex] = data;
+        t.listBahanAjar.set(listBahanAjar);
+        $('#editBahanAjarModal').modal('hide');
+        Session.set('editedBahanAjarIndex', undefined);
+    },
+    
     "click .add-journal"(e,t){
         e.preventDefault()
         const listJournal = t.listJournal.get()
@@ -1032,6 +1807,58 @@ Template.formLecturers.events({
         listJournal.push(data)
         t.listJournal.set(listJournal)
     },
+    "click .edit-journal"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const journal = t.listJournal.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputJenisPenulisan").val(journal.category);
+        $("#editInputJudulJournal").val(journal.title);
+        $("#editInputDoi").val(journal.doi);
+        $("#editInputNama").val(journal.name);
+        $("#editInputVolume").val(journal.volume);
+        $("#editInputNomor").val(journal.number);
+        $("#editInputYearJournal").val(journal.year);
+        $("#editInputCategoryJournal").val(journal.cJournal);
+        $("#editInputURLJournal").val(journal.link);
+    
+        $('#editJournalModal').modal('show');
+        Session.set('editedJournalIndex', index);
+    },
+    
+    "click .save-journal"(e, t) {
+        e.preventDefault();
+        const editedJournalIndex = Session.get('editedJournalIndex');
+        const listJournal = t.listJournal.get();
+        const category = $("#editInputJenisPenulisan").val();
+        const title = $("#editInputJudulJournal").val();
+        const doi = $("#editInputDoi").val();
+        const name = $("#editInputNama").val();
+        const volume = $("#editInputVolume").val();
+        const number = $("#editInputNomor").val();
+        const year = $("#editInputYearJournal").val();
+        const cJournal = $("#editInputCategoryJournal").val();
+        const link = $("#editInputURLJournal").val();
+    
+        const data = {
+            category,
+            title,
+            doi,
+            name,
+            volume,
+            number,
+            year,
+            cJournal,
+            link
+        };
+    
+        listJournal[editedJournalIndex] = data;
+        t.listJournal.set(listJournal);
+        $('#editJournalModal').modal('hide');
+        Session.set('editedJournalIndex', undefined);
+    },
+    
     "click .add-project"(e,t){
         e.preventDefault()
         const listProject = t.listProject.get()
@@ -1050,6 +1877,45 @@ Template.formLecturers.events({
         listProject.push(data)
         t.listProject.set(listProject) 
     },
+    "click .edit-project"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const project = t.listProject.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputJudul").val(project.title);
+        $("#editInputBidangKeilmuan").val(project.study);
+        $("#editInputTahunPelaksanaan").val(project.year);
+        $("#editInputLamaKegiatan").val(project.duration);
+        $("#editInputStatus").val(project.link);
+    
+        $('#editProjectModal').modal('show');
+        Session.set('editedProjectIndex', index);
+    },
+    
+    "click .save-project"(e, t) {
+        e.preventDefault();
+        const editedProjectIndex = Session.get('editedProjectIndex');
+        const listProject = t.listProject.get();
+        const title = $("#editInputJudul").val();
+        const study = $("#editInputBidangKeilmuan").val();
+        const year = $("#editInputTahunPelaksanaan").val();
+        const duration = $("#editInputLamaKegiatan").val();
+        const link = $("#editInputStatus").val();
+    
+        const data = {
+            title,
+            study,
+            year,
+            duration,
+            link
+        };
+    
+        listProject[editedProjectIndex] = data;
+        t.listProject.set(listProject);
+        $('#editProjectModal').modal('hide');
+        Session.set('editedProjectIndex', undefined);
+    },    
     "click .add-pengujian" (e, t){
         e.preventDefault()
         const listPengujian = t.listPengujian.get()
@@ -1079,6 +1945,58 @@ Template.formLecturers.events({
         t.listPengujian.set(listPengujian)
 
     },
+    "click .edit-pengujian"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const pengujian = t.listPengujian.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputPengujianName").val(pengujian.name);
+        $("#editInputJenisPengujian").val(pengujian.type);
+        $("#editInputJudulPengujian").val(pengujian.title);
+        $("#editInputKategoriKegiatanPengujian").val(pengujian.category);
+        $("#editInputBidangKeilmuanPengujian").val(pengujian.bidangKeilmuan);
+        $("#editInputProgramStudiPengujian").val(pengujian.ps);
+        $("#editInputNamaLembagaPengujian").val(pengujian.lembaga);
+        $("#editInputTahunSelesaiPengujian").val(pengujian.dateEnd);
+        $("#editInputSemesterPengujian").val(pengujian.semester);
+    
+        $('#editPengujianModal').modal('show');
+        Session.set('editedPengujianIndex', index);
+    },
+    
+    "click .save-pengujian"(e, t) {
+        e.preventDefault();
+        const editedPengujianIndex = Session.get('editedPengujianIndex');
+        const listPengujian = t.listPengujian.get();
+        const name = $("#editInputPengujianName").val();
+        const type = $("#editInputJenisPengujian").val();
+        const title = $("#editInputJudulPengujian").val();
+        const category = $("#editInputKategoriKegiatanPengujian").val();
+        const bidangKeilmuan = $("#editInputBidangKeilmuanPengujian").val();
+        const ps = $("#editInputProgramStudiPengujian").val();
+        const lembaga = $("#editInputNamaLembagaPengujian").val();
+        const dateEnd = $("#editInputTahunSelesaiPengujian").val();
+        const semester = $("#editInputSemesterPengujian").val();
+    
+        const data = {
+            name,
+            type,
+            title,
+            category,
+            bidangKeilmuan,
+            ps,
+            lembaga,
+            dateEnd,
+            semester
+        };
+    
+        listPengujian[editedPengujianIndex] = data;
+        t.listPengujian.set(listPengujian);
+        $('#editPengujianModal').modal('hide');
+        Session.set('editedPengujianIndex', undefined);
+    },
+    
     "click .add-kerjapenugasan"(e, t){
         e.preventDefault()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
@@ -1104,6 +2022,49 @@ Template.formLecturers.events({
         listKerjaPenugasan.push(data)
         t.listKerjaPenugasan.set(listKerjaPenugasan)
     },
+    "click .edit-kerjapenugasan"(e, t) {
+        e.preventDefault();
+        const index = $(e.currentTarget).data('milik');
+        const kerjaPenugasan = t.listKerjaPenugasan.get()[index];
+    
+        // Mengisi nilai-nilai input di modal edit
+        $("#editInputName").val(kerjaPenugasan.name);
+        $("#editInputPlace").val(kerjaPenugasan.place);
+        $("#editInputPeriod").val(kerjaPenugasan.period);
+        $("#editInputNotes").val(kerjaPenugasan.notes);
+    
+        $('#editKerjaPenugasanModal').modal('show');
+        Session.set('editedKerjaPenugasanIndex', index);
+    },
+    
+    "click .save-kerjapenugasan"(e, t) {
+        e.preventDefault();
+        const editedKerjaPenugasanIndex = Session.get('editedKerjaPenugasanIndex');
+        const listKerjaPenugasan = t.listKerjaPenugasan.get();
+        const name = $("#editInputName").val();
+        const place = $("#editInputPlace").val();
+        const period = $("#editInputPeriod").val();
+        const notes = $("#editInputNotes").val();
+    
+        const isValidPeriode = /^[0-9-]+$/.test(period); // Hanya angka dan simbol -
+        if (!isValidPeriode) {
+            alert("Input Periode hanya boleh berisi angka dan simbol -.");
+            return;
+        }
+    
+        const data = {
+            name,
+            place,
+            period,
+            notes
+        };
+    
+        listKerjaPenugasan[editedKerjaPenugasanIndex] = data;
+        t.listKerjaPenugasan.set(listKerjaPenugasan);
+        $('#editKerjaPenugasanModal').modal('hide');
+        Session.set('editedKerjaPenugasanIndex', undefined);
+    },
+    
     "click .remove-list" (e, t){
         e.preventDefault()
         const index = $(e.target).data("milik")
