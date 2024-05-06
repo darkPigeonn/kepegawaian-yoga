@@ -1,0 +1,2131 @@
+<template name="list_document">
+    <div class="container">
+        {{#if equals jabatanLogin "admin"}}
+        <!-- {{jabatanLogin.roles.}} -->
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/documents/create" class="btn btn-primary">Tambah</a>
+        </div>
+        <h3>Semua List Dokumen</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
+                            {{/if}}</td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+        {{#if equals jabatanLogin "super-admin"}}
+        <!-- {{jabatanLogin.roles.}} -->
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/documents/create" class="btn btn-primary">Tambah</a>
+        </div>
+        <h3>Semua List Dokumen</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
+                            {{/if}}</td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+        {{#if equals jabatanLogin "resepsionis"}}
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/documents/create" class="btn btn-primary">Tambah</a>
+        </div>
+        <h3>Semua List Dokumen</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
+                            {{/if}}</td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "sekretaris-eksekutif"}}
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/documents/create" class="btn btn-primary">Tambah</a>
+        </div>
+        <h3>Semua List Dokumen</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
+                            {{/if}}</td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "bidang"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "sekretaris-yayasan"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "dewan-pengurus"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "pengurus-inti"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        {{#if equals jabatanLogin "administrasi-umum"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+        
+        {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+        <h3>Data Dokumen Yang Harus Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/review/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>Riwayat Dokumen Direview</h3>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Sumber</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocumentHistoryByRole}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td style="text-transform: capitalize;"> {{name}} </td>
+                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{setJabatanFormat currentJabatan}} </td>
+                        <td>
+                            <a href="/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+
+        <!-- <div class="d-lg-block">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Posisi</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataDocument}}
+                    <tr>
+                        <td> {{nomorUrut @index}} </td>
+                        <td> {{name}} </td>
+                        <td> {{formatHRDate tanggal}} </td>
+                        <td> {{currentJabatan}} </td>
+                        <td>
+                            <a href="/resepsionis/documents/details/{{_id}}">
+                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div> -->
+    </div>
+</template>
+
+<template name="create_document">
+    <div class="container">
+        <div class="title-page">
+            <h3> Tambah Dokumen </h3>
+        </div>
+        <form>
+            <div class="form-group mb-2">
+                <label>Nama Dokumen</label>
+                <input type="text" id="input_fullName" class="form-control" required />
+            </div>
+            <div class="form-group mb-2">
+                <label>Asal Dokumen</label>
+                <input type="text" id="input_sumber" class="form-control" required>
+            </div>
+            <div class="form-group mb-2">
+                <label>Tanggal</label>
+                <input type="date" id="input_tanggal" class="form-control" />
+            </div>
+            <div class="form-group mb-2">
+                <label>Jenis Dokumen</label>
+                <select id="input_jenisDokumen" class="form-control">
+                    <option value="Dokumen Penting">Dokumen Penting</option>
+                    <option value="Dokumen Rahasia">Dokumen Rahasia</option>
+                </select>
+            </div>
+            <div class="form-group mb-2">
+                <label>Alur</label>
+                <select id="input_alur" class="form-control select2" multiple>
+                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                    <option value="bidang">Bidang</option>
+                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                    <option value="dewan-pengurus">Dewan Pengurus</option>
+                    <option value="pengurus-inti">Pengurus Inti</option>
+                    <option value="administrasi-umum">Administrasi Umum</option>
+                </select>
+                <br><br>
+                <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+            </div>
+            {{#if daftarAlur}}
+            <h4>Daftar Alur</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Nomor</th>
+                        <th>Jabatan</th>
+                        <!-- <th>Aksi</th> -->
+                    </thead>
+                    <tbody>
+                        {{#each i in daftarAlur}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat i}}
+                            </td>
+                            <!-- <td>
+                                    <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td> -->
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            {{/if}}
+            <br>
+            <div class="form-group mb-2">
+                <input type="file" name="filePDF" id="filePDF" accept=".pdf" required>
+            </div>
+            <!-- <button type="button" class="btn btn-primary" onclick="previewPDF()">Preview</button> -->
+            <br><br>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+            </div>
+        </form>
+        <!-- contoh iframe untuk preview pdf -->
+        <!-- <iframe style="width: 300px; height: 300px;" src="https://docs.google.com/viewer?url=https://cdn.imavi.org/219116841-Stlh%20Perbaikan.pdf&embedded=true"></iframe> -->
+    </div>
+</template>
+
+<template name="detailDocument">
+    <div class="container">
+        <div class="title-page">
+            <h3> Detail Dokumen </h3>
+        </div>
+        <form>
+            <!-- <label>{{dataDokumen.linkPDF}}</label> -->
+            <iframe id="previewDoc" style="width: 100%; height: 300px;"
+                src="https://docs.google.com/viewer?url={{dataDokumen.linkPDF}}&embedded=true"></iframe>
+            <div class="form-group mb-2">
+                <label>Nama Dokumen</label>
+                <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.name}}" disabled>
+            </div>
+            <div class="form-group mb-2">
+                <label>Asal Dokumen</label>
+                <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.sumberDokumen}}"
+                    disabled>
+            </div>
+            <div class="form-group mb-2">
+                <label>Tanggal</label>
+                <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.tanggal}}"
+                    disabled>
+            </div>
+            <div class="form-group mb-2">
+                <label>Jenis Dokumen</label>
+                <select id="input_jenisDokumen" class="form-control" disabled>
+                    {{#if equals dataDokumen.jenis_dokumen "Dokumen Penting"}}
+                    <option value="Dokumen Penting" selected>Dokumen Penting</option>
+                    {{else}}
+                    <option value="Dokumen Penting">Dokumen Penting</option>
+                    {{/if}}
+                    {{#if equals dataDokumen.jenis_dokumen "Dokumen Rahasia"}}
+                    <option value="Dokumen Rahasia" selected>Dokumen Rahasia</option>
+                    {{else}}
+                    <option value="Dokumen Rahasia">Dokumen Rahasia</option>
+                    {{/if}}
+                </select>
+
+            </div>
+            <h4>Daftar Alur</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <th style="width: 5vw; text-align: center;">Nomor</th>
+                        <th style="width: 30vw; text-align: center;">Jabatan</th>
+                        <th style="text-align: center;">Analisis</th>
+                    </thead>
+                    <tbody>
+                        {{#each i in dataDokumen.alur}}
+                        <tr>
+                            <td style="text-align: center">
+                                {{setTableNumber @index}}
+                            </td>
+                            <td style="text-align:center">
+                                {{setJabatanFormat i.jabatan}}
+                            </td>
+                            <td style="word-break: break-all;">
+                                {{#if equals i.analisis ""}}
+                                Belum Review
+                                {{else}}
+                                {{i.analisis}}
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template name="reviewDocument">
+    <div class="container">
+        {{> detailDocument}}
+        <div class="title-page">
+            <h3> Review Dokumen </h3>
+        </div>
+        <form>
+            <!-- <iframe style="width: 100%; height: 300px;" src="https://docs.google.com/viewer?url={{dataDocument.linkPDF}}&embedded=true"></iframe> -->
+            <div class="form-group mb-2">
+                <label>Review</label><br>
+                <textarea id="input_review" style="width: 100%;" rows="3"></textarea>
+            </div>
+            <!-- <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+            </div> -->
+            <div class="d-flex justify-content-end mb-2">
+                <button class="btn btn-danger mx-2" type="submit" id="btn_tolak">Tolak</button>
+                <button class="btn btn-success" type="submit" id="btn_setuju">Setuju</button>
+            </div>
+        </form>
+    </div>
+</template>
+
+
+
+<!-- Start Korespondensi -->
+<template name="listKorespondensi">
+    <div class="container">
+        <div class="section-label-page">
+            <h3>Surat Keluar</h3>
+        </div>
+        <div class="section-action-page">
+            <a href="/createKorespondensi" class="btn btn-primary">+ Buat Surat Baru</a>
+        </div>
+        <br><br>
+        {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+            <h3>Daftar Surat Yang Harus Direview</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each listItems}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if equals status 11}}
+                                    <a href="/editKorespondensiAlur/{{_id}}">
+                                        <button class="btn btn-primary" type="button" id="btn_reviewAlur">Review Alur</button>
+                                    </a>
+                                {{else}}
+                                    <a href="/documents/details/{{_id}}">
+                                        <button class="btn btn-secondary" type="button" id="btn_review">Review</button>
+                                    </a>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h3>Daftar Surat Dibuat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataKorespondensiPembuat}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                        <a href="/editKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
+                                        </a>
+                                        <a href="/detailKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                        </a>
+
+                                    {{else}}
+                                        {{#if equals status 80}}
+                                            <a href="/editKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
+                                            </a>
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                            </a>
+                                            <a href="/arsipKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
+                                            </a>
+                                        {{else}}
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                            </a>
+                                        {{/if}}
+                                    {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h3>Daftar Riwayat Review Surat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataHistoryReviewer}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h3>Daftar Semua Surat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataKorespondensi}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{else}}
+            <h3>Daftar Surat Yang Harus Direview</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each listItems}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_review">Review</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h3>Daftar Surat Dibuat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataKorespondensiPembuat}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <td>
+                                    {{#if equals status 10}}
+                                        <a href="/editKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
+                                        </a>
+                                        <a href="/detailKorespondensi/{{_id}}">
+                                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                        </a>
+                                    {{else}}
+                                        {{#if equals status 80}}
+                                            <a href="/editKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
+                                            </a>
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                            </a>
+                                            <a href="/arsipKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
+                                            </a>
+                                        {{else}}
+                                            <a href="/detailKorespondensi/{{_id}}">
+                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                            </a>
+                                        {{/if}}
+                                    {{/if}}
+                                </td>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <h3>Daftar Riwayat Review Surat</h3>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Surat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataHistoryReviewer}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                {{categoryName}}
+                            </td>
+                            <td>
+                                {{subject}}
+                            </td>
+                            <td>
+                                {{purpose}}
+                            </td>
+                            <td>
+                                {{formatHRDate createdAt}}
+                            </td>
+                            <td>
+                                {{#if equals status 10}}
+                                    Draft
+                                {{else}}
+                                    {{#if equals status 80}}
+                                        Diterima
+                                    {{else}}
+                                        {{#if equals status 99}}
+                                            Ditolak
+                                        {{else}}
+                                            Sedang Direview
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/detailKorespondensi/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{/if}}
+    </div>
+</template>
+
+<template name="createKorespondensi">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Buat Surat Baru</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Kategori Surat</label>
+                    <select id="category" class="form-control ">
+                        <option>Pilih Kategori</option>
+                        {{#each categoryLetters}}
+                        <option value="{{_id}}">{{ name }}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Catatan Surat</label>
+                    <input type="text" id="noteOfLetter" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Penerima</label>
+                    <input type="text" id="toLetter" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Perihal</label>
+                    <input type="text" id="about" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Lampiran</label>
+                    <input type="text" id="attach" class="form-control">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="">Isi surat</label>
+                    <div id="toolbar-containerDescription"></div>
+					<div id="editorDescription" class="toolbar-containerDescription"
+						style="background-color: white;color: black;">
+					</div>
+                </div>
+
+                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+                    <div class="form-group">
+                        <label>Alur</label>
+                        <select id="input_alur" class="form-control select2" multiple>
+                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                            <option value="bidang">Bidang</option>
+                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                            <option value="dewan-pengurus">Dewan Pengurus</option>
+                            <option value="pengurus-inti">Pengurus Inti</option>
+                            <option value="administrasi-umum">Administrasi Umum</option>
+                        </select>
+                        <br><br>
+                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+                    </div>
+                    {{#if daftarAlur}}
+                        <h4>Daftar Alur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th>Jabatan</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in daftarAlur}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{setJabatanFormat i}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                                <i class="fa fa-trash" posisi={{@index}}>Hapus</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+                {{/if}}
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submit">Simpan Draft</button>
+                    <button class="btn btn-success" id="btn-send">Ajukan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editKorespondensiAlur">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Ubah Alur Surat</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Kategori Surat</label>
+                    <select id="category" class="form-control ">
+                        <option>Pilih Kategori</option>
+                        {{#each categoryLetters}}
+                            {{#if equals dataKorespondensi.category _id}}
+                                <option value="{{_id}}" selected>{{ name }}</option>
+                            {{else}}
+                                <option value="{{_id}}">{{ name }}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="">Nama Surat</label>
+                    <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}" disabled>
+                </div> -->
+                <div class="form-group">
+                    <label for="">Catatan Surat</label>
+                    <input type="text" id="noteOfLetter" class="form-control" value="{{dataKorespondensi.note}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="">Penerima</label>
+                    <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}" disabled>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="">Lampiran</label>
+                    <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="">Perihal</label>
+                    <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}" disabled>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="">Isi surat</label>
+                    {{{dataKorespondensi.desc}}}
+                </div>
+
+                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+                    <div class="form-group">
+                        <label>Alur</label>
+                        <select id="input_alur" class="form-control select2" multiple>
+                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                            <option value="bidang">Bidang</option>
+                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                            <option value="dewan-pengurus">Dewan Pengurus</option>
+                            <option value="pengurus-inti">Pengurus Inti</option>
+                            <option value="administrasi-umum">Administrasi Umum</option>
+                        </select>
+                        <br><br>
+                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+                    </div>
+                    {{#if daftarAlur}}
+                        <h4>Daftar Alur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th colspan="2">Jabatan</th>
+
+                                </thead>
+                                <tbody>
+                                    {{#each i in daftarAlur}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{setJabatanFormat i}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{i}}>
+                                                <i class="fa fa-trash btn-remove" id="btn-remove" milik={{i}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+                {{/if}}
+
+                <div class="form-actions">
+                    <button class="btn btn-success" id="btn-send">Ajukan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editKorespondensi">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Ubah Surat</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Kategori Surat</label>
+                    <select id="category" class="form-control ">
+                        <option>Pilih Kategori</option>
+                        {{#each categoryLetters}}
+                            {{#if equals dataKorespondensi.category _id}}
+                                <option value="{{_id}}" selected>{{ name }}</option>
+                            {{else}}
+                                <option value="{{_id}}">{{ name }}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="">Nama Surat</label>
+                    <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}">
+                </div> -->
+                <div class="form-group">
+                    <label for="">Catatan Surat</label>
+                    <input type="text" id="noteOfLetter" class="form-control" value="{{dataKorespondensi.note}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Penerima</label>
+                    <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="">Lampiran</label>
+                    <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Perihal</label>
+                    <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="">Isi surat</label>
+                    <div id="toolbar-containerDescription"></div>
+					<div id="editorDescription" class="toolbar-containerDescription"
+						style="background-color: white;color: black;">
+					</div>
+                </div>
+
+                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+                    <div class="form-group">
+                        <label>Alur</label>
+                        <select id="input_alur" class="form-control select2" multiple>
+                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                            <option value="bidang">Bidang</option>
+                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                            <option value="dewan-pengurus">Dewan Pengurus</option>
+                            <option value="pengurus-inti">Pengurus Inti</option>
+                            <option value="administrasi-umum">Administrasi Umum</option>
+                        </select>
+                        <br><br>
+                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+                    </div>
+                    {{#if daftarAlur}}
+                        <h4>Daftar Alur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th>Jabatan</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in daftarAlur}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{setJabatanFormat i.jabatan}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                                <i class="fa fa-trash" posisi={{@index}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+                {{/if}}
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submit">Simpan Draft</button>
+                    <button class="btn btn-success" id="btn-send">Ajukan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="formKorespondensi">
+    <div class="page">
+        <!-- <div class="form-group">
+            <label for="">Kategori Surat</label>
+            <select id="category" class="form-control ">
+                <option>Pilih Kategori</option>
+                {{#each categoryLetters}}
+                <option value="{{_id}}">{{ name }}</option>
+                {{/each}}
+            </select>
+        </div> -->
+        <div class="form-group">
+            <label for="">Catatan Surat</label>
+            <input type="text" id="nameOfLetter" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Penerima</label>
+            <input type="text" id="toLetter" class="form-control">
+        </div>
+
+
+        <div class="form-group">
+            <label for="">Lampiran</label>
+            <input type="text" id="attach" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="">Perihal</label>
+            <input type="text" id="about" class="form-control">
+        </div>
+
+
+        <div class="form-group">
+            <label for="">Isi surat</label>
+            <!-- The toolbar will be rendered in this container. -->
+            <div id="toolbar-container"></div>
+
+            <!-- This container will become the editable. -->
+            <div id="editor" class="toolbar-container" style="background-color: white;color: black;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Alur</label>
+            <select id="input_alur" class="form-control select2" multiple>
+                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                <option value="bidang">Bidang</option>
+                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                <option value="dewan-pengurus">Dewan Pengurus</option>
+                <option value="pengurus-inti">Pengurus Inti</option>
+                <option value="administrasi-umum">Administrasi Umum</option>
+            </select>
+            <br><br>
+            <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
+        </div>
+        {{#if daftarAlur}}
+            <h4>Daftar Alur</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Nomor</th>
+                        <th>Jabatan</th>
+                        <!-- <th>Aksi</th> -->
+                    </thead>
+                    <tbody>
+                        {{#each i in daftarAlur}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+                                {{setJabatanFormat i}}
+                            </td>
+                            <td>
+                                <!-- <button class="btn btn-danger" id="btn-remove" milik={{i}}>
+                                    <i class="fa fa-trash"></i>
+                                </button> -->
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        {{/if}}
+
+        <div class="form-actions">
+            <button class="btn btn-primary" id="submit">Simpan Draft</button>
+            <button class="btn btn-success" id="btn-send">Ajukan</button>
+        </div>
+    </div>
+</template>
+
+<template name="detailKorespondensi">
+    <div class="container">
+        <body style="font-family: serif; background-color: #ccc; color: #000;">
+            <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
+                {{> letterKopTemplate}}
+                <div class="d-flex flex-row-reverse">
+                    <div class="p-2">Surabaya, {{formatHRDate letterData.createdAt }}</div>
+                </div>
+                <table style="font-family: serif;padding : 2px;margin-top: 5px;">
+                    <tr>
+                        <td>
+                            Nomor
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.numberOfLetter}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Lampiran
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.attachment}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Perihal
+                        </td>
+                        <td> : </td>
+                        <td>
+                            {{letterData.subject}}
+                        </td>
+                    </tr>
+
+                </table>
+                <br>
+                <table class="table-border" style="font-family: serif;padding : 2px">
+                    <tr>
+                        <td>
+                            Kepada Yth :
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 400px; font-weight: bold;">
+                            {{letterData.purpose}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Di Tempat
+                        </td>
+
+                    </tr>
+
+                    <br>
+
+                </table>
+
+                <table style="font-family: serif;padding : 2px; width: auto;">
+                    <tr>
+                        <td style="text-align: justify;">
+                            {{{letterData.desc}}}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </body>
+        <div class="mt-5">
+            {{#if isInRole 'chief,generalManager,praeses,admin,superadmin'}}
+            <button class="btn btn-primary" id="btn-approve" milik="{{letterData._id}}">Setujui</button>
+            <button class="btn btn-warning" id="btn-revisi">Revisi</button>
+
+            {{#if equals formSubmit 1}}
+            <div class="form">
+                <div class="form-group">
+                    <label for="">Catatan Revisi : </label>
+                    <textarea type="text" id="note" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" id="revisi-save">Simpan</button>
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+    {{ >timelineWorkProgram timelines=letterData.timeline }}
+</template>
+
+<template name="letterKopTemplate">
+    <!-- <table width="100%">
+        <tr>
+            <td>
+                <img src="/img/headersuratimavi.png" width="50%" alt="kop-surat">
+            </td>
+        </tr>
+    </table> -->
+
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column">
+            <span>GEREJA KATOLIK</span>
+            <span>KEUSKUPAN SURABAYA</span>
+            <span>Jl. PolisiIstimewa 17, Surabaya 60265- Indonesia</span>
+            <span>Telp. (031)5677796 / 5615592- Fax (031) 5684004</span>
+            <span>E-mail: sekrupsby@sby.dnet.net.id</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+            <img src="/assets/img/logo-ks.png" width="50%" alt="kop-surat">
+        </div>
+        <div class="d-flex flex-column" style="text-align: end;">
+            <span>CATHOLIC CHURCH</span>
+            <span>DIOCESE OF SURABAYA</span>
+            <span>17 Polisi Istimewa Str., Surabaya 60265 - Indonesia</span>
+            <span>Phone +62.31.5677796 / 5615592- Fax +62.31.5684004</span>
+            <span>E-mail: sekrupsby@sby.dnet.net.id</span>
+        </div>
+    </div>
+    <hr style="background-color : black; height: 3px;">
+</template>
+
+<template name="arsipKorespondensi">
+    <div class="arsip-container">
+        <h1 class="arsip-heading">Arsip Surat Korespondensi</h1>
+        <form class="upload-form">
+          <div class="upload-section">
+            {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+            <div class="form-actions">
+                <button class="btn btn-primary" id="btn-save">Simpan</button>
+            </div>
+          </div>
+        </form>
+    </div>
+    <br>
+    <div name="listArsipKorespondensi">
+        <label style="color: red;font-style: italic;">Catatan: Bila file PDF tidak terdapat review dalam jangka waktu lama , silahkan reload halaman ini</label>
+        {{#each arsipFile}}
+            <h2>{{name}}</h2>
+            <iframe id="previewDoc" style="width: 100%; height: 300px;"
+            src="https://docs.google.com/viewer?url={{link}}&embedded=true"></iframe>
+        {{/each}}
+    </div>
+    <style>
+        /* Stylesheet untuk tampilan arsipKorespondensi */
+        .arsip-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .arsip-heading {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        .form-actions {
+            margin-top: auto; /* Mendorong elemen ke bawah */
+            display: flex;
+            justify-content: flex-end; /* Mengatur tombol ke pojok kanan */
+        }
+
+        .btn-save {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+
+
+    </style>
+</template>  
+
+
+<template name="timelineWorkProgram">
+    <div class="box">
+      <ul id="first-list">
+        {{ #each timeline }}
+        <li>
+          <span></span>
+          <div class="title">{{ event }}</div>
+          <div class="name">{{ operatorName }}</div>
+          <div class="info">{{ formatHRDT timestamp }}</div>
+  
+          <div class="time">
+            <span>{{ formatD timestamp }}</span>
+            <span>{{ formatH timestamp }}</span>
+          </div>
+        </li>
+        {{ /each }}
+      </ul>
+    </div>
+  
+    <style>
+      .box {
+        background-color: darkgray;
+        /* margin:0 10%; */
+        overflow: hidden;
+        padding: 10px 0 40px 60px;
+        border-radius: 1%;
+      }
+  
+      .box ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        transition: all 0.5s linear;
+        top: 0;
+      }
+  
+      /* .box ul:last-of-type{top:80px} */
+  
+      .box ul:before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border: 1px dashed #000000;
+        position: absolute;
+        top: 0;
+        left: 30px
+      }
+  
+      .box ul li {
+        margin: 20px 60px 60px;
+        position: relative;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.3);
+        color: #000000;
+        border-radius: 10px;
+        line-height: 20px;
+        width: 50%
+      }
+  
+  
+      .box ul li>span {
+        content: "";
+        display: block;
+        width: 0;
+        height: 100%;
+        border: 1px solid #000000;
+        position: absolute;
+        top: 0;
+        left: -30px
+      }
+  
+      .box ul li>span:before,
+      .box ul li>span:after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #000000;
+        position: absolute;
+        left: -7.5px
+      }
+  
+      .box ul li>span:before {
+        top: -10px
+      }
+  
+      .box ul li>span:after {
+        top: 95%
+      }
+  
+      .box .title {
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 5px
+      }
+  
+      .box .info:first-letter {
+        text-transform: capitalize;
+        line-height: 1.7
+      }
+  
+      .box .name {
+        margin-top: 10px;
+        text-transform: capitalize;
+        font-style: italic;
+        margin-right: 20px
+      }
+  
+  
+      .box .time span {
+        position: absolute;
+        left: -100px;
+        color: #000000;
+        font-weight: bold;
+      }
+  
+      .box .time span:first-child {
+        top: -16px
+      }
+  
+      .box .time span:last-child {
+        top: 94%
+      }
+  
+      svg {
+        width: 20px;
+        height: 20px
+      }
+  
+      @keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-webkit-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-moz-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+  
+      @-o-keyframes arrow {
+  
+        0%,
+        100% {
+          top: 105%
+        }
+  
+        50% {
+          top: 106%
+        }
+      }
+    </style>
+</template>
+
+  <template name="inputMultipleFilesSurat">
+	<div class="form-group">
+	  <label for="">{{label}}</label>
+	  <div class="input-file-wrapper">
+		<input type="file" id="{{id}}" class="{{id}} mt-3 hide hidden d-none" name="filename"
+		  accept=".pdf, .doc, .docx" multiple>
+		<label class="btn btn-primary"
+		  for="{{ id }}">{{#if buttonLabel }}{{ buttonLabel}}{{else}}{{ label }}{{/if}}</label>
+	  </div>
+	  <div class="d-flex flex-row">
+		{{#each file in files}}
+            {{#if equals file.type 'image/png'}}
+                <div class="uploaded-image mr-2">
+                <img src="{{file.src}}">
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{else}}
+                <div class="uploaded-image mr-2">
+                <a download id="{{id}}-{{@index}}" href="{{file.src}}" target="_blank">
+                    <i class="fa fa-file"></i>
+                    <p class="file-name">{{file.file.name}}</p>
+                </a>
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{/if}}
+		{{/each}}
+	  </div>
+	</div>
+</template>

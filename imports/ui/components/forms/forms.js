@@ -2463,7 +2463,13 @@ Template.formLecturers.events({
                 });
             }
         });
-    }
+    },
+    // 'click .btn-close'(e,t) {
+    //     e.preventDefault();
+    //     const getValue = $(e.currentTarget).val();
+    
+    // }
+    
 });
   
 Template.passwordEdit.events({
