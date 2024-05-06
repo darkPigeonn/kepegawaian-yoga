@@ -711,7 +711,7 @@
                                     Bidang Studi
                                   </p>
                                   {{#if item.major}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                                  <p class="open-sans text-dark">{{item.major}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
@@ -735,7 +735,7 @@
                                     Judul Skripsi/Thesis
                                   </p>
                                   {{#if item.studyPublication}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.studyPublication}}</p>
+                                  <p class="open-sans text-dark">{{item.studyPublication}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
@@ -858,6 +858,108 @@
             </div>
           </div>
 
+          <!-- Riwayat Tahbisan -->
+          <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
+            <div class="card-header detail-header poppins-bold text-white d-flex justify-content-between align-items-center">
+              <label class="pt-1">Riwayat Tahbisan</label>
+            </div>
+            <div class="card-body detail-body">
+              <div class="row row-cols-1 row-cols-md-2">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-calendar"></i> 
+                          Tanggal Tahbisan Diakon
+                        </p>
+                        {{#if myData.dateDeaconOrdination}}
+                        <p class="open-sans text-dark">{{formatHRDate myData.dateDeaconOrdination}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                        {{/if}}
+                    </div>
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-building"></i>
+                        Tempat Tahbisan Diakon
+                      </p>
+                      {{#if myData.placeDeaconOrdination}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.placeDeaconOrdination}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                      {{/if}}
+                    </div>
+               
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-calendar"></i>
+                        Tanggal Tahbisan Imamat
+                      </p>
+                      {{#if myData.datePriesthoodOrdination}}
+                        <p class="open-sans text-dark">{{formatHRDate myData.datePriesthoodOrdination}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                      {{/if}}
+                    </div>
+             
+                    <div class="mb-3">
+                        <p class="form-label open-sans text-dark fw-bold">
+                          <i class="fa fa-light fa-building"></i>
+                          Tempat Tahbisan Imamat
+                        </p>
+                        {{#if myData.placePriesthoodOrdination}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.placePriesthoodOrdination}}</p>
+                        {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-calendar"></i>
+                        Tanggal Kaul Kekal
+                      </p>
+                      {{#if myData.datePerpetualVows}}
+                        <p class="open-sans text-dark">{{formatHRDate myData.datePerpetualVows}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                      {{/if}}
+                    </div>
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-building"></i>
+                        Tempat Kaul Kekal
+                      </p>
+                      {{#if myData.placePerpetualVows}}
+                        <p class="open-sans text-dark">{{capitalizeWord myData.placePerpetualVows}}</p>
+                      {{else}}
+                        <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                      {{/if}}
+                    </div>
+                    <div class="mb-3">
+                      <p class="form-label open-sans text-dark fw-bold">
+                        <i class="fa fa-light fa-building"></i>
+                        Afiliasi Keuskupan/Tarekat
+                      </p>
+                      {{#if myData.congregationalAffiliation}}
+                      <p class="open-sans text-dark">{{myData.congregationalAffiliation}}</p>
+                      {{else}}
+                      <p class="open-sans text-dark"><i>Tidak ada data</i></p>
+                      {{/if}}
+                  </div>
+                    </div>
+                </div>
+           
+              </div>
+          
+            
+          </div>
+
+
+
+       
 
           <!-- Certification -->
           <div class="card detail-card rounded-3 bg-light shadow text-dark mt-4">
@@ -900,7 +1002,7 @@
                                     Bidang Studi
                                   </p>
                                   {{#if item.major}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.major}}</p>
+                                  <p class="open-sans text-dark">{{item.major}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}
@@ -1236,8 +1338,8 @@
                                   <p class="form-label open-sans text-dark fw-bold">
                                     Jenis Bimbingan
                                   </p>
-                                  {{#if item.pembimbingCategory}}
-                                  <p class="open-sans text-dark">{{capitalizeWord item.pembimbingCategory}}</p>
+                                  {{#if item.category}}
+                                  <p class="open-sans text-dark">{{capitalizeWord item.category}}</p>
                                   {{else}}
                                   <p class="open-sans text-dark"><i>Tidak ada data</i></p>
                                   {{/if}}

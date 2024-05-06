@@ -355,13 +355,13 @@ Template.formLecturers.events({
     "click .add-publication" (e,t){
         e.preventDefault()
         const listPublicationTypes = t.listPublicationTypes.get()
-        const category = $("#inputJenisKarya").val()
-        const title = $("#inputJudul").val()
-        const isbn = $("#inputIsbn").val()
-        const publisher =$("#inputPenerbit").val()
-        const city = $("#inputKotaPenerbit").val()
-        const year = $("#inputTahunTerbit").val()
-        const link = $("#inputURL").val()
+        const category = $("#inputJenisKarya").val();
+        const title = $("#inputJudulPublication").val();
+        const isbn = $("#inputIsbn").val();
+        const publisher =$("#inputPenerbit").val();
+        const city = $("#inputKotaPenerbit").val();
+        const year = $("#inputTahunTerbit").val();
+        const link = $("#inputURL").val();
         const isValidYear = /^[0-9]{4}$/.test(year); 
 
         if (!isValidYear) {
@@ -385,7 +385,7 @@ Template.formLecturers.events({
         const index = $(e.currentTarget).data('milik');
         const publication = t.listPublicationTypes.get()[index];
         $("#editInputJenisKarya").val(publication.category)
-        $("#editInputJudul").val(publication.title)
+        $("#editInputJudulPublication").val(publication.title)
         $("#editInputIsbn").val(publication.isbn)
         $("#editInputPenerbit").val(publication.publisher)
         $("#editInputKotaPenerbit").val(publication.city)
@@ -401,13 +401,13 @@ Template.formLecturers.events({
         const editedPublicationIndex = Session.get('editedPublicationIndex')
         const listPublicationTypes = t.listPublicationTypes.get();
 
-        const category = $("#editInputJenisKarya").val()
-        const title = $("#editInputJudul").val()
-        const isbn = $("#editInputIsbn").val()
-        const publisher =$("#editInputPenerbit").val()
-        const city = $("#editInputKotaPenerbit").val()
-        const year = $("#editInputTahunTerbit").val()
-        const link = $("#editInputURL").val()
+        const category = $("#editInputJenisKarya").val();
+        const title = $("#editInputJudulPublication").val();
+        const isbn = $("#editInputIsbn").val();
+        const publisher =$("#editInputPenerbit").val();
+        const city = $("#editInputKotaPenerbit").val();
+        const year = $("#editInputTahunTerbit").val();
+        const link = $("#editInputURL").val();
 
         listPublicationTypes[editedPublicationIndex] ={
             category,
@@ -465,12 +465,14 @@ Template.formLecturers.events({
         const category = $("#inputCategoryActivity").val()
         const title = $("#inputTitleActivity").val()
         const cStudy = $("#inputCategoryStudy").val()
+        const gegal = $('#inputSemesterPembinaan').val()
         const semester =$("#inputSemester").val()
      
         const data ={
             category,
             title,
             cStudy,
+            gegal,
             semester
         }
         listStudentGuidance.push(data)
@@ -484,6 +486,7 @@ Template.formLecturers.events({
         $("#editInputTitleActivity").val(studentGuidance.title)
         $("#editInputCategoryStudy").val(studentGuidance.cStudy)
         $("#editInputSemester").val(studentGuidance.semester)
+        $('#editInputSemesterPembinaan').val(studentGuidance.gegal)
         $('#editStudentGuidanceModal').modal('show');
         Session.set('editedStudentGuidanceIndex',index);
 
@@ -496,12 +499,14 @@ Template.formLecturers.events({
         const category = $("#editInputCategoryActivity").val()
         const title    = $("#editInputTitleActivity").val()
         const cStudy   = $("#editInputCategoryStudy").val()
+        const gegal = $('#editInputSemesterPembinaan').val()
         const semester = $("#editInputSemester").val()
 
         listStudentGuidance[editedStudentGuidanceIndex] = {
             category,
             title,
             cStudy,
+            gegal,
             semester
         }
         t.listStudentGuidance.set(listStudentGuidance)
@@ -916,12 +921,7 @@ Template.formLecturers.events({
         const coachingLevel = $("#inputCoachingLevel").val()
         const place = $("#inputCoachingPlace").val()
         const periode = $("#inputPeriode").val()
-        const isValidPeriode = /^[0-9-]+$/.test(periode);
 
-        if (!isValidPeriode) {
-            failAlert("Input Periode hanya boleh berisi angka dan simbol -.");
-            return;
-        }
         const data = {
             coachingLevel,
             place,
@@ -1539,6 +1539,7 @@ Template.formLecturers.events({
         const listBimbingan = t.listBimbingan.get()
         const name = $("#inputName").val()
         const title = $("#inputJudul").val()
+        const category = $("#inputJenisBimbingan").val()
         const pembimbingCategory = $("#input-jenis-pembimbing").val()
         const bidangKeilmuan = $("#inputBidangKeilmuanPembimbing").val()
         const programStudi = $("#inputProgramStudi").val()
@@ -1553,6 +1554,7 @@ Template.formLecturers.events({
         const data = {
             name,
             title,
+            category,
             pembimbingCategory,
             programStudi,
             bidangKeilmuan,
@@ -1570,6 +1572,7 @@ Template.formLecturers.events({
         
         $("#editInputName").val(bimbingan.name);
         $("#editInputJudul").val(bimbingan.title);
+        $("#editInputJenisBimbingan").val(bimbingan.category);
         $("#editInput-jenis-pembimbing").val(bimbingan.pembimbingCategory);
         $("#editInputBidangKeilmuanPembimbing").val(bimbingan.bidangKeilmuan);
         $("#editInputProgramStudi").val(bimbingan.programStudi);
@@ -1586,6 +1589,7 @@ Template.formLecturers.events({
         const listBimbingan = t.listBimbingan.get();
         const name = $("#editInputName").val();
         const title = $("#editInputJudul").val();
+        const category = $("#editInputJenisBimbingan").val();
         const pembimbingCategory = $("#editInput-jenis-pembimbing").val();
         const bidangKeilmuan = $("#editInputBidangKeilmuanPembimbing").val();
         const programStudi = $("#editInputProgramStudi").val();
@@ -1602,6 +1606,7 @@ Template.formLecturers.events({
         const data = {
             name,
             title,
+            category,
             pembimbingCategory,
             programStudi,
             bidangKeilmuan,
@@ -1627,12 +1632,7 @@ Template.formLecturers.events({
         // const dateStart = $("#inputCertificationStart").val()
         const dateEnd = $("#inputCertificationEnd").val()
         const file = $("#inputFileSk").prop("files")[0]
-        const isValidRegistrationNumber = /^\d+$/.test(registrationNumber); // Hanya angka
-
-        if (!isValidRegistrationNumber) {
-            failAlert("Nomor Registrasi hanya boleh berisi angka.");
-            return;
-        }
+  
 
         
         const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
@@ -2004,12 +2004,7 @@ Template.formLecturers.events({
         const place = $("#inputPlace").val()
         const period = $("#inputPeriod").val()
         const notes = $("#inputNotes").val()
-        const isValidPeriode = /^[0-9-]+$/.test(period); // Hanya angka dan simbol -
 
-        if (!isValidPeriode) {
-            alert("Input Periode hanya boleh berisi angka dan simbol -.");
-            return;
-        }
   
         const data = {
             name,
@@ -2045,12 +2040,7 @@ Template.formLecturers.events({
         const place = $("#editInputPlace").val();
         const period = $("#editInputPeriod").val();
         const notes = $("#editInputNotes").val();
-    
-        const isValidPeriode = /^[0-9-]+$/.test(period); // Hanya angka dan simbol -
-        if (!isValidPeriode) {
-            alert("Input Periode hanya boleh berisi angka dan simbol -.");
-            return;
-        }
+ 
     
         const data = {
             name,
@@ -2266,7 +2256,16 @@ Template.formLecturers.events({
                 formData.position = $("#inputPosition").val();
                 formData.startDatePosition = $("#inputStartdatePosition").val();
                 formData.academicRank = $("#inputAcademicRank").val();
-                formData.startDateAcademicRank = $("#inputdateStartPosition").val();               
+                formData.startDateAcademicRank = $("#inputdateStartPosition").val(); 
+
+                formData.dateDeaconOrdination  = $("#inputDateDeaconOrdination").val();
+                formData.placeDeaconOrdination  = $("#inputPlaceDeaconOrdination").val();
+                formData.datePriesthoodOrdination  = $("#inputDatePriesthoodOrdination").val();
+                formData.placePriesthoodOrdination  = $("#inputPlacePriesthoodOrdination").val();
+                formData.datePerpetualVows  = $("#inputDatePerpetualVows").val();
+                formData.placePerpetualVows  = $("#inputPlacePerpetualVows").val();
+                formData.congregationalAffiliation  = $("#inputCongregationalAffiliation").val();
+                    
                 t.formPage.set(getValue);
                 t.formData.set(formData)
             } else {
@@ -2355,6 +2354,7 @@ Template.formLecturers.events({
                 formData.listStudentGuidance = listStudentGuidance
                 formData.listTunjangan =listTunjangan
                 formData.listEmail = listEmail
+           
                
 
                 console.log(formData)
@@ -2405,7 +2405,7 @@ Template.formLecturers.events({
         confirmationAlertAsync().then(async function (result) {
             if (result.value) {
                 if (getValue == 1){
-                    if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
+                    // if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputEmail").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
                         formData.imageFile = $('#inputImageProfile')[0].files[0];
                         formData.username = $("#inputUsername").val();
                         formData.fullName = $("#inputFullname").val();
@@ -2429,6 +2429,13 @@ Template.formLecturers.events({
                         formData.startDatePosition = $("#inputStartdatePosition").val();
                         formData.academicRank = $("#inputAcademicRank").val();
                         formData.startDateAcademicRank = $("#inputdateStartPosition").val();
+                        formData.dateDeaconOrdination  = $("#inputDateDeaconOrdination").val();
+                        formData.placeDeaconOrdination  = $("#inputPlaceDeaconOrdination").val();
+                        formData.datePriesthoodOrdination  = $("#inputDatePriesthoodOrdination").val();
+                        formData.placePriesthoodOrdination  = $("#inputPlacePriesthoodOrdination").val();
+                        formData.datePerpetualVows  = $("#inputDatePerpetualVows").val();
+                        formData.placePerpetualVows  = $("#inputPlacePerpetualVows").val();
+                        formData.congregationalAffiliation  = $("#inputCongregationalAffiliation").val();
         
                        
                         if (formData.imageFile){
@@ -2440,7 +2447,7 @@ Template.formLecturers.events({
                             formData.imageLink = fileLink
                             delete formData.imageFile
                         }
-                    } 
+                    // } 
                     else {
                         failAlert("Pastikan Username, Nama, Tempat Lahir, Tanggal Lahir,  Jenis Kelamin, NIK, Agama sudah diisi !");
                     }
