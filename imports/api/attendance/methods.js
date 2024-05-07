@@ -580,8 +580,8 @@ Meteor.methods({
     },
 
     async "getEmployees"(){
-        const data = Employee.find({status: 10, statusDelete: 0}).fetch();
-        // console.log(data);
+        const data = Employee.find().fetch();
+
         return data;
     },
 
@@ -596,4 +596,23 @@ Meteor.methods({
         const thisUser = Meteor.users.findOne({_id: this.userId});
         return thisUser.partners;
     },
+    async getPartnersYoga(){
+        const data = Employee.find().fetch();
+        // Mengubah struktur data
+        let uniqueUnits = new Set();
+        let newData = data.reduce((result, item) => {
+            let unitName = item.unit.perwakilan;
+            if (!uniqueUnits.has(unitName)) {
+                uniqueUnits.add(unitName);
+                result.push({ unit: unitName });
+            }
+            return result;
+        }, []);
+        return newData
+    },
+    async "getEmployeesYayasan"(){
+        const data = Employee.find({"unit.perwakilan" : 'Kantor Yayasan'}).fetch();
+        return data;
+    },
+
 });

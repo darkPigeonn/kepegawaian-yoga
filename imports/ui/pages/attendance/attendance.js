@@ -116,7 +116,7 @@ Template.staffsAttendancePage.events({
           // console.log(result);
           t.dataPresensi.set(result);
           t.viewMode.set(1);
-          
+
         } else {
           console.log(error);
         }
@@ -150,9 +150,9 @@ Template.staffsAttendancePage.events({
         }
       );
     }
-   
+
   }
-  
+
 });
 
 Template.rekapAttendancePage.onCreated(function () {
@@ -171,7 +171,7 @@ Template.rekapAttendancePage.onCreated(function () {
     }
   });
   startSelect2();
-}); 
+});
 Template.rekapAttendancePage.helpers({
   dataRekap() {
     return Template.instance().dataRekap.get();
@@ -195,7 +195,7 @@ Template.rekapAttendancePage.events({
     if (totalLibur == "") {
       alert("Isi form dahulu !");
       return false;
-    } 
+    }
     else {
         Meteor.call("staffsAttendance.rekap", totalLibur, template.startDate.get(), template.endDate.get(),function (error, result) {
             if (result) {
@@ -373,7 +373,7 @@ Template.cetakRekap.onCreated(function () {
         console.log(error);
       }
   });
-}); 
+});
 Template.cetakRekap.helpers({
     dataRekap: function () {
         return Template.instance().dataRekap.get();
@@ -433,10 +433,10 @@ Template.cetakRekapIndividu.onCreated(function () {
   self.startDate = new ReactiveVar();
   self.endDate = new ReactiveVar();
   self.thisUserPartners = new ReactiveVar();
- 
+
   const code = FlowRouter.current().params._userId;
   const month = FlowRouter.current().params._month;
- 
+
 
   Meteor.call("staffsAttendance.getRekapByUser",code,month,function (error, result) {
     // console.log(result)
@@ -448,7 +448,7 @@ Template.cetakRekapIndividu.onCreated(function () {
       history.back();
     }
   });
-}); 
+});
 Template.cetakRekapIndividu.helpers({
   dataRekap: function () {
     return Template.instance().dataRekap.get();
@@ -524,8 +524,9 @@ Template.configurasiList.onCreated(function () {
       console.log(error);
     }
   });
-  Meteor.call("getEmployees", function (error, result) {
+  Meteor.call("getEmployeesYayasan", function (error, result) {
     if (result) {
+      console.log(result);
       self.employees.set(result);
       // self.employeesPartner.set(result);
     } else {
@@ -540,7 +541,7 @@ Template.configurasiList.onCreated(function () {
       console.log(error);
     }
   });
-  Meteor.call("getPartnersUser", function (error, result) {
+  Meteor.call("getPartnersYoga", function (error, result) {
     if (result) {
       self.thisUserPartners.set(result);
     } else {
@@ -710,7 +711,7 @@ Template.configurasiList.events({
       const code = shift.split('-')
 
       // console.log(code)
-    
+
       const listSchedule = t.scheduleList.get();
       const thisSchedule = _.find(listSchedule, function (x) {
         return x._id == code[0]
@@ -758,8 +759,8 @@ Template.configurasiList.events({
       const code = shift.split('-')
       const id = $(e.target).attr("milik");
       // console.log(id);
-      
-    
+
+
       const listSchedule = t.scheduleList.get();
       const thisSchedule = _.find(listSchedule, function (x) {
         return x._id == id
@@ -809,7 +810,7 @@ Template.configurasiList.events({
       } else {
         console.log(error);
       }
-    });  
+    });
   },
   "click #btn-save-edit-shift"(e, t){
     e.preventDefault();
@@ -878,7 +879,7 @@ Template.configurasiList.events({
             setTimeout(function() {
               location.reload();
             }, 200);
-            
+
           } else {
             console.log(error);
             failAlert("Hapus Data Gagal!");
@@ -907,7 +908,7 @@ Template.configurasiList.events({
             setTimeout(function() {
               location.reload();
             }, 200);
-            
+
           } else {
             console.log(error);
             failAlert("Hapus Data Gagal!");
@@ -915,7 +916,7 @@ Template.configurasiList.events({
         })
       }
     });
-    
+
   },
   "click #inputEmployeesPairings" (e, t){
     const statusUnit = "Disabled";
@@ -955,7 +956,7 @@ Template.configurasiDetails.helpers({
 Template.detailWfh.onCreated(function () {
   const self = this;
   const id = Router.current().params._id;
-  
+
   self.detailWfh = new ReactiveVar()
 
   Meteor.call("staffsAttendance.getById", id, function (error, result) {
@@ -983,7 +984,7 @@ startSelect2 = function () {
 // Template.detailAttendance.onCreated(function () {
 //   const self = this;
 //   const idUser = FlowRouter.current().params._id;
-  
+
 //   self.detailAttendance = new ReactiveVar()
 
 //   Meteor.call(
