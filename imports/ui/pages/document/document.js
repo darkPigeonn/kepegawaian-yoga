@@ -861,31 +861,7 @@ Template.editKorespondensi.events({
       }
     });
   },
-  "click $btn-add-signer"(e,t){
-    e.preventDefault()
-    const data = t.listKorespondensiSigner.get();
-    // const sameWithMaker = $("#sameWithMaker").val();
-    const nameSignotory = $("#nameSignotory").val();
-    const positionSignotory = $("#positionSignotory").val();
-
-    t.listKorespondensiSigner.set(
-      // sameWithMaker,
-      nameSignotory,
-      positionSignotory
-    );
-
-    console.log("Yang Bertanda tangan: ",t.listKorespondensiSigner.get);
-  },
-  "click #btn-remove-signer"(e,t){
-    e.preventDefault()
-    const index = $(e.targer).attr("milik");
-    let signer = t.listKorespondensiSigner.get()
-    if(index != undefined) {
-      signer.splice(index, 1);
-    }
-    t.listKorespondensiSigner.set(signer);
-
-  },
+  
   "click .btn-remove"(e, t) {
     e.preventDefault()
     console.log(this);
@@ -907,7 +883,6 @@ Template.editKorespondensi.events({
     const desc = t.editorDescription.get().getData();
     console.log(desc);
     let dataAlur = t.daftarAlur.get();
-    let listKorespondensiSigner = t.listKorespondensiSigner.get();
     const id = FlowRouter.getParam("_id");
     if(dataAlur.length == 0){
       dataAlur = null
@@ -920,8 +895,7 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur,
-      listKorespondensiSigner
+      dataAlur
     };
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
@@ -944,7 +918,6 @@ Template.editKorespondensi.events({
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
     let dataAlur = t.daftarAlur.get();
-    let dataSigner = t.listKorespondensiSigner.get();
     console.log(dataAlur);
     const id = FlowRouter.getParam("_id");
     //categori
@@ -955,8 +928,7 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur,
-      dataSigner
+      dataAlur
     };
 
     Meteor.call("korespondensi.editKirim",id, data, function (error, result) {

@@ -139,7 +139,7 @@ Template.departement_edit.events({
 
         const name = $("#input_name").val();
         const description = $("#input_description").val();
-        const leader = $("#input_headDepartement").val();
+        const leader = $("#input_headDepartment").val();
         const id = FlowRouter.getParam("_id");  
 
         if(!name || !description) {

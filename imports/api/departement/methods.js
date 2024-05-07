@@ -66,7 +66,7 @@ Meteor.methods({
       timestamp: new Date()
     }
 
-    const headDepartement = {
+    const headDepartment = {
       id: leader,
       name: leaderDepartement.full_name
     }
@@ -75,7 +75,7 @@ Meteor.methods({
     const updateDepartementEmployee = Employee.update({department_unit: getDepartementName.name}, {$set: {department_unit: name}}, {multi: true});
     const updateDepartement = Departement.update(
       { _id: id },
-      { $set: {name: name, description: description, headDepartement: headDepartement}, $push: {timeline: timeline}}
+      { $set: {name: name, description: description, headDepartment: headDepartment}, $push: {timeline: timeline}}
     );
     return updateDepartement;
   },

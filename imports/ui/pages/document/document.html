@@ -1332,10 +1332,20 @@
                     <select id="category" class="form-control ">
                         <option>Pilih Kategori</option>
                         {{#each categoryLetters}}
-                        <option value="{{_id}}">{{ name }}</option>
+                        <option value="{{_id}}" milik="{{slug}}">{{ name }}</option>
                         {{/each}}
                     </select>
                 </div>
+                {{#if equals isSKLetter true}}
+                    <div class="form-group">
+                        <label>Tanggal Berlaku</label>
+                        <input type="date" class="form-control" id="date-start" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Berakhir</label>
+                        <input type="date" class="form-control" id="date-end" />
+                    </div>
+                {{/if}}
                 <div class="form-group">
                     <label for="">Catatan Surat</label>
                     <input type="text" id="noteOfLetter" class="form-control">
@@ -1425,7 +1435,7 @@
             <div class="page">
                 <div class="form-group">
                     <label for="">Kategori Surat</label>
-                    <select id="category" class="form-control ">
+                    <select id="category" class="form-control" disabled>
                         <option>Pilih Kategori</option>
                         {{#each categoryLetters}}
                             {{#if equals dataKorespondensi.category _id}}
@@ -1436,6 +1446,16 @@
                         {{/each}}
                     </select>
                 </div>
+                {{#if equals isSKLetter true}}
+                    <div class="form-group">
+                        <label>Tanggal Berlaku</label>
+                        <input type="date" class="form-control" id="date-start" value="{{dateToHTML dataKorespondensi.tanggalBerlaku}}" disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Berakhir</label>
+                        <input type="date" class="form-control" id="date-end" value="{{dateToHTML dataKorespondensi.tanggalBerakhir}}" disabled/>
+                    </div>
+                {{/if}}
                 <!-- <div class="form-group">
                     <label for="">Nama Surat</label>
                     <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}" disabled>
@@ -1531,13 +1551,23 @@
                         <option>Pilih Kategori</option>
                         {{#each categoryLetters}}
                             {{#if equals dataKorespondensi.category _id}}
-                                <option value="{{_id}}" selected>{{ name }}</option>
+                                <option value="{{_id}}" milik="{{slug}}" selected>{{ name }}</option>
                             {{else}}
-                                <option value="{{_id}}">{{ name }}</option>
+                                <option value="{{_id}}" milik="{{slug}}">{{ name }}</option>
                             {{/if}}
                         {{/each}}
                     </select>
                 </div>
+                {{#if equals isSKLetter true}}
+                    <div class="form-group">
+                        <label>Tanggal Berlaku</label>
+                        <input type="date" class="form-control" id="date-start" value="{{dateToHTML dataKorespondensi.tanggalBerlaku}}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Berakhir</label>
+                        <input type="date" class="form-control" id="date-end" value="{{dateToHTML dataKorespondensi.tanggalBerakhir}}"/>
+                    </div>
+                {{/if}}
                 <!-- <div class="form-group">
                     <label for="">Nama Surat</label>
                     <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}">
