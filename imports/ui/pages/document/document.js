@@ -79,6 +79,9 @@ Template.list_document.helpers({
   dataDocumentHistoryByRole() {
     return Template.instance().dataDocumentHistoryByRole.get();
   },
+  listKorespondensiSigner(){
+    return Template.instance().listKorespondensi
+  }
 });
 
 Template.detailDocument.onCreated(function () {
