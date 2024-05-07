@@ -157,9 +157,11 @@ Template.create_document.helpers({
   daftarAlur() {
     return Template.instance().daftarAlur.get();
   },
+
 });
 
 Template.create_document.events({
+
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
     const dataRow = t.daftarAlur.get();
@@ -551,7 +553,6 @@ Template.listKorespondensi.onCreated(function () {
   self.dataKorespondensi = new ReactiveVar();
   self.dataKorespondensiPembuat = new ReactiveVar();
   self.dataHistoryReviewer = new ReactiveVar();
-  self.listKorespondensiSigner = new ReactiveVar();
 
   const userId = Meteor.userId();
   if (userId) {
@@ -614,9 +615,6 @@ Template.listKorespondensi.helpers({
   },
   dataHistoryReviewer() {
     return Template.instance().dataHistoryReviewer.get();
-  },
-  listKorespondensiSigner(){
-    return Template.instance().listKorespondensiSigner.get();
   }
 });
 
@@ -774,6 +772,7 @@ Template.editKorespondensi.onCreated(function (){
   self.categoryLetters = new ReactiveVar();
   const jenis = "kategori-surat"
 
+
   startSelect2();
   if (userId) {
     Meteor.call("employee.getDataLogin", userId, function (error, result) {
@@ -785,22 +784,29 @@ Template.editKorespondensi.onCreated(function (){
       }
     });
   }
+  
 
   Meteor.call("korespondensi.getById", id, function (error, result) {
+
     if (result) {
-      self.dataKorespondensi.set(result)
-      console.log(result.alur.length);
-      let dataAlur = [];
-      for (const iterator of result.alur) {
-        dataAlur.push(iterator);
-      }
-      self.daftarAlur.set(dataAlur)
-      self.optionsDescription.content = result.desc;
-      initEditor(template, self.optionsDescription);
+        self.dataKorespondensi.set(result)
+        console.log("Alur",result.alur.length);
+        let dataAlur = [];
+        
+        for (const iterator of result.alur) {
+            dataAlur.push(iterator);
+        }
+        
+        self.daftarAlur.set(dataAlur);
+        self.optionsDescription.content = result.desc;
+        initEditor(template, self.optionsDescription);
     } else {
-      console.log(error);
-    }
-  });
+        console.log(error);
+  }
+  
+  
+});
+
   Meteor.call(
     "config.getConfig",
     jenis,
@@ -840,6 +846,20 @@ Template.editKorespondensi.helpers({
 })
 
 Template.editKorespondensi.events({
+  "click #btn-add-signer"(e,t){
+    e.preventDefault()
+    const listKorespondensiSigner = t.listKorespondensiSigner.get()
+    const nameSignotory = $("#nameSignotory").val()
+    const positionSignotory = $("#positionSignotory").val()
+
+    const data = {
+      nameSignotory,
+      positionSignotory
+    }
+    listKorespondensiSigner.push(data)
+    t.listKorespondensiSigner.set(listKorespondensiSigner)
+
+  },
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
     const dataRow = t.daftarAlur.get();
@@ -886,10 +906,13 @@ Template.editKorespondensi.events({
     const desc = t.editorDescription.get().getData();
     console.log(desc);
     let dataAlur = t.daftarAlur.get();
+    let listKorespondensiSigner = t.listKorespondensiSigner.get();
+    console.log("list korespondensi signer: ",listKorespondensiSigner);
     const id = FlowRouter.getParam("_id");
     if(dataAlur.length == 0){
       dataAlur = null
     }
+
     //categori
     const data = {
       category,
@@ -898,7 +921,8 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur
+      dataAlur,
+      listKorespondensiSigner
     };
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
@@ -921,6 +945,7 @@ Template.editKorespondensi.events({
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
     let dataAlur = t.daftarAlur.get();
+    let listKorespondensiSigner = t.listKorespondensiSigner.get();
     console.log(dataAlur);
     const id = FlowRouter.getParam("_id");
     //categori
@@ -931,7 +956,8 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur
+      dataAlur,
+      listKorespondensiSigner
     };
 
     Meteor.call("korespondensi.editKirim",id, data, function (error, result) {

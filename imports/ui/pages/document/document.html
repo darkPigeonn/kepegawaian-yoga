@@ -1645,57 +1645,57 @@
                             </table>
                         </div>
                     {{/if}}
+
+                    <h4>Yang Bertandatangan</h4>
+                    <button class="btn btn-primary" id="btn-add-signer">Tambah</button>
+                    <div class="form-group">
+                        <input type="checkbox" id="sameWithMaker" name="sameWithMaker">
+                        <label for="sameWithMaker">Sama dengan pembuat Surat</label><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameSignotory">Nama</label>
+                        <input type="text" id="nameSignotory" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="positionSignotory">Posisi</label>
+                        <input type="text" id="positionSignotory" class="form-control">
+                    </div>
+    
+                    {{#if listKorespondensiSigner}}
+                    <h4>Yang Bertandatangan</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Posisi</th>
+                                <th>Aksi</th>
+                            </thead>
+                            <tbody>
+                                {{#each i in listKorespondensiSigner}}
+                                <tr>
+                                    <td>
+                                        {{setTableNumber @index}}
+                                    </td>
+                                    <td>
+                                        {{i.nameSignotory}}
+                                    </td>
+                                    <td>
+                                        {{i.positionSignotory}}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-remove-signer" posisi={{@index}}>
+                                            <i class="fa fa-trash" posisi={{@index}}></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{/if}}
                 {{/if}}
 
-                
-                <h4>Yang Bertandatangan</h4>
-                <button class="btn btn-primary" id="btn-add-signer">Tambah</button>
-                <div class="form-group">
-                    <input type="checkbox" id="sameWithMaker" name="sameWithMaker" value="{{ dataKorespondensi.name }}">
-                    <label for="sameWithMaker">Sama dengan pembuat Surat</label><br>
-                </div>
-                <div class="form-group">
-                    <label for="nameSignotory">Nama</label>
-                    <input type="text" id="nameSignotory" class="form-control" value="{{ dataKorespondensi.nameSignotory }}">
-                </div>
-                <div class="form-group">
-                    <label for="positionSignotory">Posisi</label>
-                    <input type="text" id="positionSignotory" class="form-control" value="{{ dataKorespondensi.positionSignotory }}">
-                </div>
-
-                {{#if listKorespondensiSigner}}
-                <h4>Yang Bertandatangan</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Posisi</th>
-                            <th>Aksi</th>
-                        </thead>
-                        <tbody>
-                            {{#each i in listKorespondensiSigner}}
-                            <tr>
-                                <td>
-                                    {{setTableNumber @index}}
-                                </td>
-                                <td>
-                                    {{i.nameSignotory}}
-                                </td>
-                                <td>
-                                    {{i.positionSignotory}}
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-remove-signer" posisi={{@index}}>
-                                        <i class="fa fa-trash" posisi={{@index}}></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            {{/if}}
 
 
 
