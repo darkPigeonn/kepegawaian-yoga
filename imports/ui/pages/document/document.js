@@ -548,6 +548,7 @@ Template.listKorespondensi.onCreated(function () {
   self.dataKorespondensi = new ReactiveVar();
   self.dataKorespondensiPembuat = new ReactiveVar();
   self.dataHistoryReviewer = new ReactiveVar();
+  self.listKorespondensiSigner = new ReactiveVar();
 
   const userId = Meteor.userId();
   if (userId) {
@@ -610,6 +611,9 @@ Template.listKorespondensi.helpers({
   },
   dataHistoryReviewer() {
     return Template.instance().dataHistoryReviewer.get();
+  },
+  listKorespondensiSigner(){
+    return Template.instance().listKorespondensiSigner.get();
   }
 });
 
@@ -761,6 +765,7 @@ Template.editKorespondensi.onCreated(function (){
   self.dataKorespondensi = new ReactiveVar();
   self.daftarAlur = new ReactiveVar([]);
   self.jabatanLogin = new ReactiveVar();
+  self.listKorespondensiSigner = new ReactiveVar([]);
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
   self.categoryLetters = new ReactiveVar();
@@ -825,6 +830,9 @@ Template.editKorespondensi.helpers({
   },
   categoryLetters() {
     return Template.instance().categoryLetters.get();
+  },
+  listKorespondensiSigner(){
+    return Template.instance().listKorespondensiSigner.get();
   }
 })
 
@@ -853,6 +861,31 @@ Template.editKorespondensi.events({
       }
     });
   },
+  "click $btn-add-signer"(e,t){
+    e.preventDefault()
+    const data = t.listKorespondensiSigner.get();
+    // const sameWithMaker = $("#sameWithMaker").val();
+    const nameSignotory = $("#nameSignotory").val();
+    const positionSignotory = $("#positionSignotory").val();
+
+    t.listKorespondensiSigner.set(
+      // sameWithMaker,
+      nameSignotory,
+      positionSignotory
+    );
+
+    console.log("Yang Bertanda tangan: ",t.listKorespondensiSigner.get);
+  },
+  "click #btn-remove-signer"(e,t){
+    e.preventDefault()
+    const index = $(e.targer).attr("milik");
+    let signer = t.listKorespondensiSigner.get()
+    if(index != undefined) {
+      signer.splice(index, 1);
+    }
+    t.listKorespondensiSigner.set(signer);
+
+  },
   "click .btn-remove"(e, t) {
     e.preventDefault()
     console.log(this);
@@ -874,6 +907,7 @@ Template.editKorespondensi.events({
     const desc = t.editorDescription.get().getData();
     console.log(desc);
     let dataAlur = t.daftarAlur.get();
+    let listKorespondensiSigner = t.listKorespondensiSigner.get();
     const id = FlowRouter.getParam("_id");
     if(dataAlur.length == 0){
       dataAlur = null
@@ -886,7 +920,8 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur
+      dataAlur,
+      listKorespondensiSigner
     };
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
@@ -909,6 +944,7 @@ Template.editKorespondensi.events({
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
     let dataAlur = t.daftarAlur.get();
+    let dataSigner = t.listKorespondensiSigner.get();
     console.log(dataAlur);
     const id = FlowRouter.getParam("_id");
     //categori
@@ -919,7 +955,8 @@ Template.editKorespondensi.events({
       attachment,
       subject,
       desc,
-      dataAlur
+      dataAlur,
+      dataSigner
     };
 
     Meteor.call("korespondensi.editKirim",id, data, function (error, result) {
