@@ -18,11 +18,9 @@ Meteor.methods({
     dataSend.password = partnerCode + "." + dataSend.password;
     let postURL =
       process.env.USE_LOCAL === "true"
-        ? "http://localhost:3005/imavi/"
-        : "https://api.imavi.org/imavi/";
-    // console.log(postURL);
-    // console.log(Meteor.settings.APP_IDMOBILE);
-    // console.log(Meteor.settings.APP_IDMOBILE);
+        ? "http://localhost:3005/yayoga/"
+        : "https://api.imavi.org/yayoga/";
+
     try {
       response = HTTP.call("POST", `${postURL}users/register-v2`, {
         headers: {

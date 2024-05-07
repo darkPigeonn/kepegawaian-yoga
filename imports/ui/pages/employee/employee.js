@@ -466,8 +466,9 @@ Template.employee_detail.events({
   },
   "click #btn-tambah-akun"(e, t) {
     e.preventDefault();
-    const fullName = t.employee.get().full_name;
-    const email = t.employee.get().email_address;
+    console.log(t.employee.get());
+    const fullName = t.employee.get().fullName    ;
+    const email = t.employee.get().email;
     const dob = moment(t.employee.get().dob).format("DD-MM-YYYY");
     const splitDob = dob.split("-");
     const jabatan = t.employee.get().job_position;
@@ -476,10 +477,8 @@ Template.employee_detail.events({
     const password = tempPassword;
     const partner = t.employee.get().partnerCode;
     const profileId = FlowRouter.getParam("_id");
-    let roles = [];
-    if (partner == "imavi") {
-      roles.push("staff");
-    }
+    let roles = ['staff'];
+
     const body = {
       fullName,
       email,
