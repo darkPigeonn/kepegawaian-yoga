@@ -188,6 +188,7 @@
                             <input type="text" class="form-control" id="inputNationality" value="{{formData.nationality}}" required>
                         </div>
 
+
                         <div class="form-group">
                             <label for="inputStartDateImaviLecture" class="fw-bold text-login-content">Tanggal Mulai Menjadi Dosen IMAVI</label>
                             <input type="date" class="form-control" id="inputStartDateImaviLecture" value="{{formData.startDateImavi}}">
@@ -1128,21 +1129,24 @@
                         <label for="inputMataKuliah" class="fw-bold text-login-content">Mata Kuliah</label>
                         <input type="text" class="form-control" id="inputMataKuliah" >
                     </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputSemesterStudy" class="fw-bold text-login-content">Semester</label>
+                            <select class="form-control" id="inputSemesterStudy">
+                                <option value="Genap">Genap</option>
+                                <option value="Gasal">Gasal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group col">
+                            <label class="fw-bold text-login-content">Tahun Ajaran</label>
+                            <select id="input-ps" class="form-select filter">
+                             
+                            </select>
+                        </div>
+                    </div>
 
-                    <div class="form-group">
-                        <label for="inputSemesterStudy" class="fw-bold text-login-content">Semester</label>
-                        <select class="form-control" id="inputSemesterStudy">
-                            <option value="genap">Genap</option>
-                            <option value="gasal">Gasal</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="fw-bold text-login-content">Tahun Ajaran</label>
-                        <select id="input-ps" class="form-select filter">
-                         
-                        </select>
-                    </div>
+                
                     <script>
                         var currentYear = new Date().getFullYear();
                         var startYear = 2011;
@@ -1207,7 +1211,7 @@
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                    <label class="col text-break"><b>Periode Studi:</b> {{item.ps}} - {{item.semester}}</label>
+                                    <label class="col text-break"><b>Periode Studi:</b> {{item.semester}} - {{item.ps}}</label>
                                     <label class="col text-break"><b>Jenis Mata Kuliah:</b> {{item.type}}</label>
                                     <label class="col text-break"><b>Bidang Keilmuan:</b> {{item.bidangKeilmuan}}</label>
                                     <label class="col text-break"><b>Jumlah Mahasiswa:</b> {{item.mhsTotal}}</label>
@@ -1272,21 +1276,24 @@
                         <label for="editInputMataKuliah" class="fw-bold text-login-content">Mata Kuliah</label>
                         <input type="text" class="form-control" id="editInputMataKuliah" >
                     </div>
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group">
+                            <label for="editInputSemesterStudy" class="fw-bold text-login-content">Semester</label>
+                            <select class="form-control" id="editInputSemesterStudy">
+                                <option value="Genap">Genap</option>
+                                <option value="Gasal">Gasal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="fw-bold text-login-content">Tahun Ajaran</label>
+                            <select id="editInput-ps" class="form-select filter">
+                             
+                            </select>
+                        </div>
+                    </div>
 
-                    <div class="form-group">
-                        <label for="editInputSemesterStudy" class="fw-bold text-login-content">Semester</label>
-                        <select class="form-control" id="editInputSemesterStudy">
-                            <option value="genap">Genap</option>
-                            <option value="gasal">Gasal</option>
-                        </select>
-                    </div>
                     
-                    <div class="form-group">
-                        <label class="fw-bold text-login-content">Tahun Ajaran</label>
-                        <select id="editInput-ps" class="form-select filter">
-                         
-                        </select>
-                    </div>
                     <script>
                         var currentYear = new Date().getFullYear();
                         var startYear = 2011;
@@ -1744,6 +1751,19 @@
                                 <label for="editInputTahunSelesaiPengujian" class="fw-bold text-login-content">Tahun Selesai</label>
                                 <select id="editInputTahunSelesaiPengujian" class="form-select filter"></select>
                             </div>
+                            <script>
+                                var currentYear = new Date().getFullYear();
+                                var startYear = 2011;
+                                var selectElement = document.getElementById("editInputTahunSelesaiPengujian");
+                                
+                                for (var i = currentYear; i >= startYear; i--) {
+                                    var option = document.createElement("option");
+                                    nilai = i + 1;
+                                    option.text = i + "/" + nilai ;
+                                    option.value = i + "/" + nilai;
+                                    selectElement.appendChild(option);
+                                }
+                            </script>
                         </div>
                     </form>
                 </div>
@@ -1777,12 +1797,11 @@
                         <label for="inputIsbnBahanAjar" class="fw-bold text-login-content">ISBN</label>
                         <input type="text" class="form-control" id="inputIsbnBahanAjar" >
                     </div>
-                    <div class="row row-cols-1 row-cols-md-2">
-                        <div class="form-group col">
-                            <label for="inputTanggalTerbitBahanAjar" class="fw-bold text-login-content">Tanggal Terbit</label>
-                            <input type="date" class="form-control" id="inputTanggalTerbitBahanAjar" >
-                        </div>
+                    <div class="form-group">
+                        <label for="inputTanggalTerbitBahanAjar" class="fw-bold text-login-content">Tanggal Terbit</label>
+                        <input type="date" class="form-control" id="inputTanggalTerbitBahanAjar" >
                     </div>
+                    
                     <div class="form-group">
                         <label for="inputPenerbitBahanAjar" class="fw-bold text-login-content">Penerbit</label>
                         <input type="text" class="form-control" id="inputPenerbitBahanAjar" >
@@ -3130,6 +3149,10 @@
             <i class="fa fa-light fa-arrow-left btn-previous" value="3"></i>
             Previous
         </button>
+        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="5">
+            Next
+            <i class="fa fa-light fa-arrow-right btn-next" value="4"></i>
+        </button>
 
         {{#if equals type "add"}}
             <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="5">
@@ -3307,7 +3330,6 @@
                             <label for="yearDateInput" class="fw-bold text-login-content">Tanggal Awal Pelaksanaan</label>
                             <input type="date" class="form-control" id="yearDateInput" >
                         </div>
-                        -
                         <div class="form-group col">
                             <label for="yearDateInputEnd" class="fw-bold text-login-content">Tanggal Akhir Pelaksanaan</label>
                             <input type="date" class="form-control" id="yearDateInputEnd" >
@@ -3422,7 +3444,7 @@
                         <label for="editYearDateInput" class="fw-bold text-login-content">Tanggal Awal Pelaksanaan</label>
                         <input type="date" class="form-control" id="editYearDateInput" >
                     </div>
-                    -
+            
                     <div class="form-group col">
                         <label for="editYearDateInputEnd" class="fw-bold text-login-content">Tanggal Akhir Pelaksanaan</label>
                         <input type="date" class="form-control" id="editYearDateInputEnd" >
@@ -3475,8 +3497,6 @@
                                 </label>
                             </div>
                         </div>
-
-                        
                     </div>
                     <div class="d-flex justify-content-end mt-2 add-journalManager">
                         <button class="btn btn-add btn-sm">
@@ -3587,18 +3607,22 @@
                             <label for="editInputPeran" class="fw-bold text-login-content">Peran</label>
                             <input type="text" class="form-control" id="editInputPeran">
                         </div>
-                        <div class="form-group">
-                            <label for="editInputStartDate" class="fw-bold text-login-content">Tanggal Mulai</label>
-                            <input type="text" class="form-control" id="editInputStartDate">
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="endDateNowEdit">
-                                <label class="form-check-label" for="endDateNowEdit">Sampai Sekarang</label>
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="editInputStartDate" class="fw-bold text-login-content">Tanggal Mulai</label>
+                                <input type="text" class="form-control" id="editInputStartDate">
                             </div>
-                            <input type="text" class="form-control" id="editInputEndDate">
+                            <div class="form-group col">
+                                <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
+                           
+                                <input type="text" class="form-control" id="editInputEndDate">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="endDateNowEdit">
+                                    <label class="form-check-label" for="endDateNowEdit">Sampai Sekarang</label>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- Tombol untuk menyimpan perubahan -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary save-journalManager">Simpan Perubahan</button>
@@ -3756,18 +3780,22 @@
                             <label for="editInputPeranOthers" class="fw-bold text-login-content">Peran</label>
                             <input type="text" class="form-control" id="editInputPeranOthers">
                         </div>
-                        <div class="form-group">
-                            <label for="editInputStartDateOthers" class="fw-bold text-login-content">Tanggal Mulai</label>
-                            <input type="text" class="form-control" id="editInputStartDateOthers">
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="endDateOthersNowEdit">
-                                <label class="form-check-label" for="endDateOthersNowEdit">Sampai Sekarang</label>
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="editInputStartDateOthers" class="fw-bold text-login-content">Tanggal Mulai</label>
+                                <input type="text" class="form-control" id="editInputStartDateOthers">
                             </div>
-                            <input type="text" class="form-control" id="editInputEndDateOthers">
+                            <div class="form-group col">
+                                <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
+                              
+                                <input type="text" class="form-control" id="editInputEndDateOthers">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="endDateOthersNowEdit">
+                                    <label class="form-check-label" for="endDateOthersNowEdit">Sampai Sekarang</label>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- Tombol untuk menyimpan perubahan -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary save-others-media">Simpan Perubahan</button>
@@ -3795,28 +3823,26 @@
                         <label for="inputNomorSkImavi" class="fw-bold text-login-content">No SK</label>
                         <input type="text" class="form-control" id="inputNomorSkImavi">
                     </div>
-                    <div class="form-group">
-                        <label for="inputStartDateImavi" class="fw-bold text-login-content">Terhitung Tahun Mulai</label>
-                        <input type="text" class="form-control" id="inputStartDateImavi">
-                    </div>
-                    <div class="form-group">
-                        <div class="row row-cols-1 row-cols-md-2">
-                            <div class="form-group col">
-                                <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
-                                <input type="text" class="form-control" id="inputEndDateImavi" >
-                            </div>
-
-                            <div class="form-group col">
-                                <input class="form-check-input" type="checkbox" id="endDateImaviNow">
-                                <label class="form-check-label" for="endDateImaviNow">
-                                    Sampai Sekarang
-                                </label>
-                            </div>
-                            
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputStartDateImavi" class="fw-bold text-login-content">Terhitung Tahun Mulai</label>
+                            <input type="text" class="form-control" id="inputStartDateImavi">
                         </div>
-                       
-                     
+                
+                            
+                        <div class="form-group col">
+                            <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
+                            <input type="text" class="form-control" id="inputEndDateImavi" >
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="endDateImaviNow">
+                                <label class="form-check-label" for="endDateImaviNow">Sampai Sekarang</label>
+                            </div>
+                               
+                        </div>
+    
+                    
                     </div>
+                    
                     <div class="d-flex justify-content-end mt-2 add-imavistructure">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -3919,18 +3945,22 @@
                             <label for="editInputNomorSkImavi" class="fw-bold text-login-content">Nomor SK</label>
                             <input type="text" class="form-control" id="editInputNomorSkImavi">
                         </div>
-                        <div class="form-group">
-                            <label for="editInputStartDateImavi" class="fw-bold text-login-content">Tanggal Mulai</label>
-                            <input type="text" class="form-control" id="editInputStartDateImavi">
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="endDateImaviNowEdit">
-                                <label class="form-check-label" for="endDateImaviNowEdit">Sampai Sekarang</label>
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="editInputStartDateImavi" class="fw-bold text-login-content">Tanggal Mulai</label>
+                                <input type="text" class="form-control" id="editInputStartDateImavi">
                             </div>
-                            <input type="text" class="form-control" id="editInputEndDateImavi">
+                            <div class="form-group col">
+                                <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
+                      
+                                <input type="text" class="form-control" id="editInputEndDateImavi">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="endDateImaviNowEdit">
+                                    <label class="form-check-label" for="endDateImaviNowEdit">Sampai Sekarang</label>
+                                </div>
+                            </div>
                         </div>
+
                         <!-- Tombol untuk menyimpan perubahan -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary save-imavistructure">Simpan Perubahan</button>
@@ -3958,14 +3988,17 @@
                         <label for="inputPeranProfesi" class="fw-bold text-login-content">Peran/Kedudukan</label>
                         <input type="text" class="form-control" id="inputPeranProfesi">
                     </div>
-                    <div class="form-group">
-                        <label for="inputStartDateProfesi" class="fw-bold text-login-content">Mulai Keanggotaan</label>
-                        <input type="text" class="form-control" id="inputStartDateProfesi">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="inputStartDateProfesi" class="fw-bold text-login-content">Mulai Keanggotaan</label>
+                            <input type="text" class="form-control" id="inputStartDateProfesi">
+                        </div>
+                        <div class="form-group col">
+                            <label for="inputEndDateProfesi" class="fw-bold text-login-content">Selesai Keanggotaan</label>
+                            <input type="text" class="form-control" id="inputEndDateProfesi">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputEndDateProfesi" class="fw-bold text-login-content">Selesai Keanggotaan</label>
-                        <input type="text" class="form-control" id="inputEndDateProfesi">
-                    </div>
+           
                     <div class="form-group">
                         <label for="inputInstansiProfesi" class="fw-bold text-login-content">Instansi Profesi</label>
                         <input type="text" class="form-control" id="inputInstansiProfesi">
@@ -4060,17 +4093,20 @@
                             <input type="text" class="form-control" id="editInputNamaOrganisasi">
                         </div>
                         <div class="form-group">
-                            <label for="editInputPeranProfesi" class="fw-bold text-login-content">Peran</label>
+                            <label for="editInputPeranProfesi" class="fw-bold text-login-content">Peran/Kedudukan</label>
                             <input type="text" class="form-control" id="editInputPeranProfesi">
                         </div>
-                        <div class="form-group">
-                            <label for="editInputStartDateProfesi" class="fw-bold text-login-content">Tanggal Mulai</label>
-                            <input type="text" class="form-control" id="editInputStartDateProfesi">
+                        <div class="row row-cols-1 row-cols-md-2">
+                            <div class="form-group col">
+                                <label for="editInputStartDateProfesi" class="fw-bold text-login-content">Mulai Keanggotaan</label>
+                                <input type="text" class="form-control" id="editInputStartDateProfesi">
+                            </div>
+                            <div class="form-group col">
+                                <label for="editInputEndDateProfesi" class="fw-bold text-login-content">Selesai Keangotaan</label>
+                                <input type="text" class="form-control" id="editInputEndDateProfesi">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="editInputEndDateProfesi" class="fw-bold text-login-content">Tanggal Selesai</label>
-                            <input type="text" class="form-control" id="editInputEndDateProfesi">
-                        </div>
+                 
                         <div class="form-group">
                             <label for="editInputInstansiProfesi" class="fw-bold text-login-content">Instansi</label>
                             <input type="text" class="form-control" id="editInputInstansiProfesi">
@@ -4255,14 +4291,18 @@
                         <label for="input-beasiswa-category" class="fw-bold text-login-content">Jenis Beasiswa</label>
                         <input type="text" class="form-control" id="input-beasiswa-category">
                     </div>
-                    <div class="form-group">
-                        <label for="input-start-year" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="input-start-year">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="input-start-year" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="input-start-year">
+                        </div>
+                        <div class="form-group col">
+                            <label for="input-end-year" class="fw-bold text-login-content">Tahun Berakhir</label>
+                            <input type="text" class="form-control" id="input-end-year">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="input-end-year" class="fw-bold text-login-content">Tahun Berakhir</label>
-                        <input type="text" class="form-control" id="input-end-year">
-                    </div>
+
+
                     <div class="d-flex justify-content-end mt-2 add-scholarship">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -4356,14 +4396,17 @@
                         <label for="editInput-beasiswa-category" class="fw-bold text-login-content">Jenis Beasiswa</label>
                         <input type="text" class="form-control" id="editInput-beasiswa-category">
                     </div>
-                    <div class="form-group">
-                        <label for="editInput-start-year" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="editInput-start-year">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="editInput-start-year" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="editInput-start-year">
+                        </div>
+                        <div class="form-group col">
+                            <label for="editInput-end-year" class="fw-bold text-login-content">Tahun Berakhir</label>
+                            <input type="text" class="form-control" id="editInput-end-year">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editInput-end-year" class="fw-bold text-login-content">Tahun Berakhir</label>
-                        <input type="text" class="form-control" id="editInput-end-year">
-                    </div>
+               
                     
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
@@ -4397,14 +4440,17 @@
                         <label for="input-organizer" class="fw-bold text-login-content">Penyelenggara</label>
                         <input type="text" class="form-control" id="input-organizer" >
                     </div>
-                    <div class="form-group">
-                        <label for="start-year-input" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="start-year-input">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="start-year-input" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="start-year-input">
+                        </div>
+                        <div class="form-group col">
+                            <label for="end-year-input" class="fw-bold text-login-content">Tahun Selesai</label>
+                            <input type="text" class="form-control" id="end-year-input">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="end-year-input" class="fw-bold text-login-content">Tahun Selesai</label>
-                        <input type="text" class="form-control" id="end-year-input">
-                    </div>
+
                     <div class="d-flex justify-content-end mt-2">
                         <button class="btn btn-add btn-sm add-kesejahteraan">
                             <i class="fa fa-light fa-plus"></i>
@@ -4511,18 +4557,22 @@
                         <label for="editInput-category-service" class="fw-bold text-login-content">Jenis Kesejahteraan</label>
                         <input type="text" class="form-control" id="editInput-category-service">
                     </div>
+                    
                     <div class="form-group">
                         <label for="editInput-organizer" class="fw-bold text-login-content">Penyelenggara</label>
                         <input type="text" class="form-control" id="editInput-organizer" >
                     </div>
-                    <div class="form-group">
-                        <label for="editStart-year-input" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="editStart-year-input">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="editStart-year-input" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="editStart-year-input">
+                        </div>
+                        <div class="form-group col">
+                            <label for="editEnd-year-input" class="fw-bold text-login-content">Tahun Selesai</label>
+                            <input type="text" class="form-control" id="editEnd-year-input">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editEnd-year-input" class="fw-bold text-login-content">Tahun Selesai</label>
-                        <input type="text" class="form-control" id="editEnd-year-input">
-                    </div>
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-kesejahteraan">Simpan Perubahan</button>
@@ -4575,14 +4625,17 @@
                             this.value = formatRupiah(nominal);
                         });
                     </script>
-                    <div class="form-group">
-                        <label for="input-year-start" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="input-year-start" >
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="input-year-start" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="input-year-start" >
+                        </div>
+                        <div class="form-group col">
+                            <label for="input-year-end" class="fw-bold text-login-content">Tahun Selesai</label>
+                            <input type="text" class="form-control" id="input-year-end">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="input-year-end" class="fw-bold text-login-content">Tahun Selesai</label>
-                        <input type="text" class="form-control" id="input-year-end">
-                    </div>
+ 
                 
                     <div class="d-flex justify-content-end mt-2 add-tunjangan">
                         <button class="btn btn-add btn-sm">
@@ -4709,14 +4762,17 @@
                             this.value = formatRupiah(nominal);
                         });
                     </script>
-                    <div class="form-group">
-                        <label for="editInput-year-start" class="fw-bold text-login-content">Tahun Mulai</label>
-                        <input type="text" class="form-control" id="editInput-year-start" >
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="form-group col">
+                            <label for="editInput-year-start" class="fw-bold text-login-content">Tahun Mulai</label>
+                            <input type="text" class="form-control" id="editInput-year-start" >
+                        </div>
+                        <div class="form-group col">
+                            <label for="editInput-year-end" class="fw-bold text-login-content">Tahun Selesai</label>
+                            <input type="text" class="form-control" id="editInput-year-end">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="editInput-year-end" class="fw-bold text-login-content">Tahun Selesai</label>
-                        <input type="text" class="form-control" id="editInput-year-end">
-                    </div>
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-tunjangan">Simpan Perubahan</button>

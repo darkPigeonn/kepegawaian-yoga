@@ -546,10 +546,10 @@ Template.formLecturers.events({
         e.preventDefault()
         const index = $(e.currentTarget).data('milik');
         const pengajaran     = t.listPengajaran.get()[index];
-        $("#editInputMataKuliah").val(pengajaran.type)
-        $("#editInput-ps").val(pengajaran.matkul)
-        $("#editInputSemesterStudy").val(pengajaran.ps)
-        $("#editInput-jenis").val(pengajaran.semester)
+        $("#editInputMataKuliah").val(pengajaran.matkul)
+        $("#editInput-ps").val(pengajaran.ps)
+        $("#editInputSemesterStudy").val(pengajaran.semester)
+        $("#editInput-jenis").val(pengajaran.type)
         $("#editInputBidangKeilmuan").val(pengajaran.bidangKeilmuan)
         $("#editInputJumlahMahasiswa").val(pengajaran.mhsTotal)
         $("#editInputSks").val(pengajaran.sks)
