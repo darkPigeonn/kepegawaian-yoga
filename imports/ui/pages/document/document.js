@@ -920,9 +920,7 @@ Template.editKorespondensi.events({
     if(dataAlur.length == 0){
       dataAlur = null
     }
-    if (dataSigner ==0){
-      dataSigner =null
-    }
+
     //categori
     const data = {
       category,

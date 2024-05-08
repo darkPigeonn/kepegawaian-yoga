@@ -334,7 +334,7 @@ Meteor.methods({
     const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir,dataSigner } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
-
+    console.log(dataSigner);
     if (!thisUser) {
       throw new Meteor.Error(412, "No Access");
     }
