@@ -72,10 +72,6 @@ Meteor.methods({
         $lte: new Date(endDate),
         },
     }).fetch();
-
-
-    // console.log(dataStaffsAttendance);
-
     const dataReturn = [];
 
     //find user profile
@@ -89,11 +85,10 @@ Meteor.methods({
 
         if (user) {
         if (x.userId) {
-            const userObjecId = new Mongo.Collection.ObjectID(x.userId);
-            const userProfile = AppProfiles.findOne({
+            const userObjecId =x.userId;
+            const userProfile = Employee.findOne({
             _id: userObjecId,
             });
-            // console.log(userProfile);
 
             x.fullName = userProfile.fullName;
             x.jabatan = userProfile.jabatan;

@@ -597,43 +597,7 @@ Template.configurasiList.events({
     const dataRow = t.schedulePairings.get();
     const selectedSchedules = $("#inputShiftPairings").val();
     const selectedEmployees = $("#inputEmployeesPairings").val();
-    const selectUnitForm = $("#selectUnitForm").val();
 
-    if (selectUnitForm.length > 0) {
-      for (let index = 0; index < selectUnitForm.length; index++) {
-        const selectPartner = selectUnitForm[index];
-        const employees = t.employees.get();
-
-        const employeesFilter = _.filter(employees, function (data) {
-          return data.outlets.includes(selectPartner);
-        });
-        console.log(employeesFilter);
-
-        for (let index2 = 0; index2 < employeesFilter.length; index2++) {
-          console.log(index2);
-          const element = employeesFilter[index2];
-          const userId = element._id;
-          const dataTemp = {
-            userId: userId,
-            fullName: element.full_name,
-            jabatan: element.job_position,
-            schedules: [],
-          };
-
-          for (let ii = 0; ii < selectedSchedules.length; ii++) {
-            const ele = selectedSchedules[ii];
-            const split2 = ele.split("-");
-            const dataTemp2 = {
-              scheduleId: split2[0],
-              scheduleName: split2[1],
-            };
-
-            dataTemp.schedules.push(dataTemp2);
-          }
-          dataRow.push(dataTemp);
-        }
-      }
-    }
 
     if (selectedEmployees.length > 0) {
       for (let index = 0; index < selectedEmployees.length; index++) {
@@ -659,9 +623,8 @@ Template.configurasiList.events({
         dataRow.push(dataTemp);
       }
     }
-    console.log(dataRow);
+
     t.schedulePairings.set(dataRow);
-    console.log(t.schedulePairings.get());
   },
   "click #btn-view-configuration"(e, t) {
     const viewMode = $(e.target).attr("milik");
