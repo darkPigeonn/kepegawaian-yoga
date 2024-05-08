@@ -794,7 +794,7 @@ Template.editKorespondensi.onCreated(function (){
         let dataAlur = [];
         
         for (const iterator of result.alur) {
-            dataAlur.push(iterator);
+          dataAlur.push(iterator.jabatan);
         }
         
         self.daftarAlur.set(dataAlur);
@@ -865,37 +865,32 @@ Template.editKorespondensi.events({
     e.preventDefault();
     const dataRow = t.daftarAlur.get();
     const selectedAlur = $("#input_alur").val();
-    const data = {
-      selectedAlur
-    }
-    dataRow.push(data)
-    t.daftarAlur.set(dataRow)
 
-    // Swal.fire({
-    //   title: "Konfirmasi Tambah Alur",
-    //   text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonText: "Iya",
-    //   cancelButtonText: "Tidak",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     if (selectedAlur.length > 0) {
-    //       for (let index = 0; index < selectedAlur.length; index++) {
-    //         const element = selectedAlur[index];
-    //         dataRow.push(element);
-    //       }
-    //     }
-    //     t.daftarAlur.set(dataRow);
-    //     console.log(t.daftarAlur.get());
-    //   }
-    // });
+    Swal.fire({
+      title: "Konfirmasi Tambah Alur",
+      text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (selectedAlur.length > 0) {
+          for (let index = 0; index < selectedAlur.length; index++) {
+            const element = selectedAlur[index];
+            dataRow.push(element);
+          }
+        }
+        t.daftarAlur.set(dataRow);
+        console.log(t.daftarAlur.get());
+      }
+    });
   },
   
   "click .btn-remove"(e, t) {
     e.preventDefault()
     console.log(this);
-    const index = $(e.target).attr("milik");
+    const index = $(e.target).attr("posisi");
     let dataAlur = t.daftarAlur.get();
     console.log(index, dataAlur);
     if(index != undefined) {
@@ -911,11 +906,8 @@ Template.editKorespondensi.events({
     const attachment = $("#attach").val();
     const subject = $("#about").val();
     const desc = t.editorDescription.get().getData();
-    console.log(desc);
     let dataAlur = t.daftarAlur.get();
     let dataSigner = t.listKorespondensiSigner.get();
-    console.log("list korespondensi alur: ",dataAlur);
-    console.log("list korespondensi signer: ",dataSigner);
     const id = FlowRouter.getParam("_id");
     if(dataAlur.length == 0){
       dataAlur = null
