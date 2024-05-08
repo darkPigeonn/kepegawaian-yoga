@@ -860,29 +860,36 @@ Template.editKorespondensi.events({
     t.listKorespondensiSigner.set(listKorespondensiSigner)
 
   },
+
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
     const dataRow = t.daftarAlur.get();
     const selectedAlur = $("#input_alur").val();
-    Swal.fire({
-      title: "Konfirmasi Tambah Alur",
-      text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Iya",
-      cancelButtonText: "Tidak",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (selectedAlur.length > 0) {
-          for (let index = 0; index < selectedAlur.length; index++) {
-            const element = selectedAlur[index];
-            dataRow.push(element);
-          }
-        }
-        t.daftarAlur.set(dataRow);
-        console.log(t.daftarAlur.get());
-      }
-    });
+    const data = {
+      selectedAlur
+    }
+    dataRow.push(data)
+    t.daftarAlur.set(dataRow)
+
+    // Swal.fire({
+    //   title: "Konfirmasi Tambah Alur",
+    //   text: "Apakah anda yakin menambah " + selectedAlur + " kedalam alur?",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonText: "Iya",
+    //   cancelButtonText: "Tidak",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     if (selectedAlur.length > 0) {
+    //       for (let index = 0; index < selectedAlur.length; index++) {
+    //         const element = selectedAlur[index];
+    //         dataRow.push(element);
+    //       }
+    //     }
+    //     t.daftarAlur.set(dataRow);
+    //     console.log(t.daftarAlur.get());
+    //   }
+    // });
   },
   
   "click .btn-remove"(e, t) {
@@ -906,13 +913,16 @@ Template.editKorespondensi.events({
     const desc = t.editorDescription.get().getData();
     console.log(desc);
     let dataAlur = t.daftarAlur.get();
-    let listKorespondensiSigner = t.listKorespondensiSigner.get();
-    console.log("list korespondensi signer: ",listKorespondensiSigner);
+    let dataSigner = t.listKorespondensiSigner.get();
+    console.log("list korespondensi alur: ",dataAlur);
+    console.log("list korespondensi signer: ",dataSigner);
     const id = FlowRouter.getParam("_id");
     if(dataAlur.length == 0){
       dataAlur = null
     }
-
+    if (dataSigner ==0){
+      dataSigner =null
+    }
     //categori
     const data = {
       category,
@@ -922,7 +932,7 @@ Template.editKorespondensi.events({
       subject,
       desc,
       dataAlur,
-      listKorespondensiSigner
+      dataSigner,
     };
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {

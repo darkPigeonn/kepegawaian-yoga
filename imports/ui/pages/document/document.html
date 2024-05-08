@@ -1605,6 +1605,7 @@
                 {{#if equals jabatanLogin "sekretaris-keuskupan"}}
                     <div class="form-group">
                         <label>Alur</label>
+                    
                         <select id="input_alur" class="form-control select2" multiple>
                             <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
                             <option value="bidang">Bidang</option>
@@ -1616,6 +1617,7 @@
                         <br><br>
                         <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
                     </div>
+              
                     {{#if daftarAlur}}
                         <h4>Daftar Alur</h4>
                         <div class="table-responsive">
@@ -1632,7 +1634,7 @@
                                             {{setTableNumber @index}}
                                         </td>
                                         <td>
-                                            {{setJabatanFormat i.jabatan}}
+                                            {{i.selectedAlur}}
                                         </td>
                                         <td>
                                             <button class="btn btn-danger btn-remove" posisi={{@index}}>

@@ -331,7 +331,7 @@ Meteor.methods({
   },
 
   "korespondensi.editSimpan"(id, data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir } = data;
+    const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir,dataSigner } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
 
@@ -355,7 +355,7 @@ Meteor.methods({
     // 2. Cek dataAlurnya undefined atau tidak dari client
 
     if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0 || dataSigner == undefined || dataSigner == null || dataSigner.length == 0) {
         modelData = {
           category,
           note,
@@ -364,6 +364,7 @@ Meteor.methods({
           subject,
           desc,
           alur: [],
+          signer:[],
           status: 10,
           currentOrder: 0,
           currentJabatan: "",
@@ -379,6 +380,7 @@ Meteor.methods({
           subject,
           desc,
           alur: dataAlur,
+          signer:dataSigner,
           status: 10,
           currentOrder: 0,
           currentJabatan: dataAlur[0].jabatan,
@@ -387,7 +389,7 @@ Meteor.methods({
       }
     }
     else {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0 || dataSigner == undefined || dataSigner == null || dataSigner.length == 0) {
         modelData = {
           category,
           note,
@@ -396,6 +398,7 @@ Meteor.methods({
           subject,
           desc,
           alur: [],
+          signer:[],
           status: 10,
           currentOrder: 0,
           currentJabatan: "",
@@ -413,6 +416,7 @@ Meteor.methods({
           subject,
           desc,
           alur: dataAlur,
+          signer:dataSigner,
           status: 10,
           currentOrder: 0,
           currentJabatan: dataAlur[0].jabatan,
@@ -456,7 +460,7 @@ Meteor.methods({
   },
 
   "korespondensi.save"(data) {
-    const {category, name, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir } = data;
+    const {category, name, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir,dataSigner } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
     if (!thisUser) {
@@ -480,7 +484,7 @@ Meteor.methods({
     // 2. Cek dataAlurnya undefined atau tidak dari client
 
     if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
+      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0 || dataSigner == undefined || dataSigner == null || dataSigner.length == 0) {
         modelData = {
           category,
           name,
@@ -489,6 +493,7 @@ Meteor.methods({
           subject,
           desc,
           alur: [],
+          signer:[],
           status: 11,
           currentOrder: 0,
           currentJabatan: "sekretaris-keuskupan",
@@ -499,14 +504,21 @@ Meteor.methods({
       }
       else {
         let dataAlurFinal = [];
+        let dataSignerFinal = [];
         for (let index = 0; index < dataAlur.length; index++) {
           const element = dataAlur[index];
+          const sign = dataSigner[index];
           const data = {
             order: index+1,
             jabatan: element,
-            analisis: ""
+            analisis: "",
+            nameSignotory:sign,
+            positionSignotory:sign
+
           }
           dataAlurFinal.push(data);
+          dataSignerFinal.push(data);
+
         }
         modelData = {
           category,
@@ -516,6 +528,7 @@ Meteor.methods({
           subject,
           desc,
           alur: dataAlurFinal,
+          listKorespondensiSigner:dataSignerFinal,
           status: 11,
           currentOrder: 1,
           currentJabatan: dataAlur[0],
@@ -535,6 +548,7 @@ Meteor.methods({
           subject,
           desc,
           alur: [],
+          listKorespondensiSigner:[],
           status: 11,
           currentOrder: 0,
           currentJabatan: "sekretaris-keuskupan",
@@ -547,14 +561,19 @@ Meteor.methods({
       }
       else {
         let dataAlurFinal = [];
+        let dataSignerFinal =[];
         for (let index = 0; index < dataAlur.length; index++) {
           const element = dataAlur[index];
+          const sign = dataSigner[index];
           const data = {
             order: index+1,
             jabatan: element,
-            analisis: ""
+            analisis: "",
+            nameSignotory:sign,
+            positionSignotory:sign
           }
           dataAlurFinal.push(data);
+          dataSignerFinal.push(data);
         }
         modelData = {
           category,
@@ -564,6 +583,7 @@ Meteor.methods({
           subject,
           desc,
           alur: dataAlurFinal,
+          listKorespondensiSigner:dataSignerFinal,
           status: 11,
           currentOrder: 1,
           currentJabatan: dataAlur[0],
