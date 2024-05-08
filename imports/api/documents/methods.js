@@ -372,6 +372,16 @@ Meteor.methods({
         };
       }
       else {
+        let dataAlurFinal = [];
+        for (let index = 0; index < dataAlur.length; index++) {
+          const element = dataAlur[index];
+          const data = {
+            order: index+1,
+            jabatan: element,
+            analisis: ""
+          }
+          dataAlurFinal.push(data);
+        }
         modelData = {
           category,
           note,
@@ -379,8 +389,8 @@ Meteor.methods({
           attachment,
           subject,
           desc,
-          alur: dataAlur,
-          signer:dataSigner,
+          alur: dataAlurFinal,
+          signer: dataSigner,
           status: 10,
           currentOrder: 0,
           currentJabatan: dataAlur[0].jabatan,
@@ -408,6 +418,16 @@ Meteor.methods({
         };
       }
       else {
+        let dataAlurFinal = [];
+        for (let index = 0; index < dataAlur.length; index++) {
+          const element = dataAlur[index];
+          const data = {
+            order: index+1,
+            jabatan: element,
+            analisis: ""
+          }
+          dataAlurFinal.push(data);
+        }
         modelData = {
           category,
           note,
@@ -415,8 +435,8 @@ Meteor.methods({
           attachment,
           subject,
           desc,
-          alur: dataAlur,
-          signer:dataSigner,
+          alur: dataAlurFinal,
+          signer: dataSigner,
           status: 10,
           currentOrder: 0,
           currentJabatan: dataAlur[0].jabatan,
@@ -562,6 +582,8 @@ Meteor.methods({
       else {
         let dataAlurFinal = [];
         let dataSignerFinal =[];
+        console.log(dataSigner);
+        return
         for (let index = 0; index < dataAlur.length; index++) {
           const element = dataAlur[index];
           const sign = dataSigner[index];
@@ -662,6 +684,16 @@ Meteor.methods({
         };
       }
       else {
+        let dataAlurFinal = [];
+        for (let index = 0; index < dataAlur.length; index++) {
+          const element = dataAlur[index];
+          const data = {
+            order: index+1,
+            jabatan: element,
+            analisis: ""
+          }
+          dataAlurFinal.push(data);
+        }
         modelData = {
           category,
           note,
@@ -669,7 +701,7 @@ Meteor.methods({
           attachment,
           subject,
           desc,
-          alur: dataAlur,
+          alur: dataAlurFinal,
           status: 11,
           currentOrder: 1,
           currentJabatan: dataAlur[0].jabatan,
@@ -700,6 +732,16 @@ Meteor.methods({
         };
       }
       else {
+        let dataAlurFinal = [];
+        for (let index = 0; index < dataAlur.length; index++) {
+          const element = dataAlur[index];
+          const data = {
+            order: index+1,
+            jabatan: element,
+            analisis: ""
+          }
+          dataAlurFinal.push(data);
+        }
         modelData = {
           category,
           note,
@@ -707,7 +749,7 @@ Meteor.methods({
           attachment,
           subject,
           desc,
-          alur: dataAlur,
+          alur: dataAlurFinal,
           status: 11,
           currentOrder: 1,
           currentJabatan: dataAlur[0].jabatan,

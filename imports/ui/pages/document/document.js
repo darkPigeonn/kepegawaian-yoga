@@ -390,6 +390,7 @@ Template.createKorespondensi.onCreated(function () {
   self.daftarAlur = new ReactiveVar([]);
   self.jabatanLogin = new ReactiveVar();
   self.categoryLetters = new ReactiveVar();
+  self.isSKLetter = new ReactiveVar();
   const jenis = "kategori-surat"
   setTimeout(() => {
     startSelect2();
@@ -441,9 +442,22 @@ Template.createKorespondensi.helpers({
   },
   categoryLetters() {
     return Template.instance().categoryLetters.get();
+  },
+  isSKLetter() {
+    return Template.instance().isSKLetter.get();
   }
 })
 Template.createKorespondensi.events({
+  "change #category"(e, t) {
+    const categorySlug = e.target.options[e.target.selectedIndex].getAttribute("milik");
+    console.log(categorySlug);
+    if(categorySlug == "surat-keputusan") {
+      t.isSKLetter.set(true);
+    }
+    else {
+      t.isSKLetter.set(false)
+    }
+  },
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
     const dataRow = t.daftarAlur.get();
@@ -485,7 +499,10 @@ Template.createKorespondensi.events({
     const purpose = $("#toLetter").val();
     const attachment = $("#attach").val();
     const subject = $("#about").val();
+    const skLetterTanggalAwal = $("#date-start").val();
+    const skLetterTanggalAkhir = $("#date-end").val();
     const desc = t.editorDescription.get().getData();
+    const cekSK = t.isSKLetter.get();
     let dataAlur = t.daftarAlur.get();
     if(dataAlur.length == 0){
       dataAlur = null
@@ -501,6 +518,11 @@ Template.createKorespondensi.events({
       dataAlur
     };
 
+    if(cekSK == true) {
+      data.tanggalBerlaku = skLetterTanggalAwal;
+      data.tanggalBerakhir = skLetterTanggalAkhir;
+    }
+
     Meteor.call("korespondensi.create", data, function (error, result) {
       if (result) {
         successAlert();
@@ -512,38 +534,38 @@ Template.createKorespondensi.events({
       }
     });
   },
-  "click #btn-send": function (e, t) {
-    e.preventDefault();
-    const category = $("#category").val();
-    const note = $("#noteOfLetter").val();
-    const purpose = $("#toLetter").val();
-    const attachment = $("#attach").val();
-    const subject = $("#about").val();
-    const desc = t.editorDescription.get().getData();
-    let dataAlur = t.daftarAlur.get();
-    console.log(dataAlur);
-    //categori
-    const data = {
-      category,
-      note,
-      purpose,
-      attachment,
-      subject,
-      desc,
-      dataAlur
-    };
+  // "click #btn-send": function (e, t) {
+  //   e.preventDefault();
+  //   const category = $("#category").val();
+  //   const note = $("#noteOfLetter").val();
+  //   const purpose = $("#toLetter").val();
+  //   const attachment = $("#attach").val();
+  //   const subject = $("#about").val();
+  //   const desc = t.editorDescription.get().getData();
+  //   let dataAlur = t.daftarAlur.get();
+  //   console.log(dataAlur);
+  //   //categori
+  //   const data = {
+  //     category,
+  //     note,
+  //     purpose,
+  //     attachment,
+  //     subject,
+  //     desc,
+  //     dataAlur
+  //   };
 
-    Meteor.call("korespondensi.save", data, function (error, result) {
-      if (result) {
-        successAlert();
-        location.reload();
-        history.back();
-      } else {
-        console.log(error);
-        failAlert(error);
-      }
-    });
-  },
+  //   Meteor.call("korespondensi.save", data, function (error, result) {
+  //     if (result) {
+  //       successAlert();
+  //       location.reload();
+  //       history.back();
+  //     } else {
+  //       console.log(error);
+  //       failAlert(error);
+  //     }
+  //   });
+  // },
 });
 
 Template.listKorespondensi.onCreated(function () {
@@ -769,6 +791,7 @@ Template.editKorespondensi.onCreated(function (){
   self.listKorespondensiSigner = new ReactiveVar([]);
   const id = FlowRouter.getParam("_id");
   const userId = Meteor.userId();
+  self.isSKLetter = new ReactiveVar();
   self.categoryLetters = new ReactiveVar();
   const jenis = "kategori-surat"
 
@@ -787,25 +810,28 @@ Template.editKorespondensi.onCreated(function (){
   
 
   Meteor.call("korespondensi.getById", id, function (error, result) {
-
     if (result) {
-        self.dataKorespondensi.set(result)
-        console.log("Alur",result.alur.length);
-        let dataAlur = [];
-        
-        for (const iterator of result.alur) {
-          dataAlur.push(iterator.jabatan);
-        }
-        
-        self.daftarAlur.set(dataAlur);
-        self.optionsDescription.content = result.desc;
-        initEditor(template, self.optionsDescription);
+      self.dataKorespondensi.set(result)
+      if(result.tanggalBerlaku || result.tanggalBerakhir) {
+        self.isSKLetter.set(true);
+      }
+      else {
+        self.isSKLetter.set(false);
+      }
+      console.log("Alur",result.alur.length);
+      let dataAlur = [];
+      
+      for (const iterator of result.alur) {
+        dataAlur.push(iterator.jabatan);
+      }
+      
+      self.daftarAlur.set(dataAlur);
+      self.optionsDescription.content = result.desc;
+      initEditor(template, self.optionsDescription);
     } else {
-        console.log(error);
-  }
-  
-  
-});
+      console.log(error);
+    }
+  });
 
   Meteor.call(
     "config.getConfig",
@@ -842,10 +868,23 @@ Template.editKorespondensi.helpers({
   },
   listKorespondensiSigner(){
     return Template.instance().listKorespondensiSigner.get();
+  },
+  isSKLetter() {
+    return Template.instance().isSKLetter.get();
   }
 })
 
 Template.editKorespondensi.events({
+  "change #category"(e, t) {
+    const categorySlug = e.target.options[e.target.selectedIndex].getAttribute("milik");
+    console.log(categorySlug);
+    if(categorySlug == "surat-keputusan") {
+      t.isSKLetter.set(true);
+    }
+    else {
+      t.isSKLetter.set(false)
+    }
+  },
   "click #btn-add-signer"(e,t){
     e.preventDefault()
     const listKorespondensiSigner = t.listKorespondensiSigner.get()
@@ -909,6 +948,9 @@ Template.editKorespondensi.events({
     let dataAlur = t.daftarAlur.get();
     let dataSigner = t.listKorespondensiSigner.get();
     const id = FlowRouter.getParam("_id");
+    const cekSK = t.isSKLetter.get();
+    const skLetterTanggalAwal = $("#date-start").val();
+    const skLetterTanggalAkhir = $("#date-end").val();
     if(dataAlur.length == 0){
       dataAlur = null
     }
@@ -924,6 +966,11 @@ Template.editKorespondensi.events({
       dataAlur,
       dataSigner,
     };
+
+    if(cekSK == true) {
+      data.tanggalBerlaku = skLetterTanggalAwal;
+      data.tanggalBerakhir = skLetterTanggalAkhir;
+    }
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
       if (result) {
@@ -948,6 +995,9 @@ Template.editKorespondensi.events({
     let listKorespondensiSigner = t.listKorespondensiSigner.get();
     console.log(dataAlur);
     const id = FlowRouter.getParam("_id");
+    const cekSK = t.isSKLetter.get();
+    const skLetterTanggalAwal = $("#date-start").val();
+    const skLetterTanggalAkhir = $("#date-end").val();
     //categori
     const data = {
       category,
@@ -959,6 +1009,11 @@ Template.editKorespondensi.events({
       dataAlur,
       listKorespondensiSigner
     };
+
+    if(cekSK == true) {
+      data.tanggalBerlaku = skLetterTanggalAwal;
+      data.tanggalBerakhir = skLetterTanggalAkhir;
+    }
 
     Meteor.call("korespondensi.editKirim",id, data, function (error, result) {
       if (result) {
