@@ -741,7 +741,8 @@
 </template>
 
 <template name="tasks_detail">
-    <div class="desktop-div my-3 pb-3">
+    
+    <!-- <div class="desktop-div my-3 pb-3">
         <div class="box">
             <div class="content">
                 <div class="contentAtas">
@@ -801,7 +802,7 @@
                     </div>
                     <hr class="mt-3 mb-0" style="border: 1px solid lightgray;">
                 </div>
-                <!-- Content -->
+
                 <div class="containerContent bg-white">
                     <div class="d-flex h-100">
                         <div class="col col-sm-3 col-lg-3" style="border-right: 1px solid lightgray">
@@ -861,6 +862,123 @@
                 </div>
             </div>
         </div> 
+    </div> -->
+
+    <div class="content">
+        <div class="contentAtas">
+            <label style="color: blue; margin: 0;" class="d-flex gap-1"> 
+                {{#if equals tasks.project_type "umum"}}
+                    <a href="/tasks" class="text-secondary">
+                        Tugas Umum
+                    </a> 
+                    /
+                {{else}}
+                    <a href="/projects" class="text-secondary">
+                        Proyek
+                    </a> 
+                    / 
+                    <a href="/projects/detail/{{tasks.id_project}}" class="text-secondary" style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+                        {{tasks.nama_project}}
+                    </a>
+                    /
+                {{/if}}
+                <div class="project-link">
+                    <a href="/tasks/detail/{{tasks._id}}">
+                        {{tasks.nama_task}}
+                    </a>
+                </div>
+            </label>
+            <div class="d-flex justify-content-between align-middle mt-2">
+                <div class="col col-sm-9 col-lg-9">
+                    <div class="d-flex flex-wrap gap-2">
+                        <label style="font-size: 32px; font-weight: bold; max-width: 400px; overflow: hidden; text-overflow: ellipsis;">{{tasks.nama_task}}</label>
+                        <div class="my-auto">
+                            <a href="/tasks/edit/{{tasks._id}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-sm-3 col-lg-3 my-auto">
+                    <div class="my-auto">
+                        <div class="d-flex justify-content-end gap-2">
+                            <div class="members">
+                                <a href="/tasks/detail/{{tasks._id}}/members" class="on-hover">
+                                    <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-eye" viewBox="0 0 16 20">
+                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                                        </svg>
+                                        {{tasks.members.length}} Member
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-3 mb-0" style="border: 1px solid lightgray;">
+        </div>
+        <div class="containerContent bg-white">
+            <div class="d-flex h-100">
+                <div class="col col-sm-3 col-lg-3" style="border-right: 1px solid lightgray">
+                    <p style="color: black; font-weight: bold; font-size: 25px; width: 20vw; max-width: fit-content;">Tentang Tugas</p>
+                </div>
+                <div class="col col-sm-9 col-lg-9">
+                    <table class="mt-2">
+                        <tr>
+                            <td class="fw-bold" style="padding:0 15px 20px 15px;">Tingkat Prioritas</td>
+                            <td style="padding:0 15px 20px 70px;">
+                                {{#if equals tasks.priority "high"}}
+                                    <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                        {{capitalizeWord tasks.priority}}
+                                    </span>
+                                {{/if}}
+                                {{#if equals tasks.priority "mid"}}
+                                    <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                        {{capitalizeWord tasks.priority}}
+                                    </span>
+                                {{/if}}
+                                {{#if equals tasks.priority "low"}}
+                                    <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                        {{capitalizeWord tasks.priority}}
+                                    </span>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="padding:0 15px 20px 15px;">Tenggat Waktu</td>
+                            <td style="padding:0 15px 20px 70px;">
+                                <span class="rounded-3 deadline px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                    </svg>
+                                    <b>Dalam {{daysDifference tasks.deadline}} hari</b> / {{formatHRDateShort tasks.deadline}}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr style="padding-bottom: 20px; padding-top: 20px;">
+                            <td class="fw-bold" style="padding:0px 15px 20px 15px;">Judul Tugas</td>
+                            <td style="padding:0 15px 20px 70px; max-width: 280px; word-wrap:break-word;" class="word-break text-wrap">
+                                {{tasks.nama_task}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="padding:0 15px 20px 15px;">Deskripsi</td>
+                            <td style="padding:0 15px 20px 70px; word-wrap: break-word;">
+                                <p class="word-break text-wrap mb-0 description-limit" id="description">
+                                    {{{tasks.deskripsi}}}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="mobile-div my-3 pb-3">
@@ -980,7 +1098,7 @@
                                 <tr>
                                     <td style="padding:0 15px 20px 15px; word-wrap: break-word;" class="description-limit" colspan="2">
                                         <p class="word-break text-wrap text-desc mb-0" id="description">
-                                            {{toHTML tasks.deskripsi}}
+                                            {{{tasks.deskripsi}}}
                                         </p>
                                     </td>
                                 </tr>
@@ -999,14 +1117,10 @@
 
         .desktop-div{
             position: fixed;
-            top: 50%;
-            left: 50%;
-            -webkit-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-        }
-
-        .isiPersonalData>table>tr>td:nth-child(1) {
-            width: 150px;
+            /* top: 50%;
+            left: 50%; */
+            /* -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); */
         }
 
         .box {
@@ -1022,11 +1136,8 @@
             border: 1px solid rgb(189, 189, 189);
         }
 
-        .sidebar {
-            width: 100%;
-            height: 100%;
-            flex: 1;
-            border-right: 1px solid black;
+        .isiPersonalData>table>tr>td:nth-child(1) {
+            width: 150px;
         }
 
         .content {
@@ -1036,6 +1147,13 @@
             display: flex;
             flex-direction: column;
             border-radius: 15px 15px 0px 0px;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            border-right: 1px solid black;
         }
 
         .bagianAvatar {
@@ -1104,8 +1222,9 @@
 
         .containerContent {
             width: 100%;
-            height: auto;
-            overflow-y: auto;
+            height: 100%;
+            /* height: auto;
+            overflow-y: auto; */
             background-color: #EFEFEF;
             border-radius: 0px 0px 15px 15px;
             flex: 1;
