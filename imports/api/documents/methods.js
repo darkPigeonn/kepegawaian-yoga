@@ -178,10 +178,69 @@ Meteor.methods({
       }
     }
   },
+  
+  // "getUserIdByUsername"(namaPengguna) {
+    
+  //   check(namaPengguna, String);
+  //   const pengguna = Meteor.users.findOne({ username: namaPengguna });
+  //   console.log("pengguna",pengguna);
+  //   return pengguna ? pengguna._id : null;
+
+  // },
+  // "getLettersCreatedByUser"(username) {
+  //   const userLookup = {
+  //     $lookup: {
+  //       from: "users",
+  //       localField: "username",
+  //       foreignField: "username",
+  //       as: "userData"
+  //     }
+  //   };
+
+  //   const matchUser = {
+  //     $match: {
+  //       "userData.username": username
+  //     }
+  //   };
+
+  //   const lettersLookup = {
+  //     $lookup: {
+  //       from: "letters",
+  //       localField: "userData._id",
+  //       foreignField: "createdBy",
+  //       as: "lettersData"
+  //     }
+  //   };
+
+  //   const projection = {
+  //     $project: {
+  //       lettersCreatedByUser: {
+  //         $filter: {
+  //           input: "$lettersData",
+  //           as: "letter",
+  //           cond: { $eq: ["$$letter.createdBy", { $arrayElemAt: ["$userData._id", 0] }] }
+  //         }
+  //       }
+  //     }
+  //   };
+
+  //   const unwindResult = { $unwind: "$lettersCreatedByUser" };
+
+  //   const finalProjection = {
+  //     $project: {
+  //       "lettersCreatedByUser": 1
+  //     }
+  //   };
+  //   const result = Meteor.users.aggregate([userLookup, matchUser, lettersLookup, projection, unwindResult, finalProjection]);
+  //   console.log("cek user",result);
+
+  //   return result;
+  // },
+
 
   "employee.getDataLogin"(id) {
     const data = Meteor.users.findOne({ _id: id });
-    // console.log(data);
+    //console.log("user",data);
     return data.roles;
   },
 

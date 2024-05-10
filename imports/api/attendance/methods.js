@@ -556,7 +556,7 @@ Meteor.methods({
             const thisEmployee = Employee.findOne({
             _id: element.userId,
             });
-            console.log(thisEmployee);
+            //console.log(thisEmployee);
             element.partners = thisEmployee.partners;
             if (check) {
             for (let ii = 0; ii < element.schedules.length; ii++) {

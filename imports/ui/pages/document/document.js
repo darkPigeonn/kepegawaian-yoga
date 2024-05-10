@@ -445,6 +445,10 @@ Template.createKorespondensi.helpers({
   },
   isSKLetter() {
     return Template.instance().isSKLetter.get();
+  },
+  getUserFullName(userId) {
+    const user = Meteor.users.findOne({ _id: userId });
+    return user ? user.profile.fullName : ''; 
   }
 })
 Template.createKorespondensi.events({
@@ -623,12 +627,6 @@ Template.listKorespondensi.onCreated(function () {
       console.log(error);
     }
   });
-
-
-  
-
-
-  
 });
 
 Template.listKorespondensi.helpers({
@@ -646,6 +644,14 @@ Template.listKorespondensi.helpers({
   },
   dataHistoryReviewer() {
     return Template.instance().dataHistoryReviewer.get();
+  },
+  // getUsername(userId) {
+  //   const result = ReactiveMethod.call("getUsernameById", userId);
+  //   return result ? result : "Unknown User";
+  // },
+  getUserFullName(userId) {
+    const user = Meteor.users.findOne({ _id: userId });
+    return user ? user.username : '';   
   }
 });
 
@@ -676,97 +682,132 @@ Template.listKorespondensi.events({
   },
   // seandainya tidak ingin menggunkan btn-search pakai saja input .search-input
 
-  // "click #btn-search"(e, t) {
-  //   e.preventDefault();
-  //   const nameOfMail = $("#nameOfMail").val();
-  //   const nameOfDate = $("#nameOfdate").val();
-  //   const nameOfExperiedDate = $("#nameOfExperiedDate").val();
-  //   const nameOfPersonMaker = $("#nameOfPersonMaker").val();
+  "click #btn-search"(e, t) {
+    e.preventDefault();
+    const nameOfMail = $("#nameOfMail").val();
+    const nameOfDate = $("#nameOfdate").val();
+    const nameOfExperiedDate = $("#nameOfExperiedDate").val();
+    const nameOfPersonMaker = $("#nameOfPersonMaker").val();
   
-  //   // console.log("nama surat", nameOfMail);
-  //   // console.log("tanggal awal", nameOfDate);
-  //   // console.log("tanggal berakhir", nameOfExperiedDate);
-  //   // console.log("pembuat surat", nameOfPersonMaker);
+    // console.log("nama surat", nameOfMail);
+    // console.log("tanggal awal", nameOfDate);
+    // console.log("tanggal berakhir", nameOfExperiedDate);
+    // console.log("pembuat surat", nameOfPersonMaker);
+    // function checkLinksArsip(item, nameOfMail) {
+    //   if (item.linksArsip && Array.isArray(item.linksArsip)) {
+    //       return item.linksArsip.some(link => link.name === nameOfMail);
+    //   } else {
+    //       return false;
+    //   }
+    // }
   
-  //   const dataKorespondensi = Template.instance().dataKorespondensi.get();
-  //   console.log(dataKorespondensi);
-  //   let filteredItems;
+    const dataKorespondensi = Template.instance().dataKorespondensi.get();
+    console.log(dataKorespondensi);
+    let filteredItems;
+  
 
-  //   if (!nameOfMail && !nameOfDate && !nameOfExperiedDate && !nameOfPersonMaker) {
-  //     filteredItems = dataKorespondensi;
-  //   } else {
-  //     if (nameOfMail || nameOfDate || nameOfExperiedDate || nameOfPersonMaker) {
-  //       filteredItems = dataKorespondensi.filter(item => {
-  //         let tanggalBerlakuFormatted = null;
-  //         let tanggalBerakhirFormatted = null;
-    
-  //         if (item.tanggalBerlaku) {
-  //           const tanggalBerlakuDate = new Date(item.tanggalBerlaku);
-  //           const tanggalBerakhirDate = new Date(item.tanggalBerakhir);
-    
-  //           const tahun = tanggalBerlakuDate.getFullYear();
-  //           const bulan = ('0' + (tanggalBerlakuDate.getMonth() + 1)).slice(-2);
-  //           const tanggal = ('0' + tanggalBerlakuDate.getDate()).slice(-2);
-    
-  //           tanggalBerlakuFormatted = tahun + '-' + bulan + '-' + tanggal;
-    
-  //           const tahun_beakhir = tanggalBerakhirDate.getFullYear();
-  //           const bulan_berakhir = ('0' + (tanggalBerakhirDate.getMonth() + 1)).slice(-2);
-  //           const tanggal_berakhir = ('0' + tanggalBerakhirDate.getDate()).slice(-2);
-  //           tanggalBerakhirFormatted = tahun_beakhir + '-' + bulan_berakhir + '-' + tanggal_berakhir;
-  //         }
-  
-  //         if (nameOfMail !== "" && nameOfDate === "" && nameOfExperiedDate ==="" && nameOfPersonMaker ===""){
-  //           return item.note === nameOfMail ;
-  //         } 
-  //         else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
-  //           return item.note === nameOfMail && tanggalBerlakuFormatted === nameOfDate
-  //         }
-  //         else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-  //            return (item.note === nameOfMail && 
-  //           tanggalBerakhirFormatted === nameOfExperiedDate);
-  //         }
-  //         else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-  //           return (item.note === nameOfMail && 
-  //             item.createdBy === nameOfPersonMaker);
-  //         }
-  //         else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate 
-  //         }
-  //         else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-  //           return tanggalBerakhirFormatted ===nameOfExperiedDate 
-  //         }
-  //         else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-  //           return item.createdBy ===nameOfPersonMaker 
-  //         }
+    if (!nameOfMail && !nameOfDate && !nameOfExperiedDate && !nameOfPersonMaker) {
+      filteredItems = dataKorespondensi;
+    } else {
+      if (nameOfMail || nameOfDate || nameOfExperiedDate || nameOfPersonMaker) {
+        filteredItems = dataKorespondensi.filter(item => {
+          function checkLinksArsipWithPartialMatch(item, nameOfMail) {
+            if (item.linksArsip && Array.isArray(item.linksArsip)) {
+                const mailWords = nameOfMail.split(" ");
+                for (let i = 0; i < mailWords.length; i++) {
+                    const word = mailWords[i];
+                    const match = item.linksArsip.some(link => link.name.startsWith(word));
+                    if (!match) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+          }
         
-  //         else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate 
-  //         }
-  //         else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && item.createdBy === nameOfPersonMaker 
-  //         }
-  //         else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.note === nameOfMail
-  //         }
-  //         else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
-  //         }
-  //         else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
-  //         }
-  //         else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
-  //           return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker && item.note === nameOfMail
-  //         }
+          let tanggalBerlakuFormatted = null;
+          let tanggalBerakhirFormatted = null;
+    
+          if (item.tanggalBerlaku) {
+            const tanggalBerlakuDate = new Date(item.tanggalBerlaku);
+            const tanggalBerakhirDate = new Date(item.tanggalBerakhir);
+    
+            const tahun = tanggalBerlakuDate.getFullYear();
+            const bulan = ('0' + (tanggalBerlakuDate.getMonth() + 1)).slice(-2);
+            const tanggal = ('0' + tanggalBerlakuDate.getDate()).slice(-2);
+    
+            tanggalBerlakuFormatted = tahun + '-' + bulan + '-' + tanggal;
+    
+            const tahun_beakhir = tanggalBerakhirDate.getFullYear();
+            const bulan_berakhir = ('0' + (tanggalBerakhirDate.getMonth() + 1)).slice(-2);
+            const tanggal_berakhir = ('0' + tanggalBerakhirDate.getDate()).slice(-2);
+            tanggalBerakhirFormatted = tahun_beakhir + '-' + bulan_berakhir + '-' + tanggal_berakhir;
+          }
+          if (nameOfMail !== "" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
+            return checkLinksArsipWithPartialMatch(item, nameOfMail);
+
+          } 
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
+              return checkLinksArsipWithPartialMatch(item, nameOfMail) && tanggalBerlakuFormatted === nameOfDate;
+      
+          }
+          else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+           
+              return checkLinksArsipWithPartialMatch(item, nameOfMail) && tanggalBerakhirFormatted === nameOfExperiedDate;
+           
+          }
+          else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+          
+              return checkLinksArsipWithPartialMatch(item, nameOfMail)  && item.createdBy === nameOfPersonMaker;
+           
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
+            return tanggalBerlakuFormatted ===nameOfDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+            return tanggalBerakhirFormatted ===nameOfExperiedDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return item.createdBy ===nameOfPersonMaker 
+          }
+        
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && item.createdBy === nameOfPersonMaker 
+          }
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+           
+              return checkLinksArsipWithPartialMatch(item, nameOfMail)  && 
+              tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate;
+          
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
+          }
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
+          
+              return checkLinksArsipWithPartialMatch(item, nameOfMail)  && 
+              tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker;
+          
+          
+          }
+           
     
          
     
-  //       });
-  //     }
+        });
+      }
       
-  //   } 
-  //   Template.instance().listItems.set(filteredItems);
-  // }
+    } 
+    Template.instance().listItems.set(filteredItems);
+  }
 });
 
 Template.editKorespondensiAlur.onCreated(function (){
@@ -1006,6 +1047,11 @@ Template.editKorespondensi.helpers({
   },
   isSKLetter() {
     return Template.instance().isSKLetter.get();
+  },
+  getUserFullName(userId) {
+    const user = Meteor.users.findOne({ _id: userId });
+    console.log("user",user);
+    return user ? user.username : ''; 
   }
 })
 
@@ -1029,20 +1075,58 @@ Template.editKorespondensi.events({
       t.listTembusan.set(dataTembusan); 
     }
   },
-  "click #btn-add-signer"(e,t){
-    e.preventDefault()
-    const listKorespondensiSigner = t.listKorespondensiSigner.get()
-    const nameSignotory = $("#nameSignotory").val()
-    const positionSignotory = $("#positionSignotory").val()
+  // "click #btn-add-signer"(e,t){
+  //   e.preventDefault()
+  //   const listKorespondensiSigner = t.listKorespondensiSigner.get()
+  //   const nameSignotory = $("#nameSignotory").val()
+  //   const positionSignotory = $("#positionSignotory").val()
 
-    const data = {
-      nameSignotory,
-      positionSignotory
+  //   const data = {
+  //     nameSignotory,
+  //     positionSignotory
+  //   }
+  //   listKorespondensiSigner.push(data)
+  //   t.listKorespondensiSigner.set(listKorespondensiSigner)
+
+  // },
+  "click #btn-add-signer"(e, t) {
+    e.preventDefault();
+    const listKorespondensiSigner = t.listKorespondensiSigner.get();
+    let nameSignotory = ''; 
+    let positionSignotory='';
+
+  
+    const sameWithMakerChecked = $("#sameWithMaker").prop("checked");
+  
+    if (sameWithMakerChecked) {
+      const userId = Meteor.userId();
+        const dataRole = t.jabatanLogin.get();
+        // console.log ("Role: ",dataRole);
+      if (userId) {
+        nameSignotory = userId;
+        positionSignotory = dataRole;
+
+        listKorespondensiSigner.push({
+          nameSignotory,
+          positionSignotory
+        });
+        t.listKorespondensiSigner.set(listKorespondensiSigner);
+
+      }
+    } else {
+      nameSignotory = $("#nameSignotory").val();
+      positionSignotory = $("#positionSignotory").val();
+
+      listKorespondensiSigner.push({
+        nameSignotory,
+        positionSignotory
+      });
+      t.listKorespondensiSigner.set(listKorespondensiSigner);
     }
-    listKorespondensiSigner.push(data)
-    t.listKorespondensiSigner.set(listKorespondensiSigner)
-
+  
+ 
   },
+  
   "click #btn-add-tembusan"(e,t){
     e.preventDefault()
     const listTembusan = t.listTembusan.get()
@@ -1110,6 +1194,7 @@ Template.editKorespondensi.events({
     if(dataAlur.length == 0){
       dataAlur = null
     }
+    console.log("data signer:",dataSigner);
 
     //categori
     const data = {

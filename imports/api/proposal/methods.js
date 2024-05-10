@@ -451,7 +451,7 @@ Meteor.methods({
       }
     // return Proposals.update({ _id: data.proposalId }, { $set: { status: 0 } });
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       return error
     }
     

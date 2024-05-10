@@ -186,12 +186,12 @@ Meteor.methods({
 
     async "employee.insertCSV"(data) {
       const fail = []
-      console.log(data);
+      //console.log(data);
       for (const i of data) {
         let { full_name,identification_number,place_of_birth,date_of_birth,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = i
           identification_number = identification_number.toString();
           base_salary = base_salary.toString();
-          console.log(allowances, deductions);
+          //console.log(allowances, deductions);
           allowances = allowances.toString();
           deductions = deductions.toString();
           phone_number = phone_number.toString();
@@ -498,10 +498,10 @@ Meteor.methods({
         },
         data: dataSend,
       });
-      console.log(response);
+      //console.log(response);
       return true;
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       throw new Meteor.Error(412, "Ubah password aplikasi gagal")
     }
   }
