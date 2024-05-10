@@ -116,7 +116,7 @@ Meteor.methods({
         }
         const dataSurat = Letters.find().fetch();
         for (const data of dataSurat) {
-            for (const link of data.arsip) {
+            for (const link of data.linksArsip) {
                 fileName.push(link.name)
             }
         }
