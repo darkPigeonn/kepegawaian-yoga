@@ -575,6 +575,7 @@ Template.listKorespondensi.onCreated(function () {
   self.dataKorespondensi = new ReactiveVar();
   self.dataKorespondensiPembuat = new ReactiveVar();
   self.dataHistoryReviewer = new ReactiveVar();
+  const listItems = []
 
   const userId = Meteor.userId();
   if (userId) {
@@ -586,7 +587,7 @@ Template.listKorespondensi.onCreated(function () {
         Meteor.call("korespondensi.getByRoles", dataRole, function (error, result) {
           if (result) {
             console.log(result);
-            self.listItems.set(result);
+            listItems.push(result)
           } else {
             console.log(error);
           }
@@ -605,42 +606,27 @@ Template.listKorespondensi.onCreated(function () {
       }
     });
   }
-  Meteor.call("korespondensi.getAll", function (error1, result1) {
-    if (result1) {
-      self.dataKorespondensi.set(result1);
-    } else {
-      console.log(error1);
-    }
-  });
+    Meteor.call("korespondensi.getAll", function (error1, result1) {
+      console.log(result1);
+      if (result1) {
+        self.dataKorespondensi.set(result1);
+        self.listItems.set(result1);
+
+      } else {
+        console.log(error1);
+      }
+    });
 
   Meteor.call("korespondensi.getByCreator", function (error, result){
     if (result) {
       self.dataKorespondensiPembuat.set(result);
+      // self.listItems.set(result);
     } else {
       console.log(error);
     }
   });
 
-  Meteor.call("korespondensi.getByCreator", function (error, result){
-    if (result) {
-      const pembuatIds = result.map(item => item.createdBy); 
-      Meteor.call("getUserByIds", pembuatIds, function (error, users) {
-        if (users) {
-          result.forEach(item => {
-            const matchingUser = users.find(user => user._id === item.createdBy); 
-            if (matchingUser) {
-              item.namaPembuat = matchingUser.profile.nama; 
-            }
-          });
-          self.dataKorespondensiPembuat.set(result);
-        } else {
-          console.log(error);
-        }
-      });
-    } else {
-      console.log(error);
-    }
-  });
+
   
 
 
@@ -691,6 +677,7 @@ Template.listKorespondensi.events({
     });
   },
   // seandainya tidak ingin menggunkan btn-search pakai saja input .search-input
+
   "click #btn-search"(e, t) {
     e.preventDefault();
     const nameOfMail = $("#nameOfMail").val();
@@ -698,92 +685,90 @@ Template.listKorespondensi.events({
     const nameOfExperiedDate = $("#nameOfExperiedDate").val();
     const nameOfPersonMaker = $("#nameOfPersonMaker").val();
   
-    console.log("nama surat", nameOfMail);
-    console.log("tanggal awal", nameOfDate);
-    console.log("tanggal berakhir", nameOfExperiedDate);
-    console.log("pembuat surat", nameOfPersonMaker);
+    // console.log("nama surat", nameOfMail);
+    // console.log("tanggal awal", nameOfDate);
+    // console.log("tanggal berakhir", nameOfExperiedDate);
+    // console.log("pembuat surat", nameOfPersonMaker);
   
     const dataKorespondensi = Template.instance().dataKorespondensi.get();
     console.log(dataKorespondensi);
     let filteredItems;
-  
-    if (nameOfMail || nameOfDate || nameOfExperiedDate || nameOfPersonMaker) {
-      filteredItems = dataKorespondensi.filter(item => {
-        let tanggalBerlakuFormatted = null;
-        let tanggalBerakhirFormatted = null;
-  
-        if (item.tanggalBerlaku) {
-          const tanggalBerlakuDate = new Date(item.tanggalBerlaku);
-          const tanggalBerakhirDate = new Date(item.tanggalBerakhir);
-  
-          const tahun = tanggalBerlakuDate.getFullYear();
-          const bulan = ('0' + (tanggalBerlakuDate.getMonth() + 1)).slice(-2);
-          const tanggal = ('0' + tanggalBerlakuDate.getDate()).slice(-2);
-  
-          tanggalBerlakuFormatted = tahun + '-' + bulan + '-' + tanggal;
-  
-          const tahun_beakhir = tanggalBerakhirDate.getFullYear();
-          const bulan_berakhir = ('0' + (tanggalBerakhirDate.getMonth() + 1)).slice(-2);
-          const tanggal_berakhir = ('0' + tanggalBerakhirDate.getDate()).slice(-2);
-          tanggalBerakhirFormatted = tahun_beakhir + '-' + bulan_berakhir + '-' + tanggal_berakhir;
-        }
 
-        if (nameOfMail !== "" && nameOfDate === "" && nameOfExperiedDate ==="" && nameOfPersonMaker ===""){
-          return item.note === nameOfMail ;
-        } 
-        else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
-          return item.note === nameOfMail && tanggalBerlakuFormatted === nameOfDate
-        }
-        else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-           return (item.note === nameOfMail && 
-          tanggalBerakhirFormatted === nameOfExperiedDate);
-        }
-        else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-          return (item.note === nameOfMail && 
-            item.createdBy === nameOfPersonMaker);
-        }
-        else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
-          return tanggalBerlakuFormatted ===nameOfDate 
-        }
-        else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-          return tanggalBerakhirFormatted ===nameOfExperiedDate 
-        }
-        else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-          return item.createdBy ===nameOfPersonMaker 
-        }
-      
-        else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-          return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate 
-        }
-        else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-          return tanggalBerlakuFormatted ===nameOfDate && item.createdBy === nameOfPersonMaker 
-        }
-        else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
-          return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.note === nameOfMail
-        }
-        else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
-          return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
-        }
-        else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
-          return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
-        }
-        else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
-          return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker && item.note === nameOfMail
-        }
-  
-       
-  
-      });
-    } else {
+    if (!nameOfMail && !nameOfDate && !nameOfExperiedDate && !nameOfPersonMaker) {
       filteredItems = dataKorespondensi;
-      
-    }
+    } else {
+      if (nameOfMail || nameOfDate || nameOfExperiedDate || nameOfPersonMaker) {
+        filteredItems = dataKorespondensi.filter(item => {
+          let tanggalBerlakuFormatted = null;
+          let tanggalBerakhirFormatted = null;
+    
+          if (item.tanggalBerlaku) {
+            const tanggalBerlakuDate = new Date(item.tanggalBerlaku);
+            const tanggalBerakhirDate = new Date(item.tanggalBerakhir);
+    
+            const tahun = tanggalBerlakuDate.getFullYear();
+            const bulan = ('0' + (tanggalBerlakuDate.getMonth() + 1)).slice(-2);
+            const tanggal = ('0' + tanggalBerlakuDate.getDate()).slice(-2);
+    
+            tanggalBerlakuFormatted = tahun + '-' + bulan + '-' + tanggal;
+    
+            const tahun_beakhir = tanggalBerakhirDate.getFullYear();
+            const bulan_berakhir = ('0' + (tanggalBerakhirDate.getMonth() + 1)).slice(-2);
+            const tanggal_berakhir = ('0' + tanggalBerakhirDate.getDate()).slice(-2);
+            tanggalBerakhirFormatted = tahun_beakhir + '-' + bulan_berakhir + '-' + tanggal_berakhir;
+          }
   
+          if (nameOfMail !== "" && nameOfDate === "" && nameOfExperiedDate ==="" && nameOfPersonMaker ===""){
+            return item.note === nameOfMail ;
+          } 
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
+            return item.note === nameOfMail && tanggalBerlakuFormatted === nameOfDate
+          }
+          else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+             return (item.note === nameOfMail && 
+            tanggalBerakhirFormatted === nameOfExperiedDate);
+          }
+          else if(nameOfMail !=="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return (item.note === nameOfMail && 
+              item.createdBy === nameOfPersonMaker);
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker === ""){
+            return tanggalBerlakuFormatted ===nameOfDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+            return tanggalBerakhirFormatted ===nameOfExperiedDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate === "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return item.createdBy ===nameOfPersonMaker 
+          }
+        
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate 
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && item.createdBy === nameOfPersonMaker 
+          }
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker === ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.note === nameOfMail
+          }
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate === "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
+          }
+          else if(nameOfMail ==="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker
+          }
+          else if(nameOfMail !=="" && nameOfDate !== "" && nameOfExperiedDate !== "" && nameOfPersonMaker !== ""){
+            return tanggalBerlakuFormatted ===nameOfDate && tanggalBerakhirFormatted === nameOfExperiedDate && item.createdBy === nameOfPersonMaker && item.note === nameOfMail
+          }
+    
+         
+    
+        });
+      }
+      
+    } 
     Template.instance().listItems.set(filteredItems);
   }
-
-  
-
 });
 
 Template.editKorespondensiAlur.onCreated(function (){
@@ -940,19 +925,32 @@ Template.editKorespondensi.onCreated(function (){
       }
       console.log("Alur",result.alur.length);
       let dataAlur = [];
-      let dataTembusan =[];
-      let dataSigne=[];
+      let dataSigner = [];
+      let dataTembusan = [];
       
       for (const iterator of result.alur) {
         dataAlur.push(iterator.jabatan);
       }
-  
       
+      for (const iterator of result.signer) {
+        dataSigner.push({
+          nameSignotory: iterator.nameSignotory,
+          positionSignotory: iterator.positionSignotory
+        });
+      }
+      for (const iterator of result.tembusan) {
+        dataTembusan.push({
+          tembusanName: iterator.tembusanName
+        });
+      }
+ 
+   
+      self.listKorespondensiSigner.set(dataSigner);
+      self.listTembusan.set(dataTembusan);
       self.daftarAlur.set(dataAlur);
-      self.listKorespondensiSigner.set(result.dataSigner);
-      self.listTembusan.set(result.dataTembusan);
       self.optionsDescription.content = result.desc;
       initEditor(template, self.optionsDescription);
+      
     } else {
       console.log(error);
     }
