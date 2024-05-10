@@ -837,7 +837,7 @@
 
 
 <!-- Start Korespondensi -->
-<template name="listKorespondensi">
+<template name="listKorespondensi" id ="listKorespondensi">
     
     <div class="container">
         <div class="section-label-page">
@@ -850,14 +850,21 @@
         {{#if equals jabatanLogin "sekretaris-keuskupan"}}
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#review">Daftar Surat Lainnya</a>
+                    <a class="nav-link active" data-toggle="tab" href="#all">Daftar Semua Surat</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#all">Daftar Semua Surat</a>
+                <a class="nav-link" data-toggle="tab" href="#review">Daftar Surat Lainnya</a>
                 </li>
+                <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#created">Daftar Surat Dibuat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#history">Daftar Riwayat Review Surat</a>
+                </li>
+            
             </ul>
             <div class="tab-content">
-                <div id="review" class="tab-pane fade show active">
+                <div id="review" class="tab-pane fade  ">
                     <h3>Daftar Surat Yang Harus Direview</h3>
                     <div class="section-content-page">
                         <table class="table table-bordered">
@@ -924,6 +931,8 @@
                         </table>
                     </div>
                     <br><br>
+                </div>
+                <div id="created" class="tab-pane fade">
                     <h3>Daftar Surat Dibuat</h3>
                     <div class="section-content-page">
                         <table class="table table-bordered">
@@ -1006,6 +1015,9 @@
                         </table>
                     </div>
                     <br><br>
+                </div>
+
+                <div id="history" class="tab-pane fade">
                     <h3>Daftar Riwayat Review Surat</h3>
                     <div class="section-content-page">
                         <table class="table table-bordered">
@@ -1068,14 +1080,30 @@
                     <br><br>
                 </div>
              
-                <div id="all" class="tab-pane fade">
+                <div id="all" class="tab-pane fade show active">
                     <h3>Daftar Semua Surat</h3>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="nameOfMail" placeholder="Filter berdasarkan Nama Surat">
-                        <input type="date" class="form-control" id="nameOfdate" placeholder="Filter berdasarkan masa berlaku">
-                        <input type="date" class="form-control" id="nameOfExperiedDate" placeholder="Filter berdasarkan masa berakhir">
-                        <input type="text" class="form-control" id="nameOfPersonMaker" placeholder="Filter Nama Pembuat Surat">
+                        <div class="form-group">
+                            <label for="nameOfMail">Nama Surat</label>
+                            <input type="text" class="form-control search-input" id="nameOfMail" placeholder="Nama Surat">
+                        </div>
+                        <div class="form-group ml-3">
+                            <label for="nameOfdate">Masa Berlaku</label>
+                            <input type="date" class="form-control search-input" id="nameOfdate" placeholder="Masa Berlaku">
+                        </div>
+                        <div class="form-group ml-3">
+                            <label for="nameOfExperiedDate">Masa Berakhir</label>
+                            <input type="date" class="form-control search-input" id="nameOfExperiedDate" placeholder="Masa Berakhir">
+                        </div>
+                        <div class="form-group ml-3">
+                            <label for="nameOfPersonMaker">Nama Pembuat Surat</label>
+                            <input type="text" class="form-control search-input" id="nameOfPersonMaker" placeholder="Nama Pembuat Surat">
+                        </div>
+                        <div class="form-group ml-3" style="margin-top:32px;">
+                            <button class="btn btn-primary" type="button" id="btn-search">Cari</button>
+                        </div>
                     </div>
+                    
                     <div class="section-content-page">
                         <table class="table table-bordered">
                             <thead>
@@ -1089,49 +1117,38 @@
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
-                                {{#each dataKorespondensi}}
+                                {{#each listItems}}
                                 <tr>
-                                    <td>
-                                        {{setTableNumber @index}}
-                                    </td>
-                                    <td>
-        
-                                    </td>
-                                    <td>
-                                        {{categoryName}}
-                                    </td>
-                                    <td>
-                                        {{subject}}
-                                    </td>
-                                    <td>
-                                        {{purpose}}
-                                    </td>
-                                    <td>
-                                        {{formatHRDate createdAt}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 10}}
-                                            Draft
-                                        {{else}}
-                                            {{#if equals status 80}}
-                                                Diterima
-                                            {{else}}
-                                                {{#if equals status 99}}
-                                                    Ditolak
-                                                {{else}}
-                                                    Sedang Direview
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                    <td>
-                                        <a href="/detailKorespondensi/{{_id}}">
-                                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                        </a>
-                                    </td>
+                                  <td>{{setTableNumber @index}}</td>
+                                  <td>{{noSuratKeluar}}</td>
+                                  <td>{{categoryName}}</td>
+                                  <td>{{subject}}</td>
+                                  <td>{{purpose}}</td>
+                                  <td>{{formatHRDate createdAt}}</td>
+                                  <td>
+                                    {{#if equals status 10}}
+                                    Draft
+                                    {{else}}
+                                    {{#if equals status 80}}
+                                    Diterima
+                                    {{else}}
+                                    {{#if equals status 99}}
+                                    Ditolak
+                                    {{else}}
+                                    Sedang Direview
+                                    {{/if}}
+                                    {{/if}}
+                                    {{/if}}
+                                  </td>
+                                  <td>
+                                    <a href="/detailKorespondensi/{{_id}}">
+                                      <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                    </a>
+                                  </td>
                                 </tr>
                                 {{/each}}
-                            </tbody>
+                              </tbody>
+                              
                         </table>
                     </div>
                 </div>
@@ -1342,6 +1359,7 @@
             </div>
         {{/if}}
     </div>
+    
 </template>
 
 <template name="createKorespondensi">
@@ -1698,19 +1716,60 @@
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
-                                {{#each i in listKorespondensiSigner}}
+                                {{#each item in listKorespondensiSigner}}
                                 <tr>
                                     <td>
                                         {{setTableNumber @index}}
                                     </td>
                                     <td>
-                                        {{i.nameSignotory}}
+                                        {{item.nameSignotory}}
                                     </td>
                                     <td>
-                                        {{i.positionSignotory}}
+                                        {{item.positionSignotory}}
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-remove-signer" posisi={{@index}}>
+                                            <i class="fa fa-trash" posisi={{@index}}></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{/if}}
+
+
+                    <h4>Tembusan</h4>
+                    <button class="btn btn-primary" id="btn-add-tembusan">Tambah</button>
+                 
+                    <div class="form-group">
+                        <label for="tembusanName">Nama</label>
+                        <input type="text" id="tembusanName" class="form-control">
+                    </div>
+           
+    
+                    {{#if listTembusan}}
+                    <h4>Daftar Tembusan</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>No</th>
+                                <th>Nama Tembusan</th>
+                                <th>Aksi</th>
+                            </thead>
+                            <tbody>
+                                {{#each i in listTembusan}}
+                                <tr>
+                                    <td>
+                                        {{setTableNumber @index}}
+                                    </td>
+                                    <td>
+                                        {{i.tembusanName}}
+                                    </td>
+                                    
+                                    <td>
+                                        <button class="btn btn-danger btn-remove-tembusan" posisi={{@index}}>
                                             <i class="fa fa-trash" posisi={{@index}}></i>
                                         </button>
                                     </td>
