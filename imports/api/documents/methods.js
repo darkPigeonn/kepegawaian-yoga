@@ -182,14 +182,15 @@ Meteor.methods({
 
   "employee.getDataLogin"(id) {
     const data = Meteor.users.findOne({ _id: id });
-    console.log("user",data);
+    // console.log("user",data);
     return data.roles;
+    
   },
-  // "getUser"(id){
-  //   const fullname = Meteor.users.findOne({_id: id});
-  //   console.log("full name", data);
-  //   return fullname;
-  // },
+  "employee.getUser"(id){
+    const data = Meteor.users.findOne({ _id: id });
+    return data.fullname;
+  
+  },
 
   "korespondensi.create"(data) {
     const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir} = data;
