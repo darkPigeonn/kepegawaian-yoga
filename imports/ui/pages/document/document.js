@@ -596,7 +596,7 @@ Template.listKorespondensi.onCreated(function () {
             console.log(error);
           }
         });
-        //get history orang yang melakukan review
+   
         Meteor.call("korespondensi.getHistoryByPengisi", dataRole, function (error, result){
           console.log(result);
           if (result) {
@@ -644,14 +644,6 @@ Template.listKorespondensi.helpers({
   },
   dataHistoryReviewer() {
     return Template.instance().dataHistoryReviewer.get();
-  },
-  // getUsername(userId) {
-  //   const result = ReactiveMethod.call("getUsernameById", userId);
-  //   return result ? result : "Unknown User";
-  // },
-  getUserFullName(userId) {
-    const user = Meteor.users.findOne({ _id: userId });
-    return user ? user.username : '';   
   }
 });
 
@@ -1097,6 +1089,7 @@ Template.editKorespondensi.events({
 
   
     const sameWithMakerChecked = $("#sameWithMaker").prop("checked");
+    const letterMakerChecked = $("").prop("checked");
   
     if (sameWithMakerChecked) {
       const userId = Meteor.userId();
