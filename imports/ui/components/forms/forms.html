@@ -7,13 +7,17 @@
     <div class="card rounded-3 px-3 mt-3 mb-2 px-3 pt-3 pb-2" style="width: 100%; overflow-x: auto;">
         <div class="navigation-form d-flex gap-3">
 
-                <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
-                <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}} {{#if equals pageMode 'add' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
-         
+    {{#if equals pageMode 'add'}}
+    <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}}" data-value="1">1. Profil Biografis</label>
+    {{else}}
+    <label class="text-nowrap {{#if equals formPage 1}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="1">1. Profil Biografis</label><i class="fa fa-light fa-angle-right pt-1"></i>
+    <label class="text-nowrap {{#if equals formPage 2}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="2">2. Riwayat Kerja/Penugasan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+    <label class="text-nowrap {{#if equals formPage 3}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="3">3. Pelaksanaan Pendidikan</label><i class="fa fa-light fa-angle-right pt-1"></i>
+    <label class="text-nowrap {{#if equals formPage 4}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="4">4. Pelaksanaan Penelitian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+    <label class="text-nowrap {{#if equals formPage 5}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="5">5. Pelaksanaan Pengabdian</label><i class="fa fa-light fa-angle-right pt-1"></i>
+    <label class="text-nowrap {{#if equals formPage 6}}text-blue fw-bold {{/if}} {{#if equals pageMode 'edit' }} btnNavigation {{/if}}" data-value="6">6. Penunjang</label>
+    {{/if}}
+
         </div>
     </div>
 
@@ -250,6 +254,16 @@
                         </div>                        
                     </form>
                 </section>
+                {{#if equals pageMode "add"}}
+
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end mt-4">
+                    <button class="btn btn-submit btn-next text-white" id = "btn-submit" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="1">
+                        Simpan Data
+                    </button>
+                </div>
+                {{/if}}
+                
                 {{#if equals pageMode "edit"}}
                     <hr class="my-3" style="border: 1px solid lightgray;">
                     <div class="d-flex justify-content-end">
@@ -334,6 +348,12 @@
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-warning btn-personal" type="button" value="7">Simpan Data</button>
                     </div>
+                {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="mt-2 mb-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="7">Simpan Data</button>
+                </div>
                 {{/if}}
             </div>
         </div>
@@ -517,6 +537,12 @@
                         <button class="btn btn-warning btn-personal" type="button" value="5">Simpan Data</button>
                     </div>
                 {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="5">Simpan Data</button>
+                </div>
+            {{/if}}
             </div>
         </div>
 
@@ -672,6 +698,12 @@
                         <button class="btn btn-warning btn-personal" type="button" value="5">Simpan Data</button>
                     </div>
                 {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="5">Simpan Data</button>
+                </div>
+            {{/if}}
             </div>
         </div>
         <!-- edit coaching -->
@@ -756,7 +788,13 @@
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-warning btn-personal" type="button" value="1">Simpan Data</button>
                 </div>
-            {{/if}}
+                {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="1">Simpan Data</button>
+                </div>
+                {{/if}}
             </div>
         </div>
       
@@ -894,6 +932,13 @@
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-warning btn-personal" type="button" value="6">Simpan Data</button>
                     </div>
+                    
+                {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="6">Simpan Data</button>
+                </div>
                 {{/if}}
             </div>
         </div>
@@ -950,16 +995,20 @@
                 </div>
             </div>
         </div>
-
-
-
-
-        <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="2">
+        
+        {{#if equals pageMode "edit"}}
+        <div class="d-flex justify-content-between mt-4">
+         
+            <button class="btn  btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
                 Next
                 <i class="fa fa-light fa-arrow-right btn-next" value="2"></i>
             </button>
         </div>
+        {{/if}}
+
+
+
+
     {{/if}}
 
     <!-- Page 2 -->
@@ -1102,11 +1151,11 @@
 
  
     <div class="d-flex justify-content-between mt-4">
-        <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="1">
+        <button class="btn  btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="1">
             <i class="fa fa-light fa-arrow-left btn-previous" value="1"></i>
             Previous
         </button>
-        <button class="btn btn-submit btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
+        <button class="btn  btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
             Next
             <i class="fa fa-light fa-arrow-right btn-next" value="3"></i>
         </button>

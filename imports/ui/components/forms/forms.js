@@ -2193,7 +2193,7 @@ Template.formLecturers.events({
 
         const getValue = $(e.currentTarget).val();
         // console.log(getValue)
-        if (getValue == 2){
+        if (getValue == 1){
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
                 const username = $("#inputUsername").val();
                 const fullName = $("#inputFullname").val();
