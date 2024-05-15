@@ -1,6 +1,6 @@
 
 
-<template name="formLecturers">
+<template name="formLecturers" >
     <!-- Component Forms Add Lecturers Requirement Parameter when using this component: -->
     <!-- 1. formPage -> for selecting category of the page -->
     <!-- 2. type -> for add / edit page -->
@@ -546,6 +546,203 @@
             </div>
         </div>
 
+        <!-- Sertifikasi -->
+        <div class="card rounded-3 mt-4">
+            <div class="card-header bg-blue text-white">
+                Sertifikasi
+            </div>
+            <div class="card-body">
+                <section class="p-2">
+                    <form id="formLecturers">
+                        <div class="form-group">
+                            <label for="inputCertificationType" class="fw-bold text-login-content">Jenis Sertifikasi</label>
+                            <input type="text" class="form-control" id="inputCertificationType" >
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCertificationMajor" class="fw-bold text-login-content">Bidang Studi</label>
+                            <input type="text" class="form-control" id="inputCertificationMajor" >
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRegistrationNumber" class="fw-bold text-login-content">Nomor Registrasi</label>
+                            <input type="text" class="form-control" id="inputRegistrationNumber" >
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSkNumber" class="fw-bold text-login-content">Nomor SK</label>
+                            <input type="text" class="form-control" id="inputSkNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
+                            <input type="text" class="form-control" id="inputCertificationEnd">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara</label>
+                            <input type="text" class="form-control" id="inputCertificationOrganiser" >
+                        </div>
+
+                                           
+                        <div class="form-group">
+                            <label for="inputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
+                            <input type="text" class="form-control" id="inputCertificationGrade" >
+                        </div>
+             
+                        <div class="form-group">
+                            <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
+                            <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv">
+                        </div>
+
+              
+                        <div class="d-flex justify-content-end mt-2 add-certification">
+                            <button class="btn btn-add btn-sm">
+                                <i class="fa fa-light fa-plus"></i>
+                                Tambah Sertifikasi
+                            </button>
+                        </div>
+                        {{#if listCertification}}
+                        <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
+                        <!-- Desktop -->
+                        <div class="form-group desktop-div">
+                            <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                            {{#each item in listCertification}}
+                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                    <div>
+                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                            {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                            <div class="me-2">
+                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}" >
+                                                    <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                                </button>
+                                                <button class="btn btn-edit btn-primary btn-sm edit-certification" data-id="certification" data-milik="{{@index}}">
+                                                    <i class="fa fa-solid fa-pencil edit-certification" data-id="certification" data-milik="{{@index}}"></i>
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                        <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
+                                        <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
+                                        <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
+                                        <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
+                                        <label class="col text-break"><b>Tahun Sertifikasi:</b> {{item.dateEnd}}</label>
+                                        {{#if item.fileLink}}
+                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                        {{/if}}
+    
+                                        {{#if item.skFile}}
+                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        <!-- Mobile -->
+                        <div class="form-group mobile-div">
+                            <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
+                            {{#each item in listCertification}}
+                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
+                                    <div class="d-flex flex-wrap">
+                                        <div class="row row-cols-1">
+                                            <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
+                                                {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
+                                                <div class="me-2">
+                                                    <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}">
+                                                        <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
+                                                    </button>
+                                                    <button class="btn btn-edit btn-primary btn-sm edit-certification" data-id="certification" data-milik="{{@index}}">
+                                                        <i class="fa fa-solid fa-pencil edit-certification" data-id="certification" data-milik="{{@index}}"></i>
+                                                    </button>
+                                                </div>
+                                            </label>
+                                            <div>
+                                                <hr class="mt-2 mb-3" style="border: 1px solid gray;">
+                                            </div>
+                                            <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
+                                            <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
+                                            <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
+                                            <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
+                                            <label class="col text-break"><b>Tahun Sertifikasi:</b> {{item.dateEnd}}</label>
+                                            {{#if item.fileLink}}
+                                                <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                            {{/if}}
+    
+                                            {{#if item.skFile}}
+                                                <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                    </form>
+                </section>
+                {{#if equals pageMode "edit"}}
+                    <hr class="my-3" style="border: 1px solid lightgray;">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-warning btn-personal" type="button" value="6">Simpan Data</button>
+                    </div>
+                    
+                {{/if}}
+                {{#if equals pageMode "add"}}
+                <hr class="my-3" style="border: 1px solid lightgray;">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning btn-submit" type="button" value="6">Simpan Data</button>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+
+        <!-- Modal Simpan Sertifikasi -->
+        <div class="modal fade" id="editCertificationModal" tabindex="-1" aria-labelledby="editCertificationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCertificationModalLabel">Simpan Sertifikat</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form edit Sertifikat -->
+                    <form id="editCertificationForm">
+                        <div class="form-group">
+                            <label for="editInputCertificationType" class="fw-bold text-login-content">Jenis Sertifikasi</label>
+                            <input type="text" class="form-control" id="editInputCertificationType">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputCertificationMajor" class="fw-bold text-login-content">Bidang Studi</label>
+                            <input type="text" class="form-control" id="editInputCertificationMajor">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputRegistrationNumber" class="fw-bold text-login-content">Nomor Registrasi</label>
+                            <input type="text" class="form-control" id="editInputRegistrationNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputSkNumber" class="fw-bold text-login-content">Nomor SK</label>
+                            <input type="text" class="form-control" id="editInputSkNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
+                            <input type="text" class="form-control" id="editInputCertificationEnd">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara</label>
+                            <input type="text" class="form-control" id="editInputCertificationOrganiser">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
+                            <input type="text" class="form-control" id="editInputCertificationGrade">
+                        </div>
+                        <div class="form-group">
+                            <label for="editInputFileSk" class="fw-bold text-login-content">File SK</label>
+                            <input type="file" class="form-control" id="editInputFileSk" accept=".doc,.pdf,.txt,.csv">
+                        </div>
+                        <!-- Tombol untuk menyimpan perubahan -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary save-certification">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Elemen pop-up form edit -->
         <div class="modal fade" id="editEducationHistoryModal" tabindex="-1" aria-labelledby="editEducationHistoryModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -745,7 +942,7 @@
         <!-- Riwayat Tahbisan -->
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
-                Riwayat Tahbisan
+                Data Gerejawi
             </div>
             <div class="card-body">
                 <section class="p-2">
@@ -799,202 +996,7 @@
         </div>
       
 
-        <!-- Sertifikasi -->
-        <div class="card rounded-3 mt-4">
-            <div class="card-header bg-blue text-white">
-                Sertifikasi
-            </div>
-            <div class="card-body">
-                <section class="p-2">
-                    <form id="formLecturers">
-                        <div class="form-group">
-                            <label for="inputCertificationType" class="fw-bold text-login-content">Jenis Sertifikasi</label>
-                            <input type="text" class="form-control" id="inputCertificationType" >
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCertificationMajor" class="fw-bold text-login-content">Bidang Studi</label>
-                            <input type="text" class="form-control" id="inputCertificationMajor" >
-                        </div>
-                        <div class="form-group">
-                            <label for="inputRegistrationNumber" class="fw-bold text-login-content">Nomor Registrasi</label>
-                            <input type="text" class="form-control" id="inputRegistrationNumber" >
-                        </div>
-                        <div class="form-group">
-                            <label for="inputSkNumber" class="fw-bold text-login-content">Nomor SK</label>
-                            <input type="text" class="form-control" id="inputSkNumber">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
-                            <input type="text" class="form-control" id="inputCertificationEnd">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara</label>
-                            <input type="text" class="form-control" id="inputCertificationOrganiser" >
-                        </div>
-
-                                           
-                        <div class="form-group">
-                            <label for="inputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
-                            <input type="text" class="form-control" id="inputCertificationGrade" >
-                        </div>
-             
-                        <div class="form-group">
-                            <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
-                            <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv">
-                        </div>
-
-              
-                        <div class="d-flex justify-content-end mt-2 add-certification">
-                            <button class="btn btn-add btn-sm">
-                                <i class="fa fa-light fa-plus"></i>
-                                Tambah Sertifikasi
-                            </button>
-                        </div>
-                        {{#if listCertification}}
-                        <hr class="mt-4 mb-3" style="border: 1px solid lightgray;">
-                        <!-- Desktop -->
-                        <div class="form-group desktop-div">
-                            <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                            {{#each item in listCertification}}
-                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
-                                    <div>
-                                        <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                            {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
-                                            <div class="me-2">
-                                                <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}" >
-                                                    <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
-                                                </button>
-                                                <button class="btn btn-edit btn-primary btn-sm edit-certification" data-id="certification" data-milik="{{@index}}">
-                                                    <i class="fa fa-solid fa-pencil edit-certification" data-id="certification" data-milik="{{@index}}"></i>
-                                                </button>
-                                            </div>
-                                        </label>
-                                        <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                        <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                        <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                        <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                        <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                        <label class="col text-break"><b>Tahun Sertifikasi:</b> {{item.dateEnd}}</label>
-                                        {{#if item.fileLink}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
-    
-                                        {{#if item.skFile}}
-                                            <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                        {{/if}}
-                                    </div>
-                                </div>
-                            {{/each}}
-                        </div>
-                        <!-- Mobile -->
-                        <div class="form-group mobile-div">
-                            <label for="inputListCertification" class="fw-bold text-login-content">Daftar Sertifikasi</label>
-                            {{#each item in listCertification}}
-                                <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
-                                    <div class="d-flex flex-wrap">
-                                        <div class="row row-cols-1">
-                                            <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                                {{capitalizeWord item.type}} - {{capitalizeWord item.major}}
-                                                <div class="me-2">
-                                                    <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="certification" data-milik="{{@index}}">
-                                                        <i class="fa fa-solid fa-trash remove-list" data-id="certification" data-milik="{{@index}}"></i>
-                                                    </button>
-                                                    <button class="btn btn-edit btn-primary btn-sm edit-certification" data-id="certification" data-milik="{{@index}}">
-                                                        <i class="fa fa-solid fa-pencil edit-certification" data-id="certification" data-milik="{{@index}}"></i>
-                                                    </button>
-                                                </div>
-                                            </label>
-                                            <div>
-                                                <hr class="mt-2 mb-3" style="border: 1px solid gray;">
-                                            </div>
-                                            <label class="col text-break"><b>Penyelenggara Sertifikasi:</b> {{capitalizeWord item.organizer}}</label>
-                                            <label class="col text-break"><b>Nomor Registrasi:</b> {{item.registrationNumber}}</label>
-                                            <label class="col text-break"><b>Nomor SK:</b> {{item.skNumber}}</label>
-                                            <label class="col text-break"><b>Nilai:</b> {{item.grade}}</label>
-                                            <label class="col text-break"><b>Tahun Sertifikasi:</b> {{item.dateEnd}}</label>
-                                            {{#if item.fileLink}}
-                                                <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                            {{/if}}
-    
-                                            {{#if item.skFile}}
-                                                <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
-                                            {{/if}}
-                                        </div>
-                                    </div>
-                                </div>
-                            {{/each}}
-                        </div>
-                        {{/if}}
-                    </form>
-                </section>
-                {{#if equals pageMode "edit"}}
-                    <hr class="my-3" style="border: 1px solid lightgray;">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-warning btn-personal" type="button" value="6">Simpan Data</button>
-                    </div>
-                    
-                {{/if}}
-                {{#if equals pageMode "add"}}
-                <hr class="my-3" style="border: 1px solid lightgray;">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-warning btn-submit" type="button" value="6">Simpan Data</button>
-                </div>
-                {{/if}}
-            </div>
-        </div>
-
-        <!-- Modal Simpan Sertifikasi -->
-        <div class="modal fade" id="editCertificationModal" tabindex="-1" aria-labelledby="editCertificationModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCertificationModalLabel">Simpan Sertifikat</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form edit Sertifikat -->
-                    <form id="editCertificationForm">
-                        <div class="form-group">
-                            <label for="editInputCertificationType" class="fw-bold text-login-content">Jenis Sertifikasi</label>
-                            <input type="text" class="form-control" id="editInputCertificationType">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputCertificationMajor" class="fw-bold text-login-content">Bidang Studi</label>
-                            <input type="text" class="form-control" id="editInputCertificationMajor">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputRegistrationNumber" class="fw-bold text-login-content">Nomor Registrasi</label>
-                            <input type="text" class="form-control" id="editInputRegistrationNumber">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputSkNumber" class="fw-bold text-login-content">Nomor SK</label>
-                            <input type="text" class="form-control" id="editInputSkNumber">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputCertificationEnd" class="fw-bold text-login-content">Tahun Sertifikasi</label>
-                            <input type="text" class="form-control" id="editInputCertificationEnd">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputCertificationOrganiser" class="fw-bold text-login-content">Penyelenggara</label>
-                            <input type="text" class="form-control" id="editInputCertificationOrganiser">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
-                            <input type="text" class="form-control" id="editInputCertificationGrade">
-                        </div>
-                        <div class="form-group">
-                            <label for="editInputFileSk" class="fw-bold text-login-content">File SK</label>
-                            <input type="file" class="form-control" id="editInputFileSk" accept=".doc,.pdf,.txt,.csv">
-                        </div>
-                        <!-- Tombol untuk menyimpan perubahan -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary save-certification">Simpan Perubahan</button>
-                        </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-        </div>
+  
         
         {{#if equals pageMode "edit"}}
         <div class="d-flex justify-content-between mt-4">

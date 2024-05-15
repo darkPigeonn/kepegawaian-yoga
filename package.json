@@ -27,7 +27,7 @@
     "papaparse": "^5.4.1",
     "pdf-viewer": "^0.8.1",
     "simpl-schema": "^3.4.1",
-    "sweetalert2": "^11.9.0",
+    "sweetalert2": "^11.11.0",
     "underscore": "^1.13.6",
     "xlsx": "^0.18.5"
   },

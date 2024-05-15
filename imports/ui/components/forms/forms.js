@@ -44,9 +44,32 @@ Template.formLecturers.onCreated(function () {
     const lecturerId = FlowRouter.getParam("_id");
     const mode = lecturerId ? "edit" : "add";
     self.pageMode.set(mode);
+
+
+
+
 });
 
 Template.formLecturers.onRendered( function(){
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        Swal.fire({
+          title: "Konfirmasi",
+          text: "Apakah anda yakin merefresh halaman ini?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Ya",
+          cancelButtonText: "Tidak"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.removeEventListener('beforeunload', arguments.callee);
+            location.reload();
+          } else {
+          }
+        });
+      
+        return '';
+    });
     const context = Template.instance();
     if (this.submitType.get() === 2) {
         const id = FlowRouter.getParam("_id")
@@ -87,9 +110,11 @@ Template.formLecturers.onRendered( function(){
             }
         });
     }
+   
+   
+
+ 
 })
-
-
 
 Template.formLecturers.helpers({
     listPengujian(){
@@ -1077,7 +1102,6 @@ Template.formLecturers.events({
         Session.set('editedTunjanganIndex',undefined);
     },
     
-
     "click .add-Dedication" (e, t){
         e.preventDefault()
         const listDedication = t.listDedication.get()
@@ -1195,9 +1219,6 @@ Template.formLecturers.events({
 
         Session.set('editedSpeakerIndex', undefined);
     },
-
-
-    
 
     "click .add-journalManager" (e, t){
         e.preventDefault();
@@ -2463,13 +2484,7 @@ Template.formLecturers.events({
                 });
             }
         });
-    },
-    // 'click .btn-close'(e,t) {
-    //     e.preventDefault();
-    //     const getValue = $(e.currentTarget).val();
-    
-    // }
-    
+    },    
 });
   
 Template.passwordEdit.events({
