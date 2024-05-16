@@ -51,6 +51,19 @@ Template.formLecturers.onCreated(function () {
 });
 
 Template.formLecturers.onRendered( function(){
+    function formatRupiah(angka) {
+        var reverse = angka.toString().split('').reverse().join(''),
+            ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return 'Rp. ' + ribuan;
+    }
+
+    this.findAll('.nominal').forEach(function(elem) {
+        elem.addEventListener('input', function () {
+            var nominal = parseInt(this.value.replace(/[^0-9]/g, '')); 
+            this.value = formatRupiah(nominal);
+        });
+    });
     window.addEventListener('beforeunload', function (e) {
         e.preventDefault();
         Swal.fire({
@@ -538,6 +551,23 @@ Template.formLecturers.events({
         $('#editStudentGuidanceModal').modal('hide');
         Session.set('editedStudentGuidanceIndex',undefined)
     },
+    "click .input-ps"(e){
+        e.preventDefault()
+        var currentYear = new Date().getFullYear();
+        var startYear = 2011;
+        var selectElements = document.querySelectorAll(".input-ps");
+        
+        selectElements.forEach(function(selectElement) {
+            for (var i = currentYear; i >= startYear; i--) {
+                var option = document.createElement("option");
+                var nilai = i + 1; 
+                option.text = i + "/" + nilai ;
+                option.value = i + "/" + nilai;
+                selectElement.appendChild(option);
+            }
+        });
+    },
+    
     "click .add-pengajaran" (e, t){
         e.preventDefault()
         const listPengajaran = t.listPengajaran.get()
@@ -566,6 +596,8 @@ Template.formLecturers.events({
         // console.log(data)
         listPengajaran.push(data)
         t.listPengajaran.set(listPengajaran)
+
+       
     },
     "click .edit-pengajaran"(e,t){
         e.preventDefault()

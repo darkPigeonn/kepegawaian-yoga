@@ -51,6 +51,8 @@ Template.registerHelper("formatHRDate", function (context, options) {
   return moment(context).format("D MMMM YYYY");
 });
 
+
+
 Template.registerHelper("formatHRDateShort", function (context, options) {
   if (context) moment.locale("id");
   return moment(context).format("DD MMM YYYY");
