@@ -183,7 +183,7 @@ Template.registerHelper("statusDetail", function (data) {
       status = "Tersetujui";
       break;
     case 0:
-      status = "Terkirim";
+      status = "Terkirim dan Sedang direview";
       break;
     case 20:
       status = "Sedang direview";

@@ -463,6 +463,7 @@ Template.formProposal.onCreated(function () {
     this.nowListing = new ReactiveVar(0);
     self.dispositions = new ReactiveVar();
     self.daftarAlur = new ReactiveVar([]);
+    self.daftarPegawaiAlur = new ReactiveVar([]);
     console.log(self.daftarAlur);
     //set up ck editor untuk semua form
     this.optionsNeeds = {
@@ -566,6 +567,16 @@ Template.formProposal.onCreated(function () {
             console.log(result);
             self.deadlineProposal.set(result)
         } else {
+            console.log("data tidak ada");
+        }
+    })
+
+    Meteor.call("users.getAll", function (error, result) {
+        if (!error) {
+            console.log(result);
+            self.daftarPegawaiAlur.set(result)
+        }
+        else {
             console.log("data tidak ada");
         }
     })
@@ -700,7 +711,10 @@ Template.formProposal.onRendered(function () {
             dataAlur.shift();
             //
             const dataAlurEdit = [];
-            dataAlur.map((x)=>dataAlurEdit.push(x.role))
+            //role
+            // dataAlur.map((x)=>dataAlurEdit.push(x.role))
+            //user
+            dataAlur.map((x)=>dataAlurEdit.push(x.username))
             context.daftarAlur.set(dataAlurEdit);
             if (result) {
                 $('#name').val(result.name);
@@ -861,6 +875,9 @@ Template.formProposal.helpers({
     },
     daftarAlur(){
         return Template.instance().daftarAlur.get();
+    },
+    daftarPegawaiAlur(){
+        return Template.instance().daftarPegawaiAlur.get();
     }
 })
 
@@ -870,16 +887,20 @@ Template.previewProposal.onCreated(function () {
     self.proposalId = new ReactiveVar();
     self.formSubmit = new ReactiveVar(0);
     self.jabatanLogin = new ReactiveVar();
+    self.usernameLogin = new ReactiveVar();
     self.jabatanPembuat = new ReactiveVar();
+    self.usernamePembuat = new ReactiveVar();
     const id = FlowRouter.current().params._id;
     self.proposalData = new ReactiveVar();
     const thisUser = Meteor.userId();
     console.log(thisUser);
     Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
         if(result){
-            const hasil = result[0];
+            const hasil = result;
             console.log(hasil);
-            self.jabatanLogin.set(hasil);
+            // self.jabatanLogin.set(hasil);
+            self.usernameLogin.set(hasil);
+            console.log(self.usernameLogin.get());
         }
         else{
             console.log(error);
@@ -891,9 +912,9 @@ Template.previewProposal.onCreated(function () {
             console.log(result.createdBy);
             Meteor.call('employee.getDataUserProposal', result.createdBy, function (error, result) {
                 if(result){
-                    const hasil = result[0];
+                    const hasil = result;
                     console.log(hasil);
-                    self.jabatanPembuat.set(hasil);
+                    self.usernamePembuat.set(hasil);
                 }
                 else{
                     console.log(error);
@@ -928,11 +949,28 @@ Template.previewProposal.helpers({
     jabatanLogin(){
         return Template.instance().jabatanLogin.get();
     },
+
+    usernameLogin() {
+        return Template.instance().usernameLogin.get();
+    },
+
+    //roles
     jabatanPembuat(){
         return Template.instance().jabatanPembuat.get();
     },
+    //user
+    usernamePembuat() {
+        return Template.instan().usernamePembuat.get();
+    },
+
+    //roles
+    // isPodo(){
+    //     return Template.instance().jabatanPembuat.get() == Template.instance().jabatanLogin.get();
+    // },
+
+    //user
     isPodo(){
-        return Template.instance().jabatanPembuat.get() == Template.instance().jabatanLogin.get();
+        return Template.instance().usernamePembuat.get() == Template.instance().usernameLogin.get();
     }
 });
 
