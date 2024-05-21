@@ -60,50 +60,48 @@ Meteor.methods({
     return dataReturn;
     },
     "staffsAttendance.inThisDay"() {
-    const thisUser = Meteor.users.findOne({
-        _id: this.userId,
-    });
-    const startDate = moment().utcOffset("+07:00").startOf("day");
-    const endDate = moment().utcOffset("+07:00").endOf("day");
-
-    const dataStaffsAttendance = StaffsAttendance.find({
-        checkIn: {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-        },
-    }).fetch();
-
-
-    // console.log(dataStaffsAttendance);
-
-    const dataReturn = [];
-
-    //find user profile
-    _.each(dataStaffsAttendance, function (x) {
-        const user = AppUsers.findOne({
-        profileId: x.userId,
-        outlets: {
-            $in: thisUser.partners,
-        },
+        const thisUser = Meteor.users.findOne({
+            _id: this.userId,
         });
+        const startDate = moment().utcOffset("+07:00").startOf("day");
+        const endDate = moment().utcOffset("+07:00").endOf("day");
+        const dataStaffsAttendance = StaffsAttendance.find({
+            checkIn: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+            },
+        }).fetch();
 
-        if (user) {
-        if (x.userId) {
-            const userObjecId = new Mongo.Collection.ObjectID(x.userId);
-            const userProfile = AppProfiles.findOne({
-            _id: userObjecId,
+
+        // console.log(dataStaffsAttendance);
+
+        const dataReturn = [];
+
+        //find user profile
+        _.each(dataStaffsAttendance, function (x) {
+            const user = AppUsers.findOne({
+            profileId: x.userId,
+            outlets: {
+                $in: thisUser.partners,
+            },
             });
-            // console.log(userProfile);
 
-            x.fullName = userProfile.fullName;
-            x.jabatan = userProfile.jabatan;
-            x.outlets = user.outlets[0];
+            if (user) {
+                if (x.userId) {
+                    const employeeProfile = Employee.findOne({
+                        _id: x.userId
+                    })
+                    // console.log(userProfile);
 
-            dataReturn.push(x);
-        }
-        }
-    });
-    return dataReturn;
+                    x.fullName = employeeProfile.full_name;
+                    x.jabatan = employeeProfile.job_position;
+                    x.outlets = user.outlets[0];
+
+                    dataReturn.push(x);
+                }
+            }
+        });
+        return dataReturn;
     },
     "staffsAttendance.byDate"(date) {
     const thisUser = Meteor.users.findOne({
@@ -134,14 +132,13 @@ Meteor.methods({
 
         if (user) {
         if (x.userId) {
-            const userObjecId = new Mongo.Collection.ObjectID(x.userId);
-            const userProfile = AppProfiles.findOne({
-            _id: userObjecId,
-            });
+            const employeeProfile = Employee.findOne({
+                _id: x.userId
+            })
             // console.log(userProfile);
 
-            x.fullName = userProfile.fullName;
-            x.jabatan = userProfile.jabatan;
+            x.fullName = employeeProfile.full_name;
+            x.jabatan = employeeProfile.job_position;
             x.outlets = user.outlets[0];
 
             dataReturn.push(x);
@@ -314,27 +311,37 @@ Meteor.methods({
 
           const dataStaffsAttendance = AppUsers.find({
             outlets: outlet,
+            roles: "staff"
           }).fetch();
+
+        //   console.log(dataStaffsAttendance);
 
         //   console.log(dataStaffsAttendance, dataStaffsAttendance.length)
 
           const dataReturn = [];
+        //   console.log(dataStaffsAttendance);
           //find user profile
           _.each(dataStaffsAttendance, function (x) {
             const dataUser = {};
-            if (x.profileId) {
-              const userObjecId = new Mongo.Collection.ObjectID(x.profileId);
-              const userProfile = AppProfiles.findOne({
-                _id: userObjecId,
-                outlets: {
-                  $in: [outlet],
-                },
-              });
-              if (userProfile) {
-                if(userProfile.fullName){
+            if (x._id) {
+                console.log("masuk");
+            //   const userObjecId = new Mongo.Collection.ObjectID(x.profileId);
+            //   const userProfile = AppProfiles.findOne({
+            //     _id: userObjecId,
+            //     outlets: {
+            //       $in: [outlet],
+            //     },
+            //   });
+              const employeeProfile = Employee.findOne({
+                _id: x.profileId,
+                partnerCode: outlet
+              })
+              console.log(employeeProfile);
+              if (employeeProfile) {
+                if(employeeProfile.full_name){
                     dataUser.userId = x.profileId;
-                    dataUser.fullName = userProfile.fullName;
-                    dataUser.jabatan = userProfile.jabatan;
+                    dataUser.fullName = employeeProfile.full_name;
+                    dataUser.jabatan = employeeProfile.job_position;
                     dataUser.unit = thisOutlet.name;
 
                     //get data absensi
