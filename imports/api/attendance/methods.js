@@ -92,12 +92,13 @@ Meteor.methods({
                         _id: x.userId
                     })
                     // console.log(userProfile);
+                    if(employeeProfile) {
+                        x.fullName = employeeProfile.full_name;
+                        x.jabatan = employeeProfile.job_position;
+                        x.outlets = user.outlets[0];
 
-                    x.fullName = employeeProfile.full_name;
-                    x.jabatan = employeeProfile.job_position;
-                    x.outlets = user.outlets[0];
-
-                    dataReturn.push(x);
+                        dataReturn.push(x);
+                    }
                 }
             }
         });
