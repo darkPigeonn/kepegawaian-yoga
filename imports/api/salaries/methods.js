@@ -1,4 +1,4 @@
-import { Payroll } from "./payroll";
+import { Salaries } from "./salaries";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
@@ -29,7 +29,7 @@ Meteor.methods({
     async "payroll.createPayroll"(data, id, month, year) {
         check(data, Array);
         check(id, String);
-        const cekSlipGaji = Payroll.findOne({employeeId: id, month: month, year: year})
+        const cekSlipGaji = Salaries.findOne({employeeId: id, month: month, year: year})
         if(cekSlipGaji) {
             throw new Meteor.Error(412, "Slip gaji sudah dibuat")
         }
@@ -70,6 +70,6 @@ Meteor.methods({
             createdAt: new Date(),
             createdBy: Meteor.userId()
         }
-        return Payroll.insert(dataSave);
+        return Salaries.insert(dataSave);
     }
 })
