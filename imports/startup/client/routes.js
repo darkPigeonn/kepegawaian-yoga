@@ -16,6 +16,7 @@ import "../../ui/pages/user/user.js";
 import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
+import "../../ui/pages/payroll/payroll.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -438,6 +439,20 @@ FlowRouter.route("/tickets/message/:_id", {
   action() {
     this.render("App_body", "chatTicket");
   },
+})
+
+// PAYROLL
+FlowRouter.route("/payroll", {
+  name: "payroll",
+  action() {
+    this.render("App_body", "listPayroll");
+  }
+});
+FlowRouter.route("/payroll/create", {
+  name: "createPayroll",
+  action() {
+    this.render("App_body", "createPayroll");
+  }
 })
 
 // korespondensi

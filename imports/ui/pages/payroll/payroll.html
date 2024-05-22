@@ -1,0 +1,128 @@
+<template name="listPayroll">
+    <div class="container">
+        <div class="mt-5">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
+            </div>
+        </div>
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Tanggal Dibuat</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="createPayroll">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Buat Slip Gaji</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Pilih Bulan Peruntukan</label><br>
+                    <input type="month" class="form-control" id="monthYear" {{isMonthDisabled}}/>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="">Pilih Karyawan</label>
+                    <select id="inputKaryawan" class="form-control select2" {{isEmployeeDisabled}}>
+                        {{#each pegawai}}
+                            <option value="{{_id}}">{{full_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <button class="btn btn-primary w-100" id="btn-process">Process</button>
+                {{#if dataRekap}}
+                    <div class="attendance-info mt-3 border p-3">
+                        <div class="d-flex justify-content-between">
+                            <div>Hadir: <span id="hadir">{{dataRekap.details.totalPresensi}}</span></div>
+                            <div>Ijin: <span id="ijin">{{dataRekap.details.permit}}</span></div>
+                            <div>Alpha: <span id="alpha">{{dataRekap.details.dafOf}}</span></div>
+                            <div>H-efektif: <span id="h-efektif">{{dataRekap.activeDayWorking}}</span></div>
+                            <div>% Hadir: <span id="persen-hadir">{{dataRekap.persentaseKehadiran}}</span></div>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Gaji Pokok : {{formatRp dataRekap.baseSalary}}</h5>
+                    <hr style="border-top: 2px solid black;">
+                    <div class="form-actions">
+                        <h4>Masukkan Detail Slip Gaji</h4>
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <select class="form-control" id="kategori">
+                                    <optgroup label="Kategori">
+                                        <option value="allowance">Tunjangan</option>
+                                        <option value="deduction">Deduksi</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="keterangan" placeholder="Keterangan">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="nominal" placeholder="Nominal">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" id="btn-tambah-detail">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {{#if dataDetailSlip}}
+                        <h4>Daftar Detail Slip Gaji</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>Kategori</th>
+                                    <th>Keterangan</th>
+                                    <th>Nominal</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataDetailSlip}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{#if equals i.category 'allowance'}}
+                                                Tunjangan
+                                            {{else}}
+                                                Deduksi
+                                            {{/if}}
+                                        </td>
+                                        <td>{{i.name}}</td>
+                                        <td>{{formatRp i.amount}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{@index}}>
+                                                <i class="fa fa-trash btn-remove" milik={{@index}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+                    <br>
+                    <div class="form-actions">
+                        <button class="btn btn-primary w-100" id="btn-save">Simpan</button>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</template>
