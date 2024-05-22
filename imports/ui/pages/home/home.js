@@ -12,27 +12,19 @@ Template.App_home.onCreated(function () {
   const self = this;
 
   self.lecturers = new ReactiveVar();
-  const tempDosen = [
-    {
-      name: 'Budi',
-      email: 'Budi@gmail.com',
-      dateOfBirth: '01/01/2000',
-      gender: 'Male',
-    },
-    {
-      name: 'Adi',
-      email: 'Adi@gmail.com',
-      dateOfBirth: '02/02/2000',
-      gender: 'Male',
+  Meteor.call('dosen.getAll', function (err,res) {
+    if(err){
+      failAlert(err)
     }
-  ];
-  self.lecturers.set(tempDosen);
-  // console.log(self.lecturers.get());
-
+    else{
+      // console.log(res)
+      self.lecturers.set(res)
+    }
+  });
   setTimeout(() => {
     let table = new DataTable('#myTable', {
     });
-    
+
   }, 500);
 });
 Template.App_home.helpers({

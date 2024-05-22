@@ -13,7 +13,7 @@ import "datatables.net-responsive-dt";
         failAlert(err)
       }
       else{
-        // console.log(res)
+        console.log(res)
         context.dataDosen.set(res)
       }
     });
@@ -23,7 +23,7 @@ import "datatables.net-responsive-dt";
     dataDosen(){
         return Template.instance().dataDosen.get();
     },
-    
+
   });
 
   Template.tableListDosen.events({

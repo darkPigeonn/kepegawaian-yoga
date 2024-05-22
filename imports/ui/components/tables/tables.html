@@ -61,7 +61,7 @@
           <i class="fa fa-plus"></i>
           Tambah Dosen
         </button>
-      </a> 
+      </a>
     </div>
     <div class="table-responsive mt-3">
       <table class="table" id="myTable">
@@ -82,12 +82,12 @@
               {{increment  @index}}
             </td>
             <td>
-              {{capitalizeWord i.profile.fullName}} 
+              {{capitalizeWord i.profile.fullName}}
             </td>
             <td>
-              {{capitalizeWord i.profile.phoneNumber}} 
+              {{capitalizeWord i.profile.phoneNumber}}
             </td>
-  
+
             <td>
               {{formatHRDate i.profile.dob}}
             </td>
@@ -103,16 +103,16 @@
                 <div class="d-flex flex-wrap gap-1">
                   <a class="btn btn-primary btn-sm btn-edit"
                       href="/lecturers/detail/{{i._id}}">
-                      <i class="fa fa-circle-info" milik="{{i._id}}"></i> 
+                      <i class="fa fa-circle-info" milik="{{i._id}}"></i>
                   </a>
 
                   <a class="btn btn-primary btn-sm btn-edit"
                       href="/lecturers/edit/{{i._id}}">
-                      <i class="fa fa-edit" milik="{{i._id}}"></i> 
+                      <i class="fa fa-edit" milik="{{i._id}}"></i>
                   </a>
 
                   <button class="btn btn-danger btn-sm delete-lecturer" id="delete-lecturer" value="{{i._id}}">
-                      <i class="fa fa-trash delete-lecturer" id="{{i._id}}" value="{{i._id}}"></i> 
+                      <i class="fa fa-trash delete-lecturer" id="{{i._id}}" value="{{i._id}}"></i>
                   </button>
                 </div>
               {{/if}}

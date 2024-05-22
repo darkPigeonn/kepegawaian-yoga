@@ -60,7 +60,7 @@ Template.formLecturers.onRendered( function(){
 
     this.findAll('.nominal').forEach(function(elem) {
         elem.addEventListener('input', function () {
-            var nominal = parseInt(this.value.replace(/[^0-9]/g, '')); 
+            var nominal = parseInt(this.value.replace(/[^0-9]/g, ''));
             this.value = formatRupiah(nominal);
         });
     });
@@ -80,7 +80,7 @@ Template.formLecturers.onRendered( function(){
           } else {
           }
         });
-      
+
         return '';
     });
     const context = Template.instance();
@@ -123,10 +123,10 @@ Template.formLecturers.onRendered( function(){
             }
         });
     }
-   
-   
 
- 
+
+
+
 })
 
 Template.formLecturers.helpers({
@@ -232,7 +232,7 @@ Template.formLecturers.helpers({
 
 
 Template.formLecturers.events({
-    
+
     "change #inputFileSk" (e, t){
         e.preventDefault();
         const file = e.target.files[0]
@@ -329,7 +329,7 @@ Template.formLecturers.events({
         const institution = $("#inputEducationInstitution").val()
         const studyPublication = $("#inputStudyPublication").val()
         const domesticStatus = $("input[name=inputDomestic]:checked").val()
-        const dateEnd = $("#inputEducationEnd").val()  
+        const dateEnd = $("#inputEducationEnd").val()
         const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
 
         if (!isValidDateEnd) {
@@ -344,7 +344,7 @@ Template.formLecturers.events({
             domesticStatus,
             studyPublication,
             dateEnd,
-        
+
         }
 
         listEducationalHistory.push(data)
@@ -361,7 +361,7 @@ Template.formLecturers.events({
         $("#editInputStudyPublication").val(educationHistory.domesticStatus);
         $("input[name=EditInputDomestic]:checked").val(educationHistory.studyPublication)
         $("#EditInputEducationEnd").val(educationHistory.dateEnd);
-        
+
         $('#editEducationHistoryModal').modal('show');
         Session.set('editedEducationHistoryIndex',index);
 
@@ -376,7 +376,7 @@ Template.formLecturers.events({
         const institution = $("#editInputEducationInstitution").val()
         const studyPublication = $("#editIinputStudyPublication").val()
         const domesticStatus = $("input[name=editInputDomestic]:checked").val()
-        const dateEnd = $("#editInputEducationEnd").val()  
+        const dateEnd = $("#editInputEducationEnd").val()
 
         listEducationalHistory[editedEducationHistoryIndex] = {
             educationLevel,
@@ -400,7 +400,7 @@ Template.formLecturers.events({
         const city = $("#inputKotaPenerbit").val();
         const year = $("#inputTahunTerbit").val();
         const link = $("#inputURL").val();
-        const isValidYear = /^[0-9]{4}$/.test(year); 
+        const isValidYear = /^[0-9]{4}$/.test(year);
 
         if (!isValidYear) {
             failAlert("Input Tahun Terbit harus terdiri dari 4 digit angka.");
@@ -480,7 +480,7 @@ Template.formLecturers.events({
         $('#editResearchInterestModal').modal('show');
         Session.set('editedResearchInterestIndex',index);
 
-        
+
     },
     "click .save-research-interest" (e,t){
         e.preventDefault();
@@ -505,7 +505,7 @@ Template.formLecturers.events({
         const cStudy = $("#inputCategoryStudy").val()
         const gegal = $('#inputSemesterPembinaan').val()
         const semester =$("#inputSemester").val()
-     
+
         const data ={
             category,
             title,
@@ -556,18 +556,18 @@ Template.formLecturers.events({
         var currentYear = new Date().getFullYear();
         var startYear = 2011;
         var selectElements = document.querySelectorAll(".input-ps");
-        
+
         selectElements.forEach(function(selectElement) {
             for (var i = currentYear; i >= startYear; i--) {
                 var option = document.createElement("option");
-                var nilai = i + 1; 
+                var nilai = i + 1;
                 option.text = i + "/" + nilai ;
                 option.value = i + "/" + nilai;
                 selectElement.appendChild(option);
             }
         });
     },
-    
+
     "click .add-pengajaran" (e, t){
         e.preventDefault()
         const listPengajaran = t.listPengajaran.get()
@@ -597,7 +597,7 @@ Template.formLecturers.events({
         listPengajaran.push(data)
         t.listPengajaran.set(listPengajaran)
 
-       
+
     },
     "click .edit-pengajaran"(e,t){
         e.preventDefault()
@@ -614,7 +614,7 @@ Template.formLecturers.events({
         $('#editPengajaranModal').modal('show');
 
         Session.set('editedPengajaranIndex',index);
-        
+
     },
     "click .save-pengajaran"(e,t){
         e.preventDefault();
@@ -652,7 +652,7 @@ Template.formLecturers.events({
         const dateOfPublisher = $("#date_input").val()
         const year = $("#year_input").val()
         const link = $("#link_input").val()
-        const isValidYear = /^[0-9]{4}$/.test(year); 
+        const isValidYear = /^[0-9]{4}$/.test(year);
 
         if (!isValidYear) {
             failAlert("Input Tahun Terbit harus terdiri dari 4 digit angka.");
@@ -699,7 +699,7 @@ Template.formLecturers.events({
         const dateOfPublisher = $("#editDate_input").val()
         const year = $("#editYear_input").val()
         const link = $("#editLink_input").val()
-    
+
 
         listMagazine[editedMagazineIndex] = {
             title,
@@ -765,7 +765,7 @@ Template.formLecturers.events({
         const dateOfPublisher = $("#editInput_date").val()
         const year = $("#editInput_year").val()
         const link = $("#editInput_link").val()
-    
+
 
         listOtherPublication[editedOtherPublicationIndex] = {
             title,
@@ -787,13 +787,13 @@ Template.formLecturers.events({
         const category = $("#inputKategoriKegiatan").val()
         const cActivity = $("#inputJenisKegiatan").val()
         const dateOfPublisher = $("#input-date").val()
-  
+
         const data = {
             title,
             category,
             cActivity,
             dateOfPublisher
-    
+
         }
         listIpr.push(data)
         t.listIpr.set(listIpr)
@@ -838,14 +838,14 @@ Template.formLecturers.events({
         const category = $("#input-beasiswa-category").val()
         const startYear = $("#input-start-year").val()
         const endYear = $("#input-end-year").val()
-        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear);
 
         if (!isValidStartYear) {
             failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
             return;
         }
 
-        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear);
 
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
@@ -906,14 +906,14 @@ Template.formLecturers.events({
         const organizer = $("#input-organizer").val()
         const startYear = $("#start-year-input").val()
         const endYear = $("#end-year-input").val()
-        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear);
 
         if (!isValidStartYear) {
             failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
             return;
         }
 
-        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear);
 
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
@@ -959,7 +959,7 @@ Template.formLecturers.events({
         const organizer    = $("#editInput-organizer").val()
         const startYear    = $("#editStart-year-input").val()
         const endYear      = $("#editEnd-year-input").val()
-        
+
         listKesejahteraan[editedKesejahteraanIndex] = {
             serviceName,
             category,
@@ -1016,8 +1016,8 @@ Template.formLecturers.events({
         $('#editCoachingModal').modal('hide');
         Session.set('editedCoachingIndex',undefined)
 
-        
-        
+
+
     },
 
     "click .add-tunjangan" (e, t){
@@ -1030,23 +1030,23 @@ Template.formLecturers.events({
         const startYear = $("#input-year-start").val()
         const endYear = $("#input-year-end").val()
         let nominal = $("#input-nominal").val()
-    
+
         nominal = nominal.replace(/\D/g, '');
-    
+
         if (!/^\d+$/.test(nominal)) {
             failAlert("Nominal harus berupa angka.");
             return;
         }
-    
-        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
-    
+
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear);
+
         if (!isValidStartYear) {
             failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
             return;
         }
-    
-        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
-    
+
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear);
+
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
             return;
@@ -1082,7 +1082,7 @@ Template.formLecturers.events({
         $("#editInput-nominal").val(tunjangan.nominal)
 
         $('#editTunjanganModal').modal('show');
-        Session.set('editedTunjanganIndex',index); 
+        Session.set('editedTunjanganIndex',index);
     },
     "click .save-tunjangan"(e,t){
         e.preventDefault()
@@ -1095,23 +1095,23 @@ Template.formLecturers.events({
         const startYear    = $("#editInput-year-start").val()
         const endYear      = $("#editInput-year-end").val()
         let nominal        = $("#editInput-nominal").val()
-    
+
         nominal = nominal.replace(/\D/g, '');
-    
+
         if (!/^\d+$/.test(nominal)) {
             failAlert("Nominal harus berupa angka.");
             return;
         }
-    
-        const isValidStartYear = /^[0-9]{4}$/.test(startYear); 
-    
+
+        const isValidStartYear = /^[0-9]{4}$/.test(startYear);
+
         if (!isValidStartYear) {
             failAlert("Input Tahun Mulai harus terdiri dari 4 digit angka.");
             return;
         }
-    
-        const isValidEndYear = /^[0-9]{4}$/.test(endYear); 
-    
+
+        const isValidEndYear = /^[0-9]{4}$/.test(endYear);
+
         if (!isValidEndYear) {
             failAlert("Input Tahun Selesai harus terdiri dari 4 digit angka.");
             return;
@@ -1133,7 +1133,7 @@ Template.formLecturers.events({
         $('#editTunjanganModal').modal('hide');
         Session.set('editedTunjanganIndex',undefined);
     },
-    
+
     "click .add-Dedication" (e, t){
         e.preventDefault()
         const listDedication = t.listDedication.get()
@@ -1146,7 +1146,7 @@ Template.formLecturers.events({
             theme,
             year,
             duration
-           
+
         }
         // console.log(data)
         listDedication.push(data)
@@ -1156,14 +1156,14 @@ Template.formLecturers.events({
         e.preventDefault()
         const index = $(e.currentTarget).data('milik')
         const dedication = t.listDedication.get()[index];
-    
+
         $("#editInputActivityName").val(dedication.name)
         $("#editInputActivityTheme").val(dedication.theme)
         $("#editInputYearActivity").val(dedication.year)
         $("#editInputDuration").val(dedication.duration)
-    
+
         $('#editDedicationModal').modal('show');
-        Session.set('editedDedicationIndex',index); 
+        Session.set('editedDedicationIndex',index);
     },
     "click .save-Dedication"(e,t){
         e.preventDefault()
@@ -1173,14 +1173,14 @@ Template.formLecturers.events({
         const theme        = $("#editInputActivityTheme").val()
         const year         = $("#editInputYearActivity").val()
         const duration     = $("#editInputDuration").val()
-    
+
         const data = {
             name,
             theme,
             year,
             duration
         }
-    
+
         listDedication[editedDedicationIndex] = data;
         t.listDedication.set(listDedication);
         $('#editDedicationModal').modal('hide');
@@ -1272,7 +1272,7 @@ Template.formLecturers.events({
             noSkPenugasan,
             peran,
             startDate,
-            endDate           
+            endDate
         };
         listJournalManager.push(data);
         t.listJournalManager.set(listJournalManager);
@@ -1281,7 +1281,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const journalManager = t.listJournalManager.get()[index];
-    
+
         $("#editInputNamaJurnal").val(journalManager.name);
         $("#editInputNoSkPenugasan").val(journalManager.noSkPenugasan);
         $("#editInputPeran").val(journalManager.peran);
@@ -1292,9 +1292,9 @@ Template.formLecturers.events({
         } else {
             $("#editInputEndDate").val(journalManager.endDate);
         }
-    
+
         $('#editJournalManagerModal').modal('show');
-        Session.set('editedJournalManagerIndex', index); 
+        Session.set('editedJournalManagerIndex', index);
     },
     "click .save-journalManager"(e,t){
         e.preventDefault();
@@ -1318,13 +1318,13 @@ Template.formLecturers.events({
             startDate,
             endDate
         };
-    
+
         listJournalManager[editedJournalManagerIndex] = data;
         t.listJournalManager.set(listJournalManager);
         $('#editJournalManagerModal').modal('hide');
         Session.set('editedJournalManagerIndex', undefined);
     },
-    
+
     "click .add-others-media" (e, t){
         e.preventDefault();
         console.log("Add Other Media clicked");
@@ -1347,7 +1347,7 @@ Template.formLecturers.events({
             noSkPenugasan,
             peran,
             startDate,
-            endDateOtherMedia           
+            endDateOtherMedia
         };
         listOthersMedia.push(data);
         t.listOthersMedia.set(listOthersMedia);
@@ -1356,7 +1356,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const othersMedia = t.listOthersMedia.get()[index];
-    
+
         $("#editInputNamaJurnalOthers").val(othersMedia.name);
         $("#editInputNoSkPenugasanOthers").val(othersMedia.noSkPenugasan);
         $("#editInputPeranOthers").val(othersMedia.peran);
@@ -1367,11 +1367,11 @@ Template.formLecturers.events({
         } else {
             $("#editInputEndDateOthers").val(othersMedia.endDateOtherMedia);
         }
-    
+
         $('#editOthersMediaModal').modal('show');
-        Session.set('editedOthersMediaIndex', index); 
+        Session.set('editedOthersMediaIndex', index);
     },
-    
+
     "click .save-others-media"(e,t){
         e.preventDefault();
         const editedOthersMediaIndex = Session.get('editedOthersMediaIndex');
@@ -1394,7 +1394,7 @@ Template.formLecturers.events({
             startDate,
             endDateOtherMedia
         };
-    
+
         listOthersMedia[editedOthersMediaIndex] = data;
         t.listOthersMedia.set(listOthersMedia);
         $('#editOthersMediaModal').modal('hide');
@@ -1429,7 +1429,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const imaviStructure = t.listImaviStructure.get()[index];
-    
+
         $("#editInputJabatanStruktural").val(imaviStructure.name);
         $("#editInputNomorSkImavi").val(imaviStructure.noSk);
         $("#editInputStartDateImavi").val(imaviStructure.startDate);
@@ -1439,11 +1439,11 @@ Template.formLecturers.events({
         } else {
             $("#editInputEndDateImavi").val(imaviStructure.endDateImaviStructure);
         }
-    
+
         $('#editImaviStructureModal').modal('show');
-        Session.set('editedImaviStructureIndex', index); 
+        Session.set('editedImaviStructureIndex', index);
     },
-    
+
     "click .save-imavistructure"(e,t){
         e.preventDefault();
         const editedImaviStructureIndex = Session.get('editedImaviStructureIndex');
@@ -1464,7 +1464,7 @@ Template.formLecturers.events({
             startDate,
             endDateImaviStructure
         };
-    
+
         listImaviStructure[editedImaviStructureIndex] = data;
         t.listImaviStructure.set(listImaviStructure);
         $('#editImaviStructureModal').modal('hide');
@@ -1483,8 +1483,8 @@ Template.formLecturers.events({
             name,
             peran,
             startDate,
-            endDate, 
-            instansi          
+            endDate,
+            instansi
         }
         // console.log(data)
         listProfesi.push(data)
@@ -1494,17 +1494,17 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const profesi = t.listProfesi.get()[index];
-        
+
         $("#editInputNamaOrganisasi").val(profesi.name);
         $("#editInputPeranProfesi").val(profesi.peran);
         $("#editInputStartDateProfesi").val(profesi.startDate);
         $("#editInputEndDateProfesi").val(profesi.endDate);
         $("#editInputInstansiProfesi").val(profesi.instansi);
-        
+
         $('#editProfesiModal').modal('show');
-        Session.set('editedProfesiIndex', index); 
+        Session.set('editedProfesiIndex', index);
     },
-    
+
     "click .save-profesi" (e, t){
         e.preventDefault();
         const editedProfesiIndex = Session.get('editedProfesiIndex');
@@ -1514,7 +1514,7 @@ Template.formLecturers.events({
         const startDate = $("#editInputStartDateProfesi").val();
         const endDate = $("#editInputEndDateProfesi").val();
         const instansi = $("#editInputInstansiProfesi").val();
-        
+
         const data = {
             name,
             peran,
@@ -1522,14 +1522,14 @@ Template.formLecturers.events({
             endDate,
             instansi
         };
-        
+
         listProfesi[editedProfesiIndex] = data;
         t.listProfesi.set(listProfesi);
         $('#editProfesiModal').modal('hide');
         Session.set('editedProfesiIndex', undefined);
     },
-    
-    
+
+
 
     "click .add-award" (e, t){
         e.preventDefault()
@@ -1542,7 +1542,7 @@ Template.formLecturers.events({
             name,
             type,
             year,
-            instansi          
+            instansi
         }
         // console.log(data)
         listAward.push(data)
@@ -1553,16 +1553,16 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const award = t.listAward.get()[index];
-        
+
         $("#editInputNamaPenghargaan").val(award.name);
         $("#editInputJenisPenghargaan").val(award.type);
         $("#editInputTahunPenghargaan").val(award.year);
         $("#editInputInstansiPenghargaan").val(award.instansi);
-        
+
         $('#editAwardModal').modal('show');
-        Session.set('editedAwardIndex', index); 
+        Session.set('editedAwardIndex', index);
     },
-    
+
     "click .save-award" (e, t){
         e.preventDefault();
         const editedAwardIndex = Session.get('editedAwardIndex');
@@ -1571,20 +1571,20 @@ Template.formLecturers.events({
         const type = $("#editInputJenisPenghargaan").val();
         const year = $("#editInputTahunPenghargaan").val();
         const instansi = $("#editInputInstansiPenghargaan").val();
-        
+
         const data = {
             name,
             type,
             year,
             instansi
         };
-        
+
         listAward[editedAwardIndex] = data;
         t.listAward.set(listAward);
         $('#editAwardModal').modal('hide');
         Session.set('editedAwardIndex', undefined);
     },
-    
+
 
 
     "click .add-bimbingan" (e, t){
@@ -1598,7 +1598,7 @@ Template.formLecturers.events({
         const programStudi = $("#inputProgramStudi").val()
         const lembagaName = $("#inputNamaLembaga").val()
         const endDate = $("#inputTahun").val()
-        const isValidEndDate = /^[0-9]{4}$/.test(endDate); 
+        const isValidEndDate = /^[0-9]{4}$/.test(endDate);
 
         if (!isValidEndDate) {
             failAlert("Input Tahun harus terdiri dari 4 digit angka.");
@@ -1622,7 +1622,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const bimbingan = t.listBimbingan.get()[index];
-        
+
         $("#editInputName").val(bimbingan.name);
         $("#editInputJudul").val(bimbingan.title);
         $("#editInputJenisBimbingan").val(bimbingan.category);
@@ -1631,11 +1631,11 @@ Template.formLecturers.events({
         $("#editInputProgramStudi").val(bimbingan.programStudi);
         $("#editInputNamaLembaga").val(bimbingan.lembagaName);
         $("#editInputTahun").val(bimbingan.endDate);
-        
+
         $('#editBimbinganModal').modal('show');
-        Session.set('editedBimbinganIndex', index); 
+        Session.set('editedBimbinganIndex', index);
     },
-    
+
     "click .save-bimbingan" (e, t){
         e.preventDefault();
         const editedBimbinganIndex = Session.get('editedBimbinganIndex');
@@ -1648,14 +1648,14 @@ Template.formLecturers.events({
         const programStudi = $("#editInputProgramStudi").val();
         const lembagaName = $("#editInputNamaLembaga").val();
         const endDate = $("#editInputTahun").val();
-        
-        const isValidEndDate = /^[0-9]{4}$/.test(endDate); 
-    
+
+        const isValidEndDate = /^[0-9]{4}$/.test(endDate);
+
         if (!isValidEndDate) {
             failAlert("Input Tahun harus terdiri dari 4 digit angka.");
             return;
         }
-        
+
         const data = {
             name,
             title,
@@ -1666,13 +1666,13 @@ Template.formLecturers.events({
             lembagaName,
             endDate
         };
-        
+
         listBimbingan[editedBimbinganIndex] = data;
         t.listBimbingan.set(listBimbingan);
         $('#editBimbinganModal').modal('hide');
         Session.set('editedBimbinganIndex', undefined);
     },
-    
+
     "click .add-certification" (e, t){
         e.preventDefault()
         const listCertification = t.listCertification.get()
@@ -1685,9 +1685,9 @@ Template.formLecturers.events({
         // const dateStart = $("#inputCertificationStart").val()
         const dateEnd = $("#inputCertificationEnd").val()
         const file = $("#inputFileSk").prop("files")[0]
-  
 
-        
+
+
         const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
 
         if (!isValidDateEnd) {
@@ -1719,13 +1719,13 @@ Template.formLecturers.events({
             reader.readAsDataURL(file);
         //   console.log(t.listCertification.get());
         }
-      
+
     },
     "click .edit-certification"(e, t) {
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const certification = t.listCertification.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputCertificationType").val(certification.type);
         $("#editInputCertificationMajor").val(certification.major);
@@ -1734,11 +1734,11 @@ Template.formLecturers.events({
         $("#editInputCertificationOrganiser").val(certification.organizer);
         $("#editInputCertificationGrade").val(certification.grade);
         $("#editInputCertificationEnd").val(certification.dateEnd);
-    
+
         $('#editCertificationModal').modal('show');
         Session.set('editedCertificationIndex', index);
     },
-    
+
     "click .save-certification"(e, t) {
         e.preventDefault();
         const editedCertificationIndex = Session.get('editedCertificationIndex');
@@ -1750,19 +1750,19 @@ Template.formLecturers.events({
         const organizer = $("#editInputCertificationOrganiser").val();
         const grade = $("#editInputCertificationGrade").val();
         const dateEnd = $("#editInputCertificationEnd").val();
-    
+
         const isValidRegistrationNumber = /^\d+$/.test(registrationNumber); // Hanya angka
         if (!isValidRegistrationNumber) {
             failAlert("Nomor Registrasi hanya boleh berisi angka.");
             return;
         }
-    
+
         const isValidDateEnd = /^[0-9]{4}$/.test(dateEnd);
         if (!isValidDateEnd) {
             failAlert("Input Date End harus terdiri dari 4 digit angka.");
             return;
         }
-    
+
         const data = {
             type,
             major,
@@ -1772,14 +1772,14 @@ Template.formLecturers.events({
             grade,
             dateEnd
         };
-    
+
         listCertification[editedCertificationIndex] = data;
         t.listCertification.set(listCertification);
         $('#editCertificationModal').modal('hide');
         Session.set('editedCertificationIndex', undefined);
     },
 
-    
+
 
     "click .add-bahanAjar"(e, t){
         e.preventDefault()
@@ -1801,17 +1801,17 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const bahanAjar = t.listBahanAjar.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputJudulBahanAjar").val(bahanAjar.title);
         $("#editInputIsbnBahanAjar").val(bahanAjar.isbn);
         $("#editInputTanggalTerbitBahanAjar").val(bahanAjar.publishDate);
         $("#editInputPenerbitBahanAjar").val(bahanAjar.publisher);
-    
+
         $('#editBahanAjarModal').modal('show');
         Session.set('editedBahanAjarIndex', index);
     },
-    
+
     "click .save-bahanAjar"(e, t) {
         e.preventDefault();
         const editedBahanAjarIndex = Session.get('editedBahanAjarIndex');
@@ -1820,20 +1820,20 @@ Template.formLecturers.events({
         const isbn = $("#editInputIsbnBahanAjar").val();
         const publishDate = $("#editInputTanggalTerbitBahanAjar").val();
         const publisher = $("#editInputPenerbitBahanAjar").val();
-    
+
         const data = {
             title,
             isbn,
             publishDate,
             publisher
         };
-    
+
         listBahanAjar[editedBahanAjarIndex] = data;
         t.listBahanAjar.set(listBahanAjar);
         $('#editBahanAjarModal').modal('hide');
         Session.set('editedBahanAjarIndex', undefined);
     },
-    
+
     "click .add-journal"(e,t){
         e.preventDefault()
         const listJournal = t.listJournal.get()
@@ -1864,7 +1864,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const journal = t.listJournal.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputJenisPenulisan").val(journal.category);
         $("#editInputJudulJournal").val(journal.title);
@@ -1875,11 +1875,11 @@ Template.formLecturers.events({
         $("#editInputYearJournal").val(journal.year);
         $("#editInputCategoryJournal").val(journal.cJournal);
         $("#editInputURLJournal").val(journal.link);
-    
+
         $('#editJournalModal').modal('show');
         Session.set('editedJournalIndex', index);
     },
-    
+
     "click .save-journal"(e, t) {
         e.preventDefault();
         const editedJournalIndex = Session.get('editedJournalIndex');
@@ -1893,7 +1893,7 @@ Template.formLecturers.events({
         const year = $("#editInputYearJournal").val();
         const cJournal = $("#editInputCategoryJournal").val();
         const link = $("#editInputURLJournal").val();
-    
+
         const data = {
             category,
             title,
@@ -1905,13 +1905,13 @@ Template.formLecturers.events({
             cJournal,
             link
         };
-    
+
         listJournal[editedJournalIndex] = data;
         t.listJournal.set(listJournal);
         $('#editJournalModal').modal('hide');
         Session.set('editedJournalIndex', undefined);
     },
-    
+
     "click .add-project"(e,t){
         e.preventDefault()
         const listProject = t.listProject.get()
@@ -1926,26 +1926,26 @@ Template.formLecturers.events({
             year,
             duration,
             link
-        } 
+        }
         listProject.push(data)
-        t.listProject.set(listProject) 
+        t.listProject.set(listProject)
     },
     "click .edit-project"(e, t) {
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const project = t.listProject.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputJudul").val(project.title);
         $("#editInputBidangKeilmuan").val(project.study);
         $("#editInputTahunPelaksanaan").val(project.year);
         $("#editInputLamaKegiatan").val(project.duration);
         $("#editInputStatus").val(project.link);
-    
+
         $('#editProjectModal').modal('show');
         Session.set('editedProjectIndex', index);
     },
-    
+
     "click .save-project"(e, t) {
         e.preventDefault();
         const editedProjectIndex = Session.get('editedProjectIndex');
@@ -1955,7 +1955,7 @@ Template.formLecturers.events({
         const year = $("#editInputTahunPelaksanaan").val();
         const duration = $("#editInputLamaKegiatan").val();
         const link = $("#editInputStatus").val();
-    
+
         const data = {
             title,
             study,
@@ -1963,12 +1963,12 @@ Template.formLecturers.events({
             duration,
             link
         };
-    
+
         listProject[editedProjectIndex] = data;
         t.listProject.set(listProject);
         $('#editProjectModal').modal('hide');
         Session.set('editedProjectIndex', undefined);
-    },    
+    },
     "click .add-pengujian" (e, t){
         e.preventDefault()
         const listPengujian = t.listPengujian.get()
@@ -1981,7 +1981,7 @@ Template.formLecturers.events({
         const lembaga = $("#inputNamaLembagaPengujian").val()
         const dateEnd = $("#inputTahunSelesaiPengujian").val()
         const semester = $("#inputSemesterPengujian").val()
-        
+
         const data = {
             name,
             type,
@@ -2002,7 +2002,7 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const pengujian = t.listPengujian.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputPengujianName").val(pengujian.name);
         $("#editInputJenisPengujian").val(pengujian.type);
@@ -2013,11 +2013,11 @@ Template.formLecturers.events({
         $("#editInputNamaLembagaPengujian").val(pengujian.lembaga);
         $("#editInputTahunSelesaiPengujian").val(pengujian.dateEnd);
         $("#editInputSemesterPengujian").val(pengujian.semester);
-    
+
         $('#editPengujianModal').modal('show');
         Session.set('editedPengujianIndex', index);
     },
-    
+
     "click .save-pengujian"(e, t) {
         e.preventDefault();
         const editedPengujianIndex = Session.get('editedPengujianIndex');
@@ -2031,7 +2031,7 @@ Template.formLecturers.events({
         const lembaga = $("#editInputNamaLembagaPengujian").val();
         const dateEnd = $("#editInputTahunSelesaiPengujian").val();
         const semester = $("#editInputSemesterPengujian").val();
-    
+
         const data = {
             name,
             type,
@@ -2043,13 +2043,13 @@ Template.formLecturers.events({
             dateEnd,
             semester
         };
-    
+
         listPengujian[editedPengujianIndex] = data;
         t.listPengujian.set(listPengujian);
         $('#editPengujianModal').modal('hide');
         Session.set('editedPengujianIndex', undefined);
     },
-    
+
     "click .add-kerjapenugasan"(e, t){
         e.preventDefault()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
@@ -2058,7 +2058,7 @@ Template.formLecturers.events({
         const period = $("#inputPeriod").val()
         const notes = $("#inputNotes").val()
 
-  
+
         const data = {
             name,
             place,
@@ -2074,17 +2074,17 @@ Template.formLecturers.events({
         e.preventDefault();
         const index = $(e.currentTarget).data('milik');
         const kerjaPenugasan = t.listKerjaPenugasan.get()[index];
-    
+
         // Mengisi nilai-nilai input di modal edit
         $("#editInputName").val(kerjaPenugasan.name);
         $("#editInputPlace").val(kerjaPenugasan.place);
         $("#editInputPeriod").val(kerjaPenugasan.period);
         $("#editInputNotes").val(kerjaPenugasan.notes);
-    
+
         $('#editKerjaPenugasanModal').modal('show');
         Session.set('editedKerjaPenugasanIndex', index);
     },
-    
+
     "click .save-kerjapenugasan"(e, t) {
         e.preventDefault();
         const editedKerjaPenugasanIndex = Session.get('editedKerjaPenugasanIndex');
@@ -2093,21 +2093,21 @@ Template.formLecturers.events({
         const place = $("#editInputPlace").val();
         const period = $("#editInputPeriod").val();
         const notes = $("#editInputNotes").val();
- 
-    
+
+
         const data = {
             name,
             place,
             period,
             notes
         };
-    
+
         listKerjaPenugasan[editedKerjaPenugasanIndex] = data;
         t.listKerjaPenugasan.set(listKerjaPenugasan);
         $('#editKerjaPenugasanModal').modal('hide');
         Session.set('editedKerjaPenugasanIndex', undefined);
     },
-    
+
     "click .remove-list" (e, t){
         e.preventDefault()
         const index = $(e.target).data("milik")
@@ -2140,7 +2140,7 @@ Template.formLecturers.events({
         const listStudentGuidance = t.listStudentGuidance.get()
         const listCoachingLevel = t.listCoachingLevel.get()
         const listEmail = t.listEmail.get()
-        
+
 
 
         confirmationAlertAsync().then(async function (result) {
@@ -2233,7 +2233,7 @@ Template.formLecturers.events({
             }
         })
     },
-  
+
     'click .btnNavigation' (e, t){
         e.preventDefault()
         const getValue = $(e.target).attr('data-value');
@@ -2250,43 +2250,43 @@ Template.formLecturers.events({
             if ($("#inputUsername").val() !== "" && $("#inputFullname").val() != "" && $("#inputAddress").val() !== "" && $("#inputPob").val() !== "" ){
                 const username = $("#inputUsername").val();
                 const fullName = $("#inputFullname").val();
-                const phoneNumber = $("#inputPhoneNumber").val(); 
+                const phoneNumber = $("#inputPhoneNumber").val();
                 const nik = $("#inputNik").val();
-                const nidn = $("#inputNidn").val(); 
-        
+                const nidn = $("#inputNidn").val();
+
                 const isValidUsername = /^[a-zA-Z0-9]{6,20}$/.test(username);
                 const isValidFullName = /^[a-zA-Z\s]+$/.test(fullName);
                 const isValidPhoneNumber = /^[0-9]+$/.test(phoneNumber);
                 const isValidNIK = /^\d{16}$/.test(nik);
                 const isValidNIDN = /^\d{10}$/.test(nidn);
                 let errorMessage = "";
-        
+
                 if (!isValidUsername) {
                     errorMessage += "Username tidak valid.\n";
                 }
-            
+
                 if (!isValidFullName) {
                     errorMessage += "Nama lengkap tidak valid.\n";
                 }
-            
+
                 if (!isValidPhoneNumber) {
                     errorMessage += "Nomor telepon tidak valid.\n";
                 }
-            
+
                 if (!isValidNIK) {
                     errorMessage += "NIK harus terdiri dari 16 digit angka.\n";
                 }
-         
-            
+
+
                 if (!isValidNIDN) {
                     errorMessage += "NIDN harus terdiri dari 10 digit angka.\n";
                 }
-            
+
                 if (errorMessage !== "") {
                     failAlert("Inputan anda salah. Mohon periksa:\n" + errorMessage);
                     return;
                 }
-            
+
                 formData.imageFile = $('#inputImageProfile')[0].files[0];
                 formData.username = $("#inputUsername").val();
                 formData.fullName = $("#inputFullname").val();
@@ -2309,7 +2309,7 @@ Template.formLecturers.events({
                 formData.position = $("#inputPosition").val();
                 formData.startDatePosition = $("#inputStartdatePosition").val();
                 formData.academicRank = $("#inputAcademicRank").val();
-                formData.startDateAcademicRank = $("#inputdateStartPosition").val(); 
+                formData.startDateAcademicRank = $("#inputdateStartPosition").val();
 
                 formData.dateDeaconOrdination  = $("#inputDateDeaconOrdination").val();
                 formData.placeDeaconOrdination  = $("#inputPlaceDeaconOrdination").val();
@@ -2318,13 +2318,13 @@ Template.formLecturers.events({
                 formData.datePerpetualVows  = $("#inputDatePerpetualVows").val();
                 formData.placePerpetualVows  = $("#inputPlacePerpetualVows").val();
                 formData.congregationalAffiliation  = $("#inputCongregationalAffiliation").val();
-                    
+
                 t.formPage.set(getValue);
                 t.formData.set(formData)
             } else {
                 failAlert("Pastikan username, Nama, Tempat Lahir, Tanggal Lahir,  Jenis Kelamin, NIK, Agama sudah diisi !")
             }
-            
+
         } else if (getValue == 3){
             t.formPage.set(getValue);
             t.formData.set(formData)
@@ -2338,7 +2338,7 @@ Template.formLecturers.events({
         else if (getValue == 6){
             t.formPage.set(getValue);
             t.formData.set(formData)
-        } 
+        }
     },
     'click .btn-previous' (e, t){
         e.preventDefault()
@@ -2349,6 +2349,51 @@ Template.formLecturers.events({
         e.preventDefault()
         const submitType = t.submitType.get()
         const formData = t.formData.get()
+
+        //saat create dosen
+        if (submitType === 1){
+            formData.imageFile = $('#inputImageProfile')[0].files[0];
+            formData.username = $("#inputUsername").val();
+            formData.fullName = $("#inputFullname").val();
+            formData.pob = $("#inputPob").val();
+            formData.dob = $("#inputDob").val();
+            formData.gender = $("input[name=inputGender]:checked").val();
+            formData.nik = $("#inputNik").val();
+            formData.registeredAddress = $("#inputRegisteredAddress").val();
+            formData.address = $("#inputAddress").val();
+            formData.phoneNumber = $("#inputPhoneNumber").val();
+            formData.religion = $("#inputReligion").val();
+            formData.nationality = $("#inputNationality").val();
+            formData.startDateImavi = $("#inputStartDateImaviLecture").val();
+            formData.statusImavi = $("#inputImaviStatus").val();
+            formData.startDateLecture = $("#inputStartDateLecture").val();
+            formData.nidn = $("#inputNidn").val();
+            formData.startDateLectureOther = $("#inputStartDateLectureOther").val();
+            formData.anotherStatus = $("#inputAnotherStatus").val();
+            formData.startDateAnotherStatus = $("#inputAnotherStartDate").val();
+            formData.position = $("#inputPosition").val();
+            formData.startDatePosition = $("#inputStartdatePosition").val();
+            formData.academicRank = $("#inputAcademicRank").val();
+            formData.startDateAcademicRank = $("#inputdateStartPosition").val();
+            formData.dateDeaconOrdination  = $("#inputDateDeaconOrdination").val();
+            formData.placeDeaconOrdination  = $("#inputPlaceDeaconOrdination").val();
+            formData.datePriesthoodOrdination  = $("#inputDatePriesthoodOrdination").val();
+            formData.placePriesthoodOrdination  = $("#inputPlacePriesthoodOrdination").val();
+            formData.datePerpetualVows  = $("#inputDatePerpetualVows").val();
+            formData.placePerpetualVows  = $("#inputPlacePerpetualVows").val();
+            formData.congregationalAffiliation  = $("#inputCongregationalAffiliation").val();
+
+
+            if (formData.imageFile){
+                const uploadData = {
+                    type: 'dosen-profilePics',
+                    Body: formData.imageFile
+                };
+                const fileLink = await uploadFiles(uploadData)
+                formData.imageLink = fileLink
+                delete formData.imageFile
+            }
+        }
         const listCertification = t.listCertification.get()
         const listEducationalHistory = t.listEducationalHistory.get()
         const listKerjaPenugasan = t.listKerjaPenugasan.get()
@@ -2376,7 +2421,7 @@ Template.formLecturers.events({
         const listStudentGuidance = t.listStudentGuidance.get()
         const listTunjangan =t.listTunjangan.get()
         const listEmail = t.listEmail.get()
-    
+
 
         confirmationAlertAsync().then(async function (result) {
             if (result.value) {
@@ -2407,10 +2452,6 @@ Template.formLecturers.events({
                 formData.listStudentGuidance = listStudentGuidance
                 formData.listTunjangan =listTunjangan
                 formData.listEmail = listEmail
-           
-               
-
-                console.log(formData)
 
                 if (formData.imageFile){
                     const uploadData = {
@@ -2489,8 +2530,8 @@ Template.formLecturers.events({
                         formData.datePerpetualVows  = $("#inputDatePerpetualVows").val();
                         formData.placePerpetualVows  = $("#inputPlacePerpetualVows").val();
                         formData.congregationalAffiliation  = $("#inputCongregationalAffiliation").val();
-        
-                       
+
+
                         if (formData.imageFile){
                             const uploadData = {
                                 type: 'dosen-profilePics',
@@ -2500,12 +2541,12 @@ Template.formLecturers.events({
                             formData.imageLink = fileLink
                             delete formData.imageFile
                         }
-                    // } 
+                    // }
                     else {
                         failAlert("Pastikan Username, Nama, Tempat Lahir, Tanggal Lahir,  Jenis Kelamin, NIK, Agama sudah diisi !");
                     }
                 }
-         
+
                 Meteor.call("dosen.update", formData, async function (err, res) {
                     if (err) {
                         failAlert(err);
@@ -2516,9 +2557,9 @@ Template.formLecturers.events({
                 });
             }
         });
-    },    
+    },
 });
-  
+
 Template.passwordEdit.events({
     'click #editPassword' (e, t) {
         e.preventDefault();
@@ -2529,21 +2570,21 @@ Template.passwordEdit.events({
 
         if (old === "" || newPassword === "" || confirmation === "" ){
             failAlert("Pastikan semua Field terisi !")
-        } 
+        }
         else {
             if (newPassword !== confirmation){
                 failAlert("Password baru dan konfirmasi password tidak sama !")
-            } 
+            }
             else {
                 const data = {
                     userId,
                     old,
                     newPassword
-                } 
+                }
                 Meteor.call("users.changePassword", data, function (error, result) {
                     if (error) {
                         failAlert(error)
-                    } 
+                    }
                     else {
                         successAlert("Berhasil mengubah password")
                         FlowRouter.go("/")
@@ -2559,7 +2600,7 @@ Template.passwordEdit.events({
         const inputId = $(e.target).data("id");
         const input = t.find('#' + inputId);
         const icon = $(e.target);
-        
+
         if (input.type === 'password') {
             input.type = 'text';
             icon.removeClass('fa-eye').addClass('fa-eye-slash');

@@ -71,7 +71,7 @@
                             </div>
                         </div>
 
-                              
+
                         <div class="form-group">
                             <label for="inputGender" class="fw-bold text-login-content">Jenis Kelamin*</label>
                             <div class="d-flex flex-wrap gap-4">
@@ -142,9 +142,9 @@
                                         <div class="d-flex flex-wrap">
                                             <div class="w-60 row row-cols-1 mx-0">
                                                 <label class="col text-break fw-bold">{{capitalizeWordLower item.email}}</label>
-        
+
                                             </div>
-                                        
+
                                         </div>
 
                                         <div class="d-flex justify-content-end bottom-0 me-2">
@@ -154,7 +154,7 @@
                                             <button class="btn btn-edit btn-primary btn-sm edit-email" data-id="email" data-milik="{{@index}}">
                                                 <i class="fa fa-solid fa-pencil edit-email" data-id="email" data-milik="{{@index}}"></i>
                                             </button>
-                                            
+
                                         </div>
                                     </div>
                                 {{/each}}
@@ -167,9 +167,9 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <p class="fw-bold text-break">{{capitalizeWordLower item.email}}</p>
-                                            
+
                                             </div>
-                                        
+
                                         </div>
                                         <div class="d-flex justify-content-end bottom-0 me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="email" data-milik="{{@index}}">
@@ -181,7 +181,7 @@
                             </div>
                             {{/if}}
                         </div>
-                    
+
 
                         <div class="form-group">
                             <label for="inputReligion" class="fw-bold text-login-content">Agama*</label>
@@ -207,8 +207,8 @@
                                 <input type="text" class="form-control" id="inputImaviStatus" value="{{formData.statusImavi}}">
                             {{/if}}
                         </div>
-                        
-                        
+
+
                         <div class="form-group">
                             <label for="inputStartDateLecture" class="fw-bold text-login-content">Tanggal Mulai Status Dosen</label>
                             <input type="date" class="form-control" id="inputStartDateLecture" value="{{formData.startDateLecture}}">
@@ -252,19 +252,19 @@
                         <div class="form-group ">
                             <label for="inputDateStartPosition" class="fw-bold text-login-content">Tanggal Mulai Kepangkatan</label>
                             <input type="date" class="form-control" id="inputdateStartPosition" value="{{formData.startDateAcademicRank}}">
-                        </div>                        
+                        </div>
                     </form>
                 </section>
                 {{#if equals pageMode "add"}}
 
                 <hr class="my-3" style="border: 1px solid lightgray;">
                 <div class="d-flex justify-content-end mt-4">
-                    <button class="btn btn-submit btn-next text-white" id = "btn-submit" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="1">
+                    <button class="btn btn-submit btn-block btn-next text-white" id = "btn-submit" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="1">
                         Simpan Data
                     </button>
                 </div>
                 {{/if}}
-                
+
                 {{#if equals pageMode "edit"}}
                     <hr class="my-3" style="border: 1px solid lightgray;">
                     <div class="d-flex justify-content-end">
@@ -275,6 +275,7 @@
 
         </div>
 
+        {{#if equals pageMode "edit"}}
         <!-- Minat penelitian -->
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
@@ -305,9 +306,9 @@
                                     <div class="d-flex flex-wrap">
                                         <div class="w-60 row row-cols-1 mx-0">
                                             <label class="col text-break fw-bold">{{capitalizeWord item.title}}</label>
-    
+
                                         </div>
-                                       
+
                                     </div>
 
                                     <div class="d-flex justify-content-end bottom-0 me-2">
@@ -329,9 +330,9 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <p class="fw-bold text-break">{{capitalizeWord item.title}}</p>
-                                           
+
                                         </div>
-                                       
+
                                     </div>
                                     <div class="d-flex justify-content-end bottom-0 me-2">
                                         <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="researchInterest" data-milik="{{@index}}">
@@ -358,64 +359,7 @@
                 {{/if}}
             </div>
         </div>
-
-        
-    <!-- Elemen pop-up form edit email -->
-    <div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editEmailModalLabel">Simpan Email</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form edit email -->
-                <form id="editEmailForm">
-                    <!-- Input untuk data email -->
-                    <div class="form-group">
-                        <label for="editInputEmail" class="fw-bold text-login-content">Email</label>
-                        <input type="text" class="form-control" id="editInputEmail" >
-                    </div>
-                
-                    <!-- Tombol untuk menyimpan perubahan -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary save-email">Simpan Perubahan</button>
-                    </div>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Elemen pop-up form edit minat penelitian -->
-    <div class="modal fade" id="editResearchInterestModal" tabindex="-1" aria-labelledby="editResearchModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editResearchModalLabel">Simpan Minat Penelitian</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Form edit minat penelitian -->
-                <form id="editEmailForm">
-                    <!-- Input untuk data minat penelitian -->
-                    <div class="form-group">
-                        <label for="editInputResearchInterest" class="fw-bold text-login-content">Minat Penelitian</label>
-                        <input type="text" class="form-control" id="editInputResearchInterest" >
-                    </div>
-                
-                    <!-- Tombol untuk menyimpan perubahan -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary save-research-interest">Simpan Perubahan</button>
-                    </div>
-                </form>
-            </div>
-            </div>
-        </div>
-    </div>
-
         <!-- Riwayat pendidikan -->
-
         <div class="card rounded-3 mt-4">
             <div class="card-header bg-blue text-white">
                 Riwayat Pendidikan
@@ -456,13 +400,13 @@
                             <label for="inputEducationEnd" class="fw-bold text-login-content">Tahun Lulus</label>
                             <input type="text" class="form-control" id="inputEducationEnd">
                         </div>
-                      
-                 
+
+
                         <div class="form-group">
                             <label for="inputStudyPublication" class="fw-bold text-login-content">Judul Skripsi/Thesis</label>
                             <input type="text" class="form-control" id="inputStudyPublication">
                         </div>
-                   
+
                         <div class="d-flex justify-content-end mt-2">
                             <button class="btn btn-add btn-sm" id="add-history">
                                 <i class="fa fa-light fa-plus"></i>
@@ -488,8 +432,8 @@
                                         </div>
                                     </div>
                                     <div class="d-flex flex-wrap">
-                                        <label class="col text-break"><b>Kelulusan: </b>{{item.institution}} 
-    
+                                        <label class="col text-break"><b>Kelulusan: </b>{{item.institution}}
+
                                         </label>
                                     </div>
                                     <div class="d-flex justify-content-end bottom-0 me-2">
@@ -580,18 +524,18 @@
                             <input type="text" class="form-control" id="inputCertificationOrganiser" >
                         </div>
 
-                                           
+
                         <div class="form-group">
                             <label for="inputCertificationGrade" class="fw-bold text-login-content">Hasil</label>
                             <input type="text" class="form-control" id="inputCertificationGrade" >
                         </div>
-             
+
                         <div class="form-group">
                             <label for="inputSkNumber" class="fw-bold text-login-content">File SK</label>
                             <input type="file" class="form-control" id="inputFileSk" accept=".doc,.pdf,.txt,.csv">
                         </div>
 
-              
+
                         <div class="d-flex justify-content-end mt-2 add-certification">
                             <button class="btn btn-add btn-sm">
                                 <i class="fa fa-light fa-plus"></i>
@@ -626,7 +570,7 @@
                                         {{#if item.fileLink}}
                                             <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
                                         {{/if}}
-    
+
                                         {{#if item.skFile}}
                                             <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
                                         {{/if}}
@@ -663,7 +607,7 @@
                                             {{#if item.fileLink}}
                                                 <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
                                             {{/if}}
-    
+
                                             {{#if item.skFile}}
                                                 <label class="col text-break"><b>SK File: </b>  <a href="{{item.fileLink}}" class="link-{{@index}}">Download</a>  </label>
                                             {{/if}}
@@ -680,7 +624,7 @@
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-warning btn-personal" type="button" value="6">Simpan Data</button>
                     </div>
-                    
+
                 {{/if}}
                 {{#if equals pageMode "add"}}
                 <hr class="my-3" style="border: 1px solid lightgray;">
@@ -789,8 +733,8 @@
                         <label for="editInputEducationEnd" class="fw-bold text-login-content">Tahun Lulus</label>
                         <input type="text" class="form-control" id="editInputEducationEnd">
                     </div>
-                  
-             
+
+
                     <div class="form-group">
                         <label for="editInputStudyPublication" class="fw-bold text-login-content">Judul Skripsi/Thesis</label>
                         <input type="text" class="form-control" id="editInputStudyPublication">
@@ -826,8 +770,8 @@
                             <label for="inputPeriode" class="fw-bold text-login-content">Periode</label>
                             <input type="text" class="form-control" id="inputPeriode">
                         </div>
-                       
-                      
+
+
                         <div class="d-flex justify-content-end mt-2">
                             <button class="btn btn-add btn-sm add-coaching">
                                 <i class="fa fa-light fa-plus"></i>
@@ -852,7 +796,7 @@
                                             </div>
                                         </div>
                                     </div>
-           
+
                                     <div class="d-flex justify-content-end bottom-0 me-2">
                                         <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="coaching" data-milik="{{@index}}">
                                             <i class="fa fa-solid fa-trash remove-list" data-id="coaching" data-milik="{{@index}}"></i>
@@ -873,7 +817,7 @@
                                         <div class="col-12">
                                             <p class="fw-bold text-break">{{capitalizeWord item.coachingLevel}}</p>
                                             <p class="text-break"><b>Periode: </b> {{capitalizeWord item.periode}}</p>
-                                         
+
                                         </div>
                                         <div class="col-6">
                                             <p class="fw-bold text-secondary text-break mt-3"><b class="text-dark">Tempat Pembinaan:</b> {{item.place}}</p>
@@ -928,7 +872,7 @@
                             <label for="editInputPeriode" class="fw-bold text-login-content">Periode</label>
                             <input type="text" class="form-control" id="editInputPeriode">
                         </div>
-                        
+
                         <!-- Tombol untuk menyimpan perubahan -->
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary save-coaching">Simpan Perubahan</button>
@@ -964,12 +908,12 @@
                             <label for="inputPlacePriesthoodOrdination" class="fw-bold text-login-content">Tempat Tahbisan Imamat</label>
                             <input type="text" class="form-control" id="inputPlacePriesthoodOrdination" value="{{formData.placePriesthoodOrdination}}">
                         </div>
-						
+
 						<div class="form-group">
                             <label for="inputDatePerpetualVows" class="fw-bold text-login-content">Tanggal Kaul Kekal</label>
                             <input type="date" class="form-control" id="inputDatePerpetualVows" value="{{formData.datePerpetualVows}}">
                         </div>
-                       	
+
 						<div class="form-group">
                             <label for="inputPlacePerpetualVows" class="fw-bold text-login-content">Tempat Kaul Kekal</label>
                             <input type="text" class="form-control" id="inputPlacePerpetualVows" value="{{formData.placePerpetualVows}}">
@@ -978,7 +922,7 @@
                             <label for="inputCongregationalAffiliation" class="fw-bold text-login-content">Afiliasi Keuskupan/Tarekat</label>
                             <input type="text" class="form-control" id="inputCongregationalAffiliation" value="{{formData.congregationalAffiliation}}">
                         </div>
-                      
+
                     </form>
                 </section>
                 {{#if equals pageMode "edit"}}
@@ -995,13 +939,70 @@
                 {{/if}}
             </div>
         </div>
-      
+        {{/if}}
 
-  
-        
+    <!-- Elemen pop-up form edit email -->
+    <div class="modal fade" id="editEmailModal" tabindex="-1" aria-labelledby="editEmailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmailModalLabel">Simpan Email</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form edit email -->
+                <form id="editEmailForm">
+                    <!-- Input untuk data email -->
+                    <div class="form-group">
+                        <label for="editInputEmail" class="fw-bold text-login-content">Email</label>
+                        <input type="text" class="form-control" id="editInputEmail" >
+                    </div>
+
+                    <!-- Tombol untuk menyimpan perubahan -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-email">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemen pop-up form edit minat penelitian -->
+    <div class="modal fade" id="editResearchInterestModal" tabindex="-1" aria-labelledby="editResearchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editResearchModalLabel">Simpan Minat Penelitian</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form edit minat penelitian -->
+                <form id="editEmailForm">
+                    <!-- Input untuk data minat penelitian -->
+                    <div class="form-group">
+                        <label for="editInputResearchInterest" class="fw-bold text-login-content">Minat Penelitian</label>
+                        <input type="text" class="form-control" id="editInputResearchInterest" >
+                    </div>
+
+                    <!-- Tombol untuk menyimpan perubahan -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-research-interest">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
         {{#if equals pageMode "edit"}}
         <div class="d-flex justify-content-between mt-4">
-         
+
             <button class="btn  btn-next text-white" style="background-color: #549DF7; border: 1px solid #549DF7" type="button" value="3">
                 Next
                 <i class="fa fa-light fa-arrow-right btn-next" value="2"></i>
@@ -1152,7 +1153,7 @@
         </div>
     </div>
 
- 
+
     <div class="d-flex justify-content-between mt-4">
         <button class="btn  btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="1">
             <i class="fa fa-light fa-arrow-left btn-previous" value="1"></i>
@@ -1189,7 +1190,7 @@
                                 <option value="Gasal">Gasal</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group col">
                             <label class="fw-bold text-login-content">Tahun Ajaran</label>
                             <select id="input-ps" class="form-select filter input-ps">
@@ -1317,16 +1318,16 @@
                                 <option value="Gasal">Gasal</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label class="fw-bold text-login-content">Tahun Ajaran</label>
                             <select id="editInput-ps" class="form-select filter input-ps">
-                             
+
                             </select>
                         </div>
                     </div>
 
-                        
+
                     <div class="form-group">
                         <label class="fw-bold text-login-content">Jenis Mata Kuliah</label>
                         <select id="editInput-jenis" class="form-select filter">
@@ -1348,7 +1349,7 @@
                         <label for="editInputSks" class="fw-bold text-login-content">SKS</label>
                         <input type="text" class="form-control" id="editInputSks">
                     </div>
-                    
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-pengajaran">Simpan Perubahan</button>
@@ -1551,7 +1552,7 @@
             </div>
         </div>
     </div>
-    
+
 
 
     <!-- Pengujian Mahasiswa -->
@@ -1573,7 +1574,7 @@
                             <option value="Tugas Akhir">Tugas Akhir</option>
                             <option value="Skripsi">Skripsi</option>
                         </select>
-                        
+
                     </div>
                     <div class="form-group">
                         <label for="inputJudulPengujian" class="fw-bold text-login-content">Judul Pengujian</label>
@@ -1612,10 +1613,10 @@
                             <select id="inputTahunSelesaiPengujian" class="form-select filter input-ps"></select>
                         </div>
 
-            
-                        
+
+
                     </div>
-                
+
                     <div class="d-flex justify-content-end mt-2 add-pengujian">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -1755,7 +1756,7 @@
                                 <label for="editInputTahunSelesaiPengujian" class="fw-bold text-login-content">Tahun Selesai</label>
                                 <select id="editInputTahunSelesaiPengujian" class="form-select filter input-ps"></select>
                             </div>
-                  
+
                         </div>
                     </form>
                 </div>
@@ -1767,7 +1768,7 @@
         </div>
     </div>
 
-  
+
 
 
 
@@ -1793,12 +1794,12 @@
                         <label for="inputTanggalTerbitBahanAjar" class="fw-bold text-login-content">Tanggal Terbit</label>
                         <input type="date" class="form-control" id="inputTanggalTerbitBahanAjar" >
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="inputPenerbitBahanAjar" class="fw-bold text-login-content">Penerbit</label>
                         <input type="text" class="form-control" id="inputPenerbitBahanAjar" >
                     </div>
-                    
+
                     <div class="d-flex justify-content-end mt-2 add-bahanAjar">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -1935,7 +1936,7 @@
                         <input type="text" class="form-control" id="inputCategoryStudy">
                     </div>
                     <div class="row row-cols-1 row-cols-md-2">
-                        
+
                         <div class="form-group">
                             <label for="inputSemesterPembinaan" class="fw-bold text-login-content">Semester</label>
                             <select class="form-control" id="inputSemesterPembinaan">
@@ -1947,16 +1948,16 @@
                         <div class="form-group">
                             <label for="inputSemester" class="fw-bold text-login-content">Semester</label>
                             <select id="inputSemester" class="form-select filter input-ps">
-                            </select>                    
+                            </select>
                         </div>
-                 
+
 
                     </div>
 
 
-            
 
-                    
+
+
                     <div class="d-flex justify-content-end mt-2 add-student-guidance">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -2063,20 +2064,20 @@
                                 <option value="Gasal">Gasal</option>
                             </select>
                         </div>
-    
+
                         <div class="form-group">
                             <label for="editInputSemester" class="fw-bold text-login-content">Semester</label>
                             <select id="editInputSemester" class="form-select filter input-ps">
-                             
-                            </select>                    
+
+                            </select>
                         </div>
-            
+
 
                     </div>
 
 
 
-                  
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-student-guidance">Simpan Perubahan</button>
@@ -2119,7 +2120,7 @@
                         <label for="inputBidangKeilmuan" class="fw-bold text-login-content">Bidang Keilmuan</label>
                         <input type="text" class="form-control" id="inputBidangKeilmuan" >
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="inputTahunPelaksanaan" class="fw-bold text-login-content">Tahun Pelaksanaan</label>
                         <input type="text" class="form-control" id="inputTahunPelaksanaan">
@@ -2147,7 +2148,7 @@
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                        
+
                                         <div class="me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="project" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="project" data-milik="{{@index}}"></i>
@@ -2175,7 +2176,7 @@
                                 <div class="d-flex flex-wrap">
                                     <div class="row row-cols-1">
                                         <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                           
+
                                             <div class="me-2">
                                                 <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="project" data-milik="{{@index}}">
                                                     <i class="fa fa-solid fa-trash remove-list" data-id="project" data-milik="{{@index}}"></i>
@@ -2193,7 +2194,7 @@
                                         <label class="col text-break"><b>Tahun Pelaksanaan:</b> {{item.year}}</label>
                                         <label class="col text-break"><b>Lama Kegiatan:</b> {{item.duration}}</label>
                                         <label class="col text-break"><b>Status:</b> {{item.link}}</label>
-                   
+
                                     </div>
                                 </div>
                             </div>
@@ -2427,7 +2428,7 @@
     </div>
 
     <!-- Jurnal Ilmiah -->
-    
+
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
             Jurnal Ilmiah
@@ -2450,7 +2451,7 @@
                         <label for="inputDoi" class="fw-bold text-login-content">DOI</label>
                         <input type="text" class="form-control" id="inputDoi">
                     </div>
-            
+
                     <div class="form-group">
                         <label for="inputNama" class="fw-bold text-login-content">Nama Jurnal</label>
                         <input type="text" class="form-control" id="inputNama" >
@@ -2624,7 +2625,7 @@
 
 
     <!-- Majalah -->
-    
+
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
             Majalah
@@ -2640,7 +2641,7 @@
                         <label for="input_name" class="fw-bold text-login-content">Nama Majalah</label>
                         <input type="text" class="form-control" id="input_name">
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="volume_input" class="fw-bold text-login-content">Volume</label>
                         <input type="text" class="form-control" id="volume_input">
@@ -2764,7 +2765,7 @@
                         <label for="editInput_name" class="fw-bold text-login-content">Nama Majalah</label>
                         <input type="text" class="form-control" id="editInput_name">
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="editVolume_input" class="fw-bold text-login-content">Volume</label>
                         <input type="text" class="form-control" id="editVolume_input">
@@ -2785,7 +2786,7 @@
                         <label for="editLink_input" class="fw-bold text-login-content">Link Url</label>
                         <input type="text" class="form-control" id="editLink_input">
                     </div>
-                    
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-magazine">Simpan Perubahan</button>
@@ -2812,7 +2813,7 @@
                         <label for="input_media_name" class="fw-bold text-login-content">Nama Media</label>
                         <input type="text" class="form-control" id="input_media_name" >
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="input_volume" class="fw-bold text-login-content">Volume</label>
                         <input type="text" class="form-control" id="input_volume">
@@ -2934,7 +2935,7 @@
                         <label for="editInput_media_name" class="fw-bold text-login-content">Nama Media</label>
                         <input type="text" class="form-control" id="editInput_media_name" >
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="editInput_volume" class="fw-bold text-login-content">Volume</label>
                         <input type="text" class="form-control" id="editInput_volume">
@@ -2955,7 +2956,7 @@
                         <label for="editInput_link" class="fw-bold text-login-content">Link Url</label>
                         <input type="text" class="form-control" id="editInput_link">
                     </div>
-                    
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-otherPublication">Simpan Perubahan</button>
@@ -2983,17 +2984,17 @@
                         <label for="inputKategoriKegiatan" class="fw-bold text-login-content">Kategori Kegiatan</label>
                         <input type="text" class="form-control" id="inputKategoriKegiatan">
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="inputJenisKegiatan" class="fw-bold text-login-content">Jenis Kegiatan</label>
                         <input type="text" class="form-control" id="inputJenisKegiatan">
                     </div>
-               
+
                     <div class="form-group">
                         <label for="input-date" class="fw-bold text-login-content">Tanggal Terbit</label>
                         <input type="date" class="form-control" id="input-date">
                     </div>
-                    
+
                     <div class="d-flex justify-content-end mt-2 add-paten">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -3091,17 +3092,17 @@
                         <label for="editInputKategoriKegiatan" class="fw-bold text-login-content">Kategori Kegiatan</label>
                         <input type="text" class="form-control" id="editInputKategoriKegiatan">
                     </div>
-                   
+
                     <div class="form-group">
                         <label for="editInputJenisKegiatan" class="fw-bold text-login-content">Jenis Kegiatan</label>
                         <input type="text" class="form-control" id="editInputJenisKegiatan">
                     </div>
-               
+
                     <div class="form-group">
                         <label for="editInput-date" class="fw-bold text-login-content">Tanggal Terbit</label>
                         <input type="date" class="form-control" id="editInput-date">
                     </div>
-                    
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-paten">Simpan Perubahan</button>
@@ -3267,7 +3268,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Pembicara -->
     <div class="card rounded-3 mt-4">
@@ -3412,7 +3413,7 @@
                         <label for="editYearDateInput" class="fw-bold text-login-content">Tanggal Awal Pelaksanaan</label>
                         <input type="date" class="form-control" id="editYearDateInput" >
                     </div>
-            
+
                     <div class="form-group col">
                         <label for="editYearDateInputEnd" class="fw-bold text-login-content">Tanggal Akhir Pelaksanaan</label>
                         <input type="date" class="form-control" id="editYearDateInputEnd" >
@@ -3454,7 +3455,7 @@
                             <label for="inputStartDate" class="fw-bold text-login-content">Terhitung Mulai</label>
                             <input type="date" class="form-control" id="inputStartDate" >
                         </div>
-          
+
                         <div class="form-group col">
                             <label for="inputEndDate" class="fw-bold text-login-content">Tanggal Selesai</label>
                             <input type="date" class="form-control" id="inputEndDate" name="endDate">
@@ -3494,7 +3495,7 @@
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                     <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                     <label class="col text-break"><b>Tanggal Mulai:</b> {{formatHRDate item.startDate}}</label>
-                                    <label class="col text-break"><b>Tanggal berakhir:</b> 
+                                    <label class="col text-break"><b>Tanggal berakhir:</b>
                                         {{#if (equals item.endDate 'Sampai Sekarang')}}
                                             Sampai Sekarang
                                         {{else}}
@@ -3528,7 +3529,7 @@
                                         </div>
                                         <label class="col text-break"><b>Peran:</b> {{item.peran}}</label>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                        <label class="col text-break"><b>Tahun berakhir:</b> 
+                                        <label class="col text-break"><b>Tahun berakhir:</b>
                                             {{#if (equals item.endDate 'Sampai Sekarang')}}
                                             Sampai Sekarang
                                             {{else}}
@@ -3582,7 +3583,7 @@
                             </div>
                             <div class="form-group col">
                                 <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                           
+
                                 <input type="text" class="form-control" id="editInputEndDate">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="endDateNowEdit">
@@ -3600,7 +3601,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Pengelola Media Lain -->
     <div class="card rounded-3 mt-4">
@@ -3755,7 +3756,7 @@
                             </div>
                             <div class="form-group col">
                                 <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                              
+
                                 <input type="text" class="form-control" id="editInputEndDateOthers">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="endDateOthersNowEdit">
@@ -3773,8 +3774,8 @@
             </div>
         </div>
     </div>
-    
-    
+
+
     <!-- Jabatan Struktural Imavi -->
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
@@ -3796,8 +3797,8 @@
                             <label for="inputStartDateImavi" class="fw-bold text-login-content">Terhitung Tahun Mulai</label>
                             <input type="text" class="form-control" id="inputStartDateImavi">
                         </div>
-                
-                            
+
+
                         <div class="form-group col">
                             <label for="inputEndDateImavi" class="fw-bold text-login-content">Terhitung Tahun Selesai</label>
                             <input type="text" class="form-control" id="inputEndDateImavi" >
@@ -3805,12 +3806,12 @@
                                 <input class="form-check-input" type="checkbox" id="endDateImaviNow">
                                 <label class="form-check-label" for="endDateImaviNow">Sampai Sekarang</label>
                             </div>
-                               
+
                         </div>
-    
-                    
+
+
                     </div>
-                    
+
                     <div class="d-flex justify-content-end mt-2 add-imavistructure">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -3838,7 +3839,7 @@
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                     <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                    <label class="col text-break"><b>Tahun berakhir:</b> 
+                                    <label class="col text-break"><b>Tahun berakhir:</b>
                                         {{#if (equals item.endDateImaviStructure 'Sampai Sekarang')}}
                                         Sampai Sekarang
                                         {{else}}
@@ -3871,7 +3872,7 @@
                                             <hr class="mt-2 mb-3" style="border: 1px solid gray;">
                                         </div>
                                         <label class="col text-break"><b>Tahun Mulai:</b> {{item.startDate}}</label>
-                                        <label class="col text-break"><b>Tahun berakhir:</b>  
+                                        <label class="col text-break"><b>Tahun berakhir:</b>
                                             {{#if (equals item.endDateImaviStructure 'Sampai Sekarang')}}
                                             Sampai Sekarang
                                             {{else}}
@@ -3920,7 +3921,7 @@
                             </div>
                             <div class="form-group col">
                                 <label class="fw-bold text-login-content">Tanggal Selesai</label><br>
-                      
+
                                 <input type="text" class="form-control" id="editInputEndDateImavi">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" id="endDateImaviNowEdit">
@@ -3938,7 +3939,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Kegitan Profesi -->
     <div class="card rounded-3 mt-4">
@@ -3966,7 +3967,7 @@
                             <input type="text" class="form-control" id="inputEndDateProfesi">
                         </div>
                     </div>
-           
+
                     <div class="form-group">
                         <label for="inputInstansiProfesi" class="fw-bold text-login-content">Instansi Profesi</label>
                         <input type="text" class="form-control" id="inputInstansiProfesi">
@@ -3986,7 +3987,7 @@
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                        {{item.name }} 
+                                        {{item.name }}
                                         <div class="me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="profesi" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="profesi" data-milik="{{@index}}"></i>
@@ -4074,7 +4075,7 @@
                                 <input type="text" class="form-control" id="editInputEndDateProfesi">
                             </div>
                         </div>
-                 
+
                         <div class="form-group">
                             <label for="editInputInstansiProfesi" class="fw-bold text-login-content">Instansi</label>
                             <input type="text" class="form-control" id="editInputInstansiProfesi">
@@ -4088,7 +4089,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Penghargaan -->
     <div class="card rounded-3 mt-4">
@@ -4129,7 +4130,7 @@
                             <div class="rounded-3 mt-3 p-3" style="border: 1px solid lightgray; background-color: #E8F0FE;">
                                 <div>
                                     <label class="col fw-bold text-break fw-bold d-flex justify-content-between align-items-center">
-                                        {{item.name }} 
+                                        {{item.name }}
                                         <div class="me-2">
                                             <button class="btn btn-trash btn-danger btn-sm remove-list" data-id="award" data-milik="{{@index}}" >
                                                 <i class="fa fa-solid fa-trash remove-list" data-id="award" data-milik="{{@index}}"></i>
@@ -4137,7 +4138,7 @@
                                             <button class="btn btn-edit btn-primary btn-sm edit-award" data-id="award" data-milik="{{@index}}">
                                                 <i class="fa fa-solid fa-pencil edit-award" data-id="award" data-milik="{{@index}}"></i>
                                              </button>
-                                            
+
                                         </div>
                                     </label>
                                     <hr class="mt-2 mb-3" style="border: 1px solid gray;">
@@ -4225,9 +4226,9 @@
             </div>
         </div>
     </div>
-    
-    
-  
+
+
+
     <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-submit btn-previous text-white" style="background-color: rgba(24, 63, 131, 0.8); border: 1px solid rgba(24, 63, 131, 0.8)" type="button" value="4">
             <i class="fa fa-light fa-arrow-left btn-previous" value="4"></i>
@@ -4374,8 +4375,8 @@
                             <input type="text" class="form-control" id="editInput-end-year">
                         </div>
                     </div>
-               
-                    
+
+
                     <!-- Tombol untuk menyimpan perubahan -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary save-scholarship">Simpan Perubahan</button>
@@ -4387,7 +4388,7 @@
     </div>
 
 
- 
+
     <!-- Kesejahteraan -->
     <div class="card rounded-3 mt-4">
         <div class="card-header bg-blue text-white">
@@ -4442,7 +4443,7 @@
                                             -
                                             <label class="fw-bold text-secondary text-break"> {{item.endYear}}</label>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="d-flex flex-wrap">
@@ -4525,7 +4526,7 @@
                         <label for="editInput-category-service" class="fw-bold text-login-content">Jenis Kesejahteraan</label>
                         <input type="text" class="form-control" id="editInput-category-service">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="editInput-organizer" class="fw-bold text-login-content">Penyelenggara</label>
                         <input type="text" class="form-control" id="editInput-organizer" >
@@ -4580,16 +4581,16 @@
                         <input type="text" class="form-control" id="input-nominal" >
                     </div>
                     <script>
-                
+
                         function formatRupiah(angka) {
                             var reverse = angka.toString().split('').reverse().join(''),
                                 ribuan = reverse.match(/\d{1,3}/g);
                             ribuan = ribuan.join('.').split('').reverse().join('');
                             return 'Rp. ' + ribuan;
                         }
-                    
+
                         document.getElementById('input-nominal').addEventListener('input', function () {
-                            var nominal = parseInt(this.value.replace(/[^0-9]/g, '')); 
+                            var nominal = parseInt(this.value.replace(/[^0-9]/g, ''));
                             this.value = formatRupiah(nominal);
                         });
                     </script>
@@ -4603,8 +4604,8 @@
                             <input type="text" class="form-control" id="input-year-end">
                         </div>
                     </div>
- 
-                
+
+
                     <div class="d-flex justify-content-end mt-2 add-tunjangan">
                         <button class="btn btn-add btn-sm">
                             <i class="fa fa-light fa-plus"></i>
@@ -4717,16 +4718,16 @@
                         <input type="text" class="form-control" id="editInput-nominal" >
                     </div>
                     <script>
-                
+
                         function formatRupiah(angka) {
                             var reverse = angka.toString().split('').reverse().join(''),
                                 ribuan = reverse.match(/\d{1,3}/g);
                             ribuan = ribuan.join('.').split('').reverse().join('');
                             return 'Rp. ' + ribuan;
                         }
-                    
+
                         document.getElementById('editInput-nominal').addEventListener('input', function () {
-                            var nominal = parseInt(this.value.replace(/[^0-9]/g, '')); 
+                            var nominal = parseInt(this.value.replace(/[^0-9]/g, ''));
                             this.value = formatRupiah(nominal);
                         });
                     </script>
@@ -4768,7 +4769,7 @@
     </div>
     {{/if}}
 
-    
+
     <style>
         .navigation-form{
             width: 100%;
@@ -4812,13 +4813,13 @@
                 overflow-x: scroll;
             }
         }
-        @media (max-width: 768px) {            
+        @media (max-width: 768px) {
 
         }
-        @media screen and (max-width: 600px) {         
+        @media screen and (max-width: 600px) {
             .preview-card{
                 width: 100%;
-            }   
+            }
             .navigation-form{
                 overflow-x: scroll;
             }

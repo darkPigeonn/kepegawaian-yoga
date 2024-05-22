@@ -6,6 +6,7 @@ import { HTTP } from "meteor/http";
 import { Email } from "meteor/email"
 import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
+const generator = require("generate-password");
 export const Lecturers = new Mongo.Collection("lecturers", { idGeneration: 'MONGO' });
 process.env.APP_IDMOBILE = Meteor.settings.APP_IDMOBILE;
 process.env.APP_SECRETMOBILE = Meteor.settings.APP_SECRETMOBILE;
@@ -46,7 +47,7 @@ Meteor.methods({
             }
         }
 
-      
+
     },
     "employee.checkToken" (resetToken){
        const user = Meteor.users.findOne({resetToken})
@@ -103,7 +104,7 @@ Meteor.methods({
             console.log(error);
             return error;
         }
-        
+
         // Roles.createRole(dataSend.role)
         // console.log(_id);
         return true;
@@ -141,7 +142,7 @@ Meteor.methods({
         } catch (error) {
             console.log(error);
         }
-        
+
         // Roles.createRole(dataSend.role)
         // console.log(_id);
         return true;
@@ -172,13 +173,26 @@ Meteor.methods({
     },
 
     "dosen.insert" (formData){
-        formData.password = "dosen1234"
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+        if(!thisUser) {
+            throw new Meteor.Error(404, 'No Access')
+        }
+        const password = generator.generate({
+            length: 12,
+            symbols: true,
+            lowercase: true,
+            uppercase: true,
+            numbers: true,
+            strict: true,
+          });
+
+        formData.password = password;
         const _id =  Accounts.createUser(formData);
         delete formData.username
         delete formData.password
         formData.userId = _id
         const profileId = Lecturers.insert(formData)
-        Meteor.users.update({ _id }, { $set: {
+        return Meteor.users.update({ _id }, { $set: {
             status: true,
             roles: ["dosen"],
             profileId: profileId.toHexString()
@@ -188,7 +202,7 @@ Meteor.methods({
     "dosen.delete" (_id){
         const user = Meteor.users.update({_id}, {$set: {status: false}})
     },
-    
+
     "dosen.getMine" (){
         const users = Meteor.users.findOne({_id: Meteor.userId()})
         const profile = Lecturers.findOne({_id: new Meteor.Collection.ObjectID(users.profileId)})
@@ -200,16 +214,16 @@ Meteor.methods({
     "dosen.getAll" (){
         const users =  Meteor.users.find({
             roles: {
-                $in :  ["dosen"] 
+                $in :  ["dosen"]
             },
             status: true
-            
+
         }).fetch()
         for (const element of users) {
             const profile = Lecturers.findOne({userId: element._id})
             element.profile = profile
         }
-        // console.log(users)
+        console.log(users)
         return users
     },
 
