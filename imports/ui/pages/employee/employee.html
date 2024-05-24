@@ -68,7 +68,8 @@
         <h2 class="text-center">Dashboard Admin</h2>
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-              <div class="carousel-item active">
+              <div class="carousel-item active pb-3">
+                <h3 class="text-center">Status Pegawai Hari Ini</h3>
                 {{#if greaterThan todayStatus.length 0}}
                     <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
                         <thead>
@@ -90,8 +91,9 @@
                    <span>Belum Ada Absensi Hari Ini!</span>
                 {{/if}}
               </div>
-              <div class="carousel-item">
+              <div class="carousel-item pb-3">
                 <div class="containerContent desktop-div pb-3">
+                    <h3 class="text-center">Daftar Tugas</h3>
                     <div class="row row-cols-3 mt-1">
                         {{#each task in tasks}}
                             <div class="col mb-3">
@@ -154,6 +156,7 @@
                     </div>
                 </div>
                 <div class="containerContent mobile-div pb-3">
+                    <h3 class="text-center">Daftar Tugas</h3>
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
                         {{#each task in tasks}}
                             <div class="col mb-3">
@@ -216,7 +219,7 @@
                     </div>
                 </div>
               </div>
-              <div class="carousel-item">
+              <div class="carousel-item pb-3">
                 <div>
                     {{#if greaterThan events.todayEvents.length 0}}
                         <h3>Kegiatan Hari Ini</h3>
