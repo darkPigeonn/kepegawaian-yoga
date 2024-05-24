@@ -1,6 +1,17 @@
 <template name="listPayroll">
     <div class="container">
         <div class="mt-5">
+            <h1>Payroll</h1>
+            <div class="form-inline mt-3">
+                <label for="filterMonthYear" class="mr-2">Filter Bulan dan Tahun</label>
+                <input type="month" id="filterMonthYear" class="form-control mr-2">
+                <button class="btn btn-primary mr-2" id="btn-filter">Filter</button>
+                <button class="btn btn-warning" id="resetFilter">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
             </div>
@@ -16,7 +27,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    {{#each i in dataSalaries}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>
+                                {{i.accountData.name}}
+                            </td>
+                            <td>{{formatHRDate i.createdAt}}</td>
+                            <td>
+                                <button class="btn btn-primary btn-detail" id="btn-detail" milik={{@index}}>
+                                    <i class="fa fa-eye btn-detail" milik={{@index}}></i>
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
                 </tbody>
             </table>
         </div>

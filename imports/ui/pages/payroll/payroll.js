@@ -12,8 +12,53 @@ import { HTTP } from 'meteor/http';
 
 Template.listPayroll.onCreated(function() {
     const self = this;
-    self.data = new ReactiveVar();
+    self.dataSalaries = new ReactiveVar();
+    Meteor.call("payroll.getAll", function (error, result) {
+        if (result) {
+            self.dataSalaries.set(result)
+        }
+        else {
+            console.log(error);
+        }
+    });
 });
+
+Template.listPayroll.helpers({
+    dataSalaries() {
+        return Template.instance().dataSalaries.get();
+    },
+})
+
+Template.listPayroll.events({
+    "click #btn-filter"(e, t) {
+        const monthYearValue = $("#filterMonthYear").val(); // Dapatkan nilai dari input monthYear
+        let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
+        month = parseInt(month);
+        year = parseInt(year);
+        console.log(month, year);
+        Meteor.call("payroll.getFilter", month, year, function (error, result) {
+            if (result) {
+                t.dataSalaries.set(result)
+            }
+            else {
+                console.log(error);
+            }
+        });
+    },
+
+    "click #resetFilter"(e, t) {
+        e.preventDefault();
+        document.getElementById('filterMonthYear').value = '';
+        Meteor.call("payroll.getAll", function (error, result) {
+            if (result) {
+                t.dataSalaries.set(result)
+            }
+            else {
+                console.log(error);
+            }
+        });
+    }
+})
 
 Template.createPayroll.onCreated(function() {
     const self = this;
