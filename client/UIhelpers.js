@@ -202,6 +202,10 @@ Template.registerHelper("statusDetail", function (data) {
   }
   return status;
 });
+Template.registerHelper("formatMonthYear", function(month, year) {
+  const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  return `${monthNames[month - 1]} ${year}`;
+})
 
 // startSelect2 = function () {
 //   setTimeout(() => {

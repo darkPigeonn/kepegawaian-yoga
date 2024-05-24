@@ -9,7 +9,6 @@ Template.navbar.onCreated(function () {
     Meteor.call("employee.getDataLogin", userId, function (error, result) {  
         if (result) {
           const dataRole = result[0];
-          console.log(dataRole);
           self.jabatanLogin.set(dataRole);
         }
         else{

@@ -82,4 +82,8 @@ Meteor.methods({
     async "payroll.getFilter"(month, year){
         return Salaries.find({month: month, year: year}).fetch();
     },
+    async "payroll.getDetail"(id) {
+        check(id, String);
+        return Salaries.findOne({_id: id});
+    }
 })

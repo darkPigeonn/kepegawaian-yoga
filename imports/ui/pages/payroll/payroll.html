@@ -37,14 +37,45 @@
                             </td>
                             <td>{{formatHRDate i.createdAt}}</td>
                             <td>
-                                <button class="btn btn-primary btn-detail" id="btn-detail" milik={{@index}}>
-                                    <i class="fa fa-eye btn-detail" milik={{@index}}></i>
-                                </button>
+                                <a href="/payroll/detail/{{i._id}}" class="btn btn-primary btn-detail">
+                                <i class="fa fa-eye btn-detail"></i></a>
                             </td>
                         </tr>
                     {{/each}}
                 </tbody>
             </table>
+        </div>
+    </div>
+</template>
+
+<template name="detailPayroll">
+    <div class="container mt-5">
+        <h1 class="mb-4">Detail Slip Gaji</h1>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">{{dataSalarie.accountData.name}}</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Periode:</strong> {{formatMonthYear dataSalarie.month dataSalarie.year}}</p>
+                <p><strong>Account Number:</strong> -</p>
+                <hr>
+                <p><strong>Base Salary:</strong> {{formatRp dataSalarie.baseSalary}}</p>
+                <p><strong>Total Allowances:</strong> {{formatRp dataSalarie.totalAllowance}}</p>
+                <ul>
+                    {{#each dataSalarie.allowances}}
+                        <li>{{name}}: {{formatRp amount}}</li>
+                    {{/each}}
+                </ul>
+                <p><strong>Total Deductions:</strong> {{formatRp dataSalarie.totalDeduction}}</p>
+                <ul>
+                    {{#each dataSalarie.deductions}}
+                        <li>{{name}}: {{formatRp amount}}</li>
+                    {{/each}}
+                </ul>
+                <p><strong>Total Salary:</strong> {{formatRp dataSalarie.totalSalary}}</p>
+                <hr>
+                <p><strong>Dibuat Pada Tanggal:</strong> {{formatHRDate createdAt}}</p>
+            </div>
         </div>
     </div>
 </template>

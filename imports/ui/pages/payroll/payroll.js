@@ -35,7 +35,6 @@ Template.listPayroll.events({
         let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
         month = parseInt(month);
         year = parseInt(year);
-        console.log(month, year);
         Meteor.call("payroll.getFilter", month, year, function (error, result) {
             if (result) {
                 t.dataSalaries.set(result)
@@ -59,6 +58,26 @@ Template.listPayroll.events({
         });
     }
 })
+
+Template.detailPayroll.onCreated(function() {
+    const self = this;
+    self.dataSalarie = new ReactiveVar();
+    const id = FlowRouter.getParam("_id");
+    Meteor.call("payroll.getDetail", id, function (error, result) {
+        if (result) {
+            self.dataSalarie.set(result)
+        }
+        else {
+            console.log(error);
+        }
+    });
+})
+
+Template.detailPayroll.helpers({
+    dataSalarie() {
+        return Template.instance().dataSalarie.get();
+    },
+}) 
 
 Template.createPayroll.onCreated(function() {
     const self = this;
