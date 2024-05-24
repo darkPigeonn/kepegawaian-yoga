@@ -76,7 +76,7 @@ Meteor.methods({
         return Salaries.insert(dataSave);
     },
     async "payroll.getAll"() {
-        const data = Salaries.find({createdBy: this.userId}).fetch();
+        const data = Salaries.find({createdBy: this.userId}, {sort: {createdAt: -1}}).fetch();
         return data
     },
     async "payroll.getFilter"(month, year){
