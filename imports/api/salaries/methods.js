@@ -8,6 +8,9 @@ import { MonthlyAttendance } from "../attendance/attendance";
 Meteor.methods({
     async "payroll.cekValiditas"(id, month, year) {
         const cekRekap = MonthlyAttendance.findOne({month: month, year: year});
+        if(!cekRekap) {
+            throw new Meteor.Error(412, `Belum ada rekap absensi pada bulan ${month} tahun ${year}`)
+        }
         const cek = MonthlyAttendance.findOne({month: month, year: year, 'details.userId': id});
         const dataEmployee = Employee.findOne({_id:id})
         let result;

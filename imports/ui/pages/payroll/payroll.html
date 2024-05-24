@@ -30,6 +30,11 @@
         </div>
         <div class="section-content-page">
             <div class="page">
+                {{#if equals btnRekap true}}
+                    <div class="form-group">
+                        <a class="btn btn-primary w-100" id="bnt-rekap" href="/rekapPresensi">Rekap</a>
+                    </div>
+                {{/if}}
                 <div class="form-group">
                     <label for="">Pilih Bulan Peruntukan</label><br>
                     <input type="month" class="form-control" id="monthYear" {{isMonthDisabled}}/>

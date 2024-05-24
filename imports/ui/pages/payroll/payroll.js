@@ -22,6 +22,7 @@ Template.createPayroll.onCreated(function() {
     self.isEmployeeDisabled = new ReactiveVar();
     self.isMonthDisabled = new ReactiveVar();
     self.dataDetailSlip = new ReactiveVar([]);
+    self.btnRekap = new ReactiveVar(false);
     startSelect2();
     Meteor.call("employee.getAll", function (error, result) {
         if (result) {
@@ -49,6 +50,9 @@ Template.createPayroll.helpers({
     },
     isMonthDisabled() {
         return Template.instance().isMonthDisabled.get();
+    },
+    btnRekap() {
+        return Template.instance().btnRekap.get();
     }
 })
 
@@ -68,7 +72,13 @@ Template.createPayroll.events({
                 t.isMonthDisabled.set("disabled");
             }
             else{
-                alert("Cek kembali rekap absen");
+                if(error.error == 412) {
+                    t.btnRekap.set(true);
+                    alert(error.reason)
+                }
+                else {
+                    alert("Cek kembali rekap absen");
+                }
             }
         })
     },
