@@ -146,6 +146,172 @@ Template.employee_page.events({
   },
 });
 
+Template.dashboard.onCreated(function (){
+  const self = this;
+  
+  self.employees = new ReactiveVar();
+  self.todayStatus = new ReactiveVar([])
+  self.events = new ReactiveVar()
+  self.tasks = new ReactiveVar([])
+  self.filter = new ReactiveVar({
+    type: '',
+    data: ''
+  })
+  self.jabatanLogin = new ReactiveVar();
+  const userId = Meteor.userId();
+
+  Meteor.call("staffsAttendance.inThisDay", function (error, result) {
+      if (result) {
+        console.log(result);
+        self.todayStatus.set(result);
+      } else {
+        console.log(error);
+      }
+  });
+  Meteor.call("tasks.getAll", function (error, result) {  
+    if (result) {
+      self.tasks.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+  Meteor.call("events.thisWeek", function (error, result) {  
+    if (result) {
+      self.events.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+})
+
+Template.dashboard.onRendered(function () {
+  $('#myCarousel').carousel({
+    interval: 2000,
+    wrap: true,
+    keyboard: false,
+    pause: 'hover'
+});
+
+$('.carousel-control').hide();
+});
+
+
+Template.dashboard.helpers({
+  events(){
+    return Template.instance().events.get()
+  },
+  tasks(){
+    return Template.instance().tasks.get()
+  },
+  todayStatus(){
+    return Template.instance().todayStatus.get()
+  },
+  employees() {
+    const t = Template.instance()
+    const employee = t.employees.get();
+    const filter = t.filter.get()
+    // console.log(employee);
+    if(employee){
+      const result =  employee.filter((x) => {
+        const query = filter.data.toString().toLowerCase()
+        if(filter.type == 'job_position'){
+          return x.job_position.toString().toLowerCase().includes(query)
+        }
+        if(filter.type == 'start_date'){
+          const thisStartDate = x.start_date
+          return moment(thisStartDate).format('YYYY').includes(query)
+        }
+        if(filter.type == 'masa_jabatan'){
+          const thisStartDate = x.start_date
+          const diff = moment().diff(thisStartDate, 'year')
+          return diff.toString().includes(query)
+        }
+        if(filter.type == 'department_unit'){
+          return x.department_unit.toString().toLowerCase().includes(query)
+        }
+        if(filter.type == 'full_name'){
+          return x.full_name.toString().toLowerCase().includes(query);
+        }
+        return true
+      })
+      // console.log(result);
+      return result
+    }
+    else{
+      return []
+    }
+  },
+  jabatanLogin() {
+    return Template.instance().jabatanLogin.get();
+  },
+});
+
+Template.dashboard.events({
+"click #btn_delete"(e, t){
+  e.preventDefault();
+
+  const id = e.target.getAttribute('data-id');
+  Swal.fire({
+    title: "Konfirmasi Delete",
+    text: "Apakah anda yakin melakukan delete pegawai ini?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Hapus",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if(result.isConfirmed) {
+      Meteor.call('employee.remove', id, function (error, result) {
+        if(result){
+          // alert("Delete Sukses");
+          Swal.fire({
+            title: "Berhasil",
+            text: "Delete berhasil",
+            showConfirmButton: true,
+            allowOutsideClick: true,
+          }).then((result) => {
+            if(result.isConfirmed){
+              location.reload();
+            }
+          });
+        }else{
+          Swal.fire({
+            title: "Gagal",
+            text: "Delete gagal",
+            showConfirmButton: true,
+            allowOutsideClick: true,
+          });
+          console.log(error);
+        }
+      });
+    }
+  })
+  
+  // console.log(id);
+},
+"input .filter"(e, t){
+  e.preventDefault();
+  
+  const type = $("#input_type").val();
+  const data = $('#input_data').val();
+  t.filter.set({
+    type,
+    data
+  })
+},
+"change .filter"(e, t){
+  // e.preventDefault();
+  
+  const type = $("#input_type").val();
+  const data = $('#input_data').val();
+  t.filter.set({
+    type,
+    data
+  })
+},
+});
+
 Template.employee_create.onCreated(function () {
   const self = this;
   self.departements = new ReactiveVar();

@@ -52,6 +52,13 @@ FlowRouter.route("/batch/detail/:_id", {
 });
 
 // Employees
+FlowRouter.route("/dashboard", {
+  name: "dashboard",
+  action() {
+    this.render("App_body", "dashboard");
+  },
+});
+
 FlowRouter.route("/employees/create", {
   name: "employee create",
   action() {

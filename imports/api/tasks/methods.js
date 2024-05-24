@@ -1,4 +1,4 @@
-import { Tasks } from "./tasks";
+import { Tasks, Events } from "./tasks";
 import { Projects } from "../projects/projects";
 import { Employee } from "../employee/employee";
 import { Notifications } from "../notification/notification";
@@ -8,6 +8,29 @@ import moment from "moment";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
+    "events.thisWeek"(){
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+        const todayEvents = Events.find({
+            date: {
+                $gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+                $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+            }
+        }).fetch();
+
+        const weekEvents = Events.find({
+            date: {
+                $gte: startOfWeek,
+                $lte: endOfWeek
+            }
+        }).fetch();
+        return {todayEvents, weekEvents}
+    },
     "tasks.getAll"(){
         return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
     },

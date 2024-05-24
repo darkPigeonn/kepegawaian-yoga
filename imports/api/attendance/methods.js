@@ -14,6 +14,7 @@ import { check } from "meteor/check";
 import { Employee } from "../employee/employee.js";
 
 Meteor.methods({
+
     async "staffsAttendance.getAll"() {
         const thisUser = await Meteor.users.findOne({_id : Meteor.userId});
         if(!thisUser) {
@@ -71,10 +72,6 @@ Meteor.methods({
             $lte: new Date(endDate),
             },
         }).fetch();
-
-
-        // console.log(dataStaffsAttendance);
-
         const dataReturn = [];
 
         //find user profile

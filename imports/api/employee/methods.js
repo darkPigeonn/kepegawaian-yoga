@@ -56,6 +56,24 @@ Meteor.methods({
       // console.log(data);
       // return data;
     },
+
+    "employee.todayStatus"(){
+      let partnerCode;
+      const thisUser = Meteor.userId();
+      const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+      });
+      partnerCode = adminPartner.partners[0];
+      if (partnerCode === "admin"){
+        return staf
+      } else {
+        return []
+      }
+     
+      // console.log(data);
+      // return data;
+    },
+
     "employee.getAllEmployee"(){
       return Employee.find({status: 10, statusDelete: 0}, {sort: {createdAt: -1}}).fetch();
     },

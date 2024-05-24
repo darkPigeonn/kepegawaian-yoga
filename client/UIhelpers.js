@@ -13,6 +13,10 @@ Template.registerHelper("formatRp", function (context, options) {
   }
 });
 
+Template.registerHelper("greaterThan", function (a, b) {
+  return a > b;
+});
+
 Template.registerHelper(
   "formatTotalTimeWorking",
   function (startTime, endTime) {
