@@ -76,11 +76,36 @@ Meteor.methods({
         return Salaries.insert(dataSave);
     },
     async "payroll.getAll"() {
-        const data = Salaries.find({createdBy: this.userId}, {sort: {createdAt: -1}}).fetch();
-        return data
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+        });
+        const partnerCode = adminPartner.partners[0];
+        const dataEmployee = Employee.find({partnerCode}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        const currentMonth = new Date().getMonth() + 1;
+        const currentYear = new Date().getFullYear();
+        let data;
+        for (let index = 0; index < dataEmployee.length; index++) {
+            const element = dataEmployee[index];
+            data = Salaries.findOne({employeeId: element._id, month: currentMonth, year: currentYear});
+            dataEmployee[index].salaries = data;
+        }
+        return dataEmployee
     },
     async "payroll.getFilter"(month, year){
-        return Salaries.find({month: month, year: year}).fetch();
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+        });
+        const partnerCode = adminPartner.partners[0];
+        const dataEmployee = Employee.find({partnerCode}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        let data;
+        for (let index = 0; index < dataEmployee.length; index++) {
+            const element = dataEmployee[index];
+            data = Salaries.findOne({employeeId: element._id, month: month, year: year});
+            dataEmployee[index].salaries = data;
+        }
+        return dataEmployee
     },
     async "payroll.getDetail"(id) {
         check(id, String);

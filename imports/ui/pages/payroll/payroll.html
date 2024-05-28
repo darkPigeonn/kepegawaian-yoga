@@ -11,17 +11,13 @@
                 </button>
             </div>
         </div>
-        <div class="mt-5">
-            <div class="d-flex justify-content-end mb-2">
-                <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
-            </div>
-        </div>
         <div class="d-lg-block table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
+                        <th scope="col">Posisi</th>
                         <th scope="col">Tanggal Dibuat</th>
                         <th scope="col">Aksi</th>
                     </tr>
@@ -33,12 +29,25 @@
                                 {{setTableNumber @index}}
                             </td>
                             <td>
-                                {{i.accountData.name}}
+                                {{i.full_name}}
                             </td>
-                            <td>{{formatHRDate i.createdAt}}</td>
                             <td>
-                                <a href="/payroll/detail/{{i._id}}" class="btn btn-primary btn-detail">
-                                <i class="fa fa-eye btn-detail"></i></a>
+                                {{i.job_position}}
+                            </td>
+                            <td>
+                                {{#if i.salaries}}
+                                {{formatHRDate i.salaries.timestamp}}
+                                {{else}}
+                                Belum Dibuat
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if i.salaries}}
+                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-primary btn-detail">
+                                    <i class="fa fa-eye btn-detail"></i></a>
+                                {{else}}
+                                    <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
+                                {{/if}}
                             </td>
                         </tr>
                     {{/each}}
@@ -57,6 +66,7 @@
             </div>
             <div class="card-body">
                 <p><strong>Periode:</strong> {{formatMonthYear dataSalarie.month dataSalarie.year}}</p>
+                {{dataSalarie.month}}
                 <p><strong>Account Number:</strong> -</p>
                 <hr>
                 <p><strong>Base Salary:</strong> {{formatRp dataSalarie.baseSalary}}</p>
