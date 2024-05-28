@@ -15,7 +15,6 @@ Template.listPayroll.onCreated(function() {
     self.dataSalaries = new ReactiveVar();
     Meteor.call("payroll.getAll", function (error, result) {
         if (result) {
-            console.log(result);
             self.dataSalaries.set(result)
         }
         else {
@@ -38,7 +37,6 @@ Template.listPayroll.events({
         year = parseInt(year);
         Meteor.call("payroll.getFilter", month, year, function (error, result) {
             if (result) {
-                console.log(result);
                 t.dataSalaries.set(result)
             }
             else {
@@ -141,10 +139,10 @@ Template.createPayroll.events({
             else{
                 if(error.error == 412) {
                     t.btnRekap.set(true);
-                    alert(error.reason)
+                    failAlert(error.reason)
                 }
                 else {
-                    alert("Cek kembali rekap absen");
+                    failAlert("Cek kembali rekap absen");
                 }
             }
         })
