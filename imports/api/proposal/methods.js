@@ -30,7 +30,7 @@ Meteor.methods({
       return x
     })
     const result = await Promise.all(promise)
-    // console.log(data);
+    // console.log(result);
     return result;
   },
   "myProposals"() {
@@ -46,9 +46,10 @@ Meteor.methods({
     });
   },
   async "getProposalById"(id, code) {
-    return Proposals.findOne({
+    const dataProposal = Proposals.findOne({
       _id: id,
     });
+    return dataProposal;
   },
   //kirim pakai role
   // "createProposal"(data, tipeKirim) {
@@ -770,15 +771,10 @@ Meteor.methods({
   },
 
   "employee.getDataUserProposal"(id){
+    console.log(id);
     const data = Meteor.users.findOne({_id:id});
-    // console.log(data);
-
-    //untuk roles
-    // return data.roles;
-    
-    //untuk user
-    // console.log(data.username);
-    return data.username
+    const dataEmployee = Employee.findOne({_id: data.profileId})
+    return {username: data.username, roles: data.roles, full_name: dataEmployee.full_name}
   },
 
   "employee.getFullName"(id){

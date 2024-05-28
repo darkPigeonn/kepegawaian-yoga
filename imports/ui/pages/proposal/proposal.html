@@ -61,7 +61,7 @@
                                     Edit</a>
                                 <button class="btn btn-primary" id="btn-kirim" milik="{{ _id }}">Kirim</button>
                                 {{else}}
-                                    <a href="/proposal/preview/{{_id}}" class="btn btn-warning"
+                                    <a href="/proposal/view/{{_id}}" class="btn btn-warning"
                                         milik="{{_id}}">
                                         Lihat</a>
                                 {{/if}}
@@ -480,71 +480,62 @@
                             </div>
                         </div>
                         <section style="break-inside: avoid; page-break-inside: avoid;">
-                            <!-- <table style="font-family: serif;width: 100%;">
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        Surabaya, {{formatHRDate proposalData.createdAt}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        Kepala Sekolah
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td style="height: 40px;">
-
-                                    </td>
-                                    <td style="height: 40px;">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        {{headMaster.fullname}}
-                                    </td>
-                                </tr>
-
-                            </table> -->
-
-                            <div class="row">
-                                <div class="col-md-6 text-center">
-                                    Mengetahui,
-                                    <br>
-                                    Koordinator
-                                    <br><br><br>
-                                    <!-- {{generalManager.fullname}} -->
-                                    nama
+                            {{#if equals isChief false}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <br><br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Mengetahui,
+                                        <br>
+                                        Staff
+                                        <br><br><br>
+                                        <!-- {{generalManager.fullname}} -->
+                                        {{usernamePembuat.full_name}}
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
                                 </div>
-                                <div class="col-md-6 text-center">
-                                    Surabaya,{{formatHRDate proposalData.updateAt}}
-                                    <br>
-                                    Staff 
-                                    <!-- {{getDivisionName proposalData.divisionId}} -->
-                                    <br><br><br>
-                                    nama
-                                    <!-- {{getChief proposalData.divisionId}} -->
+                            {{else}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Hormat Saya,
+                                        <br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
                                 </div>
-                                <div class="col-md-12 text-center">
-                                    Menyetujui,
-                                    <br>
-                                    Pimpinan
-                                    <br><br><br>
-                                    <!-- {{praeses.fullname}} -->
-                                    nama pimpinan
-                                </div>
-                            </div>
+                            {{/if}}
+                            
 
                             {{#if isPodo}}
                                 
@@ -563,6 +554,7 @@
                                 {{#if equals formSubmit 1}}
                                     <div class="form">
                                         <div class="form-group">
+                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
                                             <label for="">Catatan Revisi : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -576,6 +568,7 @@
                                 {{#if equals formSubmit 2}}
                                     <div class="form">
                                         <div class="form-group">
+                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
                                             <label for="">Masukkan Keterangan : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -588,6 +581,7 @@
                                 {{#if equals formSubmit 3}}
                                     <div class="form">
                                         <div class="form-group">
+                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
                                             <label for="">Masukkan Keterangan : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -703,71 +697,61 @@
                             </div>
                         </div>
                         <section style="break-inside: avoid; page-break-inside: avoid;">
-                            <!-- <table style="font-family: serif;width: 100%;">
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        Surabaya, {{formatHRDate proposalData.createdAt}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        Kepala Sekolah
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td style="height: 40px;">
-
-                                    </td>
-                                    <td style="height: 40px;">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">
-
-                                    </td>
-                                    <td style="text-align: center;">
-                                        {{headMaster.fullname}}
-                                    </td>
-                                </tr>
-
-                            </table> -->
-
-                            <div class="row">
-                                <div class="col-md-6 text-center">
-                                    Mengetahui,
-                                    <br>
-                                    Koordinator
-                                    <br><br><br>
-                                    <!-- {{generalManager.fullname}} -->
-                                    nama
+                            {{#if equals isChief false}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <br><br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Mengetahui,
+                                        <br>
+                                        Staff
+                                        <br><br><br>
+                                        <!-- {{generalManager.fullname}} -->
+                                        {{usernamePembuat.full_name}}
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
                                 </div>
-                                <div class="col-md-6 text-center">
-                                    Surabaya,{{formatHRDate proposalData.updateAt}}
-                                    <br>
-                                    Staff 
-                                    <!-- {{getDivisionName proposalData.divisionId}} -->
-                                    <br><br><br>
-                                    nama
-                                    <!-- {{getChief proposalData.divisionId}} -->
+                            {{else}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Hormat Saya,
+                                        <br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
                                 </div>
-                                <div class="col-md-12 text-center">
-                                    Menyetujui,
-                                    <br>
-                                    Pimpinan
-                                    <br><br><br>
-                                    <!-- {{praeses.fullname}} -->
-                                    nama pimpinan
-                                </div>
-                            </div>
+                            {{/if}}
                         </section>
                     </div>
 
@@ -865,73 +849,61 @@
                     </div>
                 </div>
                 <section style="break-inside: avoid; page-break-inside: avoid;">
-                    <!-- {{#if proposalData.schoolId}}
-                    <table style="font-family: serif;width: 100%;">
-                        <tr>
-                            <td style="text-align: center;">
-
-                            </td>
-                            <td style="text-align: center;">
-                                Surabaya, {{formatHRDate proposalData.createdAt}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center;">
-
-                            </td>
-                            <td style="text-align: center;">
-                                Kepala Sekolah
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <td style="height: 40px;">
-
-                            </td>
-                            <td style="height: 40px;">
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: center;">
-
-                            </td>
-                            <td style="text-align: center;">
-                                {{headMaster.fullname}}
-                            </td>
-                        </tr>
-
-                    </table>
-
-                    {{else}} -->
-                    <div class="row">
-                        <div class="col-md-6 text-center">
-                            Mengetahui,
-                            <br>
-                            Koordinator
-                            <br><br><br>
-                            <!-- {{generalManager.fullname}} -->
-                            nama
-                        </div>
-                        <div class="col-md-6 text-center">
-                            Surabaya,{{formatHRDate proposalData.updateAt}}
-                            <br>
-                            Staff 
-                            <!-- {{getDivisionName proposalData.divisionId}} -->
-                            <br><br><br>
-                            nama
-                            <!-- {{getChief proposalData.divisionId}} -->
-                        </div>
-                        <div class="col-md-12 text-center">
-                            Menyetujui,
-                            <br>
-                            Pimpinan
-                            <br><br><br>
-                            <!-- {{praeses.fullname}} -->
-                            nama pimpinan
-                        </div>
-                    </div>
+                    {{#if equals isChief false}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <br><br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Mengetahui,
+                                        <br>
+                                        Staff
+                                        <br><br><br>
+                                        <!-- {{generalManager.fullname}} -->
+                                        {{usernamePembuat.full_name}}
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
+                                </div>
+                            {{else}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Hormat Saya,
+                                        <br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
+                                </div>
+                            {{/if}}
 
 
 

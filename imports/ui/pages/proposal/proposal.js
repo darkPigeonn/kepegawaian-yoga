@@ -32,13 +32,13 @@ Template.listProposals.onCreated(function () {
             self.myProposals.set(result)
         }
     });
-    Meteor.call('getProposals', function (error, result) {
-        if (result) {
-            console.log('Get Proposal');
-            console.log(result);
-            // self.myProposals.set(result)
-        }
-    });
+    // Meteor.call('getProposals', function (error, result) {
+    //     if (result) {
+    //         console.log('Get Proposal');
+    //         console.log(result);
+    //         // self.myProposals.set(result)
+    //     }
+    // });
 
     self.incomingProposals = new ReactiveVar();
     Meteor.call('incomingProposals', function (error, result) {
@@ -706,16 +706,18 @@ Template.formProposal.onRendered(function () {
         let dataAlur;
         Meteor.call('getProposalById', id, function (error, result) {
             // console.log("result get proposal by id : ", result, error);
-            dataAlur = result.flows;
-            //hapus index pertama
-            dataAlur.shift();
-            //
-            const dataAlurEdit = [];
-            //role
-            // dataAlur.map((x)=>dataAlurEdit.push(x.role))
-            //user
-            dataAlur.map((x)=>dataAlurEdit.push(x.username))
-            context.daftarAlur.set(dataAlurEdit);
+            if(result.flows) {
+                dataAlur = result.flows;
+                //hapus index pertama
+                dataAlur.shift();
+                //
+                const dataAlurEdit = [];
+                //role
+                // dataAlur.map((x)=>dataAlurEdit.push(x.role))
+                //user
+                dataAlur.map((x)=>dataAlurEdit.push(x.username))
+                context.daftarAlur.set(dataAlurEdit);
+            }
             if (result) {
                 $('#name').val(result.name);
                 // $('#categoryProposal').val(result.dispositionId)
@@ -890,6 +892,7 @@ Template.previewProposal.onCreated(function () {
     self.usernameLogin = new ReactiveVar();
     self.jabatanPembuat = new ReactiveVar();
     self.usernamePembuat = new ReactiveVar();
+    self.isChief = new ReactiveVar(false);
     const id = FlowRouter.current().params._id;
     self.proposalData = new ReactiveVar();
     const thisUser = Meteor.userId();
@@ -911,10 +914,13 @@ Template.previewProposal.onCreated(function () {
             self.proposalData.set(result)
             console.log(result.createdBy);
             Meteor.call('employee.getDataUserProposal', result.createdBy, function (error, result) {
+                console.log(result);
                 if(result){
                     const hasil = result;
-                    console.log(hasil);
                     self.usernamePembuat.set(hasil);
+                    if(result.roles.includes("chief")) {
+                        self.isChief.set(true);
+                    }
                 }
                 else{
                     console.log(error);
@@ -960,7 +966,7 @@ Template.previewProposal.helpers({
     },
     //user
     usernamePembuat() {
-        return Template.instan().usernamePembuat.get();
+        return Template.instance().usernamePembuat.get();
     },
 
     //roles
@@ -971,6 +977,9 @@ Template.previewProposal.helpers({
     //user
     isPodo(){
         return Template.instance().usernamePembuat.get() == Template.instance().usernameLogin.get();
+    },
+    isChief(){
+        return Template.instance().isChief.get();
     }
 });
 
@@ -1086,15 +1095,20 @@ Template.viewProposal.onCreated(function () {
     self.formSubmit = new ReactiveVar(0);
     self.jabatanLogin = new ReactiveVar();
     self.jabatanPembuat = new ReactiveVar();
+    self.isChief = new ReactiveVar(false);
+    self.usernamePembuat = new ReactiveVar();
     const id = FlowRouter.current().params._id;
     self.proposalData = new ReactiveVar();
     const thisUser = Meteor.userId();
-    console.log(thisUser);
     Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
         if(result){
             const hasil = result[0];
-            console.log(hasil);
+            // console.log(hasil);
             self.jabatanLogin.set(hasil);
+            self.usernamePembuat.set(result)
+            if(result.roles.includes("chief")) {
+                self.isChief.set(true);
+            }
         }
         else{
             console.log(error);
@@ -1140,6 +1154,12 @@ Template.viewProposal.helpers({
         }
         return statusRevisi;
     },
+    isChief(){
+        return Template.instance().isChief.get();
+    },
+    usernamePembuat() {
+        return Template.instance().usernamePembuat.get();
+    }
     // jabatanLogin(){
     //     return Template.instance().jabatanLogin.get();
     // },
@@ -1154,9 +1174,23 @@ Template.viewProposal.helpers({
 Template.printProposal.onCreated(function () {
     const self = this;
     self.formSubmit = new ReactiveVar(0);
+    self.isChief = new ReactiveVar(false);
+    self.usernamePembuat = new ReactiveVar();
     const id = FlowRouter.current().params._id;
     // //('prev '+ id);
     self.proposalData = new ReactiveVar();
+    const thisUser = Meteor.userId();
+    Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
+        if(result){
+            self.usernamePembuat.set(result)
+            if(result.roles.includes("chief")) {
+                self.isChief.set(true);
+            }
+        }
+        else{
+            console.log(error);
+        }
+    })
     Meteor.call('getProposalById', id, function (error, result) {
         if (result) {
             //("result");
@@ -1193,25 +1227,17 @@ Template.printProposal.helpers({
     dateNow: function () {
         return new Date();
     },
-    generalManager: function () {
-        const generalManager = Meteor.users.findOne({
-            "roles": "generalManager"
-        });
-        return generalManager;
-    },
-    headMaster: function () {
-        const proposal = Template.instance().proposalData.get();
-        const headmaster = Meteor.users.findOne({
-            "roles": "headmaster",
-            "schoolId": proposal.schoolId
-        });
-        return headmaster;
-    },
     praeses: function () {
         const praeses = Meteor.users.findOne({
             "roles": "praeses"
         });
         return praeses
+    },
+    isChief(){
+        return Template.instance().isChief.get();
+    },
+    usernamePembuat() {
+        return Template.instance().usernamePembuat.get();
     }
 });
 
