@@ -34,6 +34,9 @@ Meteor.methods({
     "tasks.getAll"(){
         return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
     },
+    "tasks.getToday"(){
+        return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
+    },
     "tasks.getAllUmum"(){
         const thisUser = Meteor.userId();
         const relatedUser = Meteor.users.findOne({
