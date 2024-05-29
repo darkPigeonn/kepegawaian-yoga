@@ -416,6 +416,13 @@ FlowRouter.route("/proposal/print/:_id", {
   },
 });
 
+FlowRouter.route("/proposal/LPJ/create/:_id", {
+  name: "createLPJProposal",
+  action() {
+    this.render("App_body", "createLPJProposal");
+  }
+});
+
 //TICKETS
 FlowRouter.route("/tickets", {
   name: "listTicket",

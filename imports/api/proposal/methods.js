@@ -759,9 +759,9 @@ Meteor.methods({
   async "incomingProposals"() {
     const thisUser = Meteor.users.findOne({_id: this.userId});
     const role = thisUser.roles[0];
-    const data = Proposals.find({currentUsername: thisUser.username}).fetch();
+    const data = Proposals.find({currentUsername: thisUser.username}).fetch();  
     const promise = data.map(async function (x) {  
-      const thisUser = await Meteor.users.findOne({_id: x.createdBy})
+      const thisUser = Meteor.users.findOne({_id: x.createdBy})
       x.createdByName = thisUser.fullname
       return x
     })

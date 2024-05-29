@@ -2,6 +2,7 @@ import { Tickets } from "./tickets.js";
 import { Tasks } from "../tasks/tasks.js";
 import { Employee } from "../employee/employee";
 import { Letters } from "../documents/documents.js";
+import { ProposalReports } from "../proposalReport/proposalReport.js";
 import { Notifications } from "../notification/notification";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import { check } from "meteor/check";
@@ -109,17 +110,34 @@ Meteor.methods({
     "fileName.getAll" () {
         const dataTiket = Tickets.find().fetch();
         let fileName = [];
-        for (const data of dataTiket) {
-          for (const link of data.images) {
-            fileName.push(link.name)
-          }
-        }
-        const dataSurat = Letters.find().fetch();
-        for (const data of dataSurat) {
-            for (const link of data.linksArsip) {
+        if(dataTiket.length > 0) {
+            for (const data of dataTiket) {
+              for (const link of data.images) {
                 fileName.push(link.name)
+              }
             }
         }
+        const dataSurat = Letters.find().fetch();
+        if(dataSurat.length > 0) {
+            for (const data of dataSurat) {
+                for (const link of data.linksArsip) {
+                    fileName.push(link.name)
+                }
+            }
+        }
+
+        const dataProposalReport = Letters.find().fetch();
+        if(dataProposalReport.length > 0){
+            for (const data of dataProposalReport) {
+                for (const link of data.linksTransaction) {
+                    fileName.push(link.name)
+                }
+                for (const link of data.linksActivity) {
+                    fileName.push(link.name)
+                }
+            }
+        }
+
         return fileName;
     },
 })

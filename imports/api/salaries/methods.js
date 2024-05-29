@@ -7,27 +7,33 @@ import { MonthlyAttendance } from "../attendance/attendance";
 
 Meteor.methods({
     async "payroll.cekValiditas"(id, month, year) {
-        const cekRekap = MonthlyAttendance.findOne({month: month, year: year});
-        if(!cekRekap) {
-            throw new Meteor.Error(412, `Belum ada rekap absensi pada bulan ${month} tahun ${year}`)
+        try {
+            const cekRekap = MonthlyAttendance.findOne({month: month, year: year});
+            if(!cekRekap) {
+                throw new Meteor.Error(412, `Belum ada rekap absensi pada bulan ${month} tahun ${year}`)
+            }
+            const cek = MonthlyAttendance.findOne({month: month, year: year, 'details.userId': id});
+            const dataEmployee = Employee.findOne({_id:id})
+            let result;
+            if(cek) {
+                const detail = cek.details.find(detail => detail.userId === id);
+                result = {
+                    _id: cek._id,
+                    activeDayWorking: cek.activeDayWorking,
+                    dayOf: cek.dayOf,
+                    month: cek.month,
+                    year: cek.year,
+                    outlets: cek.outlets,
+                    baseSalary: dataEmployee.base_salary,
+                    details: detail 
+                };
+            }
+            return result
+        } catch (error) {
+            console.log(error);
+            return error
         }
-        const cek = MonthlyAttendance.findOne({month: month, year: year, 'details.userId': id});
-        const dataEmployee = Employee.findOne({_id:id})
-        let result;
-        if(cek) {
-            const detail = cek.details.find(detail => detail.userId === id);
-            result = {
-                _id: cek._id,
-                activeDayWorking: cek.activeDayWorking,
-                dayOf: cek.dayOf,
-                month: cek.month,
-                year: cek.year,
-                outlets: cek.outlets,
-                baseSalary: dataEmployee.base_salary,
-                details: detail 
-            };
-        }
-        return result
+        
     },
     async "payroll.createPayroll"(data, id, month, year) {
         check(data, Array);

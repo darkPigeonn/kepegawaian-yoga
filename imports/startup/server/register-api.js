@@ -15,4 +15,5 @@ import "../../api/proposal/methods.js";
 import "../../api/configuration/methods.js";
 import "../../api/tickets/methods.js";
 import "../../api/salaries/methods.js";
+import "../../api/proposalReport/methods.js";
 import "../../api/server/publications.js";

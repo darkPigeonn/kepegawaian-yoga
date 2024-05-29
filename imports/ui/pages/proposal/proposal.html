@@ -75,6 +75,15 @@
                                     <a href="/proposal/print/{{_id}}" class="btn btn-primary"
                                     milik="{{_id}}">
                                     Print</a>
+                                    {{#if idReport}}
+                                        <a href="/proposal/LPJ/details/{{idReport}}" class="btn btn-info"
+                                        milik="{{idReport}}">
+                                        Detail LPJ</a>
+                                    {{else}}
+                                        <a href="/proposal/LPJ/create/{{_id}}" class="btn btn-primary"
+                                        milik="{{_id}}">
+                                        LPJ</a>
+                                    {{/if}}
                                 {{/if}}
                             </td>
     
@@ -937,4 +946,89 @@
         </div>
         {{/if}}
     </div> -->
+</template>
+
+<template name="createLPJProposal">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Buat LPJ Proposal</h3>
+        </div>
+        <div class="form-group">
+            <label for="namaKegiatan">Nama Kegiatan:</label>
+            <input type="text" class="form-control" id="namaKegiatan" name="namaKegiatan">
+        </div>
+        <div class="form-group">
+            <label for="tanggalKegiatan">Tanggal Kegiatan:</label>
+            <input type="date" class="form-control" id="tanggalKegiatan" name="tanggalKegiatan">
+        </div>
+        <div class="form-group">
+            <label for="tempatKegiatan">Tempat Kegiatan:</label>
+            <input type="text" class="form-control" id="tempatKegiatan" name="tempatKegiatan">
+        </div>
+        <div class="form-group mb-3">
+            <label>Deskripsi Kegiatan</label>
+            <div id="toolbar-container-deskripsi"></div>
+            <div id="editor-deskripsi" class="ckeditor-content"></div>
+        </div>
+        <div class="form-actions">
+            <h4>Masukkan Rincian Transaksi</h4>
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="keterangan" placeholder="Keterangan">
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="nominal" placeholder="Nominal">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" id="btn-tambah-detail">+</button>
+                </div>
+            </div>
+        </div>
+        {{#if rincian}}
+            <h4>Daftar Detail Rincian LPJ</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No.</th>
+                        <th>Keterangan</th>
+                        <th>Nominal</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each i in rincian}}
+                        <tr>
+                            <td>
+                                {{setTableNumber @index}}
+                            </td>
+                            <td>{{i.name}}</td>
+                            <td>{{formatRp i.amount}}</td>
+                            <td>
+                                <button class="btn btn-danger btn-remove" id="btn-remove" milik={{@index}}>
+                                    <i class="fa fa-trash btn-remove" milik={{@index}}></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="1" style="text-align: right; font-weight: bold;">Total</td>
+                            <td colspan="2" style="text-align: right; font-weight: bold;">
+                                {{formatRp total}}
+                            </td>
+                            <td colspan="1"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        {{/if}}
+        <br>
+        <div class="form-group">
+            {{> inputMultipleFiles label="Bukti Transaksi" id="buktiPembayaran" files=buktiPembayaran buttonLabel="Upload"}}
+        </div>
+        <div class="form-group">
+            {{> inputMultipleFiles label="Dokumentasi" id="buktiDokumentasi" files=buktiDokumentasi buttonLabel="Upload"}}
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
+    </div>
 </template>

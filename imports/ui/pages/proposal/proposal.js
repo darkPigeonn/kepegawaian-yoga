@@ -1288,3 +1288,343 @@ Template.printProposal.events({
             .save();
     },
 });
+
+Template.createLPJProposal.onCreated(function () {
+    const self = this;
+    self.rincian = new ReactiveVar([]);
+    self.total = new ReactiveVar(0);
+    self.buktiPembayaran = new ReactiveVar([]);
+    self.buktiDokumentasi = new ReactiveVar([]);
+    self.allFileNames = new ReactiveVar([]);
+    self[`template-field-deskripsi`] = new ReactiveVar();
+    Meteor.call('fileName.getAll', function(error, result) {
+        if (error) {
+            console.log(error);
+        } else {
+            self.allFileNames.set(result)
+        }
+    })
+    setTimeout(() => {
+        initEditor(self, 
+            {
+                editorEl: `editor-deskripsi`, 
+                toolbarEl: `toolbar-container-deskripsi`,
+                templateField: `template-field-deskripsi`,
+            })
+    }, 300);
+});
+
+Template.createLPJProposal.helpers({
+    rincian() {
+        return Template.instance().rincian.get()
+    },
+    total() {
+        return Template.instance().total.get()
+    },
+    buktiPembayaran() {
+        return Template.instance().buktiPembayaran.get()
+    },
+    buktiDokumentasi() {
+        return Template.instance().buktiDokumentasi.get()
+    },
+    allFileNames() {
+        return Template.instance().allFileNames.get();
+    },
+});
+
+Template.createLPJProposal.events({
+    "keyup #nominal"(e, t) {
+        const idInput = $("#nominal").val();
+        e.target.value = formatRupiah(idInput, "Rp. ");
+    },
+    "click #btn-tambah-detail"(e, t) {
+        const rincian = t.rincian.get()
+        console.log(rincian);
+        const name = $("#keterangan").val();
+        let amount = convert2number($("#nominal").val());
+        let total = t.total.get();
+        total += amount
+        console.log(name, amount);
+        const obj = {
+            name: name,
+            amount: amount
+        }
+        rincian.push(obj);
+        t.rincian.set(rincian);
+        console.log(t.rincian.get());
+        t.total.set(total);
+    },
+    "click .btn-remove"(e, t) {
+        const index = parseInt($(e.target).attr("milik"));
+        let rincian = t.rincian.get();
+        let total = t.total.get();
+        if(index != undefined) {
+            total -= rincian[index].amount
+            t.total.set(total);
+            rincian.splice(index, 1);
+            t.rincian.set(rincian);
+        }
+        console.log(rincian);
+    },
+    "change #buktiPembayaran": function (e, t) {
+        const buktiPembayaran = t.buktiPembayaran.get();
+        const files = $("#buktiPembayaran").prop("files");
+        for (let index = 0; index < files.length; index++) {
+          const file = files[index];
+          if (file) {
+          const reader = new FileReader();
+          const body = {
+            file: file,
+          };
+          reader.addEventListener("load", function () {
+            body.src = this.result;
+            if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" || 
+                    file.type != ".png" || file.type != ".jpg" || file.type != ".jpeg") {
+            $(`#buktiPembayaran-${buktiPembayaran.length - 1}`).attr(
+              "href",
+              this.result
+            );
+            }
+          });
+          reader.readAsDataURL(file);
+          buktiPembayaran.push(body);
+          t.buktiPembayaran.set(buktiPembayaran);
+          }
+        }
+    },
+    "click .remove-buktiPembayaran": function (e, t) {
+        e.preventDefault();
+        const index = $(e.target).attr("milik");
+        const buktiPembayaran = t.buktiPembayaran.get();
+        buktiPembayaran.splice(parseInt(index), 1);
+        t.buktiPembayaran.set(buktiPembayaran);
+    },
+    "change #buktiDokumentasi": function (e, t) {
+        const buktiDokumentasi = t.buktiDokumentasi.get();
+        const files = $("#buktiDokumentasi").prop("files");
+        for (let index = 0; index < files.length; index++) {
+          const file = files[index];
+          if (file) {
+          const reader = new FileReader();
+          const body = {
+            file: file,
+          };
+          reader.addEventListener("load", function () {
+            body.src = this.result;
+            if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" || 
+                    file.type != ".png" || file.type != ".jpg" || file.type != ".jpeg") {
+            $(`#buktiDokumentasi-${buktiDokumentasi.length - 1}`).attr(
+              "href",
+              this.result
+            );
+            }
+          });
+          reader.readAsDataURL(file);
+          buktiDokumentasi.push(body);
+          t.buktiDokumentasi.set(buktiDokumentasi);
+          }
+        }
+    },
+    "click .remove-buktiDokumentasi": function (e, t) {
+        e.preventDefault();
+        const index = $(e.target).attr("milik");
+        const buktiDokumentasi = t.buktiDokumentasi.get();
+        buktiDokumentasi.splice(parseInt(index), 1);
+        t.buktiDokumentasi.set(buktiDokumentasi);
+    },
+    "click #btn-save"(e, t) {
+        e.preventDefault()
+        const nameActivity = $("#namaKegiatan").val();
+        const dateActivity = $("#tanggalKegiatan").val();
+        const placeActivity = $("#tempatKegiatan").val();
+        const deskripsi = t[`template-field-deskripsi`].get().getData();
+        const rincian = t.rincian.get();
+        const totalRincian = t.total.get();
+        const filesTransaction = t.buktiPembayaran.get();
+        const filesActivity = t.buktiDokumentasi.get();
+        const thisForm = {};
+        const thisForm1 = {};
+        thisForm[filesTransaction] = [];
+        thisForm1[filesActivity] = [];
+        const allFileNames = t.allFileNames.get();
+        const idProposal = FlowRouter.getParam("_id");
+
+        Swal.fire({
+            title: "Konfirmasi",
+            text: "Apakah anda ingin menyimpan data ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Simpan",
+            cancelButtonText: "Batal"
+          }).then(async (result) => {
+            if(result.isConfirmed){
+              Swal.fire({
+                title: "Loading...",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                  Swal.showLoading();
+                },
+              });
+              const dataForm = $(".form-control")
+              let cek = false;
+              for (let index = 0; index < dataForm.length; index++) {
+                console.log(dataForm[index].id);
+                if(dataForm[index].value == ""){
+                  cek = true;
+                }
+              }
+      
+              if(cek == true){
+                Swal.close();
+                Swal.fire({
+                  title: "Gagal",
+                  text: "Data harus diisi semua",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+              else{
+                for (let index = 0; index < filesTransaction.length; index++) {
+                  const fileName = filesTransaction[index].file.name;
+                  const sendFileName = checkDuplicateFileName(fileName, allFileNames);
+                  const uploadData = {
+                    fileName: "kepegawaian/"+sendFileName,
+                    type: "image/png",
+                    Body: filesTransaction[index].file
+                  }
+                  console.log(uploadData);
+                  const linkUpload = await uploadFiles(uploadData);
+                  thisForm[filesTransaction].push(
+                  {
+                    name: filesTransaction[index].file.name,
+                    link: linkUpload
+                  });
+                }
+
+                for (let index = 0; index < filesActivity.length; index++) {
+                    const fileName = filesActivity[index].file.name;
+                    const sendFileName = checkDuplicateFileName(fileName, allFileNames);
+                    const uploadData = {
+                      fileName: "kepegawaian/"+sendFileName,
+                      type: "image/png",
+                      Body: filesActivity[index].file
+                    }
+                    console.log(uploadData);
+                    const linkUpload = await uploadFiles(uploadData);
+                    thisForm1[filesActivity].push(
+                    {
+                      name: filesActivity[index].file.name,
+                      link: linkUpload
+                    });
+                }
+
+                const data = {
+                    name: nameActivity,
+                    timestamp: dateActivity,
+                    place: placeActivity,
+                    description: deskripsi,
+                    detailTransaction: rincian,
+                    totalTransaction: totalRincian,
+                    linksTransaction: thisForm[filesTransaction],
+                    linksActivity: thisForm1[filesActivity]
+                }
+                Meteor.call(
+                  "proposalReport.create",
+                  data, idProposal,
+                  function (error, result) {
+                    if (result) {
+                      Swal.close();
+                      Swal.fire({
+                        title: "Berhasil",
+                        text: "Data berhasil dibuat",
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                      });
+                      location.reload();
+                      history.back();
+                    } else {
+                      console.log(error);
+                      Swal.close();
+                      Swal.fire({
+                        title: "Gagal",
+                        text: error.reason,
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                      });
+                    }
+                  }
+                );
+              }
+            }
+        })
+    }
+})
+
+
+
+function formatRupiah(angka, prefix) {
+    var number_string = angka.replace(/[^,\d]/g, "").toString(),
+      split = number_string.split(","),
+      sisa = split[0].length % 3,
+      rupiah = split[0].substr(0, sisa),
+      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+  
+    // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    if (ribuan) {
+      separator = sisa ? "." : "";
+      rupiah += separator + ribuan.join(".");
+    }
+  
+    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    console.log(rupiah);
+    return rupiah;
+}
+
+function convert2number(data) {
+    let temp = data.replace(/\./g, ''); // merubah . jadi ""
+    return parseFloat(temp);
+}
+
+function checkDuplicateFileName(fileName, allFileNames) {
+	const result = allFileNames;
+	if(result.length == 0 || result == undefined){
+		return fileName;
+	}
+	for (let i = 0; i < result.length; i++) {
+		const element = result[i];
+		const randomString = generateRandomString(5)
+		if(fileName == element){
+			const finalName = addRandomString(fileName, randomString)
+			console.log(finalName);
+			return finalName;
+		}
+		else{
+			return fileName;
+		}
+	}
+}
+
+function generateRandomString(length) {
+	const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let randomString = "";
+  
+	for (let i = 0; i < length; i++) {
+	  const randomIndex = Math.floor(Math.random() * charset.length);
+	  randomString += charset.charAt(randomIndex);
+	}
+	return randomString;
+}
+
+function addRandomString(inputString, appendString){
+	const lastDotIndex = inputString.lastIndexOf('.');
+
+  if (lastDotIndex !== -1) {
+    // If a dot is found, insert the appendString before the last dot
+    const modifiedString = inputString.substring(0, lastDotIndex) + '-' + appendString + inputString.substring(lastDotIndex);
+    return modifiedString;
+  } else {
+    // If no dot is found, simply concatenate the appendString to the original string
+    return inputString + '|' + appendString;
+  }
+}
