@@ -35,7 +35,31 @@ Meteor.methods({
         return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
     },
     "tasks.getToday"(){
-        return Tasks.find({id_project: {$ne: 'umum'}},{sort: {createdAt: -1}}).fetch();
+        const thisUser = Meteor.userId();
+        const relatedUser = Meteor.users.findOne({
+            _id: thisUser,
+        });
+
+        if (relatedUser.roles[0] === "admin"){
+            const today = new Date();
+
+            const findTasks = Tasks.find({partner: "imavi", deadline: today}).fetch();
+            const priorityOrder = { high: 0, mid: 1, low: 2 };
+            findTasks.sort((a, b) => {
+                const priorityA = priorityOrder[a.priority];
+                const priorityB = priorityOrder[b.priority];
+    
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                } else {
+                    return a.deadline - b.deadline;
+                }
+            });
+            return findTasks
+        } else {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+        
     },
     "tasks.getAllUmum"(){
         const thisUser = Meteor.userId();

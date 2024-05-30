@@ -168,7 +168,7 @@ Template.dashboard.onCreated(function (){
         console.log(error);
       }
   });
-  Meteor.call("tasks.getAllUmum", function (error, result) {  
+  Meteor.call("tasks.getToday", function (error, result) {  
     if (result) {
       self.tasks.set(result)
     }
