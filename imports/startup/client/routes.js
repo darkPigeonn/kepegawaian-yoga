@@ -342,7 +342,7 @@ FlowRouter.route("/connectEmployeeAppUser", {
   action() {
     this.render("App_body", "connectEmployeeAppUser");
   },
-})
+});
 
 //DOCUMENTS
 FlowRouter.route("/documents", {
@@ -420,7 +420,7 @@ FlowRouter.route("/proposal/LPJ/create/:_id", {
   name: "createLPJProposal",
   action() {
     this.render("App_body", "createLPJProposal");
-  }
+  },
 });
 
 //TICKETS
@@ -453,27 +453,27 @@ FlowRouter.route("/tickets/message/:_id", {
   action() {
     this.render("App_body", "chatTicket");
   },
-})
+});
 
 // PAYROLL
 FlowRouter.route("/payroll", {
   name: "payroll",
   action() {
     this.render("App_body", "listPayroll");
-  }
+  },
 });
 FlowRouter.route("/payroll/create", {
   name: "createPayroll",
   action() {
     this.render("App_body", "createPayroll");
-  }
-})
+  },
+});
 FlowRouter.route("/payroll/detail/:_id", {
   name: "detailPayroll",
   action() {
     this.render("App_body", "detailPayroll");
-  }
-})
+  },
+});
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {
@@ -504,7 +504,7 @@ FlowRouter.route("/arsipKorespondensi/:_id", {
   name: "arsipKorespondensi",
   action() {
     this.render("App_body", "arsipKorespondensi");
-  }
+  },
 });
 
 //konfigurasi
