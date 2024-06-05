@@ -326,3 +326,11 @@ export const enterLoading = function () {
 export const exitLoading = function () {
   $("button").attr("disabled", false);
 };
+
+
+startPreloader = function () {
+  Swal.showLoading()
+};
+exitPreloader = function () {
+  Swal.close()
+}
