@@ -113,29 +113,6 @@ function formatPhoneNumber(phoneNumber) {
   return cleanedNumber;
 }
 
-function formatRupiah(angka, prefix) {
-  var number_string = angka.replace(/[^,\d]/g, "").toString(),
-    split = number_string.split(","),
-    sisa = split[0].length % 3,
-    rupiah = split[0].substr(0, sisa),
-    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-  // tambahkan titik jika yang di input sudah menjadi angka ribuan
-  if (ribuan) {
-    separator = sisa ? "." : "";
-    rupiah += separator + ribuan.join(".");
-  }
-
-  rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-  console.log(rupiah);
-  return rupiah;
-}
-
-function convert2number(data) {
-  let temp = data.replace(/\./g, ""); // merubah . jadi ""
-  return parseFloat(temp);
-}
-
 export const startSelect2 = function () {
   setTimeout(() => {
     $(".select2").select2();
@@ -327,10 +304,45 @@ export const exitLoading = function () {
   $("button").attr("disabled", false);
 };
 
-
 startPreloader = function () {
-  Swal.showLoading()
+  Swal.showLoading();
+  $("button").attr("disabled", true);
+  // $("body").addClass("loading");
 };
 exitPreloader = function () {
-  Swal.close()
-}
+  setTimeout(() => {
+    Swal.close();
+    $("button").attr("disabled", false);
+  }, 500);
+  // $("body").removeClass("loading");
+};
+exitPreloaderLoading = function () {
+  Swal.close();
+};
+
+swalInfo = function (message) {
+  Swal.fire(message, "", "info");
+};
+
+export const formatRupiah = function (angka, prefix) {
+  var number_string = angka.replace(/[^,\d]/g, "").toString(),
+    split = number_string.split(","),
+    sisa = split[0].length % 3,
+    rupiah = split[0].substr(0, sisa),
+    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+  // tambahkan titik jika yang di input sudah menjadi angka ribuan
+  if (ribuan) {
+    separator = sisa ? "." : "";
+    rupiah += separator + ribuan.join(".");
+  }
+
+  rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+  console.log(rupiah);
+  return rupiah;
+};
+
+export const convert2number = function (data) {
+  let temp = data.replace(/\./g, ""); // merubah . jadi ""
+  return parseFloat(temp);
+};

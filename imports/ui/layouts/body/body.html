@@ -1,5 +1,5 @@
 <template name="App_body">
-
+  {{> preloader}}
   {{#if currentUser}}
   <section>
 
@@ -17,22 +17,21 @@
   <section class="ftco-section">
     <div class="container">
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center ">
         <div class="col-md-7 col-lg-5">
           <div class="wrap">
             <div class="login-wrap p-4 p-md-5 shadow">
-              <div class="d-flex">
-                <div class="w-100">
-                  <h3 class="mb-4">Kepegawaian</h3>
-                </div>
+              <div class="d-flex flex-column justify-content-center">
+                <img class="w-50 mx-auto" src="/assets/img/logoyayasan.png" />
+                <h3 class="mb-4 text-center">Sistem Informasi Yayasan Yohannes Gabriel</h3>
               </div>
               <form action="#" class="signin-form">
                 <div class="form-group mt-3">
-                  <label for="username">Username</label>
+                  <label for="username">Email</label>
                   <input type="text" class="form-control" id='input_username' required="">
                 </div>
                 <div class="form-group">
-                  <label for="password">Password</label>
+                  <label for="password">Kata Sandi</label>
                   <input type="password" class="form-control" id="input_password" required="">
                   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                 </div>
@@ -12049,4 +12048,69 @@
   <div class="loading-container">
     <div class="loader"></div>
   </div>
+</template>
+
+
+<template name="preloader">
+  <div id="preloader">
+    <div class="loader">
+    </div>
+    <img src="/assets/img/logoyayasan.png" class="logo" />
+  </div>
+
+  <style>
+    /* Main CSS for preloader */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 180px;
+      height: 180px;
+      -webkit-animation: spin 2s linear infinite;
+      /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    .logo {
+      position: absolute;
+      width: 120px;
+      /* Adjust the size of the logo as needed */
+      height: 120px;
+      /* Adjust the size of the logo as needed */
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </template>

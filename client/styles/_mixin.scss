@@ -1,0 +1,12 @@
+@mixin linear-gradient($start-color, $end-color, $direction: to right) {
+  background: $start-color;
+  /* Fallback color */
+  background: -webkit-linear-gradient($direction, $start-color, $end-color);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient($direction, $start-color, $end-color);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient($direction, $start-color, $end-color);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient($direction, $start-color, $end-color);
+  /* Standard syntax */
+}

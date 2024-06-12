@@ -16,3 +16,4 @@ import "../../api/configuration/methods.js";
 import "../../api/tickets/methods.js";
 import "../../api/yoga/schools/methods.js";
 import "../../api/server/publications.js";
+import "../../api/ppdb/methods.js";

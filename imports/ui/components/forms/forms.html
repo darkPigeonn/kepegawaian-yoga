@@ -1,0 +1,34 @@
+<template name="formAddGelombang">
+  <div class="form-group">
+    <label for="inputNameGelombang">Nama Gelombang</label>
+    <input type="text" class="form-control" id="inputNameGelombang" placeholder="Contoh : Gelombang 1" required>
+  </div>
+  <div class="form-group">
+    <label for="inputCode">Kode Gelombang</label>
+    <input type="text" class="form-control" id="inputCode" placeholder="Contoh : gel1" required>
+  </div>
+</template>
+
+<template name="formAddPaymentSchool">
+  <div class="form-group">
+    <label for="inputNamePayment">Nama</label>
+    <input type="text" class="form-control" id="inputNamePayment" placeholder="Contoh : Umum" required>
+  </div>
+  <div class="form-group">
+    <label for="selectedCategory">Kategori Pembayaran</label>
+    <select class="form-control" id="selectedCategory">
+      <option value="0">-- Silahkan Pilih Kategori Pembayaran --</option>
+      <option value="uangFormulir">Uang Formulir</option>
+      <option value="uangSpp">Uang SPP</option>
+      <option value="uangSumbangan">Uang Sumbangan</option>
+      <option value="uangSeragam">Uang Seragam</option>
+      <option value="uangAlat">Uang Alat (Khusus TK)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="inputWajib">Nominal</label>
+    <input type="text" class="form-control" id="inputWajib" placeholder="Contoh : 10000000" required>
+  </div>
+
+
+</template>

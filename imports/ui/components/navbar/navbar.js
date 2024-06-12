@@ -19,8 +19,6 @@ Template.navbar.onCreated(function () {
   Meteor.call("employee.partnerCode", function (error, result) {
     if (result) {
       self.partnerCode.set(result);
-    } else {
-      alert("Anda belum memiliki partner");
     }
   });
 });

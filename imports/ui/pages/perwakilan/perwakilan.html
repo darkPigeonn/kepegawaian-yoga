@@ -1,46 +1,76 @@
 <template name="listPerwakilan">
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header">
             <h3 class="page-title">
                 Daftar Perwakilan
             </h3>
         </div>
-        <div class="section-action">
-            <button class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">+ Tambah</button>
+        <div class="section-action my-2 float-right">
+            <button class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">+
+                Tambah</button>
         </div>
         <div class="page-body">
-
+            <table class="table table-bordered">
+                <thead>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                </thead>
+                <tbody>
+                    {{#each listPerwakilan}}
+                    <tr>
+                        <td>
+                            {{getNumber @index}}
+                        </td>
+                        <td>
+                            {{name}}
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" id="btn-update">Ubah</button>
+                            <button class="btn btn-danger" id="btn-delete">Hapus</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    {{#each getPageNumbers totalPages}}
+                    <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+                    {{/each}}
+                </ul>
+            </nav>
         </div>
     </div>
 
     <!-- Modal Data  -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Perencanaan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Nama Perwakilan</label>
-                    <input type="text" id="input-name" class="form-control" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Perencanaan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Kode Perwakilan</label>
-                    <input type="text" id="input-code" class="form-control" />
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nama Perwakilan</label>
+                        <input type="text" id="input-name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Kode Perwakilan</label>
+                        <input type="text" id="input-code" class="form-control" />
+                    </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" id="btn-update-form">Simpan</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="btn-update-form">Simpan</button>
+                </div>
             </div>
         </div>
     </div>
-<!-- modal perencanaan end-->
+    <!-- modal perencanaan end-->
 </template>

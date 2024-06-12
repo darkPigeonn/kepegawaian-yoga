@@ -1,0 +1,294 @@
+<template name="konfigurasi">
+  {{#if isInRole 'superadmin, admin-ppdb-yayasan  '}}
+  <div class="container">
+    <div class="contentAtas">
+      <p style="color: blue; margin: 0;"> <a href="/"> Beranda</a> / <a href="/ppdb">
+          PPDB</a></p>
+    </div>
+    <div class="page-title">
+      <h3>Konfigurasi PPDB</h3>
+    </div>
+    <hr>
+    <div class="page-content">
+      <div class="section-tabmenu">
+        <div class="tab-container">
+          <ul class="tab-menu">
+            <li class="tab-item active" data-tab="tab1">Tahun Ajaran</li>
+            <li class="tab-item" data-tab="tab2">Konfigurasi VA</li>
+            <li class="tab-item" data-tab="tab4">Perwakilan</li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+              {{> periodePpdb}}
+            </div>
+            <div class="tab-pane" id="tab2">
+              {{> konfigurasiVa}}
+            </div>
+            <div class="tab-pane" id="tab4">
+              {{> listPerwakilan}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  {{> konfigurasiSchool}}
+  {{/if}}
+</template>
+
+
+<template name="konfigurasiVa">
+  <div class="container">
+    <div class="page-title">
+      <h3>Daftar Konfigurasi VA</h3>
+    </div>
+    <div class="page-action">
+
+      <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModal">+
+        Tambah</button>
+    </div>
+    <div class="page-body">
+      <table class="table table-borderless">
+        <thead>
+          <th>No.</th>
+          <th>Perwakilan</th>
+          <th>Kode VA Perwakilan</th>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td>
+              {{getNumber @index}}
+            </td>
+            <td>
+              {{code}}
+            </td>
+            <td>
+              {{unitName}}
+            </td>
+            <td>
+              {{nis}}
+            </td>
+            <td>
+              <button class="btn btn-primary" id="btn-update">Ubah</button>
+              <button class="btn btn-danger" id="btn-remove">Hapus</button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <hr>
+      <nav>
+        <ul class="pagination">
+          {{#each getPageNumbers totalPages}}
+          <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+          {{/each}}
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modal Add -->
+  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Form Tambah Kode</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{> c_selectPerwakilan}}
+          <div class="form-group">
+            <label>Kode Perwakilan</label>
+            <input type="number" id="input-code" class="form-control" />
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="btn-save-modal">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<template name="periodePpdb">
+  <div class="container">
+    <div class="page-title my-3">
+      <h3>Periode Tahun Ajaran PPDB</h3>
+    </div>
+    <div class="page-content">
+      {{#if accessAdd}}
+      <div class="section-action mb-2">
+        <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModal">+
+          Tambah Periode PPDB</button>
+      </div>
+      {{/if}}
+      <table class="table table-group-divider">
+        <thead>
+          <th>Nomor</th>
+          <th>Nama</th>
+          <th>Tahun Ajaran</th>
+        </thead>
+        <tbody>
+          {{#each periodePpdb}}
+          <tr>
+            <td>
+              {{nomorUrut @index}}
+            </td>
+            <td>
+              {{name}}
+            </td>
+            <td>
+              {{year}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModal" bodyTemplate="formInputPeriode" bodyData=yourFormData formId="addForm"}}
+  </div>
+</template>
+<template name="formInputPeriode">
+  <div class="form-group">
+    <label for="inputName">Nama</label>
+    <input type="text" class="form-control" id="inputName" placeholder="Contoh : Periode Tahun Ajaran 2024/2025"
+      required>
+  </div>
+  <div class="form-group">
+    <label for="inputTahunAjaran">Tahun Ajaran</label>
+    <input type="text" class="form-control" id="inputTahunAjaran" placeholder="Contoh: 2024/2025" required
+      value="{{tahunAjaran}}">
+  </div>
+</template>
+
+<!-- Konfigurasi Sekolah -->
+<template name="konfigurasiSchool">
+  {{#if isInRole 'superadmin, adminPpdbSchool'}}
+  <div class="container mt-5">
+    <div class="contentAtas">
+      <p style="color: blue; margin: 0;"> <a href="/"> Beranda</a> / <a href="/ppdb">
+          PPDB</a></p>
+    </div>
+    <div class="page-title">
+      <h3>Konfigurasi PPDB</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-tabmenu">
+        <div class="tab-container">
+          <ul class="tab-menu">
+            <li class="tab-item " data-tab="tab1">Tahun Ajaran</li>
+            <li class="tab-item " data-tab="tab2">Gelombang</li>
+            <li class="tab-item active" data-tab="tab3">Pembayaran</li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane " id="tab1">
+              {{> periodePpdb accessAdd=false}}
+            </div>
+            <div class="tab-pane " id="tab2">
+              {{> gelombangPage }}
+            </div>
+            <div class="tab-pane active" id="tab3">
+              {{> paymentConfigSchool}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</template>
+
+<template name="gelombangPage">
+  <div class="container">
+    <div class="page-title">
+      <h3>Gelombang PPDB</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action">
+        <div class="section-action mb-2">
+          <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal"
+            data-target="#addModalGelombang">+
+            Tambah Gelombang PPDB</button>
+        </div>
+      </div>
+      <table class="table table-group-divider mt-5">
+        <thead>
+          <th>Nomor</th>
+          <th>Nama Gelombang</th>
+          <th>Kode Gelombang</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          {{#each listGelombang}}
+          <tr>
+            <td>{{nomorUrut @index}}</td>
+            <td>{{name}}</td>
+            <td>{{code}}</td>
+            <td>{{#if status}}Aktif{{else}}Non Aktif{{/if}}</td>
+            <td>
+              <label class="switch">
+                {{#if status}}
+                <input type="checkbox" id="toggleSwitch" milik="{{_id}}" checked>
+                {{else}}
+                <input type="checkbox" id="toggleSwitch" milik="{{_id}}">
+                {{/if}}
+                <span class="slider round">
+
+                </span>
+              </label>
+              <button class="btn btn-info" id="btn-update">Ubah</button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm"}}
+    </div>
+  </div>
+</template>
+
+<template name="paymentConfigSchool">
+  <div class="container">
+    <div class="page-title">
+      <h3>Pembayaran PPDB</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action">
+        <div class="section-action mb-2">
+          <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModalPayment">+
+            Tambah Daftar Pembayaran</button>
+        </div>
+      </div>
+      <table class="table table-group-divider mt-5">
+        <thead>
+          <th>Nomor</th>
+          <th>Nama</th>
+          <th>Kategori</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          {{#each listPaymentConfig}}
+          <tr>
+            <td>{{nomorUrut @index}}</td>
+            <td>{{name}}</td>
+            <td>{{category}}</td>
+            <td>{{formatRp nominal}}</td>
+
+
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{> c_modal title='Tambah Daftar Pembayaran' idModal="addModalPayment" bodyTemplate="formAddPaymentSchool"  formId="addForm"}}
+
+    </div>
+
+  </div>
+</template>

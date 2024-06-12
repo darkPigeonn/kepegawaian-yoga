@@ -17,6 +17,8 @@ import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/perwakilan/perwakilan.js";
+import "../../ui/pages/ppdb/konfigurasi/konfigurasi.js";
+import "../../ui/pages/ppdb/ppdb.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -508,5 +510,37 @@ FlowRouter.route("/perwakilan/list", {
   name: "listPerwakilan",
   action() {
     this.render("App_body", "listPerwakilan");
+  },
+});
+
+FlowRouter.route("/ppdb", {
+  name: "ppdb",
+  action() {
+    this.render("App_body", "pagePpdb");
+  },
+});
+FlowRouter.route("/ppdb/konfigurasi", {
+  name: "konfigurasi",
+  action() {
+    this.render("App_body", "konfigurasi");
+  },
+});
+
+FlowRouter.route("/ppdb/va", {
+  name: "va",
+  action() {
+    this.render("App_body", "pageVa");
+  },
+});
+FlowRouter.route("/ppdb/va/generate", {
+  name: "generateVa",
+  action() {
+    this.render("App_body", "pageGenerateVa");
+  },
+});
+FlowRouter.route("/payment", {
+  name: "payment",
+  action() {
+    this.render("App_body", "paymentPage");
   },
 });

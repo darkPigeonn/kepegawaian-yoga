@@ -1,0 +1,245 @@
+<template name="pagePpdb">
+  <div class="container">
+    <div class="page-title mt-2">
+      <h3>Daftar Calon Siswa Baru</h3>
+    </div>
+    <div class="page-content mt-3">
+      <table class="table">
+        <thead class="table-primary text-center">
+          <th>No.</th>
+          <th>Nomor VA</th>
+          <th>Nama</th>
+          <th>NIS</th>
+          <th>Alamat</th>
+          <th>Tanggal Lahir</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          {{#each students}}
+          <tr>
+            <td>
+              {{getNumber @index}}
+            </td>
+            <td>
+              Nomor VA
+            </td>
+            <td>
+              {{fullName}}
+            </td>
+            <td>
+              {{nis}}
+            </td>
+            <td>
+              {{address}}
+            </td>
+            <td>
+              {{formatHRDate dob}}
+            </td>
+            <td>
+              {{status}}
+            </td>
+            <td>
+              <button class="btn btn-primary" id="btn-update">Kelola</button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pagination">
+
+          {{#each getPageNumbers totalPages}}
+          <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+          {{/each}}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</template>
+
+<template name="periodPpdb">
+  <div class="container">
+
+  </div>
+</template>
+
+
+<!-- Virtual Account  -->
+<template name="pageVa">
+  <div class="container">
+    <div class="page-title">
+      <h3>Daftar Virtual Account</h3>
+    </div>
+    <div class="page-action">
+      <div class="float-right my-3">
+        <a href="/ppdb/va/generate" class="btn btn-primary" id="btn-generate-va">Generate VA</a>
+      </div>
+    </div>
+    <div class="page-content mt-3">
+      <table class="table">
+        <thead class="table-primary text-center">
+          <th>No.</th>
+          <th>Nomor VA</th>
+          <th>Nama Sekolah</th>
+          <th>Nama Perwakilan</th>
+          <th>Tanggal dibuat</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          <!-- {{#each students}}
+          <tr>
+            <td>
+              {{getNumber @index}}
+            </td>
+            <td>
+              Nomor VA
+            </td>
+            <td>
+              {{fullName}}
+            </td>
+            <td>
+              {{nis}}
+            </td>
+            <td>
+              {{address}}
+            </td>
+            <td>
+              {{formatHRDate dob}}
+            </td>
+            <td>
+              {{status}}
+            </td>
+            <td>
+              <button class="btn btn-primary" id="btn-update">Kelola</button>
+            </td>
+          </tr>
+          {{/each}} -->
+        </tbody>
+      </table>
+      <!-- <nav>
+        <ul class="pagination">
+
+          {{#each getPageNumbers totalPages}}
+          <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+          {{/each}}
+        </ul>
+      </nav> -->
+    </div>
+  </div>
+</template>
+
+<template name="pageGenerateVa">
+  <div class="container">
+    <div class="page-title my-2">
+      <h3>Generate Virtual Account</h3>
+    </div>
+
+    <div class="page-content">
+      <div class="form-group">
+        <label>Pilih Perwakilan</label>
+        <select class="form-control select2" id="select-perwakilan">
+          <option value="0">-- Silahkan Pilih Perwakilan --</option>
+          {{#each listPerwakilan}}
+          <option value="{{_id}}">{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-group" id="section-school-select">
+        <label>Pilih Sekolah</label>
+        <select class="form-control select2 " id="select-school" multiple disabled>
+          <option value="0">-- Silahkan Pilih Sekolah --</option>
+          {{#each listSchools}}
+          <option value="{{_id}}">{{name}} - {{city}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block" id="btn-generate" disabled>Generate</button>
+    </div>
+
+    <div class="preview-va">
+      <table class="table table-borderless">
+        <thead>
+          <th>No.</th>
+          <th>Sekolah</th>
+          <th>Perwakilan</th>
+          <th>Nomor VA</th>
+        </thead>
+        <tbody>
+          {{#each listVa}}
+          <tr>
+            <td>
+              {{nomorUrut @index}}
+            </td>
+            <td>
+              {{schoolName}}
+            </td>
+            <td>
+              {{unitName}}
+            </td>
+            <td>
+              {{va}}
+            </td>
+            <td>
+
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-primary btn-block" id="btn-save">Simpan</button>
+
+    <!-- <div>
+      <button class="prev" {{prevDisabled}}>Sebelumnya</button>
+      <button class="next" {{nextDisabled}}>Selanjutnya</button>
+    </div>
+    <div>
+      <label for="page-select">Page:</label>
+      <select class="page-select">
+        {{#each pageNumbers}}
+        <option value="{{this}}" {{isCurrentPage}}>{{this}}</option>
+        {{/each}}
+      </select>
+    </div> -->
+  </div>
+
+</template>
+
+
+<!-- PAYMENT -->
+<template name="paymentPage">
+  <div class="container my-2">
+    <div class="page-title my-2">
+      <h3>Konfirmasi Pembayaran</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action d-flex justify-content-between">
+        <input type="file" id="upload-csv" />
+        <a href="https://static.imavi.org/yayoga/format_konfirmasi_va.csv">Unduh Format Konfirmasi VA Csv</a>
+      </div>
+      <div class="section-data">
+        <table class="table table-borderless">
+          <thead>
+            <th>No</th>
+            <th>Virtual Number</th>
+            <th>Nominal</th>
+          </thead>
+          <tbody>
+            {{#each listPaymentVa}}
+            <tr>
+              <td>{{nomor}}</td>
+              <td>{{nomorVa}}</td>
+              <td>{{nominal}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
+    </div>
+  </div>
+
+</template>

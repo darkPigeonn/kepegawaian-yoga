@@ -1,0 +1,25 @@
+<template name="c_modal">
+  <div class="modal fade" id="{{idModal}}" tabindex="-1" role="dialog" aria-labelledby="{{idModal}}Label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="{{idModal}}Label">{{title}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="{{formId}}">
+          <div class="modal-body">
+
+            {{> Template.dynamic template=bodyTemplate data=bodyData}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>

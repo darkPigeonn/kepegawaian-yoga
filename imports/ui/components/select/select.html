@@ -3,3 +3,15 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </template>
+
+<template name="c_selectPerwakilan">
+  <div class="form-group">
+    <label>Pilih Perwakilan</label>
+    <select class="form-control select2" id="select-perwakilan">
+      <option value="0">-- Silahkan Pilih Perwakilan --</option>
+      {{#each listPerwakilan}}
+      <option value="{{_id}}">{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>
