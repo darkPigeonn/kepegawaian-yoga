@@ -2,6 +2,10 @@ import Swal from "sweetalert2";
 import "./ppdb.html";
 import { startSelect2 } from "../../../startup/client";
 import Papa from "papaparse";
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import XLSX from "xlsx";
+import moment from "moment";
+
 Template.pagePpdb.onCreated(function () {
   const self = this;
   startPreloader();
@@ -50,7 +54,6 @@ Template.pagePpdb.helpers({
     return (currentPage - 1) * perPage + index + 1;
   },
 });
-
 Template.pagePpdb.events({
   "click .page-link"(event, template) {
     event.preventDefault();
@@ -78,8 +81,18 @@ Template.pageGenerateVa.onCreated(function () {
       self.items.set(result.items);
     }
   });
-});
 
+  self.listPeriode = new ReactiveVar();
+
+  Meteor.call("periode-ppdb-getAll", function (error, result) {
+    if (error) {
+      console.log("fetch error:", error);
+    } else {
+      console.log(result);
+      self.listPeriode.set(result);
+    }
+  });
+});
 Template.pageGenerateVa.onRendered(function () {
   const templateInstance = this;
   this.$("#select-school[disabled]").tooltip({
@@ -109,7 +122,6 @@ Template.pageGenerateVa.onRendered(function () {
     }
   });
 });
-
 Template.pageGenerateVa.helpers({
   listPerwakilan() {
     return Template.instance().items.get();
@@ -163,6 +175,23 @@ Template.pageGenerateVa.helpers({
     const currentPage = Template.instance().currentPage.get();
     return page === currentPage ? "selected" : "";
   },
+  getPageNumbers: function (totalPages) {
+    if (totalPages) {
+      return Array.from({ length: totalPages }, (_, index) => index + 1);
+    }
+  },
+  isActive: function (pageNumber) {
+    return Template.instance().currentPage.get() === pageNumber ? "active" : "";
+  },
+  getNumber(index) {
+    const template = Template.instance();
+    const currentPage = template.currentPage.get();
+    const perPage = template.pageSize.get();
+    return (currentPage - 1) * perPage + index + 1;
+  },
+  listPeriode() {
+    return Template.instance().listPeriode.get();
+  },
 });
 
 Template.pageGenerateVa.events({
@@ -204,11 +233,18 @@ Template.pageGenerateVa.events({
     startPreloader();
     const selectedPerwakilans = $("#select-perwakilan").val();
     const selectedSchools = $("#select-school").val();
-
+    const inputKodePeriode = $("#selectedPeriode").val();
+    const selectedTag = $("#select-tag").val();
+    if (!selectedTag || selectedTag == "0" || selectedTag == "null") {
+      failAlert("Silahkan pilih tag");
+      return false;
+    }
     Meteor.call(
       "va-generate-va",
       selectedPerwakilans,
       selectedSchools,
+      inputKodePeriode,
+      selectedTag,
       function (error, result) {
         if (error) {
           console.log("Error fetching", error);
@@ -232,9 +268,15 @@ Template.pageGenerateVa.events({
         failAlert("Gagal", error);
         exitPreloader();
       } else {
-        window.reload();
+        successAlert("Berhasil");
+        location.reload();
       }
     });
+  },
+  "click .page-link"(event, template) {
+    event.preventDefault();
+    const pageNumber = parseInt(event.target.getAttribute("data-page"));
+    template.currentPage.set(pageNumber);
   },
 });
 
@@ -251,26 +293,184 @@ Template.paymentPage.helpers({
 Template.paymentPage.events({
   "change #upload-csv"(e, t) {
     e.preventDefault();
-
     startPreloader();
+    const file = e.target.files[0];
+    //pakai yoga dulu ya
+    const reader = new FileReader();
+    let dataJson = [];
+    console.log(file);
 
-    Papa.parse(e.target.files[0], {
-      header: true,
-      dynamicTyping: true,
-      worker: true,
-      complete(results, file) {
-        if (results.data.length > 0) {
-          t.items.set(results.data);
-          $("#btn-save").prop("disabled", false);
-        } else {
-          $("#btn-save").prop("disabled", true);
+    reader.onload = function (e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array", cellDates: true });
+      const sheetName = workbook.SheetNames[0]; // Ambil nama sheet pertama
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      for (let index = 1; index < jsonData.length; index++) {
+        const element = jsonData[index];
+        const dateTemp = new Date(element[6]);
+        dateTemp.setDate(dateTemp.getDate() + 1);
+        const dateFormatted = dateTemp.toISOString().split("T")[0];
+
+        if (element.length > 0) {
+          const newData = {
+            compCode: element[0],
+            numberCustomer: element[2],
+            va: element[0].toString() + element[2].toString(),
+            name: element[3],
+            amount: element[5],
+            date: dateFormatted,
+            time: element[7],
+            note: element[9],
+          };
+          dataJson.push(newData);
         }
-      },
-    });
+      }
+      t.items.set(dataJson);
+    };
+    reader.readAsArrayBuffer(file);
 
     exitPreloader();
   },
   "click #btn-save"(e, t) {
     e.preventDefault();
+    startPreloader();
+
+    const items = t.items.get();
+
+    Meteor.call("konfirmasi-payment-upload", items, function (error, result) {
+      if (error) {
+        failAlert("Gagal");
+        exitPreloader();
+      } else {
+        successAlert("Berhasil");
+        exitPreloader();
+        // setTimeout(() => {
+        //   location.reload();
+        // }, 500);
+      }
+    });
+  },
+});
+
+Template.detailRegistran.onCreated(function () {
+  const self = this;
+  startPreloader();
+  self.detail = new ReactiveVar();
+  const id = FlowRouter.current().params._id;
+  Meteor.call("ppdb-registran-detail", id, function (error, result) {
+    if (error) {
+      console.log("Error fetch data");
+      exitPreloader();
+    } else {
+      self.detail.set(result);
+      console.log(result);
+      exitPreloader();
+    }
+  });
+});
+Template.detailRegistran.helpers({
+  registran() {
+    return Template.instance().detail.get();
+  },
+});
+
+Template.pageVa.onCreated(function () {
+  const self = this;
+  startPreloader();
+
+  this.currentPage = new ReactiveVar(1);
+  this.perPage = 30; // Jumlah data per halaman
+  self.items = new ReactiveVar([]);
+  self.totalItems = new ReactiveVar(0);
+  self.formUnduh = new ReactiveVar(false);
+  this.autorun(() => {
+    const currentPage = this.currentPage.get();
+    const perPage = this.perPage;
+
+    Meteor.call("va-school-getAll", currentPage, perPage, (error, result) => {
+      if (error) {
+        console.error("Error while fetching students:", error);
+        exitPreloader();
+      } else {
+        console.log(result);
+        self.items.set(result.items);
+        self.totalItems.set(result.totalItems);
+        exitPreloader();
+      }
+    });
+  });
+});
+Template.pageVa.helpers({
+  formUnduh() {
+    return Template.instance().formUnduh.get();
+  },
+  va: function () {
+    return Template.instance().items.get();
+  },
+  totalPages: function () {
+    const totalStudents = Template.instance().totalItems.get();
+    const perPage = Template.instance().perPage;
+    return Math.ceil(totalStudents / perPage);
+  },
+  getPageNumbers: function (totalPages) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  },
+  isActive: function (pageNumber) {
+    return Template.instance().currentPage.get() === pageNumber ? "active" : "";
+  },
+  getNumber(index) {
+    const template = Template.instance();
+    const currentPage = template.currentPage.get();
+    const perPage = template.perPage;
+    return (currentPage - 1) * perPage + index + 1;
+  },
+});
+Template.pageVa.events({
+  "click .page-link"(event, template) {
+    event.preventDefault();
+    const pageNumber = parseInt(event.target.getAttribute("data-page"));
+    template.currentPage.set(pageNumber);
+  },
+  "click #btn-open-form-download"(e, t) {
+    e.preventDefault();
+
+    t.formUnduh.set(!t.formUnduh.get());
+  },
+  "click #btn-download"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const unitId = $("#select-perwakilan").val();
+    const schoolId = $("#select-school").val();
+    const tag = $("#select-tag").val();
+
+    if (!unitId || unitId === "0") {
+      swalinfo("Silahkan Pilih Perwakilan");
+      exitPreloader();
+      return false;
+    }
+    if (!schoolId || schoolId === "0") {
+      swalinfo("Silahkan Pilih Sekolah");
+      exitPreloader();
+      return false;
+    }
+    if (!tag || tag === "0") {
+      swalinfo("Silahkan Pilih Tag");
+      exitPreloader();
+      return false;
+    }
+
+    Meteor.call("export-va", unitId, schoolId, tag, function (error, result) {
+      if (error) {
+        console.log("Fetch data gagal :", error);
+        exitPreloader();
+      } else {
+        const fileNameExcel = "Dafta VA.xlsx";
+        successAlert("Berhasil");
+        exitPreloader();
+        return XLSX.writeFile(result, fileNameExcel);
+      }
+    });
   },
 });

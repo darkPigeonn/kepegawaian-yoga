@@ -103,10 +103,12 @@ Template.registerHelper("fc_label", function (a) {
   return value;
 });
 Template.registerHelper("capitalizeWord", function (a) {
-  let text = a.toString();
-  return text
-    .toLowerCase()
-    .replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+  if (a) {
+    let text = a.toString();
+    return text
+      .toLowerCase()
+      .replace(/(^|\s)\S/g, (match) => match.toUpperCase());
+  }
 });
 Template.registerHelper("toMeteorId", function (context) {
   if (context && typeof context === "object") {
@@ -205,4 +207,116 @@ Template.registerHelper("usia", function (dob) {
 Template.registerHelper("valueDate", function (dob) {
   if (dob) moment.locale("id");
   return moment(dob).format("YYYY-MM-DD");
+});
+Template.registerHelper("thisAge", function (dob) {
+  if (!dob) {
+    return "0";
+  }
+  const tempDob = new Date(dob);
+  if (tempDob) {
+    const today = new Date();
+    // Calculate age
+    let age = today.getFullYear() - tempDob.getFullYear();
+    const monthDiff = today.getMonth() - tempDob.getMonth();
+    const dayDiff = today.getDate() - tempDob.getDate();
+
+    // Adjust age if birthdate hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    // Handle future birthdate
+    if (age < 0) {
+      age = 0;
+    }
+    if (isNaN(age)) {
+      return "0";
+    }
+    return age;
+  } else {
+    return "0";
+  }
+});
+
+Template.registerHelper("statusPpdb", function (data) {
+  let status = "";
+  switch (data) {
+    case 10:
+      status = "Menunggu Pembayaran Formulir";
+      break;
+    case 20:
+      status = "Mengisi Formulir PPDB";
+      break;
+    case 30:
+      status = "Menunggu Pembayaran Uang Pangkal";
+      break;
+    case 20:
+      status = "Sedang direview";
+      break;
+    case 90:
+      status = "Ditolak dengan revisi";
+      break;
+    case 99:
+      status = "Ditolak";
+      break;
+    case 60:
+      status = "Diterima";
+      break;
+    default:
+      status = "draft";
+  }
+  return status;
+});
+
+Template.registerHelper("categoryVa", function (data) {
+  if (!data) {
+    return "-";
+  }
+  let label = "-";
+  if (data == "08") {
+    label = "Va Formulir";
+  }
+  if (data == "90") {
+    label = "Va Pembayaran Lunas";
+  }
+  if (data == "99") {
+    label = "Va Pembayaran Cicil";
+  }
+  return label;
+});
+Template.registerHelper("statusVa", function (data) {
+  let status = "";
+  switch (data) {
+    case 10:
+      status = "Belum Aktif";
+      break;
+    case 20:
+      status = "Mengisi Formulir PPDB";
+      break;
+    case 30:
+      status = "Menunggu Pembayaran Uang Pangkal";
+      break;
+    case 20:
+      status = "Sedang direview";
+      break;
+    case 90:
+      status = "Ditolak dengan revisi";
+      break;
+    case 99:
+      status = "Ditolak";
+      break;
+    case 60:
+      status = "Diterima";
+      break;
+    default:
+      status = "draft";
+  }
+  return status;
+});
+
+Template.registerHelper("lenghtBool", function (data) {
+  if (data.length > 0) {
+    return true;
+  }
+  return false;
 });

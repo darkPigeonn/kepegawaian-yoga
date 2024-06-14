@@ -4,14 +4,13 @@
       <h3>Daftar Calon Siswa Baru</h3>
     </div>
     <div class="page-content mt-3">
-      <table class="table">
-        <thead class="table-primary text-center">
+      <table class="table table-group-divider">
+        <thead>
           <th>No.</th>
-          <th>Nomor VA</th>
           <th>Nama</th>
-          <th>NIS</th>
           <th>Alamat</th>
-          <th>Tanggal Lahir</th>
+          <th>Tanggal Lahir | Umur</th>
+          <th>Tanggal Daftar</th>
           <th>Status</th>
           <th>Aksi</th>
         </thead>
@@ -22,25 +21,24 @@
               {{getNumber @index}}
             </td>
             <td>
-              Nomor VA
-            </td>
-            <td>
-              {{fullName}}
-            </td>
-            <td>
-              {{nis}}
+              {{capitalizeWord fullName}} <br>
+              <span class="span-nis">{{nis}}</span>
             </td>
             <td>
               {{address}}
             </td>
+
             <td>
-              {{formatHRDate dob}}
+              {{formatHRDate dob}} | {{thisAge dob}} Tahun
             </td>
             <td>
-              {{status}}
+              {{formatHRDate createdAt}}
             </td>
             <td>
-              <button class="btn btn-primary" id="btn-update">Kelola</button>
+              {{statusPpdb status}}
+            </td>
+            <td>
+              <a href="/ppdb/details/{{toMeteorId _id}}" class="btn btn-primary" id="btn-detail">Lihat</a>
             </td>
           </tr>
           {{/each}}
@@ -48,7 +46,6 @@
       </table>
       <nav>
         <ul class="pagination">
-
           {{#each getPageNumbers totalPages}}
           <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
           {{/each}}
@@ -74,48 +71,56 @@
     <div class="page-action">
       <div class="float-right my-3">
         <a href="/ppdb/va/generate" class="btn btn-primary" id="btn-generate-va">Generate VA</a>
+        <button class="btn btn-primary" id="btn-open-form-download">Unduh Va</button>
       </div>
     </div>
     <div class="page-content mt-3">
-      <table class="table">
-        <thead class="table-primary text-center">
+      {{#if formUnduh}}
+      <div class="p-5">
+        {{> formUnduhVa}}
+      </div>
+      {{/if}}
+      <table class="table tabl">
+        <thead>
           <th>No.</th>
           <th>Nomor VA</th>
           <th>Nama Sekolah</th>
-          <th>Nama Perwakilan</th>
+          <th>Nominal</th>
           <th>Tanggal dibuat</th>
           <th>Status</th>
-          <th>Aksi</th>
+          <th>Kategori</th>
+          <!-- <th>Aksi</th> -->
         </thead>
         <tbody>
-          <!-- {{#each students}}
+          {{#each va}}
           <tr>
             <td>
               {{getNumber @index}}
             </td>
             <td>
-              Nomor VA
+              {{virtualAccountNumber}}
             </td>
             <td>
-              {{fullName}}
+              {{schoolName}} | {{unitName}}
             </td>
             <td>
-              {{nis}}
+              {{formatRp amount}}
             </td>
             <td>
-              {{address}}
+              {{formatHRDate createdAt}}
+            </td>
+
+            <td>
+              {{statusVa status}}
             </td>
             <td>
-              {{formatHRDate dob}}
+              {{categoryVa category}}
             </td>
-            <td>
-              {{status}}
-            </td>
-            <td>
+            <!-- <td>
               <button class="btn btn-primary" id="btn-update">Kelola</button>
-            </td>
+            </td> -->
           </tr>
-          {{/each}} -->
+          {{/each}}
         </tbody>
       </table>
       <!-- <nav>
@@ -128,6 +133,8 @@
       </nav> -->
     </div>
   </div>
+
+
 </template>
 
 <template name="pageGenerateVa">
@@ -155,11 +162,31 @@
           {{/each}}
         </select>
       </div>
+      <div class="form-group">
+        <label>Input Kode Tahun Ajaran</label>
+        <select id="selectedPeriode" class="form-control">
+          <option value="0">-- Silahkkan Pilih --</option>
+          {{#each listPeriode}}
+          <option value="{{_id}}">{{year}}</option>
+          {{/each}}
+        </select>
+        <!-- <input id="input-kode-periode" type="number" class="form-control" /> -->
+      </div>
+      <div class="form-group">
+        <label>Pilih Tag</label>
+        <select class="form-control" id="select-tag">
+          <option value="0">-- Silahkan Pilih Tag --</option>
+          <option value="formulir">Formulir (08)</option>
+          <option value="spp">Uang Sekolah Full (90)</option>
+          <option value="sppCicil">Uang Sekolah Cicil (99)</option>
+        </select>
+      </div>
       <button class="btn btn-primary btn-block" id="btn-generate" disabled>Generate</button>
     </div>
 
     <div class="preview-va">
-      <table class="table table-borderless">
+
+      <table class="table table-bordered">
         <thead>
           <th>No.</th>
           <th>Sekolah</th>
@@ -170,7 +197,7 @@
           {{#each listVa}}
           <tr>
             <td>
-              {{nomorUrut @index}}
+              {{getNumber @index}}
             </td>
             <td>
               {{schoolName}}
@@ -188,7 +215,16 @@
           {{/each}}
         </tbody>
       </table>
+
     </div>
+
+    <nav>
+      <ul class="pagination">
+        {{#each getPageNumbers totalPages}}
+        <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+        {{/each}}
+      </ul>
+    </nav>
     <button class="btn btn-primary btn-block" id="btn-save">Simpan</button>
 
     <!-- <div>
@@ -216,22 +252,32 @@
     </div>
     <div class="page-content">
       <div class="section-action d-flex justify-content-between">
-        <input type="file" id="upload-csv" />
-        <a href="https://static.imavi.org/yayoga/format_konfirmasi_va.csv">Unduh Format Konfirmasi VA Csv</a>
+        <input type="file" accept=".xlsx" id="upload-csv" />
+        <a href="https://static.imavi.org/yayoga/format_konfirmasi_va.xlsx">Unduh Format Konfirmasi VA XLSX</a>
       </div>
       <div class="section-data">
         <table class="table table-borderless">
           <thead>
             <th>No</th>
-            <th>Virtual Number</th>
-            <th>Nominal</th>
+            <th>Kode Perusahaan</th>
+            <th>No. Pelanggan</th>
+            <th>No. VA</th>
+            <th>Nama Pelanggan</th>
+            <th>Nilai Transaksi</th>
+            <th>Tanggal Transaksi</th>
+            <th>Berita</th>
           </thead>
           <tbody>
             {{#each listPaymentVa}}
             <tr>
-              <td>{{nomor}}</td>
-              <td>{{nomorVa}}</td>
-              <td>{{nominal}}</td>
+              <td>{{nomorUrut @index}}</td>
+              <td>{{compCode}}</td>
+              <td>{{numberCustomer}}</td>
+              <td>{{va}}</td>
+              <td>{{name}}</td>
+              <td>{{formatRp amount}}</td>
+              <td>{{formatHRDateShort date}} {{formatTime time}}</td>
+              <td>{{note}}</td>
             </tr>
             {{/each}}
           </tbody>
@@ -242,4 +288,32 @@
     </div>
   </div>
 
+</template>
+
+
+<!-- Registrans -->
+<template name="detailRegistran">
+  <div class="container mt-5">
+    <div class="page-title">
+      <h3>Detail Pendaftar</h3>
+    </div>
+    <div class="page-content">
+      <div class="card">
+        <table class="table table-borderless">
+          <tr>
+            <td>Nama</td>
+            <td>{{capitalizeWord registran.fullName}}</td>
+          </tr>
+          <tr>
+            <td>Tanggal Lahir</td>
+            <td>{{formatHRDate registran.dob}}</td>
+          </tr>
+          <tr>
+            <td>Alamat</td>
+            <td>{{registran.address}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>

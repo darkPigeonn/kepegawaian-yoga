@@ -1,12 +1,12 @@
 <template name="listUser">
     <div class="container">
 
-        {{#if isInRoles currentUser.roles "admin"}}
-        <h1>Daftar User</h1>
+        {{#if isInRole "superadmin, adminPpdbYayasan"}}
+        <h1>Daftar Pengguna</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/createUser" class="btn btn-primary mr-2">+ Tambah</a>
-                <a href="/connectEmployeeAppUser" class="btn btn-primary">Hubungkan Data Pegawai</a>
+                <!-- <a href="/connectEmployeeAppUser" class="btn btn-primary">Hubungkan Data Pegawai</a> -->
             </div>
         </div>
         <div class="d-lg-block table-responsive">
@@ -15,8 +15,7 @@
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Nama Lengkap</th>
+                        <th scope="col">Sekolah</th>
                         <th scope="col">Roles</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -26,62 +25,14 @@
                     <tr>
                         <td> {{nomorUrut @index}}</td>
                         <td> {{username}} </td>
-                        <!-- <td> {{emails}} </td> -->
-                        {{#each i in emails}}
-                        <td> {{i.address}} </td>
-                        {{/each}}
-                        <td> {{fullname}} </td>
+                        <td>{{schoolName}}</td>
                         <td> {{roles}} </td>
                         <td>
                             <a href="/editUser/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
                             </a>
                             <button class="btn btn-danger" type="button" id="btn_delete"
-                                data-id="{{_id}}">Delete</button>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
-        {{/if}}
-
-        {{#if equals jabatanLogin "super-admin"}}
-        <h1>Daftar Semua User</h1>
-        <div class="mt-5">
-            <div class="d-flex justify-content-end mb-2">
-                <a href="/createAdmin" class="btn btn-primary mr-2">+ Tambah</a>
-                <a href="/createEmployeeAdmin" class="btn btn-primary mr-2">Pegawai</a>
-            </div>
-        </div>
-        <div class="d-lg-block table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Nama Lengkap</th>
-                        <th scope="col">Roles</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each dataListUserSuperAdmin}}
-                    <tr>
-                        <td> {{nomorUrut @index}}</td>
-                        <td> {{username}} </td>
-                        <!-- <td> {{emails}} </td> -->
-                        {{#each i in emails}}
-                        <td> {{i.address}} </td>
-                        {{/each}}
-                        <td> {{fullname}} </td>
-                        <td> {{roles}} </td>
-                        <td>
-                            <!-- <a href="/user/remove/{{_id}}"> -->
-                            <button class="btn btn-danger" type="button" id="btn_delete"
-                                data-id="{{_id}}">Delete</button>
-                            <!-- </a> -->
+                                data-id="{{_id}}">Hapus</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -172,98 +123,120 @@
 </template>
 
 <template name="editUser">
-    <h1>Edit User</h1>
-    <form class="d-flex justify-content-center align-items-center vh-50">
-        <div class="form-group mb-2">
-            <label for="input_username">Username</label>
-            <input type="text" id="input_username" class="form-control" value={{dataListUser.username}} required><br>
-
-            <label for="input_fullname">Nama Lengkap</label>
-            <input type="text" id="input_fullname" class="form-control" value={{dataListUser.fullname}} required><br>
-
-            <label for="input_roles">Roles</label>
-            <select id="input_roles" class="form-control">
-                {{#if dataListUser.roles}}
-                {{#each dataListUser.roles}}
-                {{#if equals dataListUser.roles "admin"}}
-                <option value="admin" selected>Admin</option>
-                {{else}}
-                <option value="admin">Admin</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "resepsionis"}}
-                <option value="resepsionis" selected>Resepsionis</option>
-                {{else}}
-                <option value="resepsionis">Resepsionis</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "sekretaris-eksekutif"}}
-                <option value="sekretaris-eksekutif" selected>Sekretaris Eksekutif</option>
-                {{else}}
-                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "bidang"}}
-                <option value="bidang" selected>Bidang</option>
-                {{else}}
-                <option value="bidang">Bidang</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "sekretaris-yayasan"}}
-                <option value="sekretaris-yayasan" selected>Sekretaris Yayasan</option>
-                {{else}}
-                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "dewan-pengurus"}}
-                <option value="dewan-pengurus" selected>Dewan Pengurus</option>
-                {{else}}
-                <option value="dewan-pengurus">Dewan Pengurus</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "pengurus-inti"}}
-                <option value="pengurus-inti" selected>Pengurus Inti</option>
-                {{else}}
-                <option value="pengurus-inti">Pengurus Inti</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "administrasi-umum"}}
-                <option value="administrasi-umum" selected>Administrasi Umum</option>
-                {{else}}
-                <option value="administrasi-umum">Administrasi Umum</option>
-                {{/if}}
-                {{#if equals dataListUser.roles "staff"}}
-                <option value="staff" selected>Staff</option>
-                {{else}}
-                <option value="staff">Staff</option>
-                {{/if}}
-                {{/each}}
-
-                {{else}}
-                <option value="admin">Admin</option>
-                <option value="resepsionis">Resepsionis</option>
-                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                <option value="bidang">Bidang</option>
-                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                <option value="dewan-pengurus">Dewan Pengurus</option>
-                <option value="pengurus-inti">Pengurus Inti</option>
-                <option value="administrasi-umum">Administrasi Umum</option>
-                <option value="staff">staff</option>
-                {{/if}}
-
-            </select>
-
-            <br>
-            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_edit_user">Simpan</button>
-            <a href="/changePassUser/{{dataListUser._id}}" type="button" id="btn_change_password"
-                class="btn btn-warning">Ganti Password</a>
+    <div class="container">
+        <div class="page-title">
+            <h1>Edit User</h1>
         </div>
-    </form>
+        <div class="page-content">
+            <form class="">
+                <div class="form-group mb-2">
+                    <label for="input_username">Username</label>
+                    <input type="text" id="input_username" class="form-control" value={{dataListUser.username}}
+                        required><br>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="input_fullname">Nama Lengkap</label>
+                    <input type="text" id="input_fullname" class="form-control" value={{dataListUser.fullname}}
+                        required><br>
+                </div>
+                <!-- <div class="form-group">
+
+                    <label for="input_roles">Roles</label>
+                    <select id="input_roles" class="form-control">
+                        {{#if dataListUser.roles}}
+                        {{#each dataListUser.roles}}
+                        {{#if equals dataListUser.roles "admin"}}
+                        <option value="admin" selected>Admin</option>
+                        {{else}}
+                        <option value="admin">Admin</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "resepsionis"}}
+                        <option value="resepsionis" selected>Resepsionis</option>
+                        {{else}}
+                        <option value="resepsionis">Resepsionis</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "sekretaris-eksekutif"}}
+                        <option value="sekretaris-eksekutif" selected>Sekretaris Eksekutif</option>
+                        {{else}}
+                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "bidang"}}
+                        <option value="bidang" selected>Bidang</option>
+                        {{else}}
+                        <option value="bidang">Bidang</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "sekretaris-yayasan"}}
+                        <option value="sekretaris-yayasan" selected>Sekretaris Yayasan</option>
+                        {{else}}
+                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "dewan-pengurus"}}
+                        <option value="dewan-pengurus" selected>Dewan Pengurus</option>
+                        {{else}}
+                        <option value="dewan-pengurus">Dewan Pengurus</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "pengurus-inti"}}
+                        <option value="pengurus-inti" selected>Pengurus Inti</option>
+                        {{else}}
+                        <option value="pengurus-inti">Pengurus Inti</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "administrasi-umum"}}
+                        <option value="administrasi-umum" selected>Administrasi Umum</option>
+                        {{else}}
+                        <option value="administrasi-umum">Administrasi Umum</option>
+                        {{/if}}
+                        {{#if equals dataListUser.roles "staff"}}
+                        <option value="staff" selected>Staff</option>
+                        {{else}}
+                        <option value="staff">Staff</option>
+                        {{/if}}
+                        {{/each}}
+
+                        {{else}}
+                        <option value="admin">Admin</option>
+                        <option value="resepsionis">Resepsionis</option>
+                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                        <option value="bidang">Bidang</option>
+                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                        <option value="dewan-pengurus">Dewan Pengurus</option>
+                        <option value="pengurus-inti">Pengurus Inti</option>
+                        <option value="administrasi-umum">Administrasi Umum</option>
+                        <option value="staff">staff</option>
+                        {{/if}}
+
+                    </select>
+                </div> -->
+
+
+                <br>
+                <button class="btn btn-primary" style="width: auto;" type="button" id="btn_edit_user">Simpan</button>
+                <a href="/changePassUser/{{dataListUser._id}}" type="button" id="btn_change_password"
+                    class="btn btn-warning">Ganti Password</a>
+
+            </form>
+        </div>
+    </div>
+
 </template>
 
 <template name="changePassUser">
-    <h1>Edit Password User</h1>
-    <form class="d-flex justify-content-center align-items-center vh-50">
-        <div class="form-group mb-2">
-            <label for="input_password">Password Baru</label>
-            <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
-            <button class="btn btn-primary" style="width: auto;" type="button"
-                id="btn_edit_user_password">Simpan</button>
+    {{#if isInRole 'superadmin, adminPpdbYayasan'}}
+    <div class="container">
+        <div class="page-title">
+            <h1>Edit Password User</h1>
         </div>
-    </form>
+        <div class="page-content">
+            <form>
+                <div class="form-group mb-2">
+                    <label for="input_password">Password Baru</label>
+                    <input type="text" id="input_password" class="form-control" style="max-width: auto;" required><br>
+                    <button class="btn btn-primary" style="width: auto;" type="button"
+                        id="btn_edit_user_password">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{/if}}
 </template>
 
 <template name="createEmployeeAdmin">

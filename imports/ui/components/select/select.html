@@ -15,3 +15,14 @@
     </select>
   </div>
 </template>
+<template name="c_selectSchools">
+  <div class="form-group">
+    <label>Pilih Sekolah</label>
+    <select class="form-control select2" id="select-schools">
+      <option value="0">-- Silahkan Pilih Sekolah --</option>
+      {{#each listSchools}}
+      <option value="{{_id}}">{{name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</template>

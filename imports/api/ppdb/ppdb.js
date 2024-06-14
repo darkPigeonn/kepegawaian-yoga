@@ -1,12 +1,13 @@
 import { Mongo } from "meteor/mongo";
 
-export const Registrans = new Mongo.Collection("registrans");
+export const Registrans = new Mongo.Collection("registrationForms");
 export const VirtualAccounts = new Mongo.Collection("virtualAccounts");
-export const PeriodePpdb = new Mongo.Collection("periodePPDB");
+export const PeriodePpdb = new Mongo.Collection("periodePpdb");
 export const VirtualAccountsConfig = new Mongo.Collection(
   "virtualAccountsConfig"
 );
-export const Gelombangs = new Mongo.Collection("gelombangs");
+export const Gelombangs = new Mongo.Collection("configPpdbSchools");
+// export const Gelombangs = new Mongo.Collection("gelombangs");
 export const PaymentsConfig = new Mongo.Collection("paymentsConfig");
 export const RegistransDummy = [
   {

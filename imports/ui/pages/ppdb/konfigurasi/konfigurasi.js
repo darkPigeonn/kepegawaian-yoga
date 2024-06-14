@@ -1,7 +1,11 @@
 import "./konfigurasi.html";
 import "/imports/ui/components/modals/modals";
 import "/imports/ui/components/forms/forms";
-import { convert2number, exitLoading } from "../../../../startup/client";
+import {
+  convert2number,
+  exitLoading,
+  startSelect2,
+} from "../../../../startup/client";
 Template.konfigurasi.events({
   "click .tab-item"(event) {
     event.preventDefault();
@@ -58,6 +62,7 @@ Template.konfigurasiVa.onCreated(function () {
   this.perPage = 10; // Jumlah data per halaman
   self.items = new ReactiveVar([]);
   self.totalItems = new ReactiveVar(0);
+  self.viewList = new ReactiveVar("0");
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
@@ -95,18 +100,34 @@ Template.konfigurasiVa.helpers({
     const perPage = template.perPage;
     return (currentPage - 1) * perPage + index + 1;
   },
+  viewList() {
+    return Template.instance().viewList.get();
+  },
 });
 Template.konfigurasiVa.events({
   "click #btn-save-modal"(e, t) {
     e.preventDefault();
 
     startPreloader();
-
-    const idUnit = $("#select-perwakilan").val();
+    const category = $("#select-category").val();
+    let idUnit = "-";
     const code = $("#input-code").val();
 
+    if (category == "0") {
+      swalInfo("Silahkan pilih kategori");
+      return false;
+    }
+    if (category == "unit") {
+      idUnit = $("#select-perwakilan").val();
+    }
+    if (category == "schools") {
+      idUnit = $("#select-schools").val();
+    }
+    if (category == "type") {
+      idUnit = $("#select-post").val();
+    }
     if (!idUnit || idUnit === "0") {
-      swalInfo("Silahkan pilih perwakilan");
+      swalInfo("Silahkan pilih perwakilan/type post");
       return false;
     }
     if (!code || code === "0") {
@@ -114,17 +135,36 @@ Template.konfigurasiVa.events({
       return false;
     }
 
-    Meteor.call("add-config-va", idUnit, code, function (error, result) {
-      if (error) {
-        failAlert(error);
-      } else {
-        successAlert("Berhasil");
+    Meteor.call(
+      "add-config-va",
+      category,
+      idUnit,
+      code,
+      function (error, result) {
+        if (error) {
+          failAlert(error);
+        } else {
+          successAlert("Berhasil");
+        }
       }
-    });
+    );
     exitPreloader();
   },
   "click #btn-add"(e, t) {
-    $(".select2").select2({});
+    setTimeout(() => {
+      $(".select2").select2({});
+    }, 500);
+  },
+  "change #select-category"(e, t) {
+    e.preventDefault();
+
+    t.viewList.set(e.target.value);
+    startSelect2();
+  },
+  "click .btn-view-mode"(e, t) {
+    e.preventDefault();
+
+    // const self
   },
 });
 
@@ -135,8 +175,10 @@ Template.periodePpdb.onCreated(function () {
   Meteor.call("periode-ppdb-getAll", function (error, result) {
     if (error) {
       console.log("fetch period error");
+      exitPreloader();
     } else {
       self.items.set(result);
+      exitPreloader();
     }
   });
 });
@@ -151,8 +193,16 @@ Template.periodePpdb.events({
     startPreloader();
     const name = $("#inputName").val();
     const year = $("#inputTahunAjaran").val();
+    const code = $("#inputCodePeriode").val();
 
-    Meteor.call("periode-ppdb-insert", name, year, function (error, result) {
+    const id = e.target.getAttribute("data-milik");
+
+    let postUrl = "periode-ppdb-insert";
+    if (id) {
+      postUrl = "periode-ppdb-update";
+    }
+
+    Meteor.call(postUrl, name, year, code, id, function (error, result) {
       if (error) {
         failAlert(error);
         exitPreloader();
@@ -172,6 +222,12 @@ Template.formInputPeriode.helpers({
 });
 Template.formInputPeriode.onCreated(function () {
   this.tahunAjaran = new ReactiveVar("");
+
+  if (this.data) {
+    if (this.data.year) {
+      this.tahunAjaran = new ReactiveVar(this.data.year);
+    }
+  }
 });
 Template.formInputPeriode.events({
   "keyup #inputTahunAjaran"(e, t) {
@@ -200,6 +256,7 @@ Template.gelombangPage.onCreated(function () {
   const self = this;
 
   self.items = new ReactiveVar();
+  self.showEdit = new ReactiveVar(false);
   startPreloader();
 
   Meteor.call("getAll-gelombang-school", function (error, result) {
@@ -214,6 +271,9 @@ Template.gelombangPage.helpers({
   listGelombang() {
     return Template.instance().items.get();
   },
+  showEdit() {
+    return Template.instance().showEdit.get();
+  },
 });
 Template.gelombangPage.events({
   "submit #addForm"(e, t) {
@@ -222,11 +282,21 @@ Template.gelombangPage.events({
 
     const name = $("#inputNameGelombang").val();
     const code = $("#inputCode").val();
+    const feeForm = convert2number($("#inputUangForm").val());
+    const feeSpp = convert2number($("#inputUangSpp").val());
+    const feeEvent = convert2number($("#inputUangKegiatan").val());
+    const feeUtilty = convert2number($("#inputUangAlat").val());
+    const periodePpdb = $("#selectedPeriod").val();
 
     Meteor.call(
       "insert-gelombang-school",
       name,
       code,
+      feeForm,
+      feeSpp,
+      feeEvent,
+      feeUtilty,
+      periodePpdb,
       function (error, result) {
         if (error) {
           swalInfo(error.reason);
@@ -237,6 +307,10 @@ Template.gelombangPage.events({
         }
       }
     );
+  },
+  "click #btn-update"(e, t) {
+    e.preventDefault();
+    t.showEdit.set(!t.showEdit.get());
   },
 });
 

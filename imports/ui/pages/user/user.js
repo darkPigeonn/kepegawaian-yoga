@@ -16,19 +16,8 @@ Template.listUser.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.dataListUserSuperAdmin = new ReactiveVar();
 
-  const userId = Meteor.userId();
-  // console.log(userId);
-  if (userId) {
-    Meteor.call("employee.getDataLogin", userId, function (error, result) {
-      if (result) {
-        self.jabatanLogin.set(dataRole);
-      }
-    });
-  }
-
   Meteor.call("users.getAll", function (error, result) {
     if (result) {
-      console.log(result);
       self.dataListUser.set(result);
     } else {
       console.log(error);
@@ -249,11 +238,11 @@ Template.editUser.events({
     const id = FlowRouter.getParam("_id");
     const username = $("#input_username").val();
     const fullname = $("#input_fullname").val();
-    const roles = $("#input_roles").val();
+    // const roles = $("#input_roles").val();
     const dataSave = {
       username,
       fullname,
-      roles,
+      roles: "adminPpdbSchool",
     };
     Swal.fire({
       title: "Konfirmasi Edit User",

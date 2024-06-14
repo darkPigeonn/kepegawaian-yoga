@@ -1,5 +1,5 @@
 <template name="konfigurasi">
-  {{#if isInRole 'superadmin, admin-ppdb-yayasan  '}}
+  {{#if isInRole 'superadmin, adminPpdbYayasan  '}}
   <div class="container">
     <div class="contentAtas">
       <p style="color: blue; margin: 0;"> <a href="/"> Beranda</a> / <a href="/ppdb">
@@ -14,18 +14,22 @@
         <div class="tab-container">
           <ul class="tab-menu">
             <li class="tab-item active" data-tab="tab1">Tahun Ajaran</li>
-            <li class="tab-item" data-tab="tab2">Konfigurasi VA</li>
+            <li class="tab-item " data-tab="tab2">Konfigurasi VA</li>
             <li class="tab-item" data-tab="tab4">Perwakilan</li>
+            <li class="tab-item" data-tab="tab5">Pengguna</li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab1">
-              {{> periodePpdb}}
+              {{> periodePpdb accessAdd=true}}
             </div>
-            <div class="tab-pane" id="tab2">
+            <div class="tab-pane " id="tab2">
               {{> konfigurasiVa}}
             </div>
             <div class="tab-pane" id="tab4">
               {{> listPerwakilan}}
+            </div>
+            <div class="tab-pane" id="tab5">
+              {{> listUser}}
             </div>
           </div>
         </div>
@@ -36,24 +40,27 @@
   {{> konfigurasiSchool}}
   {{/if}}
 </template>
-
-
 <template name="konfigurasiVa">
   <div class="container">
     <div class="page-title">
       <h3>Daftar Konfigurasi VA</h3>
+      <div class="form-group">
+        <!-- <div class="btn btn-outline-info btn-view-mode" data-target="0">Perwakilan</div> -->
+        <!-- <div class="btn btn-outline-info btn-view-mode" data-target="1">Sekolah</div> -->
+        <!-- <div class="btn btn-outline-info btn-view-mode" data-target="2">Tag</div> -->
+      </div>
     </div>
     <div class="page-action">
-
       <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModal">+
         Tambah</button>
     </div>
     <div class="page-body">
-      <table class="table table-borderless">
+      <table class="table table-group-divider">
         <thead>
           <th>No.</th>
-          <th>Perwakilan</th>
+          <th>Nama</th>
           <th>Kode VA Perwakilan</th>
+          <th>Aksi</th>
         </thead>
         <tbody>
           {{#each items}}
@@ -62,13 +69,10 @@
               {{getNumber @index}}
             </td>
             <td>
-              {{code}}
-            </td>
-            <td>
               {{unitName}}
             </td>
             <td>
-              {{nis}}
+              {{code}}
             </td>
             <td>
               <button class="btn btn-primary" id="btn-update">Ubah</button>
@@ -100,16 +104,44 @@
           </button>
         </div>
         <div class="modal-body">
+          <div class="form-group">
+            <label>Pilih Kategori</label>
+            <select class="form-control" id="select-category">
+              <option value="0">-- Pilih Kategori --</option>
+              <option value="unit">Perwakilan</option>
+              <option value="school">Sekolah</option>
+              <option value="type">Tipe Transaksi</option>
+            </select>
+          </div>
+          {{#if equals viewList '0'}}
+
+          {{else}}
+          {{#if equals viewList 'unit'}}
           {{> c_selectPerwakilan}}
+          {{/if}}
+          {{#if equals viewList 'school'}}
+          {{> c_selectSchools}}
+          {{/if}}
+          {{#if equals viewList 'type'}}
+          <div class="form-group">
+            <label>Pilih Post Tagihan</label>
+            <select class="form-control" id="select-post">
+              <option value="formulir">Formulir</option>
+              <option value="spp">SPP</option>
+              <option value="cicilan">cicilan</option>
+            </select>
+          </div>
+          {{/if}}
           <div class="form-group">
             <label>Kode Perwakilan</label>
             <input type="number" id="input-code" class="form-control" />
           </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-primary" id="btn-save-modal">Simpan</button>
+          {{/if}}
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          <button type="button" class="btn btn-primary" id="btn-save-modal">Simpan</button>
         </div>
       </div>
     </div>
@@ -123,7 +155,7 @@
     <div class="page-content">
       {{#if accessAdd}}
       <div class="section-action mb-2">
-        <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModal">+
+        <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModalVaGenerate">+
           Tambah Periode PPDB</button>
       </div>
       {{/if}}
@@ -145,24 +177,34 @@
             <td>
               {{year}}
             </td>
+            {{#if isInRole 'superadmin, adminPpdbYayasan'}}
+            <button class="btn btn-primary" id="btn-update" data-toggle="modal"
+              data-target="#editModalPeriode">Ubah</button>
+            {{/if}}
           </tr>
+          {{> c_modal title='Ubah Periode Tahun Ajaran' dataObject=this idModal="editModalPeriode" bodyTemplate="formInputPeriode" bodyData=yourFormData formId="addForm"}}
           {{/each}}
         </tbody>
       </table>
     </div>
-    {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModal" bodyTemplate="formInputPeriode" bodyData=yourFormData formId="addForm"}}
+    {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModalVaGenerate" bodyTemplate="formInputPeriode" bodyData=yourFormData formId="addForm"}}
   </div>
 </template>
 <template name="formInputPeriode">
   <div class="form-group">
     <label for="inputName">Nama</label>
     <input type="text" class="form-control" id="inputName" placeholder="Contoh : Periode Tahun Ajaran 2024/2025"
-      required>
+      required value="{{name}}">
   </div>
   <div class="form-group">
     <label for="inputTahunAjaran">Tahun Ajaran</label>
     <input type="text" class="form-control" id="inputTahunAjaran" placeholder="Contoh: 2024/2025" required
       value="{{tahunAjaran}}">
+  </div>
+  <div class="form-group">
+    <label for="inputCodePeriode">Kode Tahun Ajaran</label>
+    <input type="text" class="form-control" id="inputCodePeriode"
+      placeholder="Contoh: 2425 (Jika Tahun Ajaran 2024/2025)" required value="{{code}}">
   </div>
 </template>
 
@@ -181,20 +223,20 @@
       <div class="section-tabmenu">
         <div class="tab-container">
           <ul class="tab-menu">
-            <li class="tab-item " data-tab="tab1">Tahun Ajaran</li>
+            <li class="tab-item active" data-tab="tab1">Tahun Ajaran</li>
             <li class="tab-item " data-tab="tab2">Gelombang</li>
-            <li class="tab-item active" data-tab="tab3">Pembayaran</li>
+            <!-- <li class="tab-item " data-tab="tab3">Pembayaran</li> -->
           </ul>
           <div class="tab-content">
-            <div class="tab-pane " id="tab1">
+            <div class="tab-pane active " id="tab1">
               {{> periodePpdb accessAdd=false}}
             </div>
             <div class="tab-pane " id="tab2">
               {{> gelombangPage }}
             </div>
-            <div class="tab-pane active" id="tab3">
+            <!-- <div class="tab-pane " id="tab3">
               {{> paymentConfigSchool}}
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -242,13 +284,17 @@
 
                 </span>
               </label>
-              <button class="btn btn-info" id="btn-update">Ubah</button>
+              <button class="btn btn-info" id="btn-update" data-toggle="modal"
+                data-target="#editModalGelombang">Ubah</button>
             </td>
           </tr>
+          {{#if showEdit}}
+          {{> c_modal title='Tambah Periode Tahun Ajaran' dataObject=this idModal="editModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm" type="modal-xl"}}
+          {{/if}}
           {{/each}}
         </tbody>
       </table>
-      {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm"}}
+      {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm" type="modal-xl"}}
     </div>
   </div>
 </template>

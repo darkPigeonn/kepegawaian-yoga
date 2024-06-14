@@ -192,7 +192,7 @@ Meteor.methods({
     if (!thisUser) {
       throw new Meteor.Error(403, "Forbbiden");
     }
-    return thisUser.partners[0];
+    // return thisUser.partners[0];
   },
 
   "korespondensi.create"(data) {

@@ -1,5 +1,14 @@
 <template name="formAddGelombang">
   <div class="form-group">
+    <label for="selectedPeriod">Pilih Tahun Ajaran</label>
+    <select id="selectedPeriod" class="form-control">
+      <option value="0">-- Silahkan Pilih Tahun Ajaran --</option>
+      {{#each listPeriode}}
+      <option value="{{_id}}">{{year}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div class="form-group">
     <label for="inputNameGelombang">Nama Gelombang</label>
     <input type="text" class="form-control" id="inputNameGelombang" placeholder="Contoh : Gelombang 1" required>
   </div>
@@ -7,6 +16,31 @@
     <label for="inputCode">Kode Gelombang</label>
     <input type="text" class="form-control" id="inputCode" placeholder="Contoh : gel1" required>
   </div>
+  <div class="form-group row">
+    <div class="form-group col-6">
+      <label for="inputUangForm">Uang Formulir</label>
+      <input type="text" class="form-control inputNominal" id="inputUangForm" placeholder="Contoh : 10000000" required>
+    </div>
+    <div class="form-group col-6">
+      <label for="inputUangSpp">Uang SPP</label>
+      <input type="text" class="form-control inputNominal" id="inputUangSpp" placeholder="Contoh : 10000000" required>
+    </div>
+    <!-- <div class="form-group col-6">
+      <label for="inputUangSumbangan">Uang Sumbangan</label>
+      <input type="text" class="form-control inputNominal" id="inputUangSumbangan" placeholder="Contoh : 10000000"
+        required>
+    </div> -->
+    <div class="form-group col-6">
+      <label for="inputUangKegiatan">Uang Kegiatan</label>
+      <input type="text" class="form-control inputNominal" id="inputUangKegiatan" placeholder="Contoh : 10000000"
+        required>
+    </div>
+    <div class="form-group col-6">
+      <label for="inputUangAlat">Uang Alat (Khusus TK)</label>
+      <input type="text" class="form-control inputNominal" id="inputUangAlat" placeholder="Contoh : 10000000" required>
+    </div>
+  </div>
+
 </template>
 
 <template name="formAddPaymentSchool">
@@ -31,4 +65,39 @@
   </div>
 
 
+</template>
+
+<template name="formUnduhVa">
+  <div class="form-group">
+    <div class="form-group" id="section-school-select">
+      <label>Pilih Perwakilan</label>
+      <select class="form-control select2 " id="select-perwakilan">
+        <option value="0">-- Silahkan Pilih Perwakilan --</option>
+        <!-- {{#each listPerwakilan}}
+        <option value="{{_id}}">{{name}} - {{city}}</option>
+        {{/each}} -->
+      </select>
+    </div>
+  </div>
+  <div class="form-group" id="section-school-select">
+    <label>Pilih Sekolah</label>
+    <select class="form-control select2 " id="select-school">
+      <option value="0">-- Silahkan Pilih Sekolah --</option>
+      {{#each listSchools}}
+      <option value="{{_id}}">{{name}} - {{city}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Pilih Tag</label>
+    <select class="form-control" id="select-tag">
+      <option value="0">-- Silahkan Pilih Tag --</option>
+      <option value="formulir">Formulir (08)</option>
+      <option value="spp">Uang Sekolah Full (90)</option>
+      <option value="sppCicil">Uang Sekolah Cicil (99)</option>
+    </select>
+  </div>
+  <div class="btn btn-warning btn-block" id="btn-download">Unduh Excell</div>
+  <hr>
 </template>
