@@ -61,6 +61,43 @@ Meteor.methods({
 
     return thisRegistrans;
   },
+  async "ppdb-registran-detailCicilan"(id) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const idObjet = new Meteor.Collection.ObjectID(id);
+
+    let thisRegistrans = await Registrans.findOne({ _id: idObjet });
+    if (!thisRegistrans) {
+      throw new Meteor.Error(404, "Data Tidak Ditemukan");
+    }
+    //get tahun ajaran
+    const thisPeriod = PeriodePpdb.findOne({
+      _id: thisRegistrans.periodeStudi,
+    });
+    thisRegistrans.periodName = thisPeriod.year;
+
+    //get final data form
+    if (thisRegistrans.finalFormId) {
+      const finalIdObject = new Mongo.Collection.ObjectID(
+        thisRegistrans.finalFormId
+      );
+      const thisFinalForm = await RegistransFinal.findOne({
+        _id: finalIdObject,
+      });
+      thisRegistrans.finalForm = thisFinalForm;
+    }
+
+    //get cicilan
+    const credits = await CreditPayment.find({ studentId: id }).fetch();
+    if (credits.length > 0) {
+      thisRegistrans.listCredits = credits;
+    }
+
+    return thisRegistrans;
+  },
   async "ppdb-accepted-student"(id) {
     check(id, String);
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -127,6 +164,8 @@ Meteor.methods({
           thisRegistran.registrationNumber.slice(-3) +
           thisSchool.codeSchool.toString().substring(2, 4) +
           "90";
+        //perlucek va
+
         const vaModel = {
           unitId: thisUnit._id,
           unitName: thisUnit.name,
@@ -140,11 +179,11 @@ Meteor.methods({
           category: "90",
           feeSpp: thisConfig.feeSpp,
           feeEvent: thisConfig.feeEvent,
-          feeDonation: thisConfig.feeDonation ?? 0,
+          feeDonation: thisConfig.feeDonation,
           feeUtilty: thisConfig.feeUtilty,
           virtualAccountNumber: newVa,
         };
-        console.log(vaModel);
+        VirtualAccounts.insert(vaModel);
       } else {
         status = 41;
       }
@@ -590,18 +629,27 @@ Meteor.methods({
 
     return PaymentsConfig.insert(newData);
   },
-  async "set-cicil-student"(id, name, index, spp, donation, event, utility) {
+  async "set-cicil-student"(id, index, spp, donation, event, utility) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
     const objId = new Meteor.Collection.ObjectID(id);
-    const thisRegistran = await Registrans.findOne({ objId });
+
+    const thisRegistran = await Registrans.findOne({ _id: objId });
     if (!thisRegistran) {
       throw new Meteor.Error(404, "Data siswa tidak ditemukan");
     }
+    const check = CreditPayment.findOne({
+      index,
+      studentId: id,
+      periodeStudi: thisRegistran.periodeStudi,
+      gelombang: thisRegistran.configId,
+    });
+    if (check) {
+      throw new Meteor.Error(404, `Cicilan ke : ${index}  sudah pernah dibuat`);
+    }
     const dataSave = {
-      name,
       index,
       feeSpp: spp,
       feeDonation: donation,
@@ -614,6 +662,7 @@ Meteor.methods({
       schoolId: thisRegistran.schoolId,
       periodeStudi: thisRegistran.periodeStudi,
       gelombang: thisRegistran.configId,
+      status: 10,
     };
 
     return CreditPayment.insert(dataSave);
@@ -734,14 +783,29 @@ Meteor.methods({
       unitId,
       category: tag,
     }).fetch();
-
-    const newModel = thisVa.map((item) => {
-      return {
-        "KODE VA": item.virtualAccountNumber,
-        "NAMA SISWA": "Formulir",
-        Formulir: item.amount,
-      };
-    });
+    let newModel = {};
+    console.log(tag);
+    if (tag == "08") {
+      newModel = thisVa.map((item) => {
+        return {
+          "KODE VA": item.virtualAccountNumber,
+          "NAMA SISWA": "Formulir",
+          Formulir: item.amount,
+        };
+      });
+    } else {
+      newModel = thisVa.map((item) => {
+        return {
+          "KODE VA": item.virtualAccountNumber,
+          "NAMA SISWA": "Formulir",
+          SPP: item.feeSpp ?? 0,
+          SUMBANGAN: item.feeDonation ?? 0,
+          KEGIATAN: item.feeEvent ?? 0,
+          ALAT: item.feeUtilty ?? 0,
+        };
+      });
+    }
+    console.log(newModel);
     let wb = XLSX.utils.book_new();
     const xlName = "Export VA " + thisSchool.name + " " + thisUnit.name;
 

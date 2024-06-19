@@ -1,6 +1,10 @@
 import Swal from "sweetalert2";
 import "./ppdb.html";
-import { startSelect2 } from "../../../startup/client";
+import {
+  convert2number,
+  formatRupiah,
+  startSelect2,
+} from "../../../startup/client";
 import Papa from "papaparse";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import XLSX from "xlsx";
@@ -429,8 +433,9 @@ Template.cicilanRegistran.onCreated(function () {
   self.detail = new ReactiveVar();
   self.detailFinal = new ReactiveVar();
   self.photoStudent = new ReactiveVar("-");
+  self.formCicilan = new ReactiveVar(false);
   const id = FlowRouter.current().params._id;
-  Meteor.call("ppdb-registran-detail", id, function (error, result) {
+  Meteor.call("ppdb-registran-detailCicilan", id, function (error, result) {
     if (error) {
       console.log("Error fetch data");
       exitPreloader();
@@ -449,6 +454,9 @@ Template.cicilanRegistran.onCreated(function () {
   });
 });
 Template.cicilanRegistran.helpers({
+  formCicilan() {
+    return Template.instance().formCicilan.get();
+  },
   registran() {
     return Template.instance().detail.get();
   },
@@ -460,6 +468,11 @@ Template.cicilanRegistran.helpers({
   },
 });
 Template.cicilanRegistran.events({
+  "click #addCicilan"(e, t) {
+    e.preventDefault();
+
+    t.formCicilan.set(!t.formCicilan.get());
+  },
   "click .btn-accepted"(e, t) {
     e.preventDefault();
     startPreloader();
@@ -496,14 +509,36 @@ Template.cicilanRegistran.events({
     startPreloader();
 
     const id = FlowRouter.current().params._id;
-    const name = $("#input-name").val();
     const index = $("#input-index").val();
-    const spp = $("#input-spp").val();
-    const donation = $("#input-donation").val();
-    const event = $("#input-event").val();
-    const utility = $("#input-utility").val();
+    const spp = convert2number($("#input-spp").val());
+    const donation = convert2number($("#input-donation").val());
+    const event = convert2number($("#input-event").val());
+    const utility = convert2number($("#input-utility").val());
 
-    Meteor.call("");
+    Meteor.call(
+      "set-cicil-student",
+      id,
+      index,
+      spp,
+      donation,
+      event,
+      utility,
+      function (error, result) {
+        if (error) {
+          swalInfo(error.reason);
+          setTimeout(() => {
+            exitPreloader();
+          }, 1000);
+        } else {
+          successAlert("Berhasil menyimpan set cicilan");
+          location.reload();
+        }
+      }
+    );
+  },
+  "keyup .inputNominal"(e, t) {
+    e.preventDefault();
+    e.target.value = formatRupiah(e.target.value, "Rp. ");
   },
 });
 

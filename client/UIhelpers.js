@@ -192,6 +192,20 @@ Template.registerHelper("statusDetail", function (data) {
   }
   return status;
 });
+Template.registerHelper("statusCredit", function (data) {
+  let status = "";
+  switch (data) {
+    case 10:
+      status = "Belum Terbayar";
+      break;
+    case 60:
+      status = "Terbayar";
+      break;
+    default:
+      status = "-";
+  }
+  return status;
+});
 Template.registerHelper("lessThan", function (a, b) {
   return a < b;
 });

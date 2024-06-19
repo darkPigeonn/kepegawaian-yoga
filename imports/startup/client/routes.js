@@ -544,6 +544,12 @@ FlowRouter.route("/payment", {
     this.render("App_body", "paymentPage");
   },
 });
+FlowRouter.route("/paymentFinalPage", {
+  name: "paymentFinalPage",
+  action() {
+    this.render("App_body", "paymentFinalPage");
+  },
+});
 
 FlowRouter.route("/ppdb/details/:_id", {
   name: "Detail Registrans",

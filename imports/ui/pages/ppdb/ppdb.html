@@ -289,6 +289,49 @@
       <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
     </div>
   </div>
+</template>
+<template name="paymentFinalPage">
+  <div class="container my-2">
+    <div class="page-title my-4">
+      <h3>Konfirmasi Pembayaran Uang Masuk</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action d-flex justify-content-between">
+        <input type="file" accept=".xlsx" id="upload-csv" />
+        <a href="https://static.imavi.org/yayoga/format_konfirmasi_va.xlsx">Unduh Format Konfirmasi VA XLSX</a>
+      </div>
+      <div class="section-data">
+        <table class="table table-borderless">
+          <thead>
+            <th>No</th>
+            <th>Kode Perusahaan</th>
+            <th>No. Pelanggan</th>
+            <th>No. VA</th>
+            <th>Nama Pelanggan</th>
+            <th>Nilai Transaksi</th>
+            <th>Tanggal Transaksi</th>
+            <th>Berita</th>
+          </thead>
+          <tbody>
+            {{#each listPaymentVa}}
+            <tr>
+              <td>{{nomorUrut @index}}</td>
+              <td>{{compCode}}</td>
+              <td>{{numberCustomer}}</td>
+              <td>{{va}}</td>
+              <td>{{name}}</td>
+              <td>{{formatRp amount}}</td>
+              <td>{{formatHRDateShort date}} {{formatTime time}}</td>
+              <td>{{note}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
+    </div>
+  </div>
 
 </template>
 
@@ -535,45 +578,42 @@
 <template name="cicilanRegistran">
   <div class="container mt-5">
     <div class="page-title">
-      <h3>Detail Pendaftar</h3>
+      <h3>Detail Cicilan Pendaftar</h3>
     </div>
     <div class="page-content">
       <div class="card">
         <div class="m-2">
-          <button class="btn btn-primary float-right" id="addCicilan">+ Cicilan</button>
+          <button class="btn btn-primary float-right" id="addCicilan"> {{#if formCicilan}}Tutup{{else}}+
+            Cicilan{{/if}}</button>
         </div>
+        {{#if formCicilan}}
         <div class="row m-3">
-          <div class="col-6">
-            <div class="form-group">
-              <label>Nama</label>
-              <input class="form-control" id="input-name" />
-            </div>
-          </div>
-          <div class="col-6">
+          <div class="col-12">
             <div class="form-group">
               <label>Cicilan ke : </label>
-              <input class="form-control" id="input-index" />
+              <input class="form-control" id="input-index" type="number" />
             </div>
           </div>
           <div class="col-3">
             <label>Uang SPP</label>
-            <input class="form-control" id="input-spp" />
+            <input class="form-control inputNominal" id="input-spp" />
           </div>
           <div class="col-3">
             <label>Uang Sumbangan</label>
-            <input class="form-control" id="input-donation" />
+            <input class="form-control inputNominal" id="input-donation" />
           </div>
           <div class="col-3">
             <label>Uang Kegiatan</label>
-            <input class="form-control" id="input-event" />
+            <input class="form-control inputNominal" id="input-event" />
           </div>
           <div class="col-3">
             <label>Uang Alat</label>
-            <input class="form-control" id="input-utility" />
+            <input class="form-control inputNominal" id="input-utility" />
           </div>
           <button class="btn btn-primary btn-block mt-3" id="btn-save-cicilan">Simpan</button>
           <hr>
         </div>
+        {{/if}}
         <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
@@ -617,6 +657,34 @@
                 <th>Metode Pembayaran Uang Masuk</th>
                 <td>{{registran.paymentMethod}}</td>
               </tr>
+            </table>
+          </div>
+
+          <!-- list credit  -->
+          <div class="col-12">
+            <table class="table table-bordered">
+              <thead>
+                <th>Nomor</th>
+                <th>Cicilan Ke :</th>
+                <th>SPP</th>
+                <th>SUMBANGAN</th>
+                <th>KEGIATAN</th>
+                <th>ALAT</th>
+                <th>Status</th>
+              </thead>
+              <tbody>
+                {{#each registran.listCredits}}
+                <tr>
+                  <td>{{nomorUrut @index}}</td>
+                  <td>{{index}}</td>
+                  <td>{{formatRp feeSpp}}</td>
+                  <td>{{formatRp feeDonation}}</td>
+                  <td>{{formatRp feeEvent}}</td>
+                  <td>{{formatRp feeUtility}}</td>
+                  <td>{{statusCredit status}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
             </table>
           </div>
         </div>
