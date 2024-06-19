@@ -38,6 +38,12 @@ Template.registerHelper("formatHRDate", function (context, options) {
   if (context) moment.locale("id");
   return moment(context).format("DD MMMM YYYY");
 });
+Template.registerHelper("formatHRDate2", function (context, options) {
+  if (!context) return "-";
+  const dataDate = convertTanggal(context);
+  if (dataDate) moment.locale("id");
+  return moment(dataDate).format("DD MMMM YYYY");
+});
 
 Template.registerHelper("formatHRDateShort", function (context, options) {
   if (context) moment.locale("id");
@@ -186,7 +192,9 @@ Template.registerHelper("statusDetail", function (data) {
   }
   return status;
 });
-
+Template.registerHelper("lessThan", function (a, b) {
+  return a < b;
+});
 Template.registerHelper("isInRoles", function (roles, role) {
   return roles.includes(role);
 });
@@ -208,34 +216,47 @@ Template.registerHelper("valueDate", function (dob) {
   if (dob) moment.locale("id");
   return moment(dob).format("YYYY-MM-DD");
 });
-Template.registerHelper("thisAge", function (dob) {
-  if (!dob) {
-    return "0";
-  }
-  const tempDob = new Date(dob);
-  if (tempDob) {
-    const today = new Date();
-    // Calculate age
-    let age = today.getFullYear() - tempDob.getFullYear();
-    const monthDiff = today.getMonth() - tempDob.getMonth();
-    const dayDiff = today.getDate() - tempDob.getDate();
+Template.registerHelper("thisAge", function (tanggalLahir) {
+  // Mengonversi bulan dari teks ke angka
+  const bulanMapping = {
+    Januari: "01",
+    Februari: "02",
+    Maret: "03",
+    April: "04",
+    Mei: "05",
+    Juni: "06",
+    Juli: "07",
+    Agustus: "08",
+    September: "09",
+    Oktober: "10",
+    November: "11",
+    Desember: "12",
+  };
 
-    // Adjust age if birthdate hasn't occurred yet this year
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
+  // Memecah tanggal ke dalam hari, bulan, dan tahun
+  let [hari, bulan, tahun] = tanggalLahir.split("-");
 
-    // Handle future birthdate
-    if (age < 0) {
-      age = 0;
-    }
-    if (isNaN(age)) {
-      return "0";
-    }
-    return age;
-  } else {
-    return "0";
-  }
+  // Mengganti nama bulan dengan angka yang sesuai
+  bulan = bulanMapping[bulan];
+
+  // Menggabungkan kembali tanggal dalam format yang sesuai dengan Moment.js
+  let formattedDate = `${tahun}-${bulan}-${hari}`;
+
+  // Parsing tanggal menggunakan Moment.js
+  let momentLahir = moment(formattedDate, "YYYY-MM-DD");
+  let sekarang = moment();
+
+  // Menghitung umur dalam tahun, bulan, dan hari
+  let umurTahun = sekarang.diff(momentLahir, "years");
+  momentLahir.add(umurTahun, "years");
+
+  let umurBulan = sekarang.diff(momentLahir, "months");
+  momentLahir.add(umurBulan, "months");
+
+  let umurHari = sekarang.diff(momentLahir, "days");
+
+  // Mengembalikan umur dalam format yang diinginkan
+  return `${umurTahun} tahun ${umurBulan} bulan ${umurHari} hari`;
 });
 
 Template.registerHelper("statusPpdb", function (data) {
@@ -287,26 +308,17 @@ Template.registerHelper("categoryVa", function (data) {
 Template.registerHelper("statusVa", function (data) {
   let status = "";
   switch (data) {
-    case 10:
+    case 0:
       status = "Belum Aktif";
       break;
-    case 20:
-      status = "Mengisi Formulir PPDB";
-      break;
-    case 30:
-      status = "Menunggu Pembayaran Uang Pangkal";
+    case 10:
+      status = "Aktif";
       break;
     case 20:
-      status = "Sedang direview";
-      break;
-    case 90:
-      status = "Ditolak dengan revisi";
-      break;
-    case 99:
-      status = "Ditolak";
+      status = "Terpakai";
       break;
     case 60:
-      status = "Diterima";
+      status = "Terbayar";
       break;
     default:
       status = "draft";
@@ -320,3 +332,36 @@ Template.registerHelper("lenghtBool", function (data) {
   }
   return false;
 });
+
+function convertTanggal(tanggal) {
+  // Mengonversi bulan dari teks ke angka
+  const bulanMapping = {
+    Januari: "01",
+    Februari: "02",
+    Maret: "03",
+    April: "04",
+    Mei: "05",
+    Juni: "06",
+    Juli: "07",
+    Agustus: "08",
+    September: "09",
+    Oktober: "10",
+    November: "11",
+    Desember: "12",
+  };
+
+  // Memecah tanggal ke dalam hari, bulan, dan tahun
+  let [hari, bulan, tahun] = tanggal.split("-");
+
+  // Mengganti nama bulan dengan angka yang sesuai
+  bulan = bulanMapping[bulan];
+
+  // Menggabungkan kembali tanggal dalam format yang sesuai dengan Moment.js
+  let formattedDate = `${tahun}-${bulan}-${hari}`;
+
+  // Parsing tanggal menggunakan Moment.js
+  let momentDate = moment(formattedDate, "YYYY-MM-DD");
+
+  // Format ke format yang diinginkan
+  return momentDate;
+}

@@ -8,7 +8,6 @@
         <thead>
           <th>No.</th>
           <th>Nama</th>
-          <th>Alamat</th>
           <th>Tanggal Lahir | Umur</th>
           <th>Tanggal Daftar</th>
           <th>Status</th>
@@ -25,11 +24,7 @@
               <span class="span-nis">{{nis}}</span>
             </td>
             <td>
-              {{address}}
-            </td>
-
-            <td>
-              {{formatHRDate dob}} | {{thisAge dob}} Tahun
+              {{formatHRDate2 dob}} | {{thisAge dob}}
             </td>
             <td>
               {{formatHRDate createdAt}}
@@ -72,12 +67,19 @@
       <div class="float-right my-3">
         <a href="/ppdb/va/generate" class="btn btn-primary" id="btn-generate-va">Generate VA</a>
         <button class="btn btn-primary" id="btn-open-form-download">Unduh Va</button>
+
+        <button class="btn btn-primary" id="btn-va-aktif">Aktifkan VA</button>
       </div>
     </div>
     <div class="page-content mt-3">
       {{#if formUnduh}}
       <div class="p-5">
-        {{> formUnduhVa}}
+        {{> formUnduhVa idButton='btn-download' label="Unduh VA"}}
+      </div>
+      {{/if}}
+      {{#if formAktif}}
+      <div class="p-5">
+        {{> formUnduhVa idButton='btn-aktif-va' label='Aktifkan VA'}}
       </div>
       {{/if}}
       <table class="table tabl">
@@ -123,14 +125,14 @@
           {{/each}}
         </tbody>
       </table>
-      <!-- <nav>
+      <nav>
         <ul class="pagination">
 
           {{#each getPageNumbers totalPages}}
           <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
           {{/each}}
         </ul>
-      </nav> -->
+      </nav>
     </div>
   </div>
 
@@ -299,21 +301,327 @@
     </div>
     <div class="page-content">
       <div class="card">
-        <table class="table table-borderless">
-          <tr>
-            <td>Nama</td>
-            <td>{{capitalizeWord registran.fullName}}</td>
-          </tr>
-          <tr>
-            <td>Tanggal Lahir</td>
-            <td>{{formatHRDate registran.dob}}</td>
-          </tr>
-          <tr>
-            <td>Alamat</td>
-            <td>{{registran.address}}</td>
-          </tr>
-        </table>
+        {{> alertDiv status=registran.status}}
+        <div class="row">
+          <div class="col-4">
+            <div class="img-rounded ml-2">
+              {{#if equals photoStudent '-'}}
+              <img src="/assets/img/dimage.jpg" class="img-thumbnail" />
+              {{else}}
+
+              <img src="{{photoStudent.uploaded}}" class="img-thumbnail" />
+              {{/if}}
+            </div>
+          </div>
+
+          <div class="col-8">
+
+            <table class="table">
+              <tr>
+                <th>Nama </th>
+                <td>{{capitalizeWord registran.fullName}}</td>
+              </tr>
+              <tr>
+                <th>Tanggal Lahir</th>
+                <td>{{formatHRDate2 registran.dob}}</td>
+              </tr>
+              <tr>
+                <th>Umur</th>
+                <td>{{thisAge registran.dob}}</td>
+              </tr>
+              <tr>
+                <th>Gelombang</th>
+                <td>{{registran.gelombang}}</td>
+              </tr>
+              <tr>
+                <th>Tahun Ajaran</th>
+                <td>{{registran.periodName}}</td>
+              </tr>
+              <tr>
+                <th>Kelas</th>
+                <td>{{registran.destinationClass}}</td>
+              </tr>
+              <tr>
+                <th>Metode Pembayaran Uang Masuk</th>
+                <td>{{registran.paymentMethod}}</td>
+                <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">Buat
+                    Konfigurasi
+                    Cicilan</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
+      <!-- ini kalau sudah ngisi form lengkap  -->
+      {{#if registran.initialPaymentStatus}}
+      <div class="card">
+        <div class="card-header">
+          Data Orang Tua
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="card-title">
+                Data Ayah
+              </div>
+              <table class="table table-bordered">
+                <tr>
+                  <td>Nama</td>
+                  <td>{{capitalizeWord registran.father.fullName}}</td>
+                </tr>
+                <tr>
+                  <td>Tanggal Lahir</td>
+                  <td>{{formatHRDate registran.father.dob}}</td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td>{{registran.father.address}}</td>
+                </tr>
+                <tr>
+                  <td>Agama</td>
+                  <td>{{registran.father.religion}}</td>
+                </tr>
+                <tr>
+                  <td>Kewarganegaraan</td>
+                  <td>{{registran.father.nationality}}</td>
+                </tr>
+                <tr>
+                  <td>Pendidikan Terakhir</td>
+                  <td>{{registran.father.lastEducation}}</td>
+                </tr>
+                <tr>
+                  <td>Pekerjaan</td>
+                  <td>{{registran.father.occupation}}</td>
+                </tr>
+                <tr>
+                  <td>Pendapata Bulanan</td>
+                  <td>{{registran.father.incomePerMonth}}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{registran.father.status}}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-6">
+              <div class="card-title">
+                Data Ibu
+              </div>
+              <table class="table table-bordered">
+                <tr>
+                  <td>Nama</td>
+                  <td>{{capitalizeWord registran.mother.fullName}}</td>
+                </tr>
+                <tr>
+                  <td>Tanggal Lahir</td>
+                  <td>{{formatHRDate registran.mother.dob}}</td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td>{{registran.mother.address}}</td>
+                </tr>
+                <tr>
+                  <td>Agama</td>
+                  <td>{{registran.mother.religion}}</td>
+                </tr>
+                <tr>
+                  <td>Kewarganegaraan</td>
+                  <td>{{registran.mother.nationality}}</td>
+                </tr>
+                <tr>
+                  <td>Pendidikan Terakhir</td>
+                  <td>{{registran.mother.lastEducation}}</td>
+                </tr>
+                <tr>
+                  <td>Pekerjaan</td>
+                  <td>{{registran.mother.occupation}}</td>
+                </tr>
+                <tr>
+                  <td>Pendapata Bulanan</td>
+                  <td>{{registran.mother.incomePerMonth}}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{registran.mother.status}}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-6">
+              <div class="card-title">
+                Data Wali
+              </div>
+              <table class="table table-bordered">
+                <tr>
+                  <td>Nama</td>
+                  <td>{{capitalizeWord registran.wali.fullName}}</td>
+                </tr>
+                <tr>
+                  <td>Tanggal Lahir</td>
+                  <td>{{formatHRDate registran.wali.dob}}</td>
+                </tr>
+                <tr>
+                  <td>Alamat</td>
+                  <td>{{registran.wali.address}}</td>
+                </tr>
+                <tr>
+                  <td>Agama</td>
+                  <td>{{registran.wali.religion}}</td>
+                </tr>
+                <tr>
+                  <td>Kewarganegaraan</td>
+                  <td>{{registran.wali.nationality}}</td>
+                </tr>
+                <tr>
+                  <td>Pendidikan Terakhir</td>
+                  <td>{{registran.wali.lastEducation}}</td>
+                </tr>
+                <tr>
+                  <td>Pekerjaan</td>
+                  <td>{{registran.wali.occupation}}</td>
+                </tr>
+                <tr>
+                  <td>Pendapata Bulanan</td>
+                  <td>{{registran.wali.incomePerMonth}}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{registran.wali.status}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          Data Unggahan
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <th>Nama Unggahan</th>
+              <th>Detail Unggahan</th>
+            </thead>
+            <tbody>
+              {{#each registran.links}}
+              <tr>
+                <td>
+                  {{nama}}
+                </td>
+                <td>
+                  {{#if uploaded}}
+                  <a href="{{uploaded}}">
+                    <img src="{{uploaded}}" width="100" style="max-width: 100%;" />
+                  </a>
+                  {{else}}
+                  Tidak ada unggahan
+                  {{/if}}
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {{#if lessThan registran.status 40}}
+      <button class="btn btn-primary btn-block btn-accepted" milik="{{toMeteorId registran._id}}">Terima</button>
+      <button class="btn btn-danger btn-block btn-rejected" milik="{{toMeteorId registran._id}}">Tolak</button>
+      {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</template>
+<template name="cicilanRegistran">
+  <div class="container mt-5">
+    <div class="page-title">
+      <h3>Detail Pendaftar</h3>
+    </div>
+    <div class="page-content">
+      <div class="card">
+        <div class="m-2">
+          <button class="btn btn-primary float-right" id="addCicilan">+ Cicilan</button>
+        </div>
+        <div class="row m-3">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Nama</label>
+              <input class="form-control" id="input-name" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Cicilan ke : </label>
+              <input class="form-control" id="input-index" />
+            </div>
+          </div>
+          <div class="col-3">
+            <label>Uang SPP</label>
+            <input class="form-control" id="input-spp" />
+          </div>
+          <div class="col-3">
+            <label>Uang Sumbangan</label>
+            <input class="form-control" id="input-donation" />
+          </div>
+          <div class="col-3">
+            <label>Uang Kegiatan</label>
+            <input class="form-control" id="input-event" />
+          </div>
+          <div class="col-3">
+            <label>Uang Alat</label>
+            <input class="form-control" id="input-utility" />
+          </div>
+          <button class="btn btn-primary btn-block mt-3" id="btn-save-cicilan">Simpan</button>
+          <hr>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="img-rounded ml-2">
+              {{#if equals photoStudent '-'}}
+              <img src="/assets/img/dimage.jpg" class="img-thumbnail" />
+              {{else}}
+
+              <img src="{{photoStudent.uploaded}}" class="img-thumbnail" />
+              {{/if}}
+            </div>
+          </div>
+
+          <div class="col-8">
+
+            <table class="table">
+              <tr>
+                <th>Nama </th>
+                <td>{{capitalizeWord registran.fullName}}</td>
+              </tr>
+              <tr>
+                <th>Tanggal Lahir</th>
+                <td>{{formatHRDate2 registran.dob}}</td>
+              </tr>
+              <tr>
+                <th>Umur</th>
+                <td>{{thisAge registran.dob}}</td>
+              </tr>
+              <tr>
+                <th>Gelombang</th>
+                <td>{{registran.gelombang}}</td>
+              </tr>
+              <tr>
+                <th>Tahun Ajaran</th>
+                <td>{{registran.periodName}}</td>
+              </tr>
+              <tr>
+                <th>Kelas</th>
+                <td>{{registran.destinationClass}}</td>
+              </tr>
+              <tr>
+                <th>Metode Pembayaran Uang Masuk</th>
+                <td>{{registran.paymentMethod}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>

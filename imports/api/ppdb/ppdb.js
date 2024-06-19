@@ -1,6 +1,7 @@
 import { Mongo } from "meteor/mongo";
 
 export const Registrans = new Mongo.Collection("registrationForms");
+export const RegistransFinal = new Mongo.Collection("registrationFinals");
 export const VirtualAccounts = new Mongo.Collection("virtualAccounts");
 export const PeriodePpdb = new Mongo.Collection("periodePpdb");
 export const VirtualAccountsConfig = new Mongo.Collection(
@@ -9,6 +10,8 @@ export const VirtualAccountsConfig = new Mongo.Collection(
 export const Gelombangs = new Mongo.Collection("configPpdbSchools");
 // export const Gelombangs = new Mongo.Collection("gelombangs");
 export const PaymentsConfig = new Mongo.Collection("paymentsConfig");
+export const InitialPayment = new Mongo.Collection("initialPayments");
+export const CreditPayment = new Mongo.Collection("creditPayments");
 export const RegistransDummy = [
   {
     fullName: "Ahmad Fauzi",

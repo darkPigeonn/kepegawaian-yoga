@@ -551,3 +551,9 @@ FlowRouter.route("/ppdb/details/:_id", {
     this.render("App_body", "detailRegistran");
   },
 });
+FlowRouter.route("/ppdb/details/:_id/setCicil", {
+  name: "Cicilan Registrans",
+  action() {
+    this.render("App_body", "cicilanRegistran");
+  },
+});

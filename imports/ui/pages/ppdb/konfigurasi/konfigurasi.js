@@ -145,6 +145,7 @@ Template.konfigurasiVa.events({
           failAlert(error);
         } else {
           successAlert("Berhasil");
+          location.reload();
         }
       }
     );
@@ -284,10 +285,13 @@ Template.gelombangPage.events({
     const code = $("#inputCode").val();
     const feeForm = convert2number($("#inputUangForm").val());
     const feeSpp = convert2number($("#inputUangSpp").val());
+    const feeDonation = convert2number($("#inputUangSumbangan").val());
+    const classTemp = $("#inputClass").val();
     const feeEvent = convert2number($("#inputUangKegiatan").val());
     const feeUtilty = convert2number($("#inputUangAlat").val());
     const periodePpdb = $("#selectedPeriod").val();
 
+    const classInput = classTemp.split("-");
     Meteor.call(
       "insert-gelombang-school",
       name,
@@ -296,6 +300,8 @@ Template.gelombangPage.events({
       feeSpp,
       feeEvent,
       feeUtilty,
+      feeDonation,
+      classInput,
       periodePpdb,
       function (error, result) {
         if (error) {

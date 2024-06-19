@@ -309,11 +309,11 @@ Template.paymentPage.events({
 
       for (let index = 1; index < jsonData.length; index++) {
         const element = jsonData[index];
-        const dateTemp = new Date(element[6]);
-        dateTemp.setDate(dateTemp.getDate() + 1);
-        const dateFormatted = dateTemp.toISOString().split("T")[0];
 
         if (element.length > 0) {
+          const dateTemp = new Date(element[6]);
+          dateTemp.setDate(dateTemp.getDate() + 1);
+          const dateFormatted = dateTemp.toISOString().split("T")[0];
           const newData = {
             compCode: element[0],
             numberCustomer: element[2],
@@ -346,9 +346,9 @@ Template.paymentPage.events({
       } else {
         successAlert("Berhasil");
         exitPreloader();
-        // setTimeout(() => {
-        //   location.reload();
-        // }, 500);
+        setTimeout(() => {
+          location.reload();
+        }, 500);
       }
     });
   },
@@ -358,6 +358,8 @@ Template.detailRegistran.onCreated(function () {
   const self = this;
   startPreloader();
   self.detail = new ReactiveVar();
+  self.detailFinal = new ReactiveVar();
+  self.photoStudent = new ReactiveVar("-");
   const id = FlowRouter.current().params._id;
   Meteor.call("ppdb-registran-detail", id, function (error, result) {
     if (error) {
@@ -365,7 +367,14 @@ Template.detailRegistran.onCreated(function () {
       exitPreloader();
     } else {
       self.detail.set(result);
-      console.log(result);
+
+      if (result.finalForm) {
+        self.detailFinal.set(result.finalForm);
+      }
+      if (result.links) {
+        const thisPhoto = result.links.find((item) => item.code === "pasFoto");
+        self.photoStudent.set(thisPhoto);
+      }
       exitPreloader();
     }
   });
@@ -373,6 +382,128 @@ Template.detailRegistran.onCreated(function () {
 Template.detailRegistran.helpers({
   registran() {
     return Template.instance().detail.get();
+  },
+  registranFinal() {
+    return Template.instance().detailFinal.get();
+  },
+  photoStudent() {
+    return Template.instance().photoStudent.get();
+  },
+});
+Template.detailRegistran.events({
+  "click .btn-accepted"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-accepted-student", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+});
+Template.cicilanRegistran.onCreated(function () {
+  const self = this;
+  startPreloader();
+  self.detail = new ReactiveVar();
+  self.detailFinal = new ReactiveVar();
+  self.photoStudent = new ReactiveVar("-");
+  const id = FlowRouter.current().params._id;
+  Meteor.call("ppdb-registran-detail", id, function (error, result) {
+    if (error) {
+      console.log("Error fetch data");
+      exitPreloader();
+    } else {
+      self.detail.set(result);
+
+      if (result.finalForm) {
+        self.detailFinal.set(result.finalForm);
+      }
+      if (result.links) {
+        const thisPhoto = result.links.find((item) => item.code === "pasFoto");
+        self.photoStudent.set(thisPhoto);
+      }
+      exitPreloader();
+    }
+  });
+});
+Template.cicilanRegistran.helpers({
+  registran() {
+    return Template.instance().detail.get();
+  },
+  registranFinal() {
+    return Template.instance().detailFinal.get();
+  },
+  photoStudent() {
+    return Template.instance().photoStudent.get();
+  },
+});
+Template.cicilanRegistran.events({
+  "click .btn-accepted"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-accepted-student", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+  "click #btn-save-cicilan"(e, t) {
+    e.preventDefault();
+    startPreloader();
+
+    const id = FlowRouter.current().params._id;
+    const name = $("#input-name").val();
+    const index = $("#input-index").val();
+    const spp = $("#input-spp").val();
+    const donation = $("#input-donation").val();
+    const event = $("#input-event").val();
+    const utility = $("#input-utility").val();
+
+    Meteor.call("");
   },
 });
 
@@ -385,6 +516,7 @@ Template.pageVa.onCreated(function () {
   self.items = new ReactiveVar([]);
   self.totalItems = new ReactiveVar(0);
   self.formUnduh = new ReactiveVar(false);
+  self.formAktif = new ReactiveVar(false);
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
@@ -405,6 +537,9 @@ Template.pageVa.onCreated(function () {
 Template.pageVa.helpers({
   formUnduh() {
     return Template.instance().formUnduh.get();
+  },
+  formAktif() {
+    return Template.instance().formAktif.get();
   },
   va: function () {
     return Template.instance().items.get();
@@ -435,8 +570,11 @@ Template.pageVa.events({
   },
   "click #btn-open-form-download"(e, t) {
     e.preventDefault();
-
     t.formUnduh.set(!t.formUnduh.get());
+  },
+  "click #btn-va-aktif"(e, t) {
+    e.preventDefault();
+    t.formAktif.set(!t.formAktif.get());
   },
   "click #btn-download"(e, t) {
     e.preventDefault();
@@ -472,5 +610,45 @@ Template.pageVa.events({
         return XLSX.writeFile(result, fileNameExcel);
       }
     });
+  },
+  "click #btn-aktif-va"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const unitId = $("#select-perwakilan").val();
+    const schoolId = $("#select-school").val();
+    const tag = $("#select-tag").val();
+
+    if (!unitId || unitId === "0") {
+      swalinfo("Silahkan Pilih Perwakilan");
+      exitPreloader();
+      return false;
+    }
+    if (!schoolId || schoolId === "0") {
+      swalinfo("Silahkan Pilih Sekolah");
+      exitPreloader();
+      return false;
+    }
+    if (!tag || tag === "0") {
+      swalinfo("Silahkan Pilih Tag");
+      exitPreloader();
+      return false;
+    }
+
+    Meteor.call(
+      "set-aktif-va",
+      unitId,
+      schoolId,
+      tag,
+      function (error, result) {
+        if (error) {
+          console.log("Fetch data gagal :", error);
+          exitPreloader();
+        } else {
+          successAlert("Berhasil");
+          exitPreloader();
+          location.reload();
+        }
+      }
+    );
   },
 });
