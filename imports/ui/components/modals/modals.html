@@ -23,3 +23,18 @@
     </div>
   </div>
 </template>
+
+<template name="fancyBox">
+  <div>
+    {{#if isPDF url}}
+    <a target="_blank" href="{{url}}">
+      <i class="fa fa-file-pdf fa-5x"></i>
+    </a>
+
+    {{else}}
+    <a data-fancybox="gallery" href="{{url}}">
+      <img src="{{url}}" class="{{class}}" alt="PDF" style="max-width: 100%" />
+    </a>
+    {{/if}}
+  </div>
+</template>

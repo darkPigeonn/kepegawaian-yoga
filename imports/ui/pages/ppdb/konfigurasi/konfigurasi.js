@@ -4,8 +4,10 @@ import "/imports/ui/components/forms/forms";
 import {
   convert2number,
   exitLoading,
+  formatRupiah,
   startSelect2,
 } from "../../../../startup/client";
+import Swal from "sweetalert2";
 Template.konfigurasi.events({
   "click .tab-item"(event) {
     event.preventDefault();
@@ -257,7 +259,8 @@ Template.gelombangPage.onCreated(function () {
   const self = this;
 
   self.items = new ReactiveVar();
-  self.showEdit = new ReactiveVar(false);
+  self.isEdit = new ReactiveVar(false);
+  self.selectedItem = new ReactiveVar();
   startPreloader();
 
   Meteor.call("getAll-gelombang-school", function (error, result) {
@@ -274,6 +277,14 @@ Template.gelombangPage.helpers({
   },
   showEdit() {
     return Template.instance().showEdit.get();
+  },
+  isActiveGel() {
+    const listGelombang = Template.instance().items.get();
+    const getActive = listGelombang.find((item) => item.status == true);
+    return getActive;
+  },
+  selectedItem() {
+    return Template.instance().selectedItem.get();
   },
 });
 Template.gelombangPage.events({
@@ -292,8 +303,16 @@ Template.gelombangPage.events({
     const periodePpdb = $("#selectedPeriod").val();
 
     const classInput = classTemp.split("-");
+
+    const isEdit = t.isEdit.get();
+    let postRoute = "insert-gelombang-school";
+    let id = "-";
+    if (isEdit) {
+      id = t.selectedItem.get()._id;
+      postRoute = "update-gelombang-school";
+    }
     Meteor.call(
-      "insert-gelombang-school",
+      postRoute,
       name,
       code,
       feeForm,
@@ -303,6 +322,7 @@ Template.gelombangPage.events({
       feeDonation,
       classInput,
       periodePpdb,
+      id,
       function (error, result) {
         if (error) {
           swalInfo(error.reason);
@@ -316,7 +336,67 @@ Template.gelombangPage.events({
   },
   "click #btn-update"(e, t) {
     e.preventDefault();
-    t.showEdit.set(!t.showEdit.get());
+    const id = $(e.target).attr("milik");
+    const item = this;
+    t.selectedItem.set(this);
+    $("#selectedPeriod").val(this.periodeId);
+    $("#inputNameGelombang").val(this.name);
+    $("#inputCode").val(this.code);
+    $("#inputClass").val(this.class.join("-"));
+    $("#inputUangForm").val(formatRupiah(this.feeForm.toString()));
+    $("#inputUangSpp").val(formatRupiah(this.feeSpp.toString()));
+    $("#inputUangSumbangan").val(formatRupiah(this.feeDonation.toString()));
+    $("#inputUangKegiatan").val(formatRupiah(this.feeEvent.toString()));
+    $("#inputUangAlat").val(formatRupiah(this.feeUtilty.toString()));
+
+    t.isEdit.set(true);
+    $("#addModalGelombang").modal("show");
+  },
+  "change #toggleSwitch"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = $(e.target).attr("milik");
+
+    const activated = {
+      title: "Konfirmasi Pengaktifan Gelombang",
+      text: "Apakah anda yakin mengaktifkan gelombang ini? \n Gelombang yang aktif akan beralih ke Gelombang ini",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aktifkan",
+      cancelButtonText: "Batal",
+    };
+    const deactivated = {
+      title: "Konfirmasi Penonaktifkan Gelombang",
+      text: "Apakah anda yakin menonaktifkan gelombang ini? \n Jika ya maka tidak ada gelombang yang aktif",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Non Aktifkan",
+      cancelButtonText: "Batal",
+    };
+
+    Swal.fire(e.target.checked ? activated : deactivated).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call(
+          "aktivated-gelombang",
+          id,
+          e.target.checked,
+          function (error, result) {
+            // console.log(result, error);
+            if (result) {
+              successAlert(
+                "Data Berhasil" + e.target.checked ? "Aktifkan" : "Non Aktfikan"
+              );
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            } else {
+              console.log(error);
+              failAlert("Hapus Data Gagal!");
+            }
+          }
+        );
+      }
+    });
   },
 });
 

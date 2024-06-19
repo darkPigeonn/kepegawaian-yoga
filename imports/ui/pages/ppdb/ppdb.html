@@ -351,8 +351,8 @@
               {{#if equals photoStudent '-'}}
               <img src="/assets/img/dimage.jpg" class="img-thumbnail" />
               {{else}}
+              {{> fancyBox url=photoStudent.uploaded class='img-thumbnail'}}
 
-              <img src="{{photoStudent.uploaded}}" class="img-thumbnail" />
               {{/if}}
             </div>
           </div>
@@ -385,11 +385,17 @@
                 <td>{{registran.destinationClass}}</td>
               </tr>
               <tr>
+                {{#if betweenEquals registran.status 40 60}}
                 <th>Metode Pembayaran Uang Masuk</th>
                 <td>{{registran.paymentMethod}}</td>
+                {{#if equals registran.paymentMethod 'Kontan'}}
+
+                {{else}}
                 <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">Buat
                     Konfigurasi
                     Cicilan</a></td>
+                {{/if}}
+                {{/if}}
               </tr>
             </table>
           </div>
@@ -554,9 +560,7 @@
                 </td>
                 <td>
                   {{#if uploaded}}
-                  <a href="{{uploaded}}">
-                    <img src="{{uploaded}}" width="100" style="max-width: 100%;" />
-                  </a>
+                  {{> fancyBox url=uploaded class='img-preview'}}
                   {{else}}
                   Tidak ada unggahan
                   {{/if}}

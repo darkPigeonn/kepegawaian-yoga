@@ -1,62 +1,46 @@
 module.exports = {
   servers: {
     one: {
-      // TODO: set host address, username, and authentication method
-      host: '1.2.3.4',
-      username: 'root',
-      // pem: './path/to/pem'
-      // password: 'server-password'
-      // or neither for authenticate from ssh-agent
-    }
+      host: "188.166.229.238",
+      username: "root",
+      pem: "~/.ssh/id_rsa",
+      opts: {
+        port: 2200,
+      },
+    },
   },
-
   app: {
-    // TODO: change app name and path
-    name: 'app',
-    path: '../',
-
+    name: "yogaPpdb",
+    path: "../",
+    volumes: {
+      "/home/yogaPpdb/uploads": "/uploads",
+    },
     servers: {
       one: {},
     },
-
     buildOptions: {
       serverOnly: true,
+      debug: false,
+      cleanAfterBuild: true,
     },
-
     env: {
-      // TODO: Change to your app's url
-      // If you are using ssl, it needs to start with https://
-      ROOT_URL: 'http://app.com',
-      MONGO_URL: 'mongodb://mongodb/meteor',
-      MONGO_OPLOG_URL: 'mongodb://mongodb/local',
+      ROOT_URL: "https://opsppdb.yohannesgabriel.org",
+      MONGO_URL:
+        "mongodb+srv://oB8mL3oG0tD8dY2o:fV9cL7yH7fI9gK9bM0nC1eA0mM4uF6bV@cluster0.abb1b.mongodb.net/operational?retryWrites=true&w=majority",
+      MONGO_OPLOG_URL:
+        "mongodb+srv://pH0nF1iG1uM0lJ3u:uB8mH9iZ2zV3aM0lQ9cY7aC5rD6gL4jL@cluster0.abb1b.mongodb.net/local?ssl=true&retryWrites=true&authSource=admin&w=majority&replicaSet=atlas-edzucr-shard-0",
     },
-
     docker: {
-      image: 'zodern/meteor:root',
+      image: "zodern/meteor:0.6.1-root",
+      prepareBundle: true,
+      stopAppDuringPrepareBundle: true,
     },
-
-    // Show progress bar while uploading bundle to server
-    // You might need to disable it on CI servers
-    enableUploadProgressBar: true
+    enableUploadProgressBar: true,
   },
-
-  mongo: {
-    version: '4.4.12',
-    servers: {
-      one: {}
-    }
+  proxy: {
+    domains: "opsppdb.yohannesgabriel.org",
+    ssl: {
+      letsEncryptEmail: "notnakusnadi@gmail.com",
+    },
   },
-
-  // (Optional)
-  // Use the proxy to setup ssl or to route requests to the correct
-  // app when there are several apps
-
-  // proxy: {
-  //   domains: 'mywebsite.com,www.mywebsite.com',
-
-  //   ssl: {
-  //     // Enable Let's Encrypt
-  //     letsEncryptEmail: 'email@domain.com'
-  //   }
-  // }
 };

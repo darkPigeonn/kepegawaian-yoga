@@ -249,6 +249,17 @@
   <div class="container">
     <div class="page-title">
       <h3>Gelombang PPDB</h3>
+
+      {{#if isActiveGel}}
+      <div class="alert alert-success" role="alert">
+        Gelombang yang aktif : {{isActiveGel.name}}
+      </div>
+      {{else}}
+      <div class="alert alert-danger" role="alert">
+        Tidak ada Gelombang Aktif
+      </div>
+
+      {{/if}}
     </div>
     <div class="page-content">
       <div class="section-action">
@@ -284,13 +295,9 @@
 
                 </span>
               </label>
-              <button class="btn btn-info" id="btn-update" data-toggle="modal"
-                data-target="#editModalGelombang">Ubah</button>
+              <button class="btn btn-info" id="btn-update" milik="{{_id}}">Ubah</button>
             </td>
           </tr>
-          {{#if showEdit}}
-          {{> c_modal title='Tambah Periode Tahun Ajaran' dataObject=this idModal="editModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm" type="modal-xl"}}
-          {{/if}}
           {{/each}}
         </tbody>
       </table>

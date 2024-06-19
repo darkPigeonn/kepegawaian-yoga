@@ -372,11 +372,13 @@ Template.detailRegistran.onCreated(function () {
     } else {
       self.detail.set(result);
 
+      console.log(result);
       if (result.finalForm) {
         self.detailFinal.set(result.finalForm);
       }
       if (result.links) {
         const thisPhoto = result.links.find((item) => item.code === "pasFoto");
+
         self.photoStudent.set(thisPhoto);
       }
       exitPreloader();

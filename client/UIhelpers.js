@@ -209,8 +209,16 @@ Template.registerHelper("statusCredit", function (data) {
 Template.registerHelper("lessThan", function (a, b) {
   return a < b;
 });
+Template.registerHelper("betweenEquals", function (a, b, c) {
+  return a >= b && a <= c;
+});
 Template.registerHelper("isInRoles", function (roles, role) {
   return roles.includes(role);
+});
+Template.registerHelper("includes", function (string, params) {
+  console.log(string);
+  console.log(string.endsWith(params));
+  return string.endsWith(params);
 });
 
 Template.registerHelper("usia", function (dob) {

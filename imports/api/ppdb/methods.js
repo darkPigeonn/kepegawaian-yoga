@@ -14,6 +14,43 @@ import { check } from "meteor/check";
 import { Schools, Units } from "../yoga/schools/schools";
 import XLSX from "xlsx";
 Meteor.methods({
+  getDashboardData() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if (!Roles.userIsInRole(thisUser, ["adminPpdbYayasan", "superadmin"])) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    //get periode ppdb aktif
+    const thisPeriode = PeriodePpdb.findOne({ status: true });
+
+    //get registran
+    const thisRegistran = Registrans.find(
+      {
+        periodeStudi: thisPeriode._id,
+      },
+      {
+        sort: {
+          registrationNumber: 1,
+        },
+      }
+    ).fetch();
+
+    const registranDahboard = {
+      totalRegistrans: thisRegistran.length,
+      listRegistrans: thisRegistran.slice(0, 5),
+    };
+    //get va
+    const vaList = VirtualAccounts.find({ periodeId: thisPeriode._id }).fetch();
+    const vaDashboard = {
+      totalVa: vaList.filter((item) => item.status == 10).length,
+      totalVaUsed: vaList.filter((item) => item.status >= 20).length,
+    };
+
+    return { registranDahboard, vaDashboard };
+  },
   "ppdb-school-getAll"(pageNum, perPage) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
@@ -214,7 +251,7 @@ Meteor.methods({
       code: code,
       createdBy: thisUser._id,
       createdAt: new Date(),
-      status: true,
+      status: false,
     };
     const checkTahun = await PeriodePpdb.findOne({ year });
     if (checkTahun) {
@@ -568,6 +605,55 @@ Meteor.methods({
 
     return Gelombangs.insert(newData);
   },
+  async "update-gelombang-school"(
+    name,
+    code,
+    feeForm,
+    feeSpp,
+    feeEvent,
+    feeUtilty,
+    feeDonation,
+    classInput,
+    periodePpdb,
+    id
+  ) {
+    check(name, String);
+    check(code, String);
+
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if (!Roles.userIsInRole(thisUser, ["adminPpdbSchool"])) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const thisSchool = await Schools.findOne({ _id: thisUser.schoolId });
+    if (!thisSchool) {
+      throw new Meteor.Error(404, "No School Founded");
+    }
+    const checkPeriodePpdb = await PeriodePpdb.findOne({ _id: periodePpdb });
+
+    if (!checkPeriodePpdb) {
+      throw new Meteor.Error(404, "Periode Tahun Ajaran tidak ada");
+    }
+
+    const newData = {
+      name,
+      code,
+      feeForm,
+      feeSpp,
+      feeEvent,
+      feeUtilty,
+      feeDonation,
+      class: classInput,
+      periodeId: checkPeriodePpdb._id,
+      periodeYear: checkPeriodePpdb.year,
+      updatedBy: thisUser._id,
+      updatedAt: thisUser._id,
+    };
+
+    return Gelombangs.update({ _id: id }, { $set: newData });
+  },
   async "getAll-gelombang-school"() {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
@@ -582,6 +668,38 @@ Meteor.methods({
     }
 
     return Gelombangs.find({ schoolId: thisSchool._id }).fetch();
+  },
+  async "aktivated-gelombang"(id, status) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if (!Roles.userIsInRole(thisUser, ["adminPpdbSchool", "superadmin"])) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    //get active period
+    const thisPeriod = await PeriodePpdb.findOne({ status: true });
+
+    const thisSchool = thisUser.schoolId;
+
+    const deactivated = await Gelombangs.update(
+      {
+        status: true,
+        schoolId: thisSchool,
+        periodeId: thisPeriod._id,
+      },
+      {
+        $set: {
+          status: false,
+        },
+      },
+      {
+        multi: true,
+      }
+    );
+    console.log(deactivated);
+    return Gelombangs.update({ _id: id }, { $set: { status } });
   },
 
   //payment
