@@ -173,7 +173,7 @@ Meteor.methods({
         const total =
           (thisConfig.feeSpp ?? 0) +
           (thisConfig.feeEvent ?? 0) +
-          (thisConfig.feeForm ?? 0) +
+          (thisConfig.feeDonation ?? 0) +
           (thisConfig.feeUtilty ?? 0) ;
         //get config va units
         const thisVaConfig = await VirtualAccountsConfig.findOne({
@@ -223,10 +223,10 @@ Meteor.methods({
         };
         const paymentDetail = {
           amount: total,
-          feeSpp: thisCredit.feeSpp,
-          feeEvent: thisCredit.feeEvent,
-          feeDonation: thisCredit.feeDonation,
-          feeUtility: thisCredit.feeUtilty,
+          feeSpp: thisConfig.feeSpp ?? 0,
+          feeEvent: thisConfig.feeEvent ?? 0,
+          feeDonation: thisConfig.feeDonation ?? 0,
+          feeUtility: thisConfig.feeUtilty ??0,
         }
         VirtualAccounts.insert(vaModel);
         Registrans.update({_id : idObjet},{$set : {paymentDetail, noVA : newVa}})
