@@ -274,3 +274,23 @@ input:checked+.slider:before {
 .img-preview {
   width: 50px;
 }
+
+.pagination {
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.pagination li {
+  display: inline;
+  padding: 5px;
+}
+
+.pagination li.active a {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination li a {
+  color: #007bff;
+  cursor: pointer;
+}

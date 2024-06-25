@@ -13,13 +13,14 @@
       <div class="section-tabmenu">
         <div class="tab-container">
           <ul class="tab-menu">
-            <li class="tab-item active" data-tab="tab1">Tahun Ajaran</li>
+            <li class="tab-item " data-tab="tab1">Tahun Ajaran</li>
             <li class="tab-item " data-tab="tab2">Konfigurasi VA</li>
             <li class="tab-item" data-tab="tab4">Perwakilan</li>
+            <li class="tab-item active" data-tab="tab6">Sekolah</li>
             <li class="tab-item" data-tab="tab5">Pengguna</li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane active" id="tab1">
+            <div class="tab-pane " id="tab1">
               {{> periodePpdb accessAdd=true}}
             </div>
             <div class="tab-pane " id="tab2">
@@ -27,6 +28,9 @@
             </div>
             <div class="tab-pane" id="tab4">
               {{> listPerwakilan}}
+            </div>
+            <div class="tab-pane active" id="tab6">
+              {{> listSchools}}
             </div>
             <div class="tab-pane" id="tab5">
               {{> listUser}}
@@ -155,15 +159,16 @@
     <div class="page-content">
       {{#if accessAdd}}
       <div class="section-action mb-2">
-        <button class="btn btn-primary float-right" id="btn-add" data-toggle="modal" data-target="#addModalVaGenerate">+
+        <button class="btn btn-primary float-right" id="btn-add">+
           Tambah Periode PPDB</button>
       </div>
       {{/if}}
-      <table class="table table-group-divider">
+      <table class=" table table-group-divider">
         <thead>
           <th>Nomor</th>
           <th>Nama</th>
           <th>Tahun Ajaran</th>
+          <th>Status</th>
         </thead>
         <tbody>
           {{#each periodePpdb}}
@@ -177,12 +182,29 @@
             <td>
               {{year}}
             </td>
+            <td>
+              {{#if isInRole 'adminPpdbYayasan, superadmin'}}
+              <label class="switch">
+                {{#if status}}
+                <input type="checkbox" id="toggleSwitch" milik="{{_id}}" checked>
+                {{else}}
+                <input type="checkbox" id="toggleSwitch" milik="{{_id}}">
+                {{/if}}
+                <span class="slider round">
+
+                </span>
+              </label>
+              {{/if}}
+              {{#if status}}
+              Aktif
+              {{else}}
+              Tidak Aktif
+              {{/if}}
+            </td>
             {{#if isInRole 'superadmin, adminPpdbYayasan'}}
-            <button class="btn btn-primary" id="btn-update" data-toggle="modal"
-              data-target="#editModalPeriode">Ubah</button>
+            <button class="btn btn-primary btn-update" data-toggle="modal" data-target="#editModalPeriode">Ubah</button>
             {{/if}}
           </tr>
-          {{> c_modal title='Ubah Periode Tahun Ajaran' dataObject=this idModal="editModalPeriode" bodyTemplate="formInputPeriode" bodyData=yourFormData formId="addForm"}}
           {{/each}}
         </tbody>
       </table>

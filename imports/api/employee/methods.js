@@ -554,27 +554,18 @@ Meteor.methods({
     let _id;
     try {
       _id = Accounts.createUser(newAccountData);
-      if (_id) {
-        let partnerCode;
-        const thisUser = Meteor.userId();
-        const adminPartner = Meteor.users.findOne({
-          _id: thisUser,
-        });
-        partnerCode = adminPartner.partners[0];
-        let roles;
-        if (partnerCode == "imavi") roles = "staff";
-        return Meteor.users.update(
-          { _id },
-          {
-            $set: {
-              roles: [roles],
-              fullname: dataSend.fullname,
-              partners: [partnerCode],
-              profileId: dataSend.idEmployee,
-            },
-          }
-        );
-      }
+      return Meteor.users.update(
+        { _id },
+        {
+          $set: {
+            roles: [data.role],
+            fullname: dataSend.fullname,
+            schoolId : dataSend.school,
+            profileId: dataSend.idEmployee,
+          },
+        }
+      );
+
     } catch (error) {
       return error;
     }

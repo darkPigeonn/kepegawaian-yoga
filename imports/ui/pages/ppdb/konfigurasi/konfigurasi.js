@@ -174,6 +174,7 @@ Template.konfigurasiVa.events({
 Template.periodePpdb.onCreated(function () {
   const self = this;
   self.items = new ReactiveVar();
+  self.selectedItem = new ReactiveVar();
 
   Meteor.call("periode-ppdb-getAll", function (error, result) {
     if (error) {
@@ -198,7 +199,12 @@ Template.periodePpdb.events({
     const year = $("#inputTahunAjaran").val();
     const code = $("#inputCodePeriode").val();
 
-    const id = e.target.getAttribute("data-milik");
+    let id = "";
+
+    //ini untuk edit
+    if (t.selectedItem.get()) {
+      id = t.selectedItem.get()._id;
+    }
 
     let postUrl = "periode-ppdb-insert";
     if (id) {
@@ -213,6 +219,67 @@ Template.periodePpdb.events({
         successAlert("Berhasil");
         exitPreloader();
         location.reload();
+      }
+    });
+  },
+  "click .btn-update"(e, t) {
+    e.preventDefault();
+    const thisResult = this;
+    t.selectedItem.set(thisResult);
+
+    $("#inputName").val(thisResult.name);
+    $("#inputTahunAjaran").val(thisResult.year);
+    $("#inputCodePeriode").val(thisResult.code);
+
+    $("#addModalVaGenerate").modal("show");
+  },
+  "click #btn-add"(e, t) {
+    t.selectedItem.set();
+    $("#addModalVaGenerate").modal("show");
+  },
+  "change #toggleSwitch"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = $(e.target).attr("milik");
+
+    const activated = {
+      title: "Konfirmasi Pengaktifan Tahun Ajaran",
+      text: "Apakah anda yakin mengaktifkan Tahun Ajaran ini? \n Tahun Ajaran yang aktif akan beralih ke Tahun Ajaran ini",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Aktifkan",
+      cancelButtonText: "Batal",
+    };
+    const deactivated = {
+      title: "Konfirmasi Penonaktifkan Tahun Ajaran",
+      text: "Apakah anda yakin menonaktifkan Tahun Ajaran ini? \n Jika ya maka tidak ada Tahun Ajaran yang aktif",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Non Aktifkan",
+      cancelButtonText: "Batal",
+    };
+
+    Swal.fire(e.target.checked ? activated : deactivated).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call(
+          "aktivated-periode",
+          id,
+          e.target.checked,
+          function (error, result) {
+            // console.log(result, error);
+            if (result) {
+              successAlert(
+                "Data Berhasil" + e.target.checked ? "Aktifkan" : "Non Aktfikan"
+              );
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            } else {
+              console.log(error);
+              failAlert("Hapus Data Gagal!");
+            }
+          }
+        );
       }
     });
   },

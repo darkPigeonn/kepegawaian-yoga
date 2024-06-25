@@ -9,6 +9,7 @@ import XLSX from "xlsx";
 import Papa, { parse } from "papaparse";
 import { object, result, template } from "underscore";
 import { HTTP } from "meteor/http";
+import { startSelect2 } from "../../../startup/client";
 
 Template.listUser.onCreated(function () {
   const self = this;
@@ -26,7 +27,7 @@ Template.listUser.onCreated(function () {
 
   Meteor.call("users.getAllSuperAdmin", function (error, result) {
     if (result) {
-      console.log(result);
+
       self.dataListUserSuperAdmin.set(result);
     } else {
       console.log(error);
@@ -94,6 +95,7 @@ Template.listUser.events({
 Template.createUser.onCreated(function () {
   const self = this;
   self.partnerLogin = new ReactiveVar();
+  self.schools = new ReactiveVar()
 
   const userId = Meteor.userId();
   if (userId) {
@@ -105,13 +107,30 @@ Template.createUser.onCreated(function () {
       }
     });
   }
+
+  Meteor.call('schools.getAllForm', function(error, result){
+    if(error) {
+      console.log(error);
+    }else{
+      self.schools.set(result)
+    }
+  })
 });
+
+Template.createUser.onRendered(function () {
+  setTimeout(() => {
+    startSelect2()
+  }, 500);
+})
 
 Template.createUser.helpers({
   partnerLogin() {
     return Template.instance().partnerLogin.get();
   },
-});
+  schools() {
+    return Template.instance().schools.get();
+  }
+})
 
 Template.createUser.events({
   "click #btn_save_user"(e, t) {
@@ -119,12 +138,14 @@ Template.createUser.events({
     const password = $("#input_password").val();
     const role = $("#input_roles").val();
     const fullname = $("#input_fullname").val();
+    const school = $("#input_school").val();
 
     const dataSend = {
       username,
       password,
       fullname,
       role,
+      school
     };
 
     Meteor.call("users.createAppMeteor", dataSend, function (error, result) {

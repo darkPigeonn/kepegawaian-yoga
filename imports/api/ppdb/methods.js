@@ -253,6 +253,7 @@ Meteor.methods({
       createdAt: new Date(),
       status: false,
     };
+    console.log(year);
     const checkTahun = await PeriodePpdb.findOne({ year });
     if (checkTahun) {
       throw new Meteor.Error(404, "Tahun periode ppdb sudah ada");
@@ -700,6 +701,32 @@ Meteor.methods({
     );
     console.log(deactivated);
     return Gelombangs.update({ _id: id }, { $set: { status } });
+  },
+  async "aktivated-periode"(id, status) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if (!Roles.userIsInRole(thisUser, ["adminPpdbYayasan", "superadmin"])) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    //get active period
+
+    const deactivated = await PeriodePpdb.update(
+      {
+        status: true,
+      },
+      {
+        $set: {
+          status: false,
+        },
+      },
+      {
+        multi: true,
+      }
+    );
+    return PeriodePpdb.update({ _id: id }, { $set: { status } });
   },
 
   //payment

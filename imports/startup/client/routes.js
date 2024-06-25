@@ -17,6 +17,7 @@ import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/perwakilan/perwakilan.js";
+import "../../ui/pages/schools/schools.js";
 import "../../ui/pages/ppdb/konfigurasi/konfigurasi.js";
 import "../../ui/pages/ppdb/ppdb.js";
 import { timers } from "jquery";

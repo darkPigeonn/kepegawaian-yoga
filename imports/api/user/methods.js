@@ -37,7 +37,6 @@ Meteor.methods({
   async "users.createAppMeteor"(dataSend) {
     check(dataSend, Object);
 
-    Roles.createRole(dataSend.role, { unlessExists: true });
 
     let newAccountData = {
       username: dataSend.username,
@@ -47,25 +46,18 @@ Meteor.methods({
     let _id;
     try {
       _id = Accounts.createUser(newAccountData);
-      console.log(_id);
-      if (_id) {
-        let partnerCode;
-        const thisUser = Meteor.userId();
-        const adminPartner = Meteor.users.findOne({
-          _id: thisUser,
-        });
-        partnerCode = adminPartner.partners[0];
-        return Meteor.users.update(
-          { _id },
-          {
-            $set: {
-              roles: [dataSend.role],
-              fullname: dataSend.fullname,
-              partners: [partnerCode],
-            },
-          }
-        );
-      }
+      return Meteor.users.update(
+        { _id },
+        {
+          $set: {
+            roles: [dataSend.role],
+            fullname: dataSend.fullname,
+            schoolId: dataSend.school,
+          },
+        }
+      );
+
+
     } catch (error) {
       console.log(error);
       return error;
