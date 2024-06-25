@@ -1,3 +1,3 @@
 import { Mongo } from "meteor/mongo";
 
-export const Notifications = new Mongo.Collection("notification");
+export const Notifications = new Mongo.Collection("notifications",  { idGeneration: 'MONGO' });

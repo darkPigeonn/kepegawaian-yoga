@@ -63,3 +63,19 @@ export const RegistransDummy = [
     status: 52,
   },
 ];
+
+
+//observed
+Meteor.startup(function(){
+  Registrans.find().observeChanges({
+    added: function(id, fields) {
+      console.log('added', id, fields);
+    },
+    changed: function(id, fields) {
+      console.log('changed', id, fields);
+    },
+    removed: function(id) {
+      console.log('removed', id);
+    }
+  })
+})

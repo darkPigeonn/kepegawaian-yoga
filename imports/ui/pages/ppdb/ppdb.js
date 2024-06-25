@@ -542,6 +542,36 @@ Template.cicilanRegistran.events({
     e.preventDefault();
     e.target.value = formatRupiah(e.target.value, "Rp. ");
   },
+  "click #lockCicilan"(e, t) {
+    e.preventDefault();
+    const id = FlowRouter.current().params._id;
+
+    Swal.fire({
+      title: "Konfirmasi Pengkuncian",
+      text: "Penguncian ini akan memembuka pembayaran cicilan untuk CSB & Tidak bisa dibuka kembali, apakah anda yakin?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("credit-lock", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
 });
 
 Template.pageVa.onCreated(function () {
@@ -554,11 +584,12 @@ Template.pageVa.onCreated(function () {
   self.totalItems = new ReactiveVar(0);
   self.formUnduh = new ReactiveVar(false);
   self.formAktif = new ReactiveVar(false);
+  self.selectedCategori = new ReactiveVar()
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
-
-    Meteor.call("va-school-getAll", currentPage, perPage, (error, result) => {
+    const queryReq = self.selectedCategori.get()
+    Meteor.call("va-school-getAll", currentPage, perPage,queryReq, (error, result) => {
       if (error) {
         console.error("Error while fetching students:", error);
         exitPreloader();
@@ -600,6 +631,11 @@ Template.pageVa.helpers({
   },
 });
 Template.pageVa.events({
+  "change .selected-category"(event, template){
+    event.preventDefault();
+    template.selectedCategori.set(event.target.value)
+
+  },
   "click .page-link"(event, template) {
     event.preventDefault();
     const pageNumber = parseInt(event.target.getAttribute("data-page"));

@@ -8,12 +8,15 @@ import moment from "moment";
 
 Meteor.methods({
     "notification.getAll"(email){
-        return Notifications.find({'data.member_email': email},{sort: {createdAt: -1}}).fetch();
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+        console.log(thisUser);
+
+        return Notifications.find({receiverId : thisUser._id},{sort: {createdAt: -1}}).fetch();
     },
     "notification.insert"(data) {
         check(data, Array);
 
-        const dataSave = { 
+        const dataSave = {
             data,
             createdAt: new Date(),
         };

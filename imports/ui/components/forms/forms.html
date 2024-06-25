@@ -123,12 +123,17 @@
     {{/if}}
     {{#if equals status 20}}
     <div class="alert alert-success" role="alert">
-      Pembayaran Formulir Sudah terkonfirmasi
+      Mengisi Formulir PPDB
     </div>
     {{/if}}
     {{#if equals status 30}}
     <div class="alert alert-success" role="alert">
       Menunggu Konfirmasi Formulir oleh Admin Sekolah
+    </div>
+    {{/if}}
+    {{#if equals status 41}}
+    <div class="alert alert-warning" role="alert">
+      Menunggu Konfigurasi Cicilan
     </div>
     {{/if}}
     {{#if equals status 45}}

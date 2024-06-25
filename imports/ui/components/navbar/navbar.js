@@ -63,3 +63,13 @@ Template.navbar.events({
     });
   },
 });
+
+
+Template.breadcrumb_c.helpers({
+  crumbs() {
+    const currentRoute = FlowRouter.current();
+    console.log(currentRoute);
+
+    return crumbs;
+  },
+});

@@ -12,16 +12,16 @@ import { HTTP } from 'meteor/http';
 
 Template.notification_page.onCreated(function (){
     const self = this;
-    
+
     self.notification = new ReactiveVar();
     self.filter = new ReactiveVar({
       type: '',
       data: ''
     })
     self.filterMode = new ReactiveVar("1");
-    
+
     const thisUser = Meteor.user();self.filterMode = new ReactiveVar("1");
-    
+
     Meteor.call("notification.getAll", thisUser.emails[0].address, function (error, result) {
         if (result) {
             console.log(result);
@@ -43,7 +43,7 @@ Template.notification_page.helpers({
                 const query = filter.data.toString().toLowerCase();
                 console.log(query);
                 console.log(filter);
-                                
+
                 if(filter.type == 'pesan'){
                     return x.message.toString().toLowerCase().includes(query);
                 }
@@ -68,19 +68,19 @@ Template.notification_page.helpers({
 Template.notification_page.events({
     'click .tbtn': function(e, t) {
         e.preventDefault();
-    
+
         const targetContainer = $(e.target).closest('.accordion-item').find('.accordion-collapse');
         const button = $(e.target);
         const btnIcon = button.find('i');
 
         $('.tbtn i').removeClass('fa-minus-circle').addClass('fa-plus-circle');
-    
+
         button.toggleClass('active');
         if (button.hasClass('active')) {
             btnIcon.removeClass('fa-plus-circle').addClass('fa-minus-circle');
             button.attr('aria-expanded', 'true');
             targetContainer.addClass('show');
-        } 
+        }
         else {
             btnIcon.removeClass('fa-minus-circle').addClass('fa-plus-circle');
             button.attr('aria-expanded', 'false');
@@ -89,7 +89,7 @@ Template.notification_page.events({
     },
     "input .filter"(e, t){
         e.preventDefault();
-        
+
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({

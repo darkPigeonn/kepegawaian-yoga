@@ -92,6 +92,9 @@ Template.registerHelper("nomorUrut", function (context) {
 Template.registerHelper("equals", function (a, b) {
   return a == b;
 });
+Template.registerHelper("notEquals", function (a, b) {
+  return a != b;
+});
 Template.registerHelper("fc_label", function (a) {
   let value = "";
 
@@ -285,17 +288,19 @@ Template.registerHelper("statusPpdb", function (data) {
   let status = "";
   switch (data) {
     case 10:
-      status = "Menunggu Pembayaran Formulir";
+      status = "Menunggu Pembayaran dan Konfirmasi Admin";
       break;
     case 20:
       status = "Mengisi Formulir PPDB";
       break;
     case 30:
-      status = "Menunggu Pembayaran Uang Pangkal";
+      status = "Menunggu Konfirmasi Formulir oleh Admin Sekolah";
       break;
-    case 20:
-      status = "Sedang direview";
+
+    case 45:
+      status = "Menunggu Unggah SPO Pembayaran";
       break;
+
     case 90:
       status = "Ditolak dengan revisi";
       break;

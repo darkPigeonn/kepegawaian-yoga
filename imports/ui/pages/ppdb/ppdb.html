@@ -21,10 +21,10 @@
             </td>
             <td>
               {{capitalizeWord fullName}} <br>
-              <span class="span-nis">{{nis}}</span>
+              <span class="span-nis">{{#if notEquals nis "-"}}{{nis}} {{else}} NIS Tidak diisi {{/if}}</span>
             </td>
             <td>
-              {{formatHRDate2 dob}} | {{thisAge dob}}
+              {{formatHRDate2 dob}} <br> {{thisAge dob}}
             </td>
             <td>
               {{formatHRDate createdAt}}
@@ -82,6 +82,16 @@
         {{> formUnduhVa idButton='btn-aktif-va' label='Aktifkan VA'}}
       </div>
       {{/if}}
+      <div>
+        <div class="form-group">
+          <select class="form-control selected-category">
+            <option value="all">Semua Kategori</option>
+            <option value="08">Formulir</option>
+            <option value="90">Pembayaran Lunas</option>
+            <option value="99">Pembayaran Cicil</option>
+          </select>
+        </div>
+      </div>
       <table class="table tabl">
         <thead>
           <th>No.</th>
@@ -342,17 +352,24 @@
     <div class="page-title">
       <h3>Detail Pendaftar</h3>
     </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb">Daftar PPDB</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{registran.fullName}}</li>
+      </ol>
+    </nav>
     <div class="page-content">
       <div class="card">
         {{> alertDiv status=registran.status}}
         <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
-              {{#if equals photoStudent '-'}}
-              <img src="/assets/img/dimage.jpg" class="img-thumbnail" />
-              {{else}}
+              {{#if photoStudent.uploaded}}
               {{> fancyBox url=photoStudent.uploaded class='img-thumbnail'}}
-
+              {{else}}
+              <img src="/assets/img/dimage.jpg" class="img-thumbnail" />
               {{/if}}
             </div>
           </div>
@@ -383,6 +400,10 @@
               <tr>
                 <th>Kelas</th>
                 <td>{{registran.destinationClass}}</td>
+              </tr>
+              <tr>
+                <th>Nomor VA</th>
+                <td>{{registran.noVA}}</td>
               </tr>
               <tr>
                 {{#if betweenEquals registran.status 40 60}}
@@ -443,8 +464,8 @@
                   <td>{{registran.father.occupation}}</td>
                 </tr>
                 <tr>
-                  <td>Pendapata Bulanan</td>
-                  <td>{{registran.father.incomePerMonth}}</td>
+                  <td>Pendapatan Bulanan</td>
+                  <td>{{formatRp registran.father.incomePerMonth}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -486,8 +507,8 @@
                   <td>{{registran.mother.occupation}}</td>
                 </tr>
                 <tr>
-                  <td>Pendapata Bulanan</td>
-                  <td>{{registran.mother.incomePerMonth}}</td>
+                  <td>Pendapatan Bulanan</td>
+                  <td>{{formatRp registran.mother.incomePerMonth}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -529,8 +550,8 @@
                   <td>{{registran.wali.occupation}}</td>
                 </tr>
                 <tr>
-                  <td>Pendapata Bulanan</td>
-                  <td>{{registran.wali.incomePerMonth}}</td>
+                  <td>Pendapatan Bulanan</td>
+                  <td>{{formatRp registran.wali.incomePerMonth}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -587,6 +608,7 @@
     <div class="page-content">
       <div class="card">
         <div class="m-2">
+          <button class="btn btn-warning float-right" id="lockCicilan">Kunci Cicilan</button>
           <button class="btn btn-primary float-right" id="addCicilan"> {{#if formCicilan}}Tutup{{else}}+
             Cicilan{{/if}}</button>
         </div>
