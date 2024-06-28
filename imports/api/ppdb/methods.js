@@ -357,6 +357,9 @@ Meteor.methods({
         schoolId: element,
         periodeId: thisPeriod._id,
       });
+      if(!configPpdb){
+        throw new Meteor.Error(404, `Tidak ada gelombang aktif untuk sekolah ${thisSchool.name}`);
+      }
 
       let startIndex = 1;
       let maxIndex = 100;
@@ -371,11 +374,11 @@ Meteor.methods({
       );
 
       if (checkVaSchool) {
-        console.log(checkVaSchool);
         const lastCode = parseInt(checkVaSchool.countNumber, 10);
         startIndex = lastCode;
         maxIndex = startIndex + 100;
       }
+
       for (let index = startIndex; index <= maxIndex; index++) {
         // let virtualAccountNumber = generateUniqueVirtualAccount();
         const countNumber = index.toString().padStart(3, "0");
@@ -391,7 +394,7 @@ Meteor.methods({
           codePeriode,
           periodeId: thisPeriod._id,
           countNumber,
-          amount: configPpdb.feeForm,
+          amount: configPpdb.feeForm ? configPpdb.feeForm : 0,
           status: 0,
           category: codeTag,
         };

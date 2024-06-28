@@ -241,6 +241,7 @@ Template.pageGenerateVa.events({
     const selectedTag = $("#select-tag").val();
     if (!selectedTag || selectedTag == "0" || selectedTag == "null") {
       failAlert("Silahkan pilih tag");
+      exitPreloader()
       return false;
     }
     Meteor.call(
@@ -251,8 +252,10 @@ Template.pageGenerateVa.events({
       selectedTag,
       function (error, result) {
         if (error) {
-          console.log("Error fetching", error);
-          exitPreloader();
+          swalInfo(error.reason);
+          setTimeout(() => {
+            exitPreloader();
+          }, 2000);
         } else {
           t.listVa.set(result);
           exitPreloader();
