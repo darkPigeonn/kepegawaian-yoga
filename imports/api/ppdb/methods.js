@@ -1086,6 +1086,28 @@ Meteor.methods({
 
     return wb;
   },
+
+  //interviews
+  async "interviews.insert"(id, date, time, note) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(403, "Forrbiden");
+    }
+    const data = {
+      registranId : id,
+      date,
+      time,
+      note,
+      createdAt: new Date(),
+      createdBy: thisUser._id,
+    }
+    const result =await Interviews.insert(data);
+    const objId = new Mongo.ObjectID(id);
+    return Registrans.update({_id : objId},{$set : {
+      interviewId : result,
+      status : 36
+    }})
+  },
 });
 
 function generateUniqueVirtualAccount() {

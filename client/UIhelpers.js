@@ -209,6 +209,9 @@ Template.registerHelper("statusCredit", function (data) {
   }
   return status;
 });
+Template.registerHelper("greaterThan", function (a, b) {
+  return a > b;
+});
 Template.registerHelper("lessThan", function (a, b) {
   return a < b;
 });

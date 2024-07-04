@@ -361,7 +361,7 @@
     <div class="page-content">
       <div class="card">
         {{> alertDiv status=registran.status}}
-        <div class="row">
+       <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
               {{#if photoStudent.uploaded}}
@@ -373,7 +373,6 @@
           </div>
 
           <div class="col-8">
-
             <table class="table">
               <tr>
                 <th>Nama </th>
@@ -417,6 +416,9 @@
                 {{/if}}
               </tr>
             </table>
+            <!-- {{#if greaterThan registran.status 34}} -->
+            <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
+              <!-- {{/if}} -->
           </div>
         </div>
       </div>
@@ -596,6 +598,9 @@
       {{/if}}
       {{/if}}
     </div>
+
+    {{> c_modal title='Buat Jadwal Wawancara' idModal="addSchedule" bodyTemplate="formInputSchedule" bodyData=yourFormData formId="setScheduleForm"}}
+
   </div>
 </template>
 <template name="cicilanRegistran">

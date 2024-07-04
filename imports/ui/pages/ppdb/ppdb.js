@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
 import "./ppdb.html";
+import "/imports/ui/components/modals/modals";
+import "/imports/ui/components/forms/forms";
 import {
   convert2number,
   formatRupiah,
@@ -375,7 +377,6 @@ Template.detailRegistran.onCreated(function () {
     } else {
       self.detail.set(result);
 
-      console.log(result);
       if (result.finalForm) {
         self.detailFinal.set(result.finalForm);
       }
@@ -400,6 +401,10 @@ Template.detailRegistran.helpers({
   },
 });
 Template.detailRegistran.events({
+  "click .btn-create-schedule"(e, t) {
+    e.preventDefault();
+    $("#addSchedule").modal("show");
+  },
   "click .btn-accepted"(e, t) {
     e.preventDefault();
     startPreloader();
@@ -431,6 +436,25 @@ Template.detailRegistran.events({
       }
     });
   },
+  "submit #setScheduleForm"(e, t) {
+    e.preventDefault();
+    startPreloader()
+    const date = $("#inputDate").val();
+    const time = $("#inputTime").val();
+    const note = $("#inputNote").val();
+
+    const thisData =  t.detail.get();
+
+    Meteor.call('interviews.insert', thisData._id, date, time, note, function(error, result){
+      if(error){
+        failAlert(error.reason);
+        exitPreloader()
+      }else{
+        successAlert("Berhasil");
+        location.reload();
+      }
+    })
+  }
 });
 Template.cicilanRegistran.onCreated(function () {
   const self = this;
