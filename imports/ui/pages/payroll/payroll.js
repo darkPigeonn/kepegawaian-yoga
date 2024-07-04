@@ -88,6 +88,7 @@ Template.createPayroll.onCreated(function() {
     self.isMonthDisabled = new ReactiveVar();
     self.dataDetailSlip = new ReactiveVar([]);
     self.btnRekap = new ReactiveVar(false);
+    self.total = new ReactiveVar(0);
     startSelect2();
     Meteor.call("employee.getAll", function (error, result) {
         if (result) {
@@ -118,6 +119,9 @@ Template.createPayroll.helpers({
     },
     btnRekap() {
         return Template.instance().btnRekap.get();
+    },
+    total() {
+        return Template.instance().total.get();
     }
 })
 
@@ -165,17 +169,35 @@ Template.createPayroll.events({
         }
         dataDetailSlip.push(obj);
         t.dataDetailSlip.set(dataDetailSlip);
-        console.log(t.dataDetailSlip.get());
+        let gajiPokok = t.dataRekap.get();
+        let tempTotal = gajiPokok.baseSalary;
+
+        for (const iterator of dataDetailSlip) {
+            if (iterator.category == "allowance") {
+                tempTotal += iterator.amount;
+            } else if (iterator.category == "deduction") {
+                tempTotal -= iterator.amount;
+            }
+        }
+
+        t.total.set(tempTotal);
     },
     "click .btn-remove"(e, t) {
         e.preventDefault();
         const index = $(e.target).attr("milik");
-        console.log(index);
+        let tempTotal = t.total.get();
         let dataDetailSlip = t.dataDetailSlip.get();
         if(index != undefined) {
+            const itemToRemove = dataDetailSlip[index];
+            if (itemToRemove.category == "allowance") {
+                tempTotal -= itemToRemove.amount;
+            } else if (itemToRemove.category == "deduction") {
+                tempTotal += itemToRemove.amount;
+            }
             dataDetailSlip.splice(index, 1);
         }
         t.dataDetailSlip.set(dataDetailSlip);
+        t.total.set(tempTotal);
     },
     "click #btn-save"(e, t) {
         e.preventDefault();
