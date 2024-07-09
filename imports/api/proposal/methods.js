@@ -773,8 +773,8 @@ Meteor.methods({
   "employee.getDataUserProposal"(id){
     console.log(id);
     const data = Meteor.users.findOne({_id:id});
-    const dataEmployee = Employee.findOne({_id: data.profileId})
-    return {username: data.username, roles: data.roles, full_name: dataEmployee.full_name}
+    // const dataEmployee = Employee.findOne({_id: data.profileId})
+    return {username: data.username, roles: data.roles, full_name: data.fullname}
   },
 
   "employee.getFullName"(id){
