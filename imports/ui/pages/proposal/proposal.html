@@ -507,7 +507,7 @@
                                         Staff
                                         <br><br><br>
                                         <!-- {{generalManager.fullname}} -->
-                                        {{usernamePembuat.full_name}}
+                                        {{proposalData.fullname}}
                                     </div>
                                     <div class="col-md-12 text-center">
                                         Menyetujui,
@@ -549,7 +549,7 @@
                             {{#if isPodo}}
                                 
                             {{else}}
-                                {{#if equals proposalData.status "99"}}
+                                {{#if equals proposalData.status 99}}
                                     
                                 {{else}}
                                     <button class="btn btn-warning" id="btn-revisi">Revisi</button>
@@ -1030,5 +1030,154 @@
             {{> inputMultipleFiles label="Dokumentasi" id="buktiDokumentasi" files=buktiDokumentasi buttonLabel="Upload"}}
         </div>
         <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
+    </div>
+</template>
+
+<template name="detailLPJProposal">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div id="test" style="background-color: white;">
+                <page>
+                    <page_header>
+                        <table class="page-header" width="100%"
+                            style="border-bottom: 5px solid #000; font-family: serif;padding : 2px">
+                            <tr>
+                                <td>
+                                    <img src="/assets/img/logo-imavi.png" width="140px">
+                                </td>
+                                <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
+                                    <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
+                                    <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <h4 class="page-title">
+                            <b>
+                                {{proposalData.name}} <br>
+                            </b>
+                        </h4>
+                    </page_header>
+
+                    <content style="color: black">
+                        <section>
+
+                        </section>
+                    </content>
+                </page>
+
+                <body style="font-family: 'Times New Roman', serif; color: black;">
+                    <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
+
+                        <div>
+                            <h5>
+                                I. LATAR BELAKANG
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.backgroundsDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                II. TUJUAN KEGIATAN
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.purposeDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                III. WAKTU DAN TEMPAT PELAKSANAAN
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.timeline}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                IV. PENGELOLAAN DANA
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.fundingRequirementDescription}}}
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                V. PENUTUP
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                {{{proposalData.closeDescription}}}
+                            </div>
+                        </div>
+                        <section style="break-inside: avoid; page-break-inside: avoid;">
+                            {{#if equals isChief false}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <br><br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Mengetahui,
+                                        <br>
+                                        Staff
+                                        <br><br><br>
+                                        <!-- {{generalManager.fullname}} -->
+                                        {{usernamePembuat.full_name}}
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
+                                </div>
+                            {{else}}
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        Surabaya,{{formatHRDate proposalData.updateAt}}
+                                        <br>
+                                        Hormat Saya,
+                                        <br>
+                                        Ketua Centrum Carlo Acutis 
+                                        <!-- {{getDivisionName proposalData.divisionId}} -->
+                                        <br><br><br>
+                                        Anton Kusnadi
+                                        <!-- {{getChief proposalData.divisionId}} -->
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        Menyetujui,
+                                        <br>
+                                        Praeses Imavi
+                                        <br><br><br>
+                                        <!-- {{praeses.fullname}} -->
+                                        RD. Yohanes Benny Suwito
+                                    </div>
+                                </div>
+                            {{/if}}
+                        </section>
+                    </div>
+
+                </body>
+            </div>
+        </div>
+
     </div>
 </template>

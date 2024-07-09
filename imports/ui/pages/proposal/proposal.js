@@ -885,7 +885,6 @@ Template.formProposal.helpers({
 
 Template.previewProposal.onCreated(function () {
     const self = this;
-
     self.proposalId = new ReactiveVar();
     self.formSubmit = new ReactiveVar(0);
     self.jabatanLogin = new ReactiveVar();
@@ -895,37 +894,9 @@ Template.previewProposal.onCreated(function () {
     self.isChief = new ReactiveVar(false);
     const id = FlowRouter.current().params._id;
     self.proposalData = new ReactiveVar();
-    const thisUser = Meteor.userId();
-    console.log(thisUser);
-    Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
-        if(result){
-            const hasil = result;
-            console.log(hasil);
-            // self.jabatanLogin.set(hasil);
-            self.usernameLogin.set(hasil);
-            console.log(self.usernameLogin.get());
-        }
-        else{
-            console.log(error);
-        }
-    })
     Meteor.call('getProposalById', id, function (error, result) {
         if (result) {
             self.proposalData.set(result)
-            console.log(result.createdBy);
-            Meteor.call('employee.getDataUserProposal', result.createdBy, function (error, result) {
-                console.log(result);
-                if(result){
-                    const hasil = result;
-                    self.usernamePembuat.set(hasil);
-                    if(result.roles.includes("chief")) {
-                        self.isChief.set(true);
-                    }
-                }
-                else{
-                    console.log(error);
-                }
-            })
         }
         else {
             console.log(error);

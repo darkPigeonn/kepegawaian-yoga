@@ -46,9 +46,21 @@ Meteor.methods({
     });
   },
   async "getProposalById"(id, code) {
-    const dataProposal = Proposals.findOne({
+    let dataProposal = Proposals.findOne({
       _id: id,
     });
+
+    // get fullname use createdBy
+    const owner = Meteor.users.findOne({_id: dataProposal.createdBy})
+    dataProposal.fullname = owner.fullname
+    // isChief dari get user
+    if(owner.roles.includes("chief")) {
+      dataProposal.isChief = true
+    }
+    else dataProposal.isChief = false
+    // isPodo dari this current user = proposal owner
+    if(this.userId == dataProposal.createdBy) dataProposal.isPodo = true
+    else dataProposal.isPodo = false
     return dataProposal;
   },
   //kirim pakai role
@@ -773,8 +785,8 @@ Meteor.methods({
   "employee.getDataUserProposal"(id){
     console.log(id);
     const data = Meteor.users.findOne({_id:id});
-    // const dataEmployee = Employee.findOne({_id: data.profileId})
-    return {username: data.username, roles: data.roles, full_name: data.fullname}
+    const dataEmployee = Employee.findOne({_id: data.profileId})
+    return {username: data.username, roles: data.roles, full_name: dataEmployee.fullname}
   },
 
   "employee.getFullName"(id){
