@@ -55,7 +55,7 @@ FlowRouter.route("/batch/detail/:_id", {
 FlowRouter.route("/dashboard", {
   name: "dashboard",
   action() {
-    this.render("App_body", "dashboard");
+    this.render("fullWidth", "dashboard");
   },
 });
 

@@ -65,225 +65,223 @@
 
 <template name="dashboard">
     <div class="container" style="margin-top: 2rem;">
-        <h2 class="text-center">Dashboard Admin</h2>
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active pb-3">
-                <h3 class="text-center">Status Pegawai Hari Ini</h3>
-                {{#if greaterThan todayStatus.length 0}}
-                    <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
-                        <thead>
-                            <tr>
-                                <th width="30%">Nama</th>
-                                <th width="20%">Status</th>
-                                <th width="20%">Waktu Masuk</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each todayStatus}}
-                            <tr>
-                                <td>{{ fullName }}</td>
-                                <td>{{#if isWfh }} WFH {{else}} Office {{/if}}</td>
-                                <td> {{formatTime checkIn}}</td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                {{else}}
-                   <span>Belum Ada Absensi Hari Ini!</span>
-                {{/if}}
-              </div>
-              <div class="carousel-item pb-3">
-                <div class="containerContent desktop-div pb-3">
-                    <h3 class="text-center">Daftar Tugas</h3>
-                    <div class="row row-cols-3 mt-1">
-                        {{#each task in tasks}}
-                            <div class="col mb-3">
-                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                                    <div class="taskContent">
-                                        <div class="row row-cols-2">
-                                            <div class="col">
-                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title" style="font-size: 14pt;">{{task.nama_task}}</h5>
-                                                <p class="text-secondary fw-light limited-text word-break mb-0" style="font-size: 11pt;">
-                                                    {{toHTML task.deskripsi}}
-                                                </p>
-                                            </div>
-                                            <div class="col d-flex justify-content-end align-middle gap-1">
-                                                <div class="status">
-                                                    {{#if equals task.priority "high"}}
-                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #f2709c;background-color: #fde2e4;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
-                                                    {{#if equals task.priority "mid"}}
-                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #4c90d1;background-color: #c8e2f4;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
-                                                    {{#if equals task.priority "low"}}
-                                                        <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #79c879;background-color: #e5f2e5;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
+        <h2 class="text-center">Dashboard Centrum Carlo Acutis</h2>
+        <div class="row">
+            <div class="col-4">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                      <div class="carousel-item active pb-3">
+                        <h3 class="text-center">Status Pegawai Hari Ini</h3>
+                        {{#if greaterThan todayStatus.length 0}}
+                            <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Nama</th>
+                                        <th width="20%">Status</th>
+                                        <th width="20%">Waktu Masuk</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each todayStatus}}
+                                    <tr>
+                                        <td>{{ fullName }}</td>
+                                        <td>{{#if isWfh }} WFH {{else}} Office {{/if}}</td>
+                                        <td> {{formatTime checkIn}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        {{else}}
+                           <span>Belum Ada Absensi Hari Ini!</span>
+                        {{/if}}
+                      </div>
+                      <div class="carousel-item pb-3">
+                        <div class="containerContent desktop-div pb-3">
+                            <h3 class="text-center">Daftar Tugas</h3>
+                            <div class="row row-cols-3 mt-1">
+                                {{#each task in tasks}}
+                                    <div class="col mb-3">
+                                        <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                            <div class="taskContent">
+                                                <div class="row row-cols-2">
+                                                    <div class="col">
+                                                        <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title" style="font-size: 14pt;">{{task.nama_task}}</h5>
+                                                        <p class="text-secondary fw-light limited-text word-break mb-0" style="font-size: 11pt;">
+                                                            {{toHTML task.deskripsi}}
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex justify-content-end align-middle gap-1">
+                                                        <div class="status">
+                                                            {{#if equals task.priority "high"}}
+                                                                <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #f2709c;background-color: #fde2e4;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                            {{#if equals task.priority "mid"}}
+                                                                <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #4c90d1;background-color: #c8e2f4;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                            {{#if equals task.priority "low"}}
+                                                                <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #79c879;background-color: #e5f2e5;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                        </div>
+                                                        <div class="members">
+                                                            <span class="rounded-4 px-2 py-1" style="font-size: 9pt; color: #ffc14d;background-color: #ffeccb;">
+                                                                {{task.members.length}} Member
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="members">
-                                                    <span class="rounded-4 px-2 py-1" style="font-size: 9pt; color: #ffc14d;background-color: #ffeccb;">
-                                                        {{task.members.length}} Member
-                                                    </span>
-                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
-                                        <div class="d-flex gap-1">
-                                            <div class="time">
-                                                <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
-                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
-                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                            <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                                <div class="d-flex gap-1">
+                                                    <div class="time">
+                                                        <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                                <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                                <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                            </svg>
+                                                            <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <a href="/tasks/detail/{{task._id}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                        <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
                                                     </svg>
-                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <a href="/tasks/detail/{{task._id}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {{/each}}
-                    </div>
-                </div>
-                <div class="containerContent mobile-div pb-3">
-                    <h3 class="text-center">Daftar Tugas</h3>
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
-                        {{#each task in tasks}}
-                            <div class="col mb-3">
-                                <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                                    <div class="taskContent">
-                                        <div class="row row-cols-2">
-                                            <div class="col">
-                                                <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title">{{task.nama_task}}</h5>
-                                                <p class="text-secondary fw-light limited-text word-break content-desc mb-0">
-                                                    {{toHTML task.deskripsi}}
-                                                </p>
-                                            </div>
-                                            <div class="col d-flex flex-column flex-wrap align-items-end">
-                                                <div class="status">
-                                                    {{#if equals task.priority "high"}}
-                                                        <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
-                                                    {{#if equals task.priority "mid"}}
-                                                        <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
-                                                    {{#if equals task.priority "low"}}
-                                                        <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
-                                                            {{capitalizeWord task.priority}}
-                                                        </span>
-                                                    {{/if}}
-                                                </div>
-                                                <div class="members mt-2">
-                                                    <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
-                                                        {{task.members.length}} Member
-                                                    </span>
-                                                </div>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
-                                        <div class="d-flex my-auto gap-1">
-                                            <div class="deadline">
-                                                <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
-                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
-                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
-                                                    </svg>
-                                                    <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <a href="/tasks/detail/{{task._id}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
-                                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {{/each}}
-                    </div>
-                </div>
-              </div>
-              <div class="carousel-item pb-3">
-                <div>
-                    {{#if greaterThan events.todayEvents.length 0}}
-                        <h3>Kegiatan Hari Ini</h3>
-                        <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
-                            <thead>
-                                <tr>
-                                    <th width="30%">Nama Kegiatan</th>
-                                    <th width="20%">Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each events.todayEvents}}
-                                <tr>
-                                    <td>{{ title }}</td>
-                                    <td>{{venue}}</td>
-                                </tr>
                                 {{/each}}
-                            </tbody>
-                        </table>
-                    {{else}}
-                        <span>Belum Ada Kegiatan Hari ini!</span>
-                    {{/if}}
-                </div>
-               
+                            </div>
+                        </div>
+                        <div class="containerContent mobile-div pb-3">
+                            <h3 class="text-center">Daftar Tugas</h3>
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mt-1">
+                                {{#each task in tasks}}
+                                    <div class="col mb-3">
+                                        <div class="task-card" style="box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                                            <div class="taskContent">
+                                                <div class="row row-cols-2">
+                                                    <div class="col">
+                                                        <h5 class="fw-bold w-100 overflow-hidden text-overflow-ellipsis no-wrap content-title">{{task.nama_task}}</h5>
+                                                        <p class="text-secondary fw-light limited-text word-break content-desc mb-0">
+                                                            {{toHTML task.deskripsi}}
+                                                        </p>
+                                                    </div>
+                                                    <div class="col d-flex flex-column flex-wrap align-items-end">
+                                                        <div class="status">
+                                                            {{#if equals task.priority "high"}}
+                                                                <span class="rounded-4 px-2 py-1" style="color: #f2709c;background-color: #fde2e4;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                            {{#if equals task.priority "mid"}}
+                                                                <span class="rounded-4 px-2 py-1" style="color: #4c90d1;background-color: #c8e2f4;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                            {{#if equals task.priority "low"}}
+                                                                <span class="rounded-4 px-2 py-1" style="color: #79c879;background-color: #e5f2e5;">
+                                                                    {{capitalizeWord task.priority}}
+                                                                </span>
+                                                            {{/if}}
+                                                        </div>
+                                                        <div class="members mt-2">
+                                                            <span class="rounded-4 px-2 py-1" style="color: #ffc14d;background-color: #ffeccb;">
+                                                                {{task.members.length}} Member
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-2" style="position: relative; bottom: 0;">
+                                                <div class="d-flex my-auto gap-1">
+                                                    <div class="deadline">
+                                                        <span class="rounded-3 px-2 py-1" style="color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-alarm" viewBox="0 0 20 20">
+                                                                <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9z"/>
+                                                                <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1zm1.038 3.018a6 6 0 0 1 .924 0 6 6 0 1 1-.924 0M0 3.5c0 .753.333 1.429.86 1.887A8.04 8.04 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5M13.5 1c-.753 0-1.429.333-1.887.86a8.04 8.04 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1"/>
+                                                            </svg>
+                                                            <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <a href="/tasks/detail/{{task._id}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                                                        <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                      </div>
+                      <div class="carousel-item pb-3">
+                        <div>
+                            {{#if greaterThan events.todayEvents.length 0}}
+                                <h3>Kegiatan Hari Ini</h3>
+                                <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Nama Kegiatan</th>
+                                            <th width="20%">Lokasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each events.todayEvents}}
+                                        <tr>
+                                            <td>{{ title }}</td>
+                                            <td>{{venue}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            {{else}}
+                                <span>Belum Ada Kegiatan Hari ini!</span>
+                            {{/if}}
+                        </div>
 
-                <div style="margin-top: 2rem;">
-                    {{#if greaterThan events.weekEvents.length 0}}
-                        <h3>Kegiatan Minggu Ini</h3>
-                        <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal Kegiatan</th>
-                                    <th width="30%">Nama Kegiatan</th>
-                                    <th width="20%">Lokasi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each events.weekEvents}}
-                                <tr>
-                                    <td>{{formatHRDate date}}</td>
-                                    <td>{{ title }}</td>
-                                    <td>{{venue}}</td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    {{else}}
-                        <span>Belum Ada Kegiatan Minggu Ini</span>
-                    {{/if}}
+
+                        <div style="margin-top: 2rem;">
+                            {{#if greaterThan events.weekEvents.length 0}}
+                                <h3>Kegiatan Minggu Ini</h3>
+                                <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal Kegiatan</th>
+                                            <th width="30%">Nama Kegiatan</th>
+                                            <th width="20%">Lokasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each events.weekEvents}}
+                                        <tr>
+                                            <td>{{formatHRDate date}}</td>
+                                            <td>{{ title }}</td>
+                                            <td>{{venue}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            {{else}}
+                                <span>Belum Ada Kegiatan Minggu Ini</span>
+                            {{/if}}
+                        </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
+
             </div>
-        </div>
-        <div>
-            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black;"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+            <div class="col-8">
+                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FJakarta&bgcolor=%23ffffff&src=ZGV2ZWxvcGltYXZpQGdtYWlsLmNvbQ&src=ZW4uaW5kb25lc2lhbiNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23039BE5&color=%230B8043" style="border:solid 1px #777" width="1000" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
         </div>
     </div>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -452,7 +450,7 @@
                 flex-direction: column;
                 height: auto;
             }
-            .left-header-content, 
+            .left-header-content,
             .right-header-content {
                 width: 50% !important;
             }
@@ -548,7 +546,7 @@
                 flex-direction: column;
                 height: auto;
             }
-            .left-header-content, 
+            .left-header-content,
             .right-header-content {
                 width: 50% !important;
             }
