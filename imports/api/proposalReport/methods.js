@@ -22,5 +22,11 @@ Meteor.methods({
         console.log(post);
         const updateProposal = Proposals.update({_id: idProposal}, {$set: {idReport: post}})
         return updateProposal;
+    },
+    async "proposalReport.detail" (id) {
+        check(id, String)
+        const data = ProposalReports.findOne({_id: id})
+        return data
     }
+
 })

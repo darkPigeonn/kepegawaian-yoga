@@ -61,7 +61,6 @@ Meteor.methods({
     // isPodo dari this current user = proposal owner
     if(this.userId == dataProposal.createdBy) dataProposal.isPodo = true
     else dataProposal.isPodo = false
-    console.log(dataProposal);
     return dataProposal;
   },
   //kirim pakai role

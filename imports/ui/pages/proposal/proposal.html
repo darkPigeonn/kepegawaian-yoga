@@ -1070,114 +1070,83 @@
 
                 <body style="font-family: 'Times New Roman', serif; color: black;">
                     <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
-
                         <div>
                             <h5>
-                                I. LATAR BELAKANG
+                                I. NAMA KEGIATAN
                             </h5>
 
                             <div class="content" style="margin-left: 5%;">
-                                {{{proposalData.backgroundsDescription}}}
+                                {{{dataLPJ.name}}}
                             </div>
                         </div>
                         <div>
                             <h5>
-                                II. TUJUAN KEGIATAN
+                                II. TEMPAT KEGIATAN
                             </h5>
 
                             <div class="content" style="margin-left: 5%;">
-                                {{{proposalData.purposeDescription}}}
+                                {{{dataLPJ.place}}}
                             </div>
                         </div>
                         <div>
                             <h5>
-                                III. WAKTU DAN TEMPAT PELAKSANAAN
+                                III. WAKTU PELAKSANAAN
                             </h5>
 
                             <div class="content" style="margin-left: 5%;">
-                                {{{proposalData.timeline}}}
+                                {{{formatHRDate dataLPJ.timestamp}}}
                             </div>
                         </div>
                         <div>
                             <h5>
-                                IV. PENGELOLAAN DANA
+                                IV. DESKRIPSI KEGIATAN
                             </h5>
 
                             <div class="content" style="margin-left: 5%;">
-                                {{{proposalData.fundingRequirementDescription}}}
+                                {{{dataLPJ.description}}}
                             </div>
                         </div>
                         <div>
                             <h5>
-                                V. PENUTUP
+                                V. DAFTAR TRANSAKSI
                             </h5>
 
                             <div class="content" style="margin-left: 5%;">
-                                {{{proposalData.closeDescription}}}
-                            </div>
-                        </div>
-                        <section style="break-inside: avoid; page-break-inside: avoid;">
-                            {{#if equals isChief false}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <br><br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Mengetahui,
-                                        <br>
-                                        Staff
-                                        <br><br><br>
-                                        <!-- {{generalManager.fullname}} -->
-                                        {{usernamePembuat.full_name}}
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <th>No.</th>
+                                            <th>Nama</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            {{#each i in dataLPJ.detailTransaction}}
+                                            <tr>
+                                                <td>
+                                                    {{setTableNumber @index}}
+                                                </td>
+                                                <td>{{i.name}}</td>
+                                                <td>{{formatRp i.amount}}</td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" style="text-align: center; font-weight: bold;">Total</td>
+                                                <td colspan="1" style="text-align: left; font-weight: bold;">
+                                                    {{formatRp dataLPJ.totalTransaction}}
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
-                            {{else}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Hormat Saya,
-                                        <br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
-                                </div>
-                            {{/if}}
-                        </section>
+                            </div>
+                        </div>
                     </div>
-
                 </body>
             </div>
         </div>
-
+        <a href="/proposal/view/{{dataLPJ.idProposal}}"><button type="button" class="btn btn-primary btn-lg btn-block">Cek Proposal</button></a>
+        <!-- <button>Cek Proposal</button> -->
     </div>
 </template>

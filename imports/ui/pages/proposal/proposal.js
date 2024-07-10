@@ -1507,6 +1507,24 @@ Template.createLPJProposal.events({
     }
 })
 
+Template.detailLPJProposal.onCreated(function () {
+    const self = this;
+    self.dataLPJ = new ReactiveVar();
+    const id = FlowRouter.getParam("_id")
+    Meteor.call('proposalReport.detail', id, function(error, result) {
+        if (error) {
+            console.log(error);
+        } else {
+            self.dataLPJ.set(result)
+        }
+    })
+})
+
+Template.detailLPJProposal.helpers({
+    dataLPJ() {
+        return Template.instance().dataLPJ.get()
+    },
+})
 
 
 function formatRupiah(angka, prefix) {
