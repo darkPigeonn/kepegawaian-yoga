@@ -76,6 +76,7 @@
                             <tr>
                                 <th width="30%">Nama</th>
                                 <th width="20%">Status</th>
+                                <th width="20%">Waktu Masuk</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,6 +84,7 @@
                             <tr>
                                 <td>{{ fullName }}</td>
                                 <td>{{#if isWfh }} WFH {{else}} Office {{/if}}</td>
+                                <td> {{formatTime checkIn}}</td>
                             </tr>
                             {{/each}}
                         </tbody>

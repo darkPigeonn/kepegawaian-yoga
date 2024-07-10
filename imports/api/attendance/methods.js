@@ -73,7 +73,7 @@ Meteor.methods({
             },
         }).fetch();
         const dataReturn = [];
-
+        console.log(dataStaffsAttendance);
         //find user profile
         _.each(dataStaffsAttendance, function (x) {
             const user = AppUsers.findOne({
@@ -93,12 +93,13 @@ Meteor.methods({
                         x.fullName = employeeProfile.full_name;
                         x.jabatan = employeeProfile.job_position;
                         x.outlets = user.outlets[0];
-
+                        x.checkIn = moment(x.checkIn).utcOffset("+07:00").format("YYYY-MM-DD HH:mm:ss");
                         dataReturn.push(x);
                     }
                 }
             }
         });
+        console.log(dataReturn);
         return dataReturn;
     },
     "staffsAttendance.byDate"(date) {

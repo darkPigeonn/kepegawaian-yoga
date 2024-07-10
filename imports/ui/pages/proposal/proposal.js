@@ -1070,35 +1070,10 @@ Template.viewProposal.onCreated(function () {
     self.usernamePembuat = new ReactiveVar();
     const id = FlowRouter.current().params._id;
     self.proposalData = new ReactiveVar();
-    const thisUser = Meteor.userId();
-    Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
-        if(result){
-            const hasil = result[0];
-            // console.log(hasil);
-            self.jabatanLogin.set(hasil);
-            self.usernamePembuat.set(result)
-            if(result.roles.includes("chief")) {
-                self.isChief.set(true);
-            }
-        }
-        else{
-            console.log(error);
-        }
-    })
     Meteor.call('getProposalById', id, function (error, result) {
         if (result) {
+            console.log(result);
             self.proposalData.set(result)
-            console.log(result.createdBy);
-            // Meteor.call('employee.getDataUserProposal', result.createdBy, function (error, result) {
-            //     if(result){
-            //         const hasil = result[0];
-            //         console.log(hasil);
-            //         self.jabatanPembuat.set(hasil);
-            //     }
-            //     else{
-            //         console.log(error);
-            //     }
-            // })
         }
         else {
             console.log(error);
