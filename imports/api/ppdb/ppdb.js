@@ -7,6 +7,7 @@ export const PeriodePpdb = new Mongo.Collection("periodePpdb");
 export const VirtualAccountsConfig = new Mongo.Collection(
   "virtualAccountsConfig"
 );
+export const Interviews = new Mongo.Collection("interviews");
 export const Gelombangs = new Mongo.Collection("configPpdbSchools");
 // export const Gelombangs = new Mongo.Collection("gelombangs");
 export const PaymentsConfig = new Mongo.Collection("paymentsConfig");

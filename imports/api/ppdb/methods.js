@@ -2,6 +2,7 @@ import {
   CreditPayment,
   Gelombangs,
   InitialPayment,
+  Interviews,
   PaymentsConfig,
   PeriodePpdb,
   Registrans,
@@ -95,6 +96,11 @@ Meteor.methods({
         _id: finalIdObject,
       });
       thisRegistrans.finalForm = thisFinalForm;
+    }
+
+    if(thisRegistrans.interviewId){
+      const thisInterview  = await Interviews.findOne({_id : thisRegistrans.interviewId});
+      thisRegistrans.interview = thisInterview;
     }
 
     return thisRegistrans;
@@ -1102,10 +1108,12 @@ Meteor.methods({
       createdBy: thisUser._id,
     }
     const result =await Interviews.insert(data);
-    const objId = new Mongo.ObjectID(id);
-    return Registrans.update({_id : objId},{$set : {
+
+    return Registrans.update({_id : id},{$set : {
       interviewId : result,
-      status : 36
+
+      updatedAt : new Date(),
+      updatedBy : thisUser._id
     }})
   },
 });

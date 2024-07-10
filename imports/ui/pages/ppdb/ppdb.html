@@ -415,10 +415,18 @@
                 {{/if}}
                 {{/if}}
               </tr>
-            </table>
-            {{#if greaterThan registran.status 34}}
-            <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
+
+              {{#if registran.interviewId}}
+              <tr>
+                <th>Waktu Interview</th>
+                <td>{{formatHRDate registran.interview.date}} | {{registran.interview.time}}</td>
+              </tr>
+              {{else}}
+              {{#if greaterThan registran.status 34}}
+              <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
+                {{/if}}
               {{/if}}
+            </table>
           </div>
         </div>
       </div>
@@ -709,7 +717,7 @@
                   <td>{{formatRp feeSpp}}</td>
                   <td>{{formatRp feeDonation}}</td>
                   <td>{{formatRp feeEvent}}</td>
-                  <td>{{formatRp feeUtility}}</td>
+                  <td>{{formatRp feeUtilty}}</td>
                   <td>{{statusCredit status}}</td>
                 </tr>
                 {{/each}}
