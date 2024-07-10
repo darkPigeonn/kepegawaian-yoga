@@ -9,27 +9,27 @@ const INACTIVITY_TIMEOUT = 10000; // 5 minutes in milliseconds
 let inactivityTimer;
 
 const resetInactivityTimer = () => {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    Swal.fire({
-      title: "Anda tidak aktif beberapa saat",
-      text: "Silahkan login kembali untuk menggunakan aplikasi ini.",
-      icon: "warning",
-    });
-    Meteor.logout(() => {
-      Router.go("/login");
-      alert("You have been logged out due to inactivity.");
-    });
-  }, INACTIVITY_TIMEOUT);
+  // clearTimeout(inactivityTimer);
+  // inactivityTimer = setTimeout(() => {
+  //   Swal.fire({
+  //     title: "Anda tidak aktif beberapa saat",
+  //     text: "Silahkan login kembali untuk menggunakan aplikasi ini.",
+  //     icon: "warning",
+  //   });
+  //   Meteor.logout(() => {
+  //     Router.go("/login");
+  //     alert("You have been logged out due to inactivity.");
+  //   });
+  // }, INACTIVITY_TIMEOUT);
 };
 
 const activityEvents = ["mousemove", "keydown", "click"];
 
 const setupInactivityMonitor = () => {
-  activityEvents.forEach((event) => {
-    window.addEventListener(event, resetInactivityTimer);
-  });
-  resetInactivityTimer(); // Initialize the timer
+  // activityEvents.forEach((event) => {
+  //   window.addEventListener(event, resetInactivityTimer);
+  // });
+  // resetInactivityTimer(); // Initialize the timer
 };
 
 Template.App_body.onRendered(() => {
