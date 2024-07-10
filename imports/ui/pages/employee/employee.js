@@ -1157,6 +1157,14 @@ Template.employee_create.events({
       }
     })
   } else {
+    Swal.fire({
+      title: 'Loading...',
+      html: 'Sedang memproses gambar...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
     const thisForm = {};
     thisForm[gambar] = "";
     // console.log(file[0].name);
@@ -1198,6 +1206,7 @@ Template.employee_create.events({
         linkGambar,
         golongan
       }  
+      Swal.hideLoading()
       if(!linkGambar){
         Swal.fire({
           title: "Warning",
