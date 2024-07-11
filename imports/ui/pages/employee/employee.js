@@ -9,10 +9,12 @@ import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
 import { result } from "underscore";
 import { HTTP } from 'meteor/http';
+import { StaffsAttendance } from "../../../api/attendance/attendance";
+import { Employee } from "../../../api/employee/employee";
 
 Template.employee_page.onCreated(function (){
     const self = this;
-    
+
     self.employees = new ReactiveVar();
     self.filter = new ReactiveVar({
       type: '',
@@ -29,7 +31,7 @@ Template.employee_page.onCreated(function (){
           console.log(error);
         }
     });
-    Meteor.call("employee.getDataLogin", userId, function (error, result) {  
+    Meteor.call("employee.getDataLogin", userId, function (error, result) {
       if (result) {
         const dataRole = result[0];
         console.log(dataRole);
@@ -121,12 +123,12 @@ Template.employee_page.events({
         });
       }
     })
-    
+
     // console.log(id);
   },
   "input .filter"(e, t){
     e.preventDefault();
-    
+
     const type = $("#input_type").val();
     const data = $('#input_data').val();
     t.filter.set({
@@ -136,7 +138,7 @@ Template.employee_page.events({
   },
   "change .filter"(e, t){
     // e.preventDefault();
-    
+
     const type = $("#input_type").val();
     const data = $('#input_data').val();
     t.filter.set({
@@ -148,7 +150,7 @@ Template.employee_page.events({
 
 Template.dashboard.onCreated(function (){
   const self = this;
-  
+
   self.employees = new ReactiveVar();
   self.todayStatus = new ReactiveVar([])
   self.events = new ReactiveVar()
@@ -160,15 +162,20 @@ Template.dashboard.onCreated(function (){
   self.jabatanLogin = new ReactiveVar();
   const userId = Meteor.userId();
 
-  Meteor.call("staffsAttendance.inThisDay", function (error, result) {
-      if (result) {
-        console.log(result);
-        self.todayStatus.set(result);
-      } else {
-        console.log(error);
-      }
-  });
-  Meteor.call("tasks.getToday", function (error, result) {  
+  Tracker.autorun(() => {
+    Meteor.subscribe('attendanceToday');
+    Meteor.subscribe('myEmployee');
+});
+
+  // Meteor.call("staffsAttendance.inThisDay", function (error, result) {
+  //     if (result) {
+  //       console.log(result);
+  //       self.todayStatus.set(result);
+  //     } else {
+  //       console.log(error);
+  //     }
+  // });
+  Meteor.call("tasks.getToday", function (error, result) {
     if (result) {
       self.tasks.set(result)
     }
@@ -176,7 +183,7 @@ Template.dashboard.onCreated(function (){
       console.log(error);
     }
   })
-  Meteor.call("events.thisWeek", function (error, result) {  
+  Meteor.call("events.thisWeek", function (error, result) {
     if (result) {
       self.events.set(result)
     }
@@ -187,14 +194,14 @@ Template.dashboard.onCreated(function (){
 })
 
 Template.dashboard.onRendered(function () {
-  $('#myCarousel').carousel({
-    interval: 2000,
-    wrap: true,
-    keyboard: false,
-    pause: 'hover'
-});
+//   $('#myCarousel').carousel({
+//     interval: 10000,
+//     wrap: true,
+//     keyboard: false,
+//     pause: 'hover'
+// });
 
-$('.carousel-control').hide();
+// $('.carousel-control').hide();
 });
 
 
@@ -206,7 +213,33 @@ Template.dashboard.helpers({
     return Template.instance().tasks.get()
   },
   todayStatus(){
-    return Template.instance().todayStatus.get()
+    const dataStaffsAttendance = StaffsAttendance.find({}).fetch();
+    let myEmployee = Employee.find().fetch();
+    let listNew = []
+    myEmployee.forEach((x)=>{
+      const attendance = dataStaffsAttendance.find((y) => {
+        return y.userId == x._id
+      })
+      if(attendance) {
+        delete attendance._id
+        x = {fullName : x.full_name, ...attendance, imageLink :x.linkGambar}
+      }else{
+        x ={fullName : x.full_name, imageLink :x.linkGambar }
+      }
+      listNew.push(x)
+    })
+    listNew.sort((a, b) => {
+      if (!a.checkIn && !b.checkIn) {
+          return 0; // Jika keduanya tidak memiliki checkIn, tetap dalam urutan yang sama
+      } else if (!a.checkIn) {
+          return 1; // Jika a tidak memiliki checkIn, a ditempatkan di akhir
+      } else if (!b.checkIn) {
+          return -1; // Jika b tidak memiliki checkIn, b ditempatkan di akhir
+      } else {
+          return new Date(a.checkIn) - new Date(b.checkIn); // Jika keduanya memiliki checkIn, urutkan berdasarkan nilai checkIn
+      }
+  });
+    return listNew
   },
   employees() {
     const t = Template.instance()
@@ -287,12 +320,12 @@ Template.dashboard.events({
       });
     }
   })
-  
+
   // console.log(id);
 },
 "input .filter"(e, t){
   e.preventDefault();
-  
+
   const type = $("#input_type").val();
   const data = $('#input_data').val();
   t.filter.set({
@@ -302,7 +335,7 @@ Template.dashboard.events({
 },
 "change .filter"(e, t){
   // e.preventDefault();
-  
+
   const type = $("#input_type").val();
   const data = $('#input_data').val();
   t.filter.set({
@@ -412,7 +445,7 @@ Template.employee_create.events({
 
     // console.log(base_salary, allowances, deductions);
     // return;
-    
+
     if(!isNumber(emergency_contact_phone) || !isNumber(phone_number)){
       // console.log("gagal no telp masuk sini");
       Swal.fire({
@@ -572,8 +605,8 @@ Template.employee_create.events({
           );
         }
       });
-    }  
-  
+    }
+
   },
 });
 
@@ -595,10 +628,10 @@ Template.employee_create.events({
         }
     ])
     }
-    
-    Template.inputFilesV2.helpers({  
+
+    Template.inputFilesV2.helpers({
       files(){
-        return Template.instance().file.get() 
+        return Template.instance().file.get()
       },
       preview(){
         return Template.instance().preview.get()
@@ -606,7 +639,7 @@ Template.employee_create.events({
     })
     Template.inputFilesV2.events({
       'change .fileUpload'(e, t){
-        // if(!actiontick())return 
+        // if(!actiontick())return
         const file = e.target.files[0];
           // const preview = $('#preview')
           // console.log(file)
@@ -624,7 +657,7 @@ Template.employee_create.events({
           }
       },
       'click .remove-image'(e, t){
-        // if(!actiontick())return 
+        // if(!actiontick())return
         const thisMilik = $(e.target).attr('milik');
         // console.log(thisMilik);
         const hasMilik = $(e.target).hasClass(thisMilik);
@@ -635,15 +668,15 @@ Template.employee_create.events({
       }
     })
   })
-  
+
   Template.employee_detail.onCreated(function () {
     const self = this;
-  
+
     self.employee = new ReactiveVar();
     // self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
     // console.log(id);
-  
+
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
         // console.log(result);
@@ -729,7 +762,7 @@ Template.employee_create.events({
           })
         }
       });
-  
+
     },
     "click #btn-tambah-akun-user"(e, t){
       e.preventDefault()
@@ -746,15 +779,15 @@ Template.employee_create.events({
           const fullName = t.employee.get().full_name
           const role = [];
           const id = FlowRouter.getParam("_id");
-      
+
           const dataSend = {
               username : email,
               fullname: fullName,
               role,
               idEmployee: id
           };
-      
-          Meteor.call("users.createAppMeteorEmployee", dataSend, function (error ,result) { 
+
+          Meteor.call("users.createAppMeteorEmployee", dataSend, function (error ,result) {
               if (result) {
                   // alert("Sukses");
                   if(result.error == 403){
@@ -788,18 +821,18 @@ Template.employee_create.events({
                 }
           })
         }
-      })   
+      })
     },
   });
 
   Template.employee_detail_academicJob.onCreated( function () {
     const self = this;
-  
+
     self.employee = new ReactiveVar();
     // self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
     // console.log(id);
-  
+
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
         // console.log(result);
@@ -818,12 +851,12 @@ Template.employee_create.events({
 
   Template.employee_detail_emergencyContact.onCreated( function () {
     const self = this;
-  
+
     self.employee = new ReactiveVar();
     // self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
     // console.log(id);
-  
+
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
         // console.log(result);
@@ -842,12 +875,12 @@ Template.employee_create.events({
 
   Template.employee_detail_config.onCreated( function () {
     const self = this;
-  
+
     self.employee = new ReactiveVar();
     // self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
     // console.log(id);
-  
+
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
         // console.log(result);
@@ -957,7 +990,7 @@ Template.employee_create.events({
 
   Template.employee_edit.onCreated(function (){
     const self = this;
-  
+
     self.employee = new ReactiveVar();
     self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
@@ -1003,7 +1036,7 @@ Template.employee_create.events({
     },
     async "click #btn_update"(e, t) {
       e.preventDefault();
-  
+
       const full_name = $("#input_fullName").val();
       const identification_number = $("#input_identificationNumber").val();
       const place_of_birth = $("#input_placeOfBirth").val();
@@ -1061,7 +1094,7 @@ Template.employee_create.events({
       }
 
       console.log(base_salary);
-      
+
       if(base_salary == undefined || base_salary == null){
           // alert("Gaji pokok atau Allowance harus angka");
           Swal.fire({
@@ -1205,7 +1238,7 @@ Template.employee_create.events({
         // partnerCode,
         linkGambar,
         golongan
-      }  
+      }
       Swal.hideLoading()
       if(!linkGambar){
         Swal.fire({
@@ -1308,7 +1341,7 @@ Template.employee_create.events({
     self.viewMode = new ReactiveVar("1");
     const id = FlowRouter.getParam("_id");
     // console.log(id);
-    Meteor.call("employee.getBy", id, function (error, result) { 
+    Meteor.call("employee.getBy", id, function (error, result) {
       // console.log(result);
       if (result){
         self.employee.set(result);
@@ -1338,11 +1371,11 @@ Template.employee_create.events({
       return Template.instance().departements.get();
     }
   });
-  
+
   Template.employee_mutation.events({
     "click .btn-add-mutation"(e, t) {
       e.preventDefault();
-  
+
       const mode = $(e.target).attr("milik");
       let value = "0";
       if (mode == "1") {
@@ -1350,7 +1383,7 @@ Template.employee_create.events({
       } else {
         value = "1";
       }
-  
+
       t.viewMode.set(value);
     },
 
@@ -1575,7 +1608,7 @@ Template.employee_create.events({
                   cancelButtonText: "Tidak"
                 }).then((result) => {
                   if(result.isConfirmed) {
-                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
+                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {
                       // console.log(err, res);
                       if(result){
                         Meteor.call('departement.getAll', function (error, result) {
@@ -1597,7 +1630,7 @@ Template.employee_create.events({
                                 name: i.department_unit,
                                 description: "-"
                               }
-                              Meteor.call('departement.insert', data, function (error, result) {  
+                              Meteor.call('departement.insert', data, function (error, result) {
                                 if(result){
 
                                 }else{
@@ -1630,7 +1663,7 @@ Template.employee_create.events({
                     })
                   }
                 })
-                
+
               }
               else{
                 Swal.fire({
@@ -1642,7 +1675,7 @@ Template.employee_create.events({
                   cancelButtonText: "Tidak"
                 }).then((result) => {
                   if(result.isConfirmed) {
-                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {  
+                    Meteor.call('employee.insertCSV', filteredArr, function (error, result) {
                       // console.log(err, res);
                       if(result){
                         Meteor.call('departement.getAll', function (error, result) {
@@ -1663,7 +1696,7 @@ Template.employee_create.events({
                                 name: i.department_unit,
                                 description: "-"
                               }
-                              Meteor.call('departement.insert', data, function (error, result) {  
+                              Meteor.call('departement.insert', data, function (error, result) {
                                 if(result){
 
                                 }else{
@@ -1697,9 +1730,9 @@ Template.employee_create.events({
                   }
                 })
               }
-              
+
             }
-          
+
         })
       }
     }

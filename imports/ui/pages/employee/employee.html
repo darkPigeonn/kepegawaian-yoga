@@ -36,6 +36,7 @@
                     {{#each employees}}
                     <tr>
                         <td> {{nomorUrut @index}}</td>
+
                         <td> {{full_name}} </td>
                         <td> {{job_position}} </td>
                         <!-- <td> {{formatHRDate dob}} </td> -->
@@ -64,11 +65,11 @@
 
 
 <template name="dashboard">
-    <div class="container" style="margin-top: 2rem;">
+    <div class="mx-5" style="margin-top: 2rem;">
         <h2 class="text-center">Dashboard Centrum Carlo Acutis</h2>
         <div class="row">
             <div class="col-4">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <div >
                     <div class="carousel-inner">
                       <div class="carousel-item active pb-3">
                         <h3 class="text-center">Status Pegawai Hari Ini</h3>
@@ -76,7 +77,8 @@
                             <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
                                 <thead>
                                     <tr>
-                                        <th width="30%">Nama</th>
+
+                                        <th colspan="2" width="30%">Nama</th>
                                         <th width="20%">Status</th>
                                         <th width="20%">Waktu Masuk</th>
                                     </tr>
@@ -84,9 +86,20 @@
                                 <tbody>
                                     {{#each todayStatus}}
                                     <tr>
+                                        <td>
+                                            <div class="avatar-container">
+                                                <img  src="{{imageLink}}"  class="avatar" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                                            </div>
+
+                                        </td>
                                         <td>{{ fullName }}</td>
+                                        {{#if checkIn}}
                                         <td>{{#if isWfh }} WFH {{else}} Office {{/if}}</td>
                                         <td> {{formatTime checkIn}}</td>
+                                        {{else}}
+                                        <td>Belum Presensi</td>
+                                        <td>-</td>
+                                        {{/if}}
                                     </tr>
                                     {{/each}}
                                 </tbody>
@@ -280,7 +293,7 @@
 
             </div>
             <div class="col-8">
-            <iframe src="https://calendar.google.com/calendar/embed?src=developimavi%40gmail.com&ctz=Asia%2FJakarta" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            <iframe src="https://calendar.google.com/calendar/embed?src=developimavi%40gmail.com&ctz=Asia%2FJakarta" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
             </div>
         </div>
     </div>
@@ -288,6 +301,22 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
       <style>
+       .avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.avatar {
+    width: 60px; /* Set the desired width */
+    height: 60px; /* Set the desired height */
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image covers the container */
+    border: 2px solid #fff; /* Optional: adds a white border around the avatar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for better visual */
+}
+
         .carousel-control-next,
         .carousel-control-prev /*, .carousel-indicators */ {
             filter: invert(100%);
