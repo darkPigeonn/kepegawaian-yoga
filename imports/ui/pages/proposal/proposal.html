@@ -3,9 +3,9 @@
     {{else}}
     <div class="container page-letters-list">
         <h1 class="page-title">Daftar Proposal</h1>
-        <section class="section-page-shoulders">
-            <div class="btn-group" role="grup" aria-label="command control">
-                <button id="createKosong" class="btn btn-primary">Input Proposal</button>
+        <section class="section-page-shoulders" style="display: flex; justify-content: flex-end; align-items: center;">
+            <div class="btn-group" role="grup" aria-label="command control" style="margin-right: 0;">
+                <button id="createKosong" class="btn btn-primary">+ Input Proposal</button>
                 <!-- <a href="{{pathFor route='listDispositionsConfig'}}" class="btn btn-primary" style="color: white;">Config Kategori Proposal</a> -->
             </div>
         </section>
@@ -426,7 +426,7 @@
                             </tr>
                         </table>
                         <br>
-                        <h4 class="page-title">
+                        <h4 class="page-title" style="text-align: center;">
                             <b>
                                 {{proposalData.name}} <br>
                             </b>
@@ -563,7 +563,7 @@
                                 {{#if equals formSubmit 1}}
                                     <div class="form">
                                         <div class="form-group">
-                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
+                                            <label style="font-weight: bold;">Opsional</label><br>
                                             <label for="">Catatan Revisi : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -577,7 +577,7 @@
                                 {{#if equals formSubmit 2}}
                                     <div class="form">
                                         <div class="form-group">
-                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
+                                            <label style="font-weight: bold;">Opsional</label><br>
                                             <label for="">Masukkan Keterangan : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -590,7 +590,7 @@
                                 {{#if equals formSubmit 3}}
                                     <div class="form">
                                         <div class="form-group">
-                                            <label style="font-weight: bold;">*Wajib diisi</label><br>
+                                            <label style="font-weight: bold;">Opsional</label><br>
                                             <label for="">Masukkan Keterangan : </label>
                                             <textarea type="text" id="note" class="form-control"></textarea>
                                         </div>
@@ -643,7 +643,7 @@
                             </tr>
                         </table>
                         <br>
-                        <h4 class="page-title">
+                        <h4 class="page-title" style="text-align: center;">
                             <b>
                                 {{proposalData.name}} <br>
                             </b>
@@ -795,7 +795,7 @@
                     </tr>
                 </table>
                 <br>
-                <h4 class="page-title">
+                <h4 class="page-title" style="text-align: center;">
                     <b>
                         {{proposalData.name}} <br>
                     </b>
@@ -858,7 +858,7 @@
                     </div>
                 </div>
                 <section style="break-inside: avoid; page-break-inside: avoid;">
-                    {{#if equals isChief false}}
+                    {{#if equals proposalData.isChief false}}
                                 <div class="row">
                                     <div class="col-md-6 text-center">
                                         <br><br>
@@ -876,7 +876,7 @@
                                         Staff
                                         <br><br><br>
                                         <!-- {{generalManager.fullname}} -->
-                                        {{usernamePembuat.full_name}}
+                                        {{proposalData.fullname}}
                                     </div>
                                     <div class="col-md-12 text-center">
                                         Menyetujui,
@@ -1053,12 +1053,12 @@
                                 </td>
                             </tr>
                         </table>
-                        <br>
-                        <h4 class="page-title">
+                        <!-- <br>
+                        <h4 class="page-title" style="text-align: center;">
                             <b>
                                 {{proposalData.name}} <br>
                             </b>
-                        </h4>
+                        </h4> -->
                     </page_header>
 
                     <content style="color: black">

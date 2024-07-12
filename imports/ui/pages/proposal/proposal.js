@@ -1126,28 +1126,16 @@ Template.printProposal.onCreated(function () {
     // //('prev '+ id);
     self.proposalData = new ReactiveVar();
     const thisUser = Meteor.userId();
-    Meteor.call('employee.getDataUserProposal', thisUser, function (error, result) {
-        if(result){
-            self.usernamePembuat.set(result)
-            if(result.roles.includes("chief")) {
-                self.isChief.set(true);
-            }
-        }
-        else{
-            console.log(error);
-        }
-    })
     Meteor.call('getProposalById', id, function (error, result) {
         if (result) {
             //("result");
             //(result);
             self.proposalData.set(result)
         }
+        else {
+            console.log(error);
+        }
     });
-    // Tracker.autorun(() => {
-    //     Meteor.subscribe('userSearch');
-    //     Meteor.subscribe('getDivisions');
-    // });
 });
 
 Template.printProposal.helpers({
