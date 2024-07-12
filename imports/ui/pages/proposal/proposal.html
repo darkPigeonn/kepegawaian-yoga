@@ -1142,6 +1142,54 @@
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <h5>
+                                VI. DAFTAR BUKTI TRANSAKSI
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <th>Nama</th>
+                                            <th>Dokumen</th>
+                                        </thead>
+                                        <tbody>
+                                            {{#each i in dataLPJ.linksTransaction}}
+                                            <tr>
+                                                <td>{{i.name}}</td>
+                                                <td><a href="{{i.link}}" target="_blank"><i class="fas fa-download"></i></a></td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                VII. DOKUMENTASI KEGIATAN
+                            </h5>
+
+                            <div class="content" style="margin-left: 5%;">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <th>Nama</th>
+                                            <th>Dokumen</th>
+                                        </thead>
+                                        <tbody>
+                                            {{#each i in dataLPJ.linksActivity}}
+                                            <tr>
+                                                <td>{{i.name}}</td>
+                                                <td><a href="{{i.link}}" target="_blank"><i class="fas fa-download"></i></a></td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </body>
             </div>
