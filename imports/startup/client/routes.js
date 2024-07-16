@@ -50,7 +50,12 @@ FlowRouter.route("/batch/detail/:_id", {
     this.render("App_body", "batch_detail");
   },
 });
-
+FlowRouter.route("/login",{
+  name : 'login',
+  action(){
+    this.render("fullWidth", "login_page")
+  }
+})
 // Employees
 FlowRouter.route("/dashboard", {
   name: "dashboard",

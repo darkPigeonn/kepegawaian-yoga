@@ -1,139 +1,82 @@
 <template name="App_home">
-  <style>
-    /* Style the content */
-    .content {
-      /* margin-left: 260px; */
-      /* padding: 20px; */
+  <div class="">
+    <div class="title-page">
+      <h3>Selamat datang, Dosen</h3>
+    </div>
+    <hr class="new1" />
+    <div class="content-page">
+      <div class="d-flex justify-content-between">
+        <input type="text" placeholder="Cari kelas"/>
+        <button class="btn btn-primary-imavi">Kartu</button>
+      </div>
+
+      <div class="d-flex flex-wrap gap-5 my-3">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <img src="/assets/img/img-default.png"/>
+            <h5 class="card-title mt-2">Nama Kelas</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  style="width: 25%" aria-valuenow="25"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="my-2">20% Selesai</p>
+          </div>
+        </div>
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <img src="/assets/img/img-default.png"/>
+            <h5 class="card-title mt-2">Nama Kelas</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  aria-valuenow="0"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="my-2">0% Selesai</p>
+          </div>
+        </div>
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <img src="/assets/img/img-default.png"/>
+            <h5 class="card-title mt-2">Nama Kelas</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  aria-valuenow="0"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="my-2">0% Selesai</p>
+          </div>
+        </div>
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <img src="/assets/img/img-default.png"/>
+            <h5 class="card-title mt-2">Nama Kelas</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  aria-valuenow="0"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="my-2">0% Selesai</p>
+          </div>
+        </div>
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+          <div class="card-body">
+            <img src="/assets/img/img-default.png"/>
+            <h5 class="card-title mt-2">Nama Kelas</h5>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar"  aria-valuenow="0"  aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="my-2">0% Selesai</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <style scoped>
+    .box {
+      width: 400px;
+      background: white;
+      padding: 10px 20px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      border-radius: 10px;
+    }
+    .img{
       width: 100%;
     }
 
-    /* Style the header */
-    .header {
-      /* background-color: #0045a7;
-      color: white;
-      padding: 5px;
-      margin-bottom: 10px; */
-    }
-    .nav-item i {
-        font-size: 24px;
-        margin-right: 10px;
-    }
-
-    .employees-section {
-        padding: 20px;
-        background-color: #f5f5f5;
-    }
-
-    .employees-title {
-        font-size: 36px;
-    }
-
-    .move-down {
-        margin-top: 10px;
-    }
-    .btn-more {
-        background-color: white;
-        color: #6666FF;
-        font-weight: bold;
-    }
-
-    .btn-employee-transfer {
-        background-color: transparent;
-        color: #6666FF;
-        font-weight: bold;
-    }
-    .btn-add-employee {
-      background-color: #6666FF;
-      color: white;
-      font-weight: bold;
-    }
-</style>
-
-<!-- Employees Section -->
-{{#if equals jabatanLogin "admin"}}
-  <div class="container-fluid employees-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <span class="employees-title">Pegawai</span>
-        </div>
-        <div class="col-md-6 text-md-right">
-          <div class="btn-group">
-            <a href="/employees/create">
-              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
-                Tambah Pegawai
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="border rounded p-3 mt-2"> <!-- Add border and rounding styles -->
-          <div class="row">
-            <div class="col-md-2">
-              <p>Ringkasan Periode</p>
-              <h4>{{bulanPeriode}}</h4>
-            </div>
-            <div class="col-md-2">
-              <p>Total Pegawai</p>
-              <h4>{{employees.length}}</h4>
-            </div>
-            <div class="col-md-2">
-              <p>Pegawai Baru</p>
-              <h4>{{employeesMasuk.length}}</h4>
-            </div>
-            <div class="col-md-2 position-relative">
-              <div style="border-right: 1px solid #000; height: 100%; position: absolute; top: 0; right: 0;"></div>
-              <p>Pegawai Keluar</p>
-              <h4>{{employeesKeluar.length}}</h4>
-            </div>
-            <div class="col-md-4 d-flex align-items-center">
-              <a href="/dashboard"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
-              <a href="/dashboard"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="content">
-      <hr>
-      <div class="container">
-        <div class="row">
-          <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <th>Posisi Pekerjaan</th>
-                    <th>Status Karyawan</th>
-                    <th>Tanggal Masuk</th>
-                </tr>
-            </thead>
-            <tbody>
-              {{#each employees}}
-                <tr>
-                  <td>
-                    <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;">
-                    {{full_name}}
-                  </td>
-                  <td> {{job_position}} </td>
-                  <td> {{employment_status}} </td>
-                  <td> {{formatHRDate start_date}} </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  {{else}}
-    <h3>Selamat Datang</h3>
-  {{/if}}
-
+  </style>
 </template>

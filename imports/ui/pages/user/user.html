@@ -1,6 +1,6 @@
 <template name="listUser">
     <div class="container">
-        {{#if equals jabatanLogin "admin"}}
+        {{#if isInRole "admin"}}
         <h1>Daftar User</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
@@ -45,7 +45,7 @@
         </div>
         {{/if}}
 
-        {{#if equals jabatanLogin "super-admin"}}
+        {{#if isInRole "super-admin"}}
         <h1>Daftar Semua User</h1>
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">

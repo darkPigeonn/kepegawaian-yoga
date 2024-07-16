@@ -1,13 +1,52 @@
 <template name="App_body">
-  {{#if currentUser}}
-  <section>
-    {{> navbar}}
-    <div class="container-fluid" style="height: 100%;">
-      {{> yield}}
-    </div>
-  </section>
+  {{#if isLoggingIn}}
+  <div class="loading-spinner">Loading...</div>
   {{else}}
-  {{> login_page}}
+    {{#if currentUser}}
+    <section>
+      {{> navbar}}
+      <div class="wrapper">
+        <nav id="sidebar">
+          <div class="sidebar-header">
+            <h3>Dahsboard</h3>
+          </div>
+          <ul class="list-unstyled components">
+            <li class="active">
+              <a href="#">Kursus Saya</a>
+              <ul class="list-unstyled" id="aboutSubmenu">
+                <li>
+                  <a href="#">Kelas 1</a>
+                </li>
+                <li>
+                  <a href="#">Kelas 2</a>
+                </li>
+                <li>
+                  <a href="#">Kelas 3</a>
+                </li>
+                <li>
+                  <a href="#">Kelas 4</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">Sumber Daya</a>
+            </li>
+            <li>
+              <a href="#">Kalender</a>
+            </li>
+            <li>
+              <a href="#">Keluar</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="content p-4">
+          {{> yield}}
+        </div>
+      </div>
+    </section>
+    {{else}}
+    {{> boarding}}
+    {{/if}}
   {{/if}}
 </template>
 
@@ -18,33 +57,28 @@
 <template name="login_page">
   <section class="ftco-section">
     <div class="container">
-
-      <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-5">
-          <div class="wrap">
-            <div class="login-wrap p-4 p-md-5 shadow">
-              <div class="d-flex">
-                <div class="w-100">
-                  <h3 class="mb-4">Kepegawaian</h3>
-                </div>
-              </div>
-              <form action="#" class="signin-form">
-                <div class="form-group mt-3">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id='input_username' required="">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" class="form-control" id="input_password" required="">
-                  <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                </div>
-                <div class="form-group">
-                  <button type="submit" class="form-control btn btn-primary rounded submit px-3">Masuk</button>
-                </div>
-
-              </form>
-            </div>
+      <div class="wrap">
+        <div class="login-wrap p-4 p-md-5 shadow">
+          <div class="text-center">
+            <img src="assets/img/logo-imavi.png" width="100"/>
+            <h3>Sistem Informasi Akademik</h3>
+            <h3 class="mb-4">INSTITUT TEOLOGI YOHANES MARIA VIANNEY</h3>
           </div>
+          <form action="#" class="signin-form">
+            <div class="form-group mt-3">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id='input_username' required="">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="input_password" required="">
+              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="form-control btn btn-primary-imavi rounded submit px-3">Masuk</button>
+            </div>
+
+          </form>
         </div>
       </div>
     </div>
@@ -87,7 +121,7 @@
       line-height: 1.5;
       color: #212529;
       text-align: left;
-      background-color: #fff;
+
     }
 
     [tabindex="-1"]:focus {
@@ -12041,4 +12075,28 @@
       color: #fff;
     }
   </style>
+</template>
+
+<template name="boarding">
+  <div class="boarding-section">
+    <div class="navbar mx-5">
+      <img src="/assets/img/logo-header.png" width="200"/>
+      <a href="/login" class="btn btn-primary-imavi">LOGIN</a>
+    </div>
+
+    <div class="page-body">
+      <div class="announcement-section">
+        <div class="announcement d-flex flex-column">
+          <div class="title-announcement">
+            Informasi Penting UTS Genap 2023 - 2024
+          </div>
+          <ul>
+            <li>
+              Ujian Tengah Semester
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

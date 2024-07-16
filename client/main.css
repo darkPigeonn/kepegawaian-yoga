@@ -1,4 +1,103 @@
 
+#sidebar {
+  width: 250px;
+  height: 100vh;
+  background: #612D81;
+  color: white;
+}
+.wrapper {
+  display: flex;
+}
+.content {
+  width: 100%;
+}
+#aboutSubmenu{
+  margin-left: 20px;
+}
+
+#sidebar .sidebar-header {
+  padding: 10px 20px;
+}
+
+#sidebar ul.components {
+  padding: 0 20px;
+  /* border-bottom: 1px solid #ddd; */
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: white;
+}
+
+#sidebar ul li a:hover {
+  color: #7386d5;
+  background: #fff;
+}
+.btn-circle {
+  width: 40px; /* Ukuran lebar dan tinggi yang sama untuk membuatnya bulat */
+  height: 40px;
+  padding: 0;
+  border-radius: 50%; /* Membuat elemen menjadi bulat */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: #612D81;
+}
+
+.btn-circle i {
+  font-size: 16px; /* Ukuran ikon */
+  color :#612D81
+}
+
+.btn-primary-imavi {
+  background-color: #612D81 !important;
+  color : #FCF4B0 !important;
+}
+
+.page-body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-image: url('/assets/img/bg-1.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh; /* Sesuaikan dengan tinggi yang diinginkan */
+  padding-top: 10%;
+}
+
+.announcement-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.announcement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  color: white;
+  padding: 20px; /* Sesuaikan dengan padding yang diinginkan */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Sesuaikan dengan border-radius yang diinginkan */
+  background-color: #612D81; /* Sesuaikan dengan background yang diinginkan */
+}
+
+.title-announcement {
+  font-size: 18px; /* Sesuaikan dengan ukuran font yang diinginkan */
+  font-weight: bold;
+}
+.img-section img{
+  width: 100%;
+  object-fit: contain;
+}
 .section-label-page{
 	background:#1B3C73;
 	width:100%;
@@ -24,3 +123,54 @@
   border-bottom: 1px #c6c6c6 solid;
 }
 
+
+.section-branding {
+  background: rgb(93, 0, 97);
+  padding: 10px 20%;
+  color: white;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+}
+.logo {
+  height: 40px;
+  width: 40px;
+  margin-right: 1rem;
+  background-color: white;
+}
+
+.company-name {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.bg-gray{
+  background: #fafafa;
+  height: 100%;
+}
+hr.new1 {
+  border-top: 1px solid rgb(93, 0, 97);;
+}
+
+.title-page {
+  color: rgb(93, 0, 97);
+  font-size: 1.5rem;
+  font-weight: bold;
+
+}
+
+.summary-info{
+  margin-top: 20px;
+  display: flex;
+  gap:20px
+}
+
+.statistic-section {
+  background: white;
+  padding: 10px 20px;
+  border-top: 2px solid green;
+  border-radius: 10px;
+}

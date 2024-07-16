@@ -3,7 +3,7 @@ import "../../components/navbar/navbar.js";
 import { Meteor } from "meteor/meteor";
 import Swal from "sweetalert2";
 import { Random } from "meteor/random";
-
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 const INACTIVITY_TIMEOUT = 10000; // 5 minutes in milliseconds
 
 let inactivityTimer;
@@ -50,6 +50,12 @@ Template.App_body.onDestroyed(() => {
     window.removeEventListener(event, resetInactivityTimer);
   });
 });
+Template.App_body.helpers({
+  isLoggingIn() {
+    return Meteor.loggingIn();
+  }
+});
+
 
 // Clear session on logout
 Accounts.onLogout(() => {
@@ -73,7 +79,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          Router.go("home");
+          FlowRouter.go("/");
         }
       });
     } else {
