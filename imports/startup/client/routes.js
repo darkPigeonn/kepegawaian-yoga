@@ -17,6 +17,7 @@ import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/payroll/payroll.js";
+import "../../ui/pages/courses/courses.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -550,3 +551,13 @@ FlowRouter.route("/detailKorespondensi/:_id", {
     this.render("App_body", "detailKorespondensi");
   },
 });
+
+
+//new
+
+FlowRouter.route("/courses/detail/:_id",{
+  name : 'detailCourses',
+  action(){
+    this.render("App_body", 'detailCourses')
+  }
+})

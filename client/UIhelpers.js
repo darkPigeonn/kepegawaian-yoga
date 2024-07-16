@@ -65,6 +65,10 @@ Template.registerHelper("dateToHTML", function (context, options) {
 Template.registerHelper('toHTML', function (context, options) {
   return $("<div>").html(context).text();
 });
+Template.registerHelper('size', function (array) {
+  if(!array) return 0
+  return array.length;
+});
 
 Template.registerHelper('includes', function (a, b) {
   if(a && a.length && b) return a.includes(b);
@@ -145,7 +149,7 @@ Template.registerHelper("setTableNumber", function (value) {
   let number = parseInt(value);
   return number + 1;
 });
-Template.registerHelper("setJabatanFormat", function (value) { 
+Template.registerHelper("setJabatanFormat", function (value) {
   let words = value.split('-');
 
   // Mengonversi setiap kata menjadi huruf kapital untuk memulai

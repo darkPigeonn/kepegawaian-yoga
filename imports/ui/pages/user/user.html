@@ -135,33 +135,12 @@
 
             <div class="form-group">
                 <label for="input_roles">Roles</label>
-                {{#if equals partnerLogin "imavi"}}
                     <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
+                        <option value="leacture">Dosen</option>
                     </select>
-                {{else}}
-                    <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="resepsionis">Resepsionis</option>
-                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                        <option value="bidang">Bidang</option>
-                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                        <option value="dewan-pengurus">Dewan Pengurus</option>
-                        <option value="pengurus-inti">Pengurus Inti</option>
-                        <option value="administrasi-umum">Administrasi Umum</option>
-                        <option value="staff">Staff</option>
-                    </select>
-                {{/if}}
             </div>
-
-
-
-
-                <br>
-
-                <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
-
+            <br>
+            <button class="btn btn-primary" style="width: auto;" type="button" id="btn_save_user">Simpan</button>
         </form>
     </div>
 </template>

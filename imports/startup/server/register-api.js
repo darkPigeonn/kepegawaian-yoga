@@ -18,3 +18,4 @@ import "../../api/salaries/methods.js";
 import "../../api/proposalReport/methods.js";
 import "../../api/server/publications.js";
 import "../../api/attendance/publications.js";
+import "../../api/courses/methods.js";
