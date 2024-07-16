@@ -50,6 +50,10 @@ Meteor.methods({
       currentOrder,
       currentJabatan,
       partner: partnerCode,
+      creatorJabatan: adminPartner.roles[0],
+      createdBy: adminPartner._id,
+      createdByName: adminPartner.fullname,
+      createdAt: new Date()
     };
 
     return await Document.insert(dataSave);
@@ -87,6 +91,7 @@ Meteor.methods({
     const data = Document.find({
       currentJabatan: role,
       partner: partnerCode,
+      currentOrder: { $nin: [80, 99] }
     }).fetch();
     // console.log(data);
     return data;
@@ -127,7 +132,7 @@ Meteor.methods({
           {
             $set: {
               "alur.$.analisis": dataReview,
-              currentOrder: "99",
+              currentOrder: 80,
               currentJabatan: "Review Selesai",
             },
           }
@@ -170,8 +175,8 @@ Meteor.methods({
           {
             $set: {
               "alur.$.analisis": dataReview,
-              currentOrder: "1",
-              currentJabatan: alur[0].jabatan,
+              currentOrder: 99,
+              currentJabatan: element.jabatan,
             },
           }
         );

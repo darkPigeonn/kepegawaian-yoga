@@ -28,8 +28,17 @@
                         <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
                         <td> {{formatHRDate tanggal}} </td>
                         <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
-                            {{/if}}</td>
+                        <td> 
+                            {{#if equals currentOrder 99}} 
+                                Selesai Ditolak 
+                            {{else}}
+                                {{#if equals currentOrder 80}} 
+                                    Selesai Diterima 
+                                {{else}}
+                                    Proses Review Berlangsung
+                                {{/if}}
+                            {{/if}}
+                        </td>
                         <td>
                             <a href="/documents/details/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -68,8 +77,17 @@
                         <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
                         <td> {{formatHRDate tanggal}} </td>
                         <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
-                            {{/if}}</td>
+                        <td> 
+                            {{#if equals currentOrder 99}} 
+                                Selesai Ditolak 
+                            {{else}}
+                                {{#if equals currentOrder 80}} 
+                                    Selesai Diterima 
+                                {{else}}
+                                    Proses Review Berlangsung
+                                {{/if}}
+                            {{/if}}
+                        </td>
                         <td>
                             <a href="/documents/details/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -107,8 +125,17 @@
                         <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
                         <td> {{formatHRDate tanggal}} </td>
                         <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
-                            {{/if}}</td>
+                        <td> 
+                            {{#if equals currentOrder 99}} 
+                                Selesai Ditolak 
+                            {{else}}
+                                {{#if equals currentOrder 80}} 
+                                    Selesai Diterima 
+                                {{else}}
+                                    Proses Review Berlangsung
+                                {{/if}}
+                            {{/if}}
+                        </td>
                         <td>
                             <a href="/documents/details/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -147,8 +174,17 @@
                         <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
                         <td> {{formatHRDate tanggal}} </td>
                         <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td> {{#if equals currentOrder "99"}} Selesai Diterima {{else}} Proses Review Berlangsung
-                            {{/if}}</td>
+                        <td> 
+                            {{#if equals currentOrder 99}} 
+                                Selesai Ditolak 
+                            {{else}}
+                                {{#if equals currentOrder 80}} 
+                                    Selesai Diterima 
+                                {{else}}
+                                    Proses Review Berlangsung
+                                {{/if}}
+                            {{/if}}
+                        </td>
                         <td>
                             <a href="/documents/details/{{_id}}">
                                 <button class="btn btn-primary" type="button" id="btn_details">Detail</button>

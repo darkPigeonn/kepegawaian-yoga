@@ -219,7 +219,7 @@ Template.create_document.events({
       Swal.close();
       Swal.fire({
         title: "Gagal",
-        text: "Dokumen gagal diunggah ke sistem",
+        text: "Dokumen gagal diunggah ke sistem, pastikan file sudah dipilih",
         showConfirmButton: true,
         allowOutsideClick: true,
       });
