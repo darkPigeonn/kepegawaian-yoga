@@ -9,7 +9,7 @@ import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
 import { result } from "underscore";
 import { HTTP } from 'meteor/http';
-import { StaffsAttendance } from "../../../api/attendance/attendance";
+import { Permits, StaffsAttendance } from "../../../api/attendance/attendance";
 import { Employee } from "../../../api/employee/employee";
 
 Template.employee_page.onCreated(function (){
@@ -152,6 +152,7 @@ Template.dashboard.onCreated(function (){
   const self = this;
 
   self.employees = new ReactiveVar();
+  self.permits = new ReactiveVar();
   self.todayStatus = new ReactiveVar([])
   self.events = new ReactiveVar()
   self.tasks = new ReactiveVar([])
@@ -163,9 +164,43 @@ Template.dashboard.onCreated(function (){
   const userId = Meteor.userId();
 
   Tracker.autorun(() => {
-    Meteor.subscribe('attendanceToday');
-    Meteor.subscribe('myEmployee');
-});
+    const handleAttendance = Meteor.subscribe('attendanceToday');
+    const handleEmployee = Meteor.subscribe('myEmployee');
+    const handlePermits = Meteor.subscribe('permitsToday');
+
+    if (handleAttendance.ready() && handleEmployee.ready()) {
+      const dataStaffsAttendance = StaffsAttendance.find({}).fetch();
+      let myEmployee = Employee.find().fetch();
+      let permitsToday = Permits.find().fetch()
+      let listNew = [];
+
+      myEmployee.forEach((x) => {
+        const attendance = dataStaffsAttendance.find((y) => y.userId === x._id);
+        if (attendance) {
+          delete attendance._id;
+          x = { fullName: x.full_name, ...attendance, imageLink: x.linkGambar };
+        } else {
+          x = { fullName: x.full_name, imageLink: x.linkGambar };
+        }
+        listNew.push(x);
+      });
+
+      listNew.sort((a, b) => {
+        if (!a.checkIn && !b.checkIn) {
+          return 0; // Jika keduanya tidak memiliki checkIn, tetap dalam urutan yang sama
+        } else if (!a.checkIn) {
+          return 1; // Jika a tidak memiliki checkIn, a ditempatkan di akhir
+        } else if (!b.checkIn) {
+          return -1; // Jika b tidak memiliki checkIn, b ditempatkan di akhir
+        } else {
+          return new Date(a.checkIn) - new Date(b.checkIn); // Jika keduanya memiliki checkIn, urutkan berdasarkan nilai checkIn
+        }
+      });
+
+      self.todayStatus.set(listNew);
+      self.permits.set(permitsToday)
+    }
+  });
 
   // Meteor.call("staffsAttendance.inThisDay", function (error, result) {
   //     if (result) {
@@ -213,72 +248,11 @@ Template.dashboard.helpers({
     return Template.instance().tasks.get()
   },
   todayStatus(){
-    const dataStaffsAttendance = StaffsAttendance.find({}).fetch();
-    let myEmployee = Employee.find().fetch();
-    let listNew = []
-    myEmployee.forEach((x)=>{
-      const attendance = dataStaffsAttendance.find((y) => {
-        return y.userId == x._id
-      })
-      if(attendance) {
-        delete attendance._id
-        x = {fullName : x.full_name, ...attendance, imageLink :x.linkGambar}
-      }else{
-        x ={fullName : x.full_name, imageLink :x.linkGambar }
-      }
-      listNew.push(x)
-    })
-    listNew.sort((a, b) => {
-      if (!a.checkIn && !b.checkIn) {
-          return 0; // Jika keduanya tidak memiliki checkIn, tetap dalam urutan yang sama
-      } else if (!a.checkIn) {
-          return 1; // Jika a tidak memiliki checkIn, a ditempatkan di akhir
-      } else if (!b.checkIn) {
-          return -1; // Jika b tidak memiliki checkIn, b ditempatkan di akhir
-      } else {
-          return new Date(a.checkIn) - new Date(b.checkIn); // Jika keduanya memiliki checkIn, urutkan berdasarkan nilai checkIn
-      }
-  });
-    return listNew
+    return Template.instance().todayStatus.get();
   },
-  employees() {
-    const t = Template.instance()
-    const employee = t.employees.get();
-    const filter = t.filter.get()
-    // console.log(employee);
-    if(employee){
-      const result =  employee.filter((x) => {
-        const query = filter.data.toString().toLowerCase()
-        if(filter.type == 'job_position'){
-          return x.job_position.toString().toLowerCase().includes(query)
-        }
-        if(filter.type == 'start_date'){
-          const thisStartDate = x.start_date
-          return moment(thisStartDate).format('YYYY').includes(query)
-        }
-        if(filter.type == 'masa_jabatan'){
-          const thisStartDate = x.start_date
-          const diff = moment().diff(thisStartDate, 'year')
-          return diff.toString().includes(query)
-        }
-        if(filter.type == 'department_unit'){
-          return x.department_unit.toString().toLowerCase().includes(query)
-        }
-        if(filter.type == 'full_name'){
-          return x.full_name.toString().toLowerCase().includes(query);
-        }
-        return true
-      })
-      // console.log(result);
-      return result
-    }
-    else{
-      return []
-    }
-  },
-  jabatanLogin() {
-    return Template.instance().jabatanLogin.get();
-  },
+  permits(){
+    return Template.instance().permits.get()
+  }
 });
 
 Template.dashboard.events({

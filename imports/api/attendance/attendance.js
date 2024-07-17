@@ -23,6 +23,7 @@ SimpleSchema.extendOptions([
 // });
 
 export const StaffsAttendance = new Mongo.Collection("staffsAttendance");
+export const Permits = new Mongo.Collection("permits");
 export const MonthlyAttendance = new Mongo.Collection("monthlyAttendances");
 export const ClockShifts = new Mongo.Collection("clockShifts");
 export const ScheduleAttendance = new Mongo.Collection("scheduleAttendance");
