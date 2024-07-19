@@ -34,7 +34,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each myProposals}}
                         <tr>
@@ -56,37 +56,31 @@
                             </td>
                             <td>
                                 {{#if equals status -1}}
-                                <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat"
-                                    milik="{{_id}}">
+                                <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat" milik="{{_id}}">
                                     Edit</a>
                                 <button class="btn btn-primary" id="btn-kirim" milik="{{ _id }}">Kirim</button>
                                 {{else}}
-                                    <a href="/proposal/view/{{_id}}" class="btn btn-warning"
-                                        milik="{{_id}}">
-                                        Lihat</a>
+                                <a href="/proposal/view/{{_id}}" class="btn btn-warning" milik="{{_id}}">
+                                    Lihat</a>
                                 {{/if}}
                                 <!-- {{#if equals currentState.status 90}} -->
                                 {{#if equals status "90"}}
-                                    <a href="/proposal/edit/{{_id}}" class="btn btn-primary"
-                                        milik="{{_id}}">
-                                        Perbaiki</a>
+                                <a href="/proposal/edit/{{_id}}" class="btn btn-primary" milik="{{_id}}">
+                                    Perbaiki</a>
                                 {{/if}}
                                 {{#if equals status "60"}}
-                                    <a href="/proposal/print/{{_id}}" class="btn btn-primary"
-                                    milik="{{_id}}">
+                                <a href="/proposal/print/{{_id}}" class="btn btn-primary" milik="{{_id}}">
                                     Print</a>
-                                    {{#if idReport}}
-                                        <a href="/proposal/LPJ/details/{{idReport}}" class="btn btn-info"
-                                        milik="{{idReport}}">
-                                        Detail LPJ</a>
-                                    {{else}}
-                                        <a href="/proposal/LPJ/create/{{_id}}" class="btn btn-primary"
-                                        milik="{{_id}}">
-                                        LPJ</a>
-                                    {{/if}}
+                                {{#if idReport}}
+                                <a href="/proposal/LPJ/details/{{idReport}}" class="btn btn-info" milik="{{idReport}}">
+                                    Detail LPJ</a>
+                                {{else}}
+                                <a href="/proposal/LPJ/create/{{_id}}" class="btn btn-primary" milik="{{_id}}">
+                                    LPJ</a>
+                                {{/if}}
                                 {{/if}}
                             </td>
-    
+
                         </tr>
                         {{/each}}
                     </tbody>
@@ -115,7 +109,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each incomingProposals}}
                         <tr>
@@ -138,12 +132,14 @@
                             <td>
                                 <!-- {{#if equals currentState.status "99"}} -->
                                 {{#if equals status "99"}}
-                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
-                                 {{ else }}
-                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
+                                {{ else }}
+                                <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
                                 {{/if}}
                             </td>
-    
+
                         </tr>
                         {{/each}}
                     </tbody>
@@ -172,7 +168,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each dataProposalHistory}}
                         <tr>
@@ -193,7 +189,8 @@
                                 {{statusDetail status}}
                             </td>
                             <td>
-                                <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
                             </td>
                         </tr>
                         {{/each}}
@@ -288,7 +285,7 @@
             <label>Alur</label>
             <select id="input_alur" class="form-control select2" multiple>
                 {{#each daftarPegawaiAlur}}
-                    <option value="{{username}}">{{username}} / {{fullname}}</option>    
+                <option value="{{username}}">{{username}} / {{fullname}}</option>
                 {{/each}}
             </select>
             <br><br>
@@ -305,19 +302,19 @@
                 </thead>
                 <tbody>
                     {{#each i in daftarAlur}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-                                {{setJabatanFormat i}}
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-remove" posisi={{@index}}>
-                                    <i class="fa fa-trash" posisi={{@index}}></i>
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            {{setTableNumber @index}}
+                        </td>
+                        <td>
+                            {{setJabatanFormat i}}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
+                                <i class="fa fa-trash" posisi={{@index}}></i>
+                            </button>
+                        </td>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
@@ -401,13 +398,13 @@
 
         <div class="col-md-12">
             {{#if proposalData.note}}
-                <h4>Catatan</h4>
-                <div class="form mb-9" style="margin-bottom: 50px; background-color: rgba(6, 116, 0, 0.76);padding: 12px;">
-                    {{#each proposalData.note}}
-                    <span style="color: white;">{{noteByName}} : </span>
-                    <span style="padding: 30px;color: white;">{{note}}</span>
-                    {{/each}}
-                </div>
+            <h4>Catatan</h4>
+            <div class="form mb-9" style="margin-bottom: 50px; background-color: rgba(6, 116, 0, 0.76);padding: 12px;">
+                {{#each proposalData.note}}
+                <span style="color: white;">{{noteByName}} : </span>
+                <span style="padding: 30px;color: white;">{{note}}</span>
+                {{/each}}
+            </div>
             {{/if}}
             <div id="test" style="background-color: white;">
                 <page>
@@ -421,7 +418,8 @@
                                 <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                                     <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                                     <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                        Surabaya, Jawa Timur 60113</h6>
                                 </td>
                             </tr>
                         </table>
@@ -490,114 +488,116 @@
                         </div>
                         <section style="break-inside: avoid; page-break-inside: avoid;">
                             {{#if equals proposalData.isChief false}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <br><br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Mengetahui,
-                                        <br>
-                                        Staff
-                                        <br><br><br>
-                                        <!-- {{generalManager.fullname}} -->
-                                        {{proposalData.fullname}}
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <br><br>
+                                    Ketua Centrum Carlo Acutis
+                                    <!-- {{getDivisionName proposalData.divisionId}} -->
+                                    <br><br><br>
+                                    Anton Kusnadi
+                                    <!-- {{getChief proposalData.divisionId}} -->
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    Surabaya,{{formatHRDate proposalData.updateAt}}
+                                    <br>
+                                    Mengetahui,
+                                    <br>
+                                    Staff
+                                    <br><br><br>
+                                    <!-- {{generalManager.fullname}} -->
+                                    {{proposalData.fullname}}
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    Menyetujui,
+                                    <br>
+                                    Praeses Imavi
+                                    <br><br><br>
+                                    <!-- {{praeses.fullname}} -->
+                                    RD. Yohanes Benny Suwito
+                                </div>
+                            </div>
                             {{else}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Hormat Saya,
-                                        <br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    Surabaya,{{formatHRDate proposalData.updateAt}}
+                                    <br>
+                                    Hormat Saya,
+                                    <br>
+                                    Ketua Centrum Carlo Acutis
+                                    <!-- {{getDivisionName proposalData.divisionId}} -->
+                                    <br><br><br>
+                                    Anton Kusnadi
+                                    <!-- {{getChief proposalData.divisionId}} -->
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    Menyetujui,
+                                    <br>
+                                    Praeses Imavi
+                                    <br><br><br>
+                                    <!-- {{praeses.fullname}} -->
+                                    RD. Yohanes Benny Suwito
+                                </div>
+                            </div>
                             {{/if}}
-                            
+
 
                             {{#if proposalData.isPodo}}
-                                
-                            {{else}}
-                                {{#if equals proposalData.status 99}}
 
-                                {{else}}
-                                    <button class="btn btn-warning" id="btn-revisi">Revisi</button>
-                                    <button class="btn btn-primary" id="btn-approve" milik="{{proposalData._id}}">Setuju</button>
-                                    <button class="btn btn-danger" id="btn-disapprove" milik="{{proposalData._id}}">Tolak</button>
-                                {{/if}}                            
+                            {{else}}
+                            {{#if equals proposalData.status 99}}
+
+                            {{else}}
+                            <button class="btn btn-warning" id="btn-revisi">Revisi</button>
+                            <button class="btn btn-primary" id="btn-approve"
+                                milik="{{proposalData._id}}">Setuju</button>
+                            <button class="btn btn-danger" id="btn-disapprove"
+                                milik="{{proposalData._id}}">Tolak</button>
+                            {{/if}}
                             {{/if}}
 
                             <div class="mt-5">
 
                                 {{#if equals formSubmit 1}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold;">Opsional</label><br>
-                                            <label for="">Catatan Revisi : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="revisi-save">Simpan</button>
-                                        </div>
-
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label style="font-weight: bold;">Opsional</label><br>
+                                        <label for="">Catatan Revisi : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="revisi-save">Simpan</button>
+                                    </div>
+
+                                </div>
                                 {{/if}}
                                 {{#if equals formSubmit 2}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold;">Opsional</label><br>
-                                            <label for="">Masukkan Keterangan : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="btn-proposal-setuju">Simpan</button>
-                                        </div>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label style="font-weight: bold;">Opsional</label><br>
+                                        <label for="">Masukkan Keterangan : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="btn-proposal-setuju">Simpan</button>
+                                    </div>
+                                </div>
                                 {{/if}}
                                 {{#if equals formSubmit 3}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label style="font-weight: bold;">Opsional</label><br>
-                                            <label for="">Masukkan Keterangan : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="btn-proposal-tolak">Simpan</button>
-                                        </div>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label style="font-weight: bold;">Opsional</label><br>
+                                        <label for="">Masukkan Keterangan : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="btn-proposal-tolak">Simpan</button>
+                                    </div>
+                                </div>
                                 {{/if}}
                             </div>
                         </section>
@@ -617,14 +617,14 @@
 
         <div class="col-md-12">
             {{#if proposalData.note}}
-                <h4>Catatan</h4>
-                <div class="form mb-9" style="margin-bottom: 50px; background-color: rgba(6, 116, 0, 0.76);padding: 12px;">
-                    {{#each proposalData.note}}
-                        <span style="color: white;">{{noteByName}} : </span>
-                        <span style="padding: 30px;color: white;">{{note}}</span>
-                        <br>
-                    {{/each}}
-                </div>
+            <h4>Catatan</h4>
+            <div class="form mb-9" style="margin-bottom: 50px; background-color: rgba(6, 116, 0, 0.76);padding: 12px;">
+                {{#each proposalData.note}}
+                <span style="color: white;">{{noteByName}} : </span>
+                <span style="padding: 30px;color: white;">{{note}}</span>
+                <br>
+                {{/each}}
+            </div>
             {{/if}}
             <div id="test" style="background-color: white;">
                 <page>
@@ -638,7 +638,8 @@
                                 <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                                     <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                                     <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                        Surabaya, Jawa Timur 60113</h6>
                                 </td>
                             </tr>
                         </table>
@@ -707,59 +708,59 @@
                         </div>
                         <section style="break-inside: avoid; page-break-inside: avoid;">
                             {{#if equals proposalData.isChief false}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <br><br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Mengetahui,
-                                        <br>
-                                        Staff
-                                        <br><br><br>
-                                        <!-- {{generalManager.fullname}} -->
-                                        {{proposalData.fullname}}
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <br><br>
+                                    Ketua Centrum Carlo Acutis
+                                    <!-- {{getDivisionName proposalData.divisionId}} -->
+                                    <br><br><br>
+                                    Anton Kusnadi
+                                    <!-- {{getChief proposalData.divisionId}} -->
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    Surabaya,{{formatHRDate proposalData.updateAt}}
+                                    <br>
+                                    Mengetahui,
+                                    <br>
+                                    Staff
+                                    <br><br><br>
+                                    <!-- {{generalManager.fullname}} -->
+                                    {{proposalData.fullname}}
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    Menyetujui,
+                                    <br>
+                                    Praeses Imavi
+                                    <br><br><br>
+                                    <!-- {{praeses.fullname}} -->
+                                    RD. Yohanes Benny Suwito
+                                </div>
+                            </div>
                             {{else}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Hormat Saya,
-                                        <br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    Surabaya,{{formatHRDate proposalData.updateAt}}
+                                    <br>
+                                    Hormat Saya,
+                                    <br>
+                                    Ketua Centrum Carlo Acutis
+                                    <!-- {{getDivisionName proposalData.divisionId}} -->
+                                    <br><br><br>
+                                    Anton Kusnadi
+                                    <!-- {{getChief proposalData.divisionId}} -->
+                                </div>
+                                <div class="col-md-12 text-center">
+                                    Menyetujui,
+                                    <br>
+                                    Praeses Imavi
+                                    <br><br><br>
+                                    <!-- {{praeses.fullname}} -->
+                                    RD. Yohanes Benny Suwito
+                                </div>
+                            </div>
                             {{/if}}
                         </section>
                     </div>
@@ -790,7 +791,8 @@
                         <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                             <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                             <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                            <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                            <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                Surabaya, Jawa Timur 60113</h6>
                         </td>
                     </tr>
                 </table>
@@ -859,64 +861,64 @@
                 </div>
                 <section style="break-inside: avoid; page-break-inside: avoid;">
                     {{#if equals proposalData.isChief false}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        <br><br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Mengetahui,
-                                        <br>
-                                        Staff
-                                        <br><br><br>
-                                        <!-- {{generalManager.fullname}} -->
-                                        {{proposalData.fullname}}
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
-                                </div>
-                            {{else}}
-                                <div class="row">
-                                    <div class="col-md-6 text-center">
-                                        
-                                    </div>
-                                    <div class="col-md-6 text-center">
-                                        Surabaya,{{formatHRDate proposalData.updateAt}}
-                                        <br>
-                                        Hormat Saya,
-                                        <br>
-                                        Ketua Centrum Carlo Acutis 
-                                        <!-- {{getDivisionName proposalData.divisionId}} -->
-                                        <br><br><br>
-                                        Anton Kusnadi
-                                        <!-- {{getChief proposalData.divisionId}} -->
-                                    </div>
-                                    <div class="col-md-12 text-center">
-                                        Menyetujui,
-                                        <br>
-                                        Praeses Imavi
-                                        <br><br><br>
-                                        <!-- {{praeses.fullname}} -->
-                                        RD. Yohanes Benny Suwito
-                                    </div>
-                                </div>
-                            {{/if}}
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <br><br>
+                            Ketua Centrum Carlo Acutis
+                            <!-- {{getDivisionName proposalData.divisionId}} -->
+                            <br><br><br>
+                            Anton Kusnadi
+                            <!-- {{getChief proposalData.divisionId}} -->
+                        </div>
+                        <div class="col-md-6 text-center">
+                            Surabaya,{{formatHRDate proposalData.updateAt}}
+                            <br>
+                            Mengetahui,
+                            <br>
+                            Staff
+                            <br><br><br>
+                            <!-- {{generalManager.fullname}} -->
+                            {{proposalData.fullname}}
+                        </div>
+                        <div class="col-md-12 text-center">
+                            Menyetujui,
+                            <br>
+                            Praeses Imavi
+                            <br><br><br>
+                            <!-- {{praeses.fullname}} -->
+                            RD. Yohanes Benny Suwito
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+
+                        </div>
+                        <div class="col-md-6 text-center">
+                            Surabaya,{{formatHRDate proposalData.updateAt}}
+                            <br>
+                            Hormat Saya,
+                            <br>
+                            Ketua Centrum Carlo Acutis
+                            <!-- {{getDivisionName proposalData.divisionId}} -->
+                            <br><br><br>
+                            Anton Kusnadi
+                            <!-- {{getChief proposalData.divisionId}} -->
+                        </div>
+                        <div class="col-md-12 text-center">
+                            Menyetujui,
+                            <br>
+                            Praeses Imavi
+                            <br><br><br>
+                            <!-- {{praeses.fullname}} -->
+                            RD. Yohanes Benny Suwito
+                        </div>
+                    </div>
+                    {{/if}}
 
 
 
-                <!--  {{/if}} -->
+                    <!--  {{/if}} -->
                 </section>
             </div>
 
@@ -985,49 +987,51 @@
             </div>
         </div>
         {{#if rincian}}
-            <h4>Daftar Detail Rincian LPJ</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>No.</th>
-                        <th>Keterangan</th>
-                        <th>Nominal</th>
-                        <th>Aksi</th>
-                    </thead>
-                    <tbody>
-                        {{#each i in rincian}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>{{i.name}}</td>
-                            <td>{{formatRp i.amount}}</td>
-                            <td>
-                                <button class="btn btn-danger btn-remove" id="btn-remove" milik={{@index}}>
-                                    <i class="fa fa-trash btn-remove" milik={{@index}}></i>
-                                </button>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="1" style="text-align: right; font-weight: bold;">Total</td>
-                            <td colspan="2" style="text-align: right; font-weight: bold;">
-                                {{formatRp total}}
-                            </td>
-                            <td colspan="1"></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+        <h4>Daftar Detail Rincian LPJ</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <th style="text-align: center;">No.</th>
+                    <th style="text-align: center;">Keterangan</th>
+                    <th style="text-align: center;">Nominal</th>
+                    <th style="text-align: center;">Aksi</th>
+                </thead>
+                <tbody>
+                    {{#each i in rincian}}
+                    <tr>
+                        <td style="text-align: center;">
+                            {{setTableNumber @index}}
+                        </td>
+                        <td>{{i.name}}</td>
+                        <td style="text-align: right;">{{formatRp i.amount}}</td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{@index}}>
+                                <i class="fa fa-trash btn-remove" milik={{@index}}></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="1" style="text-align: right; font-weight: bold;">Total</td>
+                        <td colspan="2" style="text-align: right; font-weight: bold;">
+                            {{formatRp total}}
+                        </td>
+                        <td colspan="1"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
         {{/if}}
         <br>
         <div class="form-group">
-            {{> inputMultipleFiles label="Bukti Transaksi" id="buktiPembayaran" files=buktiPembayaran buttonLabel="Upload"}}
+            {{> inputMultipleFiles label="Bukti Transaksi" id="buktiPembayaran" files=buktiPembayaran
+            buttonLabel="Upload"}}
         </div>
         <div class="form-group">
-            {{> inputMultipleFiles label="Dokumentasi" id="buktiDokumentasi" files=buktiDokumentasi buttonLabel="Upload"}}
+            {{> inputMultipleFiles label="Dokumentasi" id="buktiDokumentasi" files=buktiDokumentasi
+            buttonLabel="Upload"}}
         </div>
         <button type="submit" class="btn btn-primary" id="btn-save">Simpan</button>
     </div>
@@ -1049,7 +1053,8 @@
                                 <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                                     <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                                     <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                        Surabaya, Jawa Timur 60113</h6>
                                 </td>
                             </tr>
                         </table>
@@ -1132,7 +1137,8 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colspan="2" style="text-align: center; font-weight: bold;">Total</td>
+                                                <td colspan="2" style="text-align: center; font-weight: bold;">Total
+                                                </td>
                                                 <td colspan="1" style="text-align: left; font-weight: bold;">
                                                     {{formatRp dataLPJ.totalTransaction}}
                                                 </td>
@@ -1158,7 +1164,8 @@
                                             {{#each i in dataLPJ.linksTransaction}}
                                             <tr>
                                                 <td>{{i.name}}</td>
-                                                <td><a href="{{i.link}}" target="_blank"><i class="fas fa-download"></i></a></td>
+                                                <td><a href="{{i.link}}" target="_blank"><i
+                                                            class="fas fa-download"></i></a></td>
                                             </tr>
                                             {{/each}}
                                         </tbody>
@@ -1182,7 +1189,8 @@
                                             {{#each i in dataLPJ.linksActivity}}
                                             <tr>
                                                 <td>{{i.name}}</td>
-                                                <td><a href="{{i.link}}" target="_blank"><i class="fas fa-download"></i></a></td>
+                                                <td><a href="{{i.link}}" target="_blank"><i
+                                                            class="fas fa-download"></i></a></td>
                                             </tr>
                                             {{/each}}
                                         </tbody>
@@ -1194,7 +1202,8 @@
                 </body>
             </div>
         </div>
-        <a href="/proposal/view/{{dataLPJ.idProposal}}"><button type="button" class="btn btn-primary btn-lg btn-block">Cek Proposal</button></a>
+        <a href="/proposal/view/{{dataLPJ.idProposal}}"><button type="button"
+                class="btn btn-primary btn-lg btn-block">Cek Proposal</button></a>
         <!-- <button>Cek Proposal</button> -->
     </div>
 </template>
