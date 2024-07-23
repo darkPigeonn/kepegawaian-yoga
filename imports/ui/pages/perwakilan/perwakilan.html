@@ -5,42 +5,60 @@
                 Daftar Perwakilan
             </h3>
         </div>
-        <div class="section-action">
-            <button class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">+ Tambah</button>
-        </div>
+        <!-- <div class="section-action">
+            <button class="btn btn-primary" id="btn-add" data-toggle="modal" data-target="#exampleModal">+
+                Tambah</button>
+        </div> -->
         <div class="page-body">
-
+            <table class="table">
+                <thead>
+                    <th>No</th>
+                    <th>Nama Perwakilan</th>
+                </thead>
+                <tbody>
+                    {{#each listPerwakilan}}
+                    <tr>
+                        <td>
+                            {{nomorUrut @index}}
+                        </td>
+                        <td>
+                            {{name}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
     </div>
 
     <!-- Modal Data  -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Perencanaan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Nama Perwakilan</label>
-                    <input type="text" id="input-name" class="form-control" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Form Tambah Perwakilan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label>Kode Perwakilan</label>
-                    <input type="text" id="input-code" class="form-control" />
-                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nama Perwakilan</label>
+                        <input type="text" id="input-name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Kode Perwakilan</label>
+                        <input type="text" id="input-code" class="form-control" />
+                    </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" id="btn-update-form">Simpan</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-form">Simpan</button>
+                </div>
             </div>
         </div>
     </div>
-<!-- modal perencanaan end-->
+    <!-- modal perencanaan end-->
 </template>

@@ -15,6 +15,6 @@ Meteor.methods({
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
-    return Perwakilan.find().fetch();
+    return Perwakilan.find({}, { sort: { numberOfUnit: 1 } }).fetch();
   },
 });

@@ -88,6 +88,8 @@ Template.home_admin.onCreated(function () {
   self.employeesKeluar = new ReactiveVar();
   self.employeesMasuk = new ReactiveVar();
   self.jabatanLogin = new ReactiveVar();
+  self.units = new ReactiveVar();
+  self.schools = new ReactiveVar();
   const userId = Meteor.userId();
 
   self.summaryStatus = new ReactiveVar();
@@ -132,6 +134,19 @@ Template.home_admin.onCreated(function () {
       self.jabatanLogin.set(dataRole);
     } else {
       console.log(error);
+    }
+  });
+  Meteor.call("perwakilan.getAll", function (error, result) {
+    if (error) {
+      console.log(error);
+    } else {
+      self.units.set(result.length);
+    }
+  });
+  Meteor.call("schools.getAll", function (error, result) {
+    if (error) {
+    } else {
+      self.schools.set(result.length);
     }
   });
   setTimeout(() => {
@@ -250,7 +265,13 @@ Template.home_admin.helpers({
   jabatanLogin() {
     return Template.instance().jabatanLogin.get();
   },
+  schools() {
+    return Template.instance().schools.get();
+  },
   today() {
     return new Date();
+  },
+  units() {
+    return Template.instance().units.get();
   },
 });
