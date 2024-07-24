@@ -87,3 +87,21 @@ Template.login_page.events({
     }
   },
 });
+
+
+Template.sidebarLecture.onCreated(function(){
+  const self = this;
+  self.listMyCourses = new ReactiveVar();
+  Meteor.call("myActiveCourses.getAll", function(error, result){
+    if(result){
+      self.listMyCourses.set(result)
+    }else{
+      console.log(error);
+    }
+  })
+})
+Template.sidebarLecture.helpers({
+  listMyCourses(){
+    return Template.instance().listMyCourses.get();
+  }
+})

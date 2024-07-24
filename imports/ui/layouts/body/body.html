@@ -3,47 +3,15 @@
   <div class="loading-spinner">Loading...</div>
   {{else}}
     {{#if currentUser}}
+
+    {{#if isInRole 'admin'}}
+    {{> admin_home}}
+    {{else}}
     <section>
       {{> navbar}}
-      <div class="wrapper">
-        <nav id="sidebar">
-          <div class="sidebar-header">
-            <h3>Dahsboard</h3>
-          </div>
-          <ul class="list-unstyled components">
-            <li class="active">
-              <a href="#">Kursus Saya</a>
-              <ul class="list-unstyled" id="aboutSubmenu">
-                <li>
-                  <a href="#">Kelas 1</a>
-                </li>
-                <li>
-                  <a href="#">Kelas 2</a>
-                </li>
-                <li>
-                  <a href="#">Kelas 3</a>
-                </li>
-                <li>
-                  <a href="#">Kelas 4</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">Sumber Daya</a>
-            </li>
-            <li>
-              <a href="#">Kalender</a>
-            </li>
-            <li>
-              <a href="#">Keluar</a>
-            </li>
-          </ul>
-        </nav>
-        <div class="content p-4">
-          {{> yield}}
-        </div>
-      </div>
+      {{> sidebarLecture}}
     </section>
+    {{/if}}
     {{else}}
     {{> boarding}}
     {{/if}}
@@ -12097,6 +12065,40 @@
           </ul>
         </div>
       </div>
+    </div>
+  </div>
+</template>
+
+<template name="sidebarLecture">
+  <div class="wrapper">
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <h3>Dahsboard</h3>
+      </div>
+      <ul class="list-unstyled components">
+        <li class="active">
+          <a href="#">Kelas Saya</a>
+          <ul class="list-unstyled" id="aboutSubmenu">
+            {{#each listMyCourses}}
+            <li>
+              <a href="#">{{cpName}}</a>
+            </li>
+            {{/each}}
+          </ul>
+        </li>
+        <li>
+          <a href="#">Sumber Daya</a>
+        </li>
+        <li>
+          <a href="#">Kalender</a>
+        </li>
+        <li>
+          <a href="#">Keluar</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="content p-4">
+      {{> yield}}
     </div>
   </div>
 </template>

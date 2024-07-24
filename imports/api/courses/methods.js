@@ -64,5 +64,44 @@ Meteor.methods({
             element.isFinished = dataCompletion
         }
         return data;
+    },
+    /* meetins course */
+    async 'myActiveCourses.addMeeting'(cpId, name, date){
+        check(cpId, String);
+
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+
+        if(!thisUser){
+            throw new Meteor.Error(404, 'No Access')
+        }
+
+        const objectId = new Meteor.Collection.ObjectID(cpId)
+        let data = AcitveCourses.findOne({_id : objectId})
+
+        const tempData = {
+            name : name,
+            date : date,
+            isActive :true,
+            outlets : thisUser.outlets,
+            acId : data._id.toHexString(),
+            acName : data.name,
+            courseName : data.cpName,
+            courseId : data.courseId,
+            createdAt : new Date(),
+            createdBy : thisUser._id
+        }
+
+        return Meetings.insert(tempData)
+    },
+    async 'meeting.getById'(meetingId){
+        check(meetingId, String);
+
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+
+        if(!thisUser){
+            throw new Meteor.Error(404, 'No Access')
+        }
+        const objectId = new Meteor.Collection.ObjectID(meetingId)
+        return Meetings.findOne({_id : objectId})
     }
 })

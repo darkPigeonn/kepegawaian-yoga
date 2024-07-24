@@ -116,6 +116,9 @@ Template.registerHelper("nomorUrut", function (context) {
 Template.registerHelper("equals", function (a, b) {
   return a == b;
 });
+Template.registerHelper("notEquals", function (a, b) {
+  return a != b;
+});
 Template.registerHelper("fc_label", function (a) {
   let value = "";
 

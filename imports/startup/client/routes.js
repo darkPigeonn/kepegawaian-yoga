@@ -561,3 +561,18 @@ FlowRouter.route("/courses/detail/:_id",{
     this.render("App_body", 'detailCourses')
   }
 })
+
+
+/* courses activity */
+FlowRouter.route("/courses/:cpId/addMeeting",{
+  name : 'addMeeting',
+  action(){
+    this.render("App_body", 'addMeeting')
+  }
+})
+FlowRouter.route("/courses/:cpId/meeting/:meetingId/addActivity",{
+  name : 'addActivity',
+  action(){
+    this.render("App_body", 'addActivity')
+  }
+})
