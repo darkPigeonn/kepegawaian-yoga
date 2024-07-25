@@ -135,24 +135,23 @@
 
             <div class="form-group">
                 <label for="input_roles">Roles</label>
+                <select id="input_roles" class="form-control" style="max-width: auto;">
                 {{#if equals partnerLogin "imavi"}}
-                    <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                    </select>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
                 {{else}}
-                    <select id="input_roles" class="form-control" style="max-width: auto;">
-                        <option value="admin">Admin</option>
-                        <option value="resepsionis">Resepsionis</option>
-                        <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                        <option value="bidang">Bidang</option>
-                        <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                        <option value="dewan-pengurus">Dewan Pengurus</option>
-                        <option value="pengurus-inti">Pengurus Inti</option>
-                        <option value="administrasi-umum">Administrasi Umum</option>
-                        <option value="staff">Staff</option>
-                    </select>
+                    <option value="admin">Admin</option>
+                    <option value="resepsionis">Resepsionis</option>
+                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
+                    <option value="bidang">Bidang</option>
+                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
+                    <option value="dewan-pengurus">Dewan Pengurus</option>
+                    <option value="pengurus-inti">Pengurus Inti</option>
+                    <option value="administrasi-umum">Administrasi Umum</option>
+                    <option value="staff">Staff</option>
                 {{/if}}
+                    <option value="tvMonitor">TV Monitor</option>
+                </select>
             </div>
 
 
