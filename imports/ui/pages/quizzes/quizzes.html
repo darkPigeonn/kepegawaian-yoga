@@ -1,0 +1,97 @@
+<template name="quizzesDetail">
+    <div class="page">
+        <div class="page-header">
+            <h2>Nama Kelas</h2>
+            <h3>{{quiz.name}}</h3>
+        </div>
+        <div class="page-content">
+            <p>Dibuka : {{quiz.startDate}}</p>
+            <p>Ditutup : {{quiz.endDate}}</p>
+            <p>Penjelasan : {{quiz.description}}</p>
+            <button class="btn btn-primary-imavi">Tambah Pertanyaan</button>
+
+            <!-- form tambah soal -->
+            <div class="form-group-row">
+                <label class="col-sm-2 col-form-label">Bentuk Soal</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="selected-category">
+                        <option value="0">-- Silahkan Pilih --</option>
+                        <option value="1">Pilihan Ganda</option>
+                        <option value="2">Essay</option>
+                        <option value="3">Jawaban Singkat</option>
+                    </select>
+                </div>
+
+            </div>
+            <!-- {{> quizFormMultipleChoice}} -->
+            <!-- {{> quizFormEssay}} -->
+                {{> quizFormShortAnswer}}
+            <!-- end form tambah soal -->
+        </div>
+    </div>
+</template>
+
+<template name="quizFormMultipleChoice">
+     <!-- form soal -->
+     <div class="form-group">
+        <label for="">Pertanyaan</label>
+        <textarea class="form-control" id="input-question" rows="3"></textarea>
+    </div>
+    <!-- end form soal -->
+    <!-- start pilihan ganda -->
+    <div class="form-group">
+        <label for="optionA">Pilihan A:</label>
+        <input type="text" id="optionA" name="optionA" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="optionB">Pilihan B:</label>
+        <input type="text" id="optionB" name="optionB" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="optionC">Pilihan C:</label>
+        <input type="text" id="optionC" name="optionC" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="optionD">Pilihan D:</label>
+        <input type="text" id="optionD" name="optionD" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="correctOption">Jawaban yang benar:</label>
+        <select id="correctOption" name="correctOption" class="form-control" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+        </select>
+    </div>
+    <!-- end pilihan ganda -->
+</template>
+
+<template name="quizFormEssay">
+    <div class="form-group">
+        <label for="">Pertanyaan</label>
+        <textarea class="form-control" id="input-question" rows="3"></textarea>
+    </div>
+</template>
+<template name="quizFormShortAnswer">
+    <div class="mt-4">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" col-form-label>Pertanyaan</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="input-question" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" col-form-label>Bobot Nilai</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputBobot">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" col-form-label>Isi Jawaban</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="input-answer" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+</template>

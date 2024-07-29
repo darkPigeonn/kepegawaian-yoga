@@ -1,5 +1,6 @@
 import "./body.html";
 import "../../components/navbar/navbar.js";
+
 import { Meteor } from "meteor/meteor";
 import Swal from "sweetalert2";
 import { Random } from "meteor/random";

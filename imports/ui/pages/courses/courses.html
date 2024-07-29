@@ -12,6 +12,7 @@
         </div>
 
         <div class="page-content mt-4">
+            <!-- {{> configurasiCourse}} -->
             <div class="info-card d-flex gap-3">
                 <div class="image-info">
                     {{#if detailCourses.linkGambar}}
@@ -66,6 +67,13 @@
                                 <a href="/courses/{{toMeteorId detailCourses._id}}/meeting/{{toMeteorId _id}}/addActivity" type="button" class="btn btn-primary-imavi" id="btn-create-pairings">+ Tambah Aktivitas atau Sumber Baru</a>
                             </div>
                             <!-- end -->
+                             {{#each quizzes}}
+                             <div class="card">
+                                 <div class="card-body d-flex gap-3 ">
+                                     <a href="/quiz/{{toMeteorId _id}}" class="d-flex align-items-center gap-2"><i class="fa fa-file"></i>   {{name}}</a>
+                                 </div>
+                             </div>
+                             {{/each}}
                             {{#each links}}
                             <div class="card">
                                 <div class="card-body d-flex gap-3 ">
@@ -82,6 +90,66 @@
         </div>
     </div>
 </template>
+
+<!-- konfigurasi -->
+ <template name="configurasiCourse">
+    <div>
+        <h3>Setelan Kelas</h3>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama lengkap kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputFullName" placeholder="Tuliskan nama lengkap kelas">
+              </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nama singkat kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputName" placeholder="Tuliskan nama singkat kelas">
+              </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Kategori Kelas</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputCategory">
+              </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Keterlihatan kelas tiap pertemuan</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="optionsShow">
+                    <option value="0">-- Silahkan Pilih -- </option>
+                    <option value="1">Sesuai Jadwal</option>
+                    <option value="2">Tampilkan</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Ringkasan Kelas</label>
+            <div class="col-sm-10">
+                <textarea type="text" class="form-control" id="inputRingkasan" placeholder="Tuliskan Ringkasan Kelas" rows="3"></textarea>
+              </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Gambar Kelas</label>
+            <div class="col-sm-10">
+                <textarea type="text" class="form-control" id="inputRingkasa" placeholder="Tuliskan Ringkasan Kelas" rows="3"></textarea>
+              </div>
+        </div>
+
+        <h3>Nilai</h3>
+        <div class="mx-5">
+            <h4>NTS</h4>
+            {{> inputNilai}}
+            <h4>NAS</h4>
+            {{> inputNilai}}
+            <h4>NA</h4>
+            {{> inputNilai}}
+        </div>
+    </div>
+ </template>
+
+
 
 <template name="addActivity">
     <div class="page">
@@ -303,53 +371,63 @@
             <h3>Tambah Quiz</h3>
         </div>
         <div class="page-content">
-            <div class="form-group row">
-                <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputName" placeholder="Judul Quiz">
+            <form id="form-add-quiz">
+                <div class="form-group row">
+                    <label for="inputName" class="col-sm-2 col-form-label">Nama</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputName" placeholder="Judul Quiz">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputDeskripsi" class="col-sm-2 col-form-label">Deskripsi</label>
-                <div class="col-sm-10">
-                    <textarea type="text" class="form-control" id="inputDeskripsi" placeholder="Deskripsi" rows="3"></textarea>
+                <div class="form-group row">
+                    <label for="inputDeskripsi" class="col-sm-2 col-form-label">Deskripsi</label>
+                    <div class="col-sm-10">
+                        <textarea type="text" class="form-control" id="inputDeskripsi" placeholder="Deskripsi" rows="3"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="input-start-date" class="col-sm-2 col-form-label">Nama</label>
-                <div class="col-sm-10">
-                  <input type="date" class="form-control" id="input-start-date" placeholder="Judul Quiz">
+                <div class="form-group row">
+                    <label for="input-start-date" class="col-sm-2 col-form-label">Izinkan pengajuan dari</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="input-start-date" placeholder="Judul Quiz">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="input-end-date" class="col-sm-2 col-form-label">Nama</label>
-                <div class="col-sm-10">
-                  <input type="date" class="form-control" id="input-end-date" placeholder="Judul Quiz">
+                <div class="form-group row">
+                    <label for="input-end-date" class="col-sm-2 col-form-label">Jatuh tempo</label>
+                    <div class="col-sm-10">
+                      <input type="date" class="form-control" id="input-end-date" placeholder="Judul Quiz">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Saat waktu kadaluarsa</label>
-                <div class="col-sm-10">
-                    <select class="form-control" id="optionsDueDate">
-                        <option value="0">-- Silahkan Pilih -- </option>
-                        <option value="1">Saat Mengerjakan akan terkumpulkan secara otomatis</option>
-                        <option value="2">Harus mengumpulkan kuis sebelum waktu habis, atau kuis tidak akan dihitung</option>
-                    </select>
+                <div class="form-group row">
+                    <label for="input-end-date" class="col-sm-2 col-form-label">Durasi Pengerjaan (Menit)</label>
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="input-duration" placeholder="Durasi Pengerjaan (Menit)">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Diizinkan mengerjakan</label>
-                <div class="col-sm-10">
-                    <select class="form-control" id="optionsDueDate">
-                        <option value="0">-- Silahkan Pilih -- </option>
-                        <option value="1">Tidak terbatas</option>
-                        <option value="2">1 - 10</option>
-                    </select>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Saat waktu kadaluarsa</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="optionsDueDate">
+                            <option value="0">-- Silahkan Pilih -- </option>
+                            <option value="1">Saat Mengerjakan akan terkumpulkan secara otomatis</option>
+                            <option value="2">Harus mengumpulkan kuis sebelum waktu habis, atau kuis tidak akan dihitung</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Diizinkan mengerjakan</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="optionsDueDate2">
+                            <option value="0">-- Silahkan Pilih -- </option>
+                            <option value="1">Tidak terbatas</option>
+                            <option value="2">1 - 10</option>
+                        </select>
+                    </div>
+                </div>
 
-            <button class="btn btn-primary-imavi" type="submit">Simpan</button>
-            <button class="btn btn-secondary" id="btn-cancel-add-task">Batal</button>
+                <button class="btn btn-primary-imavi" type="submit">Simpan</button>
+                <button class="btn btn-secondary" id="btn-cancel-add-task">Batal</button>
+            </form>
+
+
         </div>
     </div>
 </template>

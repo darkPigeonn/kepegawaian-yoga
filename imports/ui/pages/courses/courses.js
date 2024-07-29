@@ -1,4 +1,5 @@
 import './courses.html';
+import "../../components/form/form.js"
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Template } from 'meteor/templating';
 Template.detailCourses.onCreated(function(){
@@ -91,5 +92,29 @@ Template.addActivity.events({
         const milik = $(e.target).attr("milik");
         e.preventDefault();
         t.viewMode.set(milik);
+    }
+})
+
+Template.addQuiz.events({
+    'submit #form-add-quiz'(e,t){
+        e.preventDefault()
+
+        const name = $("#inputName").val()
+        const description = $("#inputDeskripsi").val()
+        const startDate = new Date($("#input-start-date").val())
+        const dueDate = new Date($("#input-end-date").val())
+        const optionDueDate = $('#optionsDueDate').val()
+        const optionQuiz = $("#optionsDueDate2").val()
+        const duration = $("#input-duration").val()
+
+        const acId = FlowRouter.current().params.cpId
+        const meetingId = FlowRouter.current().params.meetingId
+        Meteor.call("myActiveCourses.addQuiz",acId, meetingId, name, description, startDate, dueDate, optionDueDate, optionQuiz,duration, function(error, result){
+            if(result){
+                FlowRouter.go("/courses/" + FlowRouter.current().params.cpId);
+            }else{
+                console.log(error);
+            }
+        })
     }
 })

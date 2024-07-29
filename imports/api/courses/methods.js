@@ -103,5 +103,28 @@ Meteor.methods({
         }
         const objectId = new Meteor.Collection.ObjectID(meetingId)
         return Meetings.findOne({_id : objectId})
+    },
+    async "myActiveCourses.addQuiz"(acId, meetingId, name, description, startDate, dueDate, optionDueDate, optionQuiz, duration){
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+
+        if(!thisUser) {
+            throw new Meteor.Error(404, 'No Access')
+        }
+
+        const tempData = {
+            name,
+            description,
+            startDate,
+            endDate : dueDate,
+            duration : parseInt(duration),
+            acId : acId,
+            meetingId : meetingId,
+            optionDueDate : optionDueDate,
+            optionQuiz : optionQuiz,
+            createdBy : thisUser._id,
+            createdAt : new Date()
+        }
+
+        return Quizzes.insert(tempData)
     }
 })
