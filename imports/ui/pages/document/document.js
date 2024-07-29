@@ -79,7 +79,7 @@ Template.list_document.helpers({
   dataDocumentHistoryByRole() {
     return Template.instance().dataDocumentHistoryByRole.get();
   },
-  listKorespondensiSigner(){
+  listKorespondensiSigner() {
     return Template.instance().listKorespondensi
   }
 });
@@ -394,7 +394,7 @@ Template.createKorespondensi.onCreated(function () {
   const jenis = "kategori-surat"
   setTimeout(() => {
     startSelect2();
-  },500)
+  }, 500)
   const userId = Meteor.userId();
   if (userId) {
     Meteor.call("employee.getDataLogin", userId, function (error, result) {
@@ -427,11 +427,11 @@ Template.createKorespondensi.onCreated(function () {
 });
 Template.createKorespondensi.onRendered(function () {
   const template = Template.instance();
-	const context = this;
-	initEditor(template, context.optionsDescription);
+  const context = this;
+  initEditor(template, context.optionsDescription);
   setTimeout(() => {
     startSelect2();
-  },500)
+  }, 500)
 });
 Template.createKorespondensi.helpers({
   daftarAlur() {
@@ -448,14 +448,14 @@ Template.createKorespondensi.helpers({
   },
   getUserFullName(userId) {
     const user = Meteor.users.findOne({ _id: userId });
-    return user ? user.profile.fullName : ''; 
+    return user ? user.profile.fullName : '';
   }
 })
 Template.createKorespondensi.events({
   "change #category"(e, t) {
     const categorySlug = e.target.options[e.target.selectedIndex].getAttribute("milik");
     console.log(categorySlug);
-    if(categorySlug == "surat-keputusan") {
+    if (categorySlug == "surat-keputusan") {
       t.isSKLetter.set(true);
     }
     else {
@@ -491,7 +491,7 @@ Template.createKorespondensi.events({
     const index = $(e.target).attr("posisi");
     let dataAlur = t.daftarAlur.get();
     console.log(index, dataAlur);
-    if(index != undefined) {
+    if (index != undefined) {
       dataAlur.splice(index, 1);
     }
     t.daftarAlur.set(dataAlur);
@@ -508,7 +508,7 @@ Template.createKorespondensi.events({
     const desc = t.editorDescription.get().getData();
     const cekSK = t.isSKLetter.get();
     let dataAlur = t.daftarAlur.get();
-    if(dataAlur.length == 0){
+    if (dataAlur.length == 0) {
       dataAlur = null
     }
     //categori
@@ -522,7 +522,7 @@ Template.createKorespondensi.events({
       dataAlur
     };
 
-    if(cekSK == true) {
+    if (cekSK == true) {
       data.tanggalBerlaku = skLetterTanggalAwal;
       data.tanggalBerakhir = skLetterTanggalAkhir;
     }
@@ -592,12 +592,13 @@ Template.listKorespondensi.onCreated(function () {
           if (result) {
             console.log(result);
             listItems.push(result);
+            self.listItems.set(result)
           } else {
             console.log(error);
           }
         });
-   
-        Meteor.call("korespondensi.getHistoryByPengisi", dataRole, function (error, result){
+
+        Meteor.call("korespondensi.getHistoryByPengisi", dataRole, function (error, result) {
           console.log(result);
           if (result) {
             self.dataHistoryReviewer.set(result);
@@ -610,16 +611,15 @@ Template.listKorespondensi.onCreated(function () {
       }
     });
   }
-    Meteor.call("korespondensi.getAll", function (error1, result1) {
-      if (result1) {
-        self.dataKorespondensi.set(result1);
-        self.listItems.set(result1);
-      } else {
-        console.log(error1);
-      }
-    });
+  Meteor.call("korespondensi.getAll", function (error1, result1) {
+    if (result1) {
+      self.dataKorespondensi.set(result1);
+    } else {
+      console.log(error1);
+    }
+  });
 
-  Meteor.call("korespondensi.getByCreator", function (error, result){
+  Meteor.call("korespondensi.getByCreator", function (error, result) {
     if (result) {
       self.dataKorespondensiPembuat.set(result);
       self.listItems.set(result);
@@ -659,7 +659,7 @@ Template.listKorespondensi.events({
       confirmButtonText: "Iya",
       cancelButtonText: "Tidak",
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         Meteor.call("korespondensi.delete", id, function (error, result) {
           if (result) {
             successAlert();
@@ -682,41 +682,41 @@ Template.listKorespondensi.events({
     const nameOfPersonMaker = $("#nameOfPersonMaker").val();
 
     const dataKorespondensi = Template.instance().dataKorespondensi.get();
-    const regexMail = nameOfMail ? new RegExp(nameOfMail.split(' ').join('.*'), 'i') : null; 
+    const regexMail = nameOfMail ? new RegExp(nameOfMail.split(' ').join('.*'), 'i') : null;
     const regexPersonMaker = nameOfPersonMaker ? new RegExp(nameOfPersonMaker.split(' ').join('.*'), 'i') : null; // Regex untuk mencocokkan pembuat surat
 
     const formatTanggal = (dateString) => {
-        const date = new Date(dateString);
-        const tahun = date.getFullYear();
-        const bulan = ('0' + (date.getMonth() + 1)).slice(-2);
-        const tanggal = ('0' + date.getDate()).slice(-2);
-        return `${tahun}-${bulan}-${tanggal}`;
+      const date = new Date(dateString);
+      const tahun = date.getFullYear();
+      const bulan = ('0' + (date.getMonth() + 1)).slice(-2);
+      const tanggal = ('0' + date.getDate()).slice(-2);
+      return `${tahun}-${bulan}-${tanggal}`;
     };
 
     const filteredItems = dataKorespondensi.filter(item => {
-        const tanggalBerlakuFormatted = item.tanggalBerlaku ? formatTanggal(item.tanggalBerlaku) : null;
-        const tanggalBerakhirFormatted = item.tanggalBerakhir ? formatTanggal(item.tanggalBerakhir) : null;
+      const tanggalBerlakuFormatted = item.tanggalBerlaku ? formatTanggal(item.tanggalBerlaku) : null;
+      const tanggalBerakhirFormatted = item.tanggalBerakhir ? formatTanggal(item.tanggalBerakhir) : null;
 
-        const matchesMail = !nameOfMail || (item.linksArsip && item.linksArsip.some(link => regexMail.test(link.name)));
-        const matchesDate = !nameOfDate || tanggalBerlakuFormatted === nameOfDate;
-        const matchesExperiedDate = !nameOfExperiedDate || tanggalBerakhirFormatted === nameOfExperiedDate;
-        // const matchesPersonMaker = !nameOfPersonMaker || item.createdBy === nameOfPersonMaker;
-        const matchesPersonMaker = !nameOfPersonMaker || 
-            (item.signer && item.signer.some(signer => signer.isCreator && regexPersonMaker.test(signer.nameSignotory)));
+      const matchesMail = !nameOfMail || (item.linksArsip && item.linksArsip.some(link => regexMail.test(link.name)));
+      const matchesDate = !nameOfDate || tanggalBerlakuFormatted === nameOfDate;
+      const matchesExperiedDate = !nameOfExperiedDate || tanggalBerakhirFormatted === nameOfExperiedDate;
+      // const matchesPersonMaker = !nameOfPersonMaker || item.createdBy === nameOfPersonMaker;
+      const matchesPersonMaker = !nameOfPersonMaker ||
+        (item.signer && item.signer.some(signer => signer.isCreator && regexPersonMaker.test(signer.nameSignotory)));
 
 
 
-        return matchesMail && matchesDate && matchesExperiedDate && matchesPersonMaker;
+      return matchesMail && matchesDate && matchesExperiedDate && matchesPersonMaker;
     });
 
     Template.instance().listItems.set(filteredItems);
-}
+  }
 
 
 
 });
 
-Template.editKorespondensiAlur.onCreated(function (){
+Template.editKorespondensiAlur.onCreated(function () {
   const self = this;
   self.dataKorespondensi = new ReactiveVar();
   self.daftarAlur = new ReactiveVar([]);
@@ -831,7 +831,7 @@ Template.editKorespondensiAlur.events({
   },
 })
 
-Template.editKorespondensi.onCreated(function (){
+Template.editKorespondensi.onCreated(function () {
   const self = this;
   self.fullname = new ReactiveVar();
   const template = Template.instance();
@@ -845,7 +845,7 @@ Template.editKorespondensi.onCreated(function (){
   self.isSKLetter = new ReactiveVar();
   self.categoryLetters = new ReactiveVar();
   const jenis = "kategori-surat";
-  
+
 
 
   startSelect2();
@@ -871,26 +871,26 @@ Template.editKorespondensi.onCreated(function (){
   Meteor.call("korespondensi.getById", id, function (error, result) {
     if (result) {
       self.dataKorespondensi.set(result)
-      if(result.tanggalBerlaku || result.tanggalBerakhir) {
+      if (result.tanggalBerlaku || result.tanggalBerakhir) {
         self.isSKLetter.set(true);
       }
       else {
         self.isSKLetter.set(false);
       }
-      console.log("Alur",result.alur.length);
+      console.log("Alur", result.alur.length);
       let dataAlur = [];
       let dataSigner = [];
       let dataTembusan = [];
-      
-      if (result.alur){
+
+      if (result.alur) {
         for (const iterator of result.alur) {
           dataAlur.push(iterator.jabatan);
         }
         self.daftarAlur.set(dataAlur);
 
       }
-  
-      if (result.signer){
+
+      if (result.signer) {
         for (const iterator of result.signer) {
           dataSigner.push({
             nameSignotory: iterator.nameSignotory,
@@ -900,7 +900,7 @@ Template.editKorespondensi.onCreated(function (){
         self.listKorespondensiSigner.set(dataSigner);
 
       }
-      if(result.tembusan){
+      if (result.tembusan) {
         for (const iterator of result.tembusan) {
           dataTembusan.push({
             tembusanName: iterator.tembusanName
@@ -909,13 +909,13 @@ Template.editKorespondensi.onCreated(function (){
         self.listTembusan.set(dataTembusan);
 
       }
-  
-      
-   
-   
+
+
+
+
       self.optionsDescription.content = result.desc;
       initEditor(template, self.optionsDescription);
-      
+
     } else {
       console.log(error);
     }
@@ -954,10 +954,10 @@ Template.editKorespondensi.helpers({
   categoryLetters() {
     return Template.instance().categoryLetters.get();
   },
-  listKorespondensiSigner(){
+  listKorespondensiSigner() {
     return Template.instance().listKorespondensiSigner.get();
   },
-  listTembusan(){
+  listTembusan() {
     return Template.instance().listTembusan.get();
   },
   isSKLetter() {
@@ -970,7 +970,7 @@ Template.editKorespondensi.events({
   "change #category"(e, t) {
     const categorySlug = e.target.options[e.target.selectedIndex].getAttribute("milik");
     console.log(categorySlug);
-    if(categorySlug == "surat-keputusan") {
+    if (categorySlug == "surat-keputusan") {
       t.isSKLetter.set(true);
     }
     else {
@@ -981,65 +981,65 @@ Template.editKorespondensi.events({
     e.preventDefault();
     const index = $(e.target).attr("tembusan");
     let dataTembusan = t.listTembusan.get();
-    if(index != undefined) {
+    if (index != undefined) {
       dataTembusan.splice(index, 1);
-      t.listTembusan.set(dataTembusan); 
+      t.listTembusan.set(dataTembusan);
     }
   },
- 
+
   "click #btn-add-signer"(e, t) {
     e.preventDefault();
     const listKorespondensiSigner = t.listKorespondensiSigner.get();
-    let nameSignotory = ''; 
-    let positionSignotory='';
+    let nameSignotory = '';
+    let positionSignotory = '';
     let isCreator = false;
 
     const sameWithMakerChecked = $("#sameWithMaker").prop("checked");
     const letterMakerChecked = $("#letterMaker").prop("checked");
 
     if (sameWithMakerChecked) {
-        const fullname = t.fullname.get();
-        const dataRole = t.jabatanLogin.get();
+      const fullname = t.fullname.get();
+      const dataRole = t.jabatanLogin.get();
 
-        if (fullname) {
-          // const user = Meteor.users.findOne(userId);
-          // console.log('id',user);
+      if (fullname) {
+        // const user = Meteor.users.findOne(userId);
+        // console.log('id',user);
 
-         
-            if (letterMakerChecked) {
-              nameSignotory = fullname;
-              positionSignotory = dataRole;
-              isCreator = true;
-            }if(!letterMakerChecked){
-              nameSignotory = fullname;
-              positionSignotory = dataRole;
-              isCreator;
-          }
-        }
-    } else {
-       
+
         if (letterMakerChecked) {
-          nameSignotory = $("#nameSignotory").val();
-          positionSignotory = $("#positionSignotory").val();
+          nameSignotory = fullname;
+          positionSignotory = dataRole;
           isCreator = true;
-
-        }if(!letterMakerChecked){
-          nameSignotory = $("#nameSignotory").val();
-          positionSignotory = $("#positionSignotory").val();
+        } if (!letterMakerChecked) {
+          nameSignotory = fullname;
+          positionSignotory = dataRole;
           isCreator;
         }
+      }
+    } else {
+
+      if (letterMakerChecked) {
+        nameSignotory = $("#nameSignotory").val();
+        positionSignotory = $("#positionSignotory").val();
+        isCreator = true;
+
+      } if (!letterMakerChecked) {
+        nameSignotory = $("#nameSignotory").val();
+        positionSignotory = $("#positionSignotory").val();
+        isCreator;
+      }
 
     }
 
-    
+
 
     listKorespondensiSigner.push({
-        nameSignotory,
-        positionSignotory,
-        isCreator
+      nameSignotory,
+      positionSignotory,
+      isCreator
     });
 
-    t.listKorespondensiSigner.set(listKorespondensiSigner); 
+    t.listKorespondensiSigner.set(listKorespondensiSigner);
   },
   "click .btn-remove-signer"(e, t) {
     e.preventDefault();
@@ -1048,12 +1048,12 @@ Template.editKorespondensi.events({
     listKorespondensiSigner.splice(index, 1);
     t.listKorespondensiSigner.set(listKorespondensiSigner);
   },
-  "click #btn-add-tembusan"(e,t){
+  "click #btn-add-tembusan"(e, t) {
     e.preventDefault()
     const listTembusan = t.listTembusan.get()
     const tembusanName = $("#tembusanName").val()
 
-    const data ={
+    const data = {
       tembusanName
     }
     listTembusan.push(data)
@@ -1070,7 +1070,7 @@ Template.editKorespondensi.events({
     // Update the reactive variable
     t.listTembusan.set(listTembusan);
   },
-  
+
 
   "click #btn-add-alur"(e, t) {
     e.preventDefault();
@@ -1098,19 +1098,19 @@ Template.editKorespondensi.events({
     });
   },
 
-  
+
   "click .btn-remove"(e, t) {
     e.preventDefault()
     console.log(this);
     const index = $(e.target).attr("posisi");
     let dataAlur = t.daftarAlur.get();
     console.log(index, dataAlur);
-    if(index != undefined) {
+    if (index != undefined) {
       dataAlur.splice(index, 1);
     }
     t.daftarAlur.set(dataAlur);
   },
-  "click #submit" (e, t) {
+  "click #submit"(e, t) {
     e.preventDefault();
     const category = $("#category").val();
     const note = $("#noteOfLetter").val();
@@ -1125,10 +1125,10 @@ Template.editKorespondensi.events({
     const cekSK = t.isSKLetter.get();
     const skLetterTanggalAwal = $("#date-start").val();
     const skLetterTanggalAkhir = $("#date-end").val();
-    if(dataAlur.length == 0){
+    if (dataAlur.length == 0) {
       dataAlur = null
     }
-    console.log("data signer:",dataSigner);
+    console.log("data signer:", dataSigner);
 
     //categori
     const data = {
@@ -1143,11 +1143,11 @@ Template.editKorespondensi.events({
       dataTembusan
     };
 
-    if(cekSK == true) {
+    if (cekSK == true) {
       data.tanggalBerlaku = skLetterTanggalAwal;
       data.tanggalBerakhir = skLetterTanggalAkhir;
     }
-    
+
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
       if (result) {
         successAlert();
@@ -1188,12 +1188,12 @@ Template.editKorespondensi.events({
       listTembusan
     };
 
-    if(cekSK == true) {
+    if (cekSK == true) {
       data.tanggalBerlaku = skLetterTanggalAwal;
       data.tanggalBerakhir = skLetterTanggalAkhir;
     }
 
-    Meteor.call("korespondensi.editKirim",id, data, function (error, result) {
+    Meteor.call("korespondensi.editKirim", id, data, function (error, result) {
       if (result) {
         successAlert();
         location.reload();
@@ -1273,7 +1273,7 @@ Template.detailKorespondensi.events({
     Meteor.call('update.statusLetter', data, function (error, result) {
       if (result) {
         history.back();
-      } else {}
+      } else { }
     });
 
   }
@@ -1285,7 +1285,7 @@ Template.arsipKorespondensi.onCreated(function () {
   self.allFileNames = new ReactiveVar([]);
   self.arsipFile = new ReactiveVar([]);
   const id = FlowRouter.getParam("_id")
-  Meteor.call('fileName.getAll', function(error, result) {
+  Meteor.call('fileName.getAll', function (error, result) {
     if (error) {
       console.log(error);
     } else {
@@ -1294,14 +1294,14 @@ Template.arsipKorespondensi.onCreated(function () {
     }
   })
 
-  Meteor.call('korespondensi.getById', id, function (error, result) {  
-    if(error){
+  Meteor.call('korespondensi.getById', id, function (error, result) {
+    if (error) {
       console.log(error);
     }
-    else{
+    else {
       console.log(result);
       let arrayData = [];
-      if(result.linksArsip){
+      if (result.linksArsip) {
         for (const iterator of result.linksArsip) {
           arrayData.push(iterator)
         }
@@ -1317,10 +1317,10 @@ Template.arsipKorespondensi.helpers({
   buktiSurat() {
     return Template.instance().buktiSurat.get();
   },
-  allFileNames(){
+  allFileNames() {
     return Template.instance().allFileNames.get();
   },
-  arsipFile(){
+  arsipFile() {
     return Template.instance().arsipFile.get();
   }
 })
@@ -1333,22 +1333,22 @@ Template.arsipKorespondensi.events({
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       if (file) {
-      const reader = new FileReader();
-      const body = {
-        file: file,
-      };
-      reader.addEventListener("load", function () {
-        body.src = this.result;
-        if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
-        $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
-          "href",
-          this.result
-        );
-        }
-      });
-      reader.readAsDataURL(file);
-      buktiSurat.push(body);
-      t.buktiSurat.set(buktiSurat);
+        const reader = new FileReader();
+        const body = {
+          file: file,
+        };
+        reader.addEventListener("load", function () {
+          body.src = this.result;
+          if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
+            $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
+              "href",
+              this.result
+            );
+          }
+        });
+        reader.readAsDataURL(file);
+        buktiSurat.push(body);
+        t.buktiSurat.set(buktiSurat);
       }
     }
   },
@@ -1376,7 +1376,7 @@ Template.arsipKorespondensi.events({
       confirmButtonText: "Simpan",
       cancelButtonText: "Batal"
     }).then(async (result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         Swal.fire({
           title: "Loading...",
           allowOutsideClick: false,
@@ -1390,16 +1390,16 @@ Template.arsipKorespondensi.events({
           const fileName = files[index].file.name;
           const sendFileName = checkDuplicateFileName(fileName, allFileNames);
           const uploadData = {
-            fileName: "kepegawaian/arsip-surat/"+sendFileName,
+            fileName: "kepegawaian/arsip-surat/" + sendFileName,
             type: "image/png",
             Body: files[index].file
           }
           const linkUpload = await uploadFiles(uploadData);
           thisForm[files].push(
-          {
-            name: files[index].file.name,
-            link: linkUpload
-          });
+            {
+              name: files[index].file.name,
+              link: linkUpload
+            });
         }
         const linksBukti = thisForm[files];
         console.log(linksBukti);
@@ -1442,11 +1442,11 @@ Template.timelineWorkProgram.onCreated(function () {
   this.timeline = new ReactiveVar();
 
   this.autorun(() => {
-      const data = Template.currentData();
-      if (data && data.timelines) {
-        console.log("masuk");
-          this.timeline.set(data.timelines);
-      }
+    const data = Template.currentData();
+    if (data && data.timelines) {
+      console.log("masuk");
+      this.timeline.set(data.timelines);
+    }
   });
 });
 
@@ -1476,37 +1476,37 @@ Template.timelineWorkProgram.helpers({
 //   });
 // });
 function checkDuplicateFileName(fileName, allFileNames) {
-	const result = allFileNames;
-	if(result.length == 0 || result == undefined){
-		return fileName;
-	}
-	for (let i = 0; i < result.length; i++) {
-		const element = result[i];
-		const randomString = generateRandomString(5)
-		if(fileName == element){
-			const finalName = addRandomString(fileName, randomString)
-			console.log(finalName);
-			return finalName;
-		}
-		else{
-			return fileName;
-		}
-	}
+  const result = allFileNames;
+  if (result.length == 0 || result == undefined) {
+    return fileName;
+  }
+  for (let i = 0; i < result.length; i++) {
+    const element = result[i];
+    const randomString = generateRandomString(5)
+    if (fileName == element) {
+      const finalName = addRandomString(fileName, randomString)
+      console.log(finalName);
+      return finalName;
+    }
+    else {
+      return fileName;
+    }
+  }
 }
 
 function generateRandomString(length) {
-	const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	let randomString = "";
-  
-	for (let i = 0; i < length; i++) {
-	  const randomIndex = Math.floor(Math.random() * charset.length);
-	  randomString += charset.charAt(randomIndex);
-	}
-	return randomString;
+  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let randomString = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    randomString += charset.charAt(randomIndex);
+  }
+  return randomString;
 }
 
-function addRandomString(inputString, appendString){
-	const lastDotIndex = inputString.lastIndexOf('.');
+function addRandomString(inputString, appendString) {
+  const lastDotIndex = inputString.lastIndexOf('.');
 
   if (lastDotIndex !== -1) {
     // If a dot is found, insert the appendString before the last dot
