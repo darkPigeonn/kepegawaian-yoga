@@ -7,56 +7,56 @@ import moment from "moment";
 
 Meteor.methods({
   async "document.tambahDokumen"(data) {
-    let { full_name, sumber, tanggal, jenis_dokumen, alur, linkPDF } = data;
-    check(full_name, String);
-    check(sumber, String);
-    check(jenis_dokumen, String);
-    check(linkPDF, String);
-    let dataAlurObject = [];
-    let currentOrder;
-    let currentJabatan;
-    tanggal = new Date(tanggal);
+    let { name, source, date, documentType, link} = data;
+    check(name, String);
+    check(source, String);
+    check(documentType, String);
+    date = new Date(date);
 
-    for (let index = 0; index < alur.length; index++) {
-      const element = alur[index];
-      // console.log(element);
-      let dataAlur = {
-        order: index + 1,
-        jabatan: alur[index],
-        analisis: "",
-      };
-      dataAlurObject.push(dataAlur);
-    }
-
-    for (let index = 0; index < dataAlurObject.length; index++) {
-      currentOrder = dataAlurObject[0].order;
-      currentJabatan = dataAlurObject[0].jabatan;
-    }
 
     let partnerCode;
     const thisUser = Meteor.userId();
-    const adminPartner = Meteor.users.findOne({
+    const dataUser = Meteor.users.findOne({
       _id: thisUser,
     });
-    partnerCode = adminPartner.partners[0];
+    partnerCode = dataUser.partners[0];
 
-    const dataSave = {
-      name: full_name,
-      sumberDokumen: sumber,
-      tanggal,
-      jenis_dokumen,
-      linkPDF,
-      alur: dataAlurObject,
-      currentOrder,
-      currentJabatan,
+    let dataSave = {
+      name,
+      source,
+      date,
+      documentType,
       partner: partnerCode,
-      creatorJabatan: adminPartner.roles[0],
-      createdBy: adminPartner._id,
-      createdByName: adminPartner.fullname,
-      createdAt: new Date()
+      createdAt: new Date(),
+      createdBy: dataUser._id,
+      createdByName: dataUser.fullname,
     };
+    if(link !== undefined || link !== null) {
+      dataSave.link = link
+    }
 
-    return await Document.insert(dataSave);
+    return Document.insert(dataSave);
+  },
+
+  async "document.update"(data, id) {
+    let { name, source, date, documentType, link} = data;
+    console.log(data, id);
+    check(name, String);
+    check(source, String);
+    check(documentType, String);
+    date = new Date(date);
+
+    let dataSave = {
+      name,
+      source,
+      date,
+      documentType
+    };
+    if(link !== undefined || link !== null) {
+      dataSave.link = link
+    }
+
+    return Document.update({_id: id}, {$set: dataSave});
   },
 
   "document.getAllDocuments"() {
@@ -68,10 +68,31 @@ Meteor.methods({
     partnerCode = adminPartner.partners[0];
     const data = Document.find(
       { partner: partnerCode },
-      { sort: { tanggal: -1 } }
+      { sort: { date: -1 } }
     ).fetch();
     // console.log(data);
     return data;
+  },
+
+  "document.search"(data) {
+    let {name, source, date} = data;
+    let query = {};
+    if (name) {
+      query.name = { $regex: new RegExp(name, 'i') }; // 'i' untuk case-insensitive
+    }
+    if (source) {
+      query.source = { $regex: new RegExp(source, 'i') }; // 'i' untuk case-insensitive
+    }
+    if (date) {
+      const inputDate = new Date(date);
+      const startDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate());
+      const endDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate(), 23, 59, 59, 999);
+
+      query.date = { $gte: startDate, $lte: endDate };
+    }
+    query.partner = "keuskupan"
+    const filteredItems = Document.find(query, {sort: {date: -1}}).fetch();
+    return filteredItems;
   },
 
   "document.getDocumentsByID"(id) {
@@ -343,6 +364,7 @@ Meteor.methods({
       const startDate = new Date(year, 0, 1); // 1 Januari tahun input
       const endDate = inputDate; // Tanggal yang diinput
       query.tanggalBerakhir = { $gte: startDate, $lte: endDate };
+      query.partner = "keuskupan"
     }
     const filteredItems = Letters.find(query).fetch();
     console.log(filteredItems);

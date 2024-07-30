@@ -597,9 +597,31 @@
         
         {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip"}}
             <div class="d-flex justify-content-end mb-2">
-                <a href="/documents/create" class="btn btn-primary">Tambah</a>
+                <a href="/documents/create" class="btn btn-primary">+Tambah</a>
             </div>
-            <h3>Semua List Dokumen</h3>
+            <h3>Daftar Surat Masuk</h3>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="documentName">Nama Surat</label>
+                    <input type="text" class="form-control search-input" id="documentName" placeholder="Nama Surat">
+                </div>
+                <div class="form-group ml-3">
+                    <label for="documentSource">Asal Surat</label>
+                    <input type="text" class="form-control search-input" id="documentSource" placeholder="Asal Surat">
+                </div>
+                <div class="form-group ml-3">
+                    <label for="documentDate">Tanggal Surat Masuk</label>
+                    <input type="date" class="form-control search-input" id="date" placeholder="Masa Berakhir">
+                </div>
+                <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
+                    <button class="btn btn-primary" type="button" id="btn-search">
+                        <i class="fas fa-search" id="btn-search"></i> Cari
+                    </button>
+                    <button id="btn-refresh" class="btn btn-primary">
+                        <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
+                    </button>
+                </div>
+            </div>
             <div class="d-lg-block table-responsive">
                 <table class="table">
                     <thead>
@@ -608,8 +630,6 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Sumber</th>
                             <th scope="col">Tanggal</th>
-                            <th scope="col">Posisi</th>
-                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -618,20 +638,8 @@
                         <tr>
                             <td> {{nomorUrut @index}} </td>
                             <td style="text-transform: capitalize;"> {{name}} </td>
-                            <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
-                            <td> {{formatHRDate tanggal}} </td>
-                            <td> {{setJabatanFormat currentJabatan}} </td>
-                            <td> 
-                                {{#if equals currentOrder 99}} 
-                                    Selesai Ditolak 
-                                {{else}}
-                                    {{#if equals currentOrder 80}} 
-                                        Selesai Diterima 
-                                    {{else}}
-                                        Proses Review Berlangsung
-                                    {{/if}}
-                                {{/if}}
-                            </td>
+                            <td style="text-transform: capitalize;"> {{source}} </td>
+                            <td> {{formatHRDate date}} </td>
                             <td>
                                 <a href="/documents/details/{{_id}}">
                                     <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -643,50 +651,21 @@
                 </table>
             </div>
         {{/if}}
-
-        <!-- <div class="d-lg-block">
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Posisi</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each dataDocument}}
-                    <tr>
-                        <td> {{nomorUrut @index}} </td>
-                        <td> {{name}} </td>
-                        <td> {{formatHRDate tanggal}} </td>
-                        <td> {{currentJabatan}} </td>
-                        <td>
-                            <a href="/resepsionis/documents/details/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div> -->
     </div>
 </template>
 
 <template name="create_document">
     <div class="container">
         <div class="title-page">
-            <h3> Tambah Dokumen </h3>
+            <h3> Tambah Surat Masuk </h3>
         </div>
         <form>
             <div class="form-group mb-2">
-                <label>Nama Dokumen</label>
+                <label>Nama Surat</label>
                 <input type="text" id="input_fullName" class="form-control" required />
             </div>
             <div class="form-group mb-2">
-                <label>Asal Dokumen</label>
+                <label>Asal Surat</label>
                 <input type="text" id="input_sumber" class="form-control" required>
             </div>
             <div class="form-group mb-2">
@@ -694,54 +673,13 @@
                 <input type="date" id="input_tanggal" class="form-control" />
             </div>
             <div class="form-group mb-2">
-                <label>Jenis Dokumen</label>
+                <label>Jenis Surat</label>
                 <select id="input_jenisDokumen" class="form-control">
-                    <option value="Dokumen Penting">Dokumen Penting</option>
-                    <option value="Dokumen Rahasia">Dokumen Rahasia</option>
+                    <option value="Surat Keputusan">Surat Keputusan</option>
+                    <option value="Surat Rahasia">Surat Rahasia</option>
+                    <option value="Surat Biasa">Surat Biasa</option>
                 </select>
             </div>
-            <div class="form-group mb-2">
-                <label>Alur</label>
-                <select id="input_alur" class="form-control select2" multiple>
-                    <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                    <option value="bidang">Bidang</option>
-                    <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                    <option value="dewan-pengurus">Dewan Pengurus</option>
-                    <option value="pengurus-inti">Pengurus Inti</option>
-                    <option value="administrasi-umum">Administrasi Umum</option>
-                </select>
-                <br><br>
-                <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
-            </div>
-            {{#if daftarAlur}}
-            <h4>Daftar Alur</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>Nomor</th>
-                        <th>Jabatan</th>
-                        <!-- <th>Aksi</th> -->
-                    </thead>
-                    <tbody>
-                        {{#each i in daftarAlur}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-                                {{setJabatanFormat i}}
-                            </td>
-                            <!-- <td>
-                                    <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </td> -->
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-            {{/if}}
             <br>
             <div class="form-group mb-2">
                 <input type="file" name="filePDF" id="filePDF" accept=".pdf" required>
@@ -760,70 +698,53 @@
 <template name="detailDocument">
     <div class="container">
         <div class="title-page">
-            <h3> Detail Dokumen </h3>
+            <h3> Detail Surat Masuk </h3>
         </div>
         <form>
-            <!-- <label>{{dataDokumen.linkPDF}}</label> -->
-            <iframe id="previewDoc" style="width: 100%; height: 300px;"
-                src="https://docs.google.com/viewer?url={{dataDokumen.linkPDF}}&embedded=true"></iframe>
             <div class="form-group mb-2">
                 <label>Nama Dokumen</label>
-                <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.name}}" disabled>
+                <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.name}}">
             </div>
             <div class="form-group mb-2">
                 <label>Asal Dokumen</label>
-                <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.sumberDokumen}}"
-                    disabled>
+                <input type="text" id="input_sumber" class="form-control" value="{{dataDokumen.source}}">
             </div>
             <div class="form-group mb-2">
                 <label>Tanggal</label>
-                <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.tanggal}}"
-                    disabled>
+                <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.date}}">
             </div>
             <div class="form-group mb-2">
                 <label>Jenis Dokumen</label>
-                <select id="input_jenisDokumen" class="form-control" disabled>
-                    {{#if equals dataDokumen.jenis_dokumen "Dokumen Penting"}}
-                    <option value="Dokumen Penting" selected>Dokumen Penting</option>
+                <select id="input_jenisDokumen" class="form-control">
+                    {{#if equals dataDokumen.documentType "Surat Penting"}}
+                    <option value="Surat Penting" selected>Surat Penting</option>
                     {{else}}
-                    <option value="Dokumen Penting">Dokumen Penting</option>
+                    <option value="Surat Penting">Surat Penting</option>
                     {{/if}}
-                    {{#if equals dataDokumen.jenis_dokumen "Dokumen Rahasia"}}
-                    <option value="Dokumen Rahasia" selected>Dokumen Rahasia</option>
+                    {{#if equals dataDokumen.documentType "Surat Rahasia"}}
+                    <option value="Surat Rahasia" selected>Surat Rahasia</option>
                     {{else}}
-                    <option value="Dokumen Rahasia">Dokumen Rahasia</option>
+                    <option value="Surat Rahasia">Surat Rahasia</option>
+                    {{/if}}
+                    {{#if equals dataDokumen.documentType "Surat Biasa"}}
+                    <option value="Surat Biasa" selected>Surat Biasa</option>
+                    {{else}}
+                    <option value="Surat Biasa">Surat Biasa</option>
                     {{/if}}
                 </select>
-
             </div>
-            <h4>Daftar Alur</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <th style="width: 5vw; text-align: center;">Nomor</th>
-                        <th style="width: 30vw; text-align: center;">Jabatan</th>
-                        <th style="text-align: center;">Analisis</th>
-                    </thead>
-                    <tbody>
-                        {{#each i in dataDokumen.alur}}
-                        <tr>
-                            <td style="text-align: center">
-                                {{setTableNumber @index}}
-                            </td>
-                            <td style="text-align:center">
-                                {{setJabatanFormat i.jabatan}}
-                            </td>
-                            <td style="word-break: break-all;">
-                                {{#if equals i.analisis ""}}
-                                Belum Review
-                                {{else}}
-                                {{i.analisis}}
-                                {{/if}}
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
+            <br>
+            <div class="form-group mb-2">
+                <input type="file" name="filePDF" id="filePDF" accept=".pdf" required>
+            </div>
+            {{#if dataDokumen.link}}
+             <h3>Bila preview tidak tampil, silahkan reload halaman ini</h3>
+                <iframe id="previewDoc" style="width: 100%; height: 300px;"
+                src="https://docs.google.com/viewer?url={{dataDokumen.link}}&embedded=true"></iframe>
+             {{/if}}
+            <br>
+            <div class="form-actions">
+                <button class="btn btn-primary" id="submit">Simpan</button>
             </div>
         </form>
     </div>

@@ -19,40 +19,40 @@ Template.list_document.onCreated(function () {
   self.dataDocumentHistoryByRole = new ReactiveVar();
   const userId = Meteor.userId();
   // console.log(userId);
-  if (userId) {
-    Meteor.call("employee.getDataLogin", userId, function (error, result) {
-      if (result) {
-        const dataRole = result[0];
-        self.jabatanLogin.set(dataRole);
-        Meteor.call(
-          "document.getDocumentByRoles",
-          dataRole,
-          function (error, result) {
-            // console.log(roleLogin);
-            if (result) {
-              // console.log(result);
-              self.dataDocumentByRole.set(result);
-            } else {
-              console.log(error);
-            }
-          }
-        );
-        Meteor.call(
-          "document.getHistoryByPengisi",
-          dataRole,
-          function (error, result) {
-            if (result) {
-              self.dataDocumentHistoryByRole.set(result);
-            } else {
-              console.log(error);
-            }
-          }
-        );
-      } else {
-        console.log(error);
-      }
-    });
-  }
+  // if (userId) {
+  //   Meteor.call("employee.getDataLogin", userId, function (error, result) {
+  //     if (result) {
+  //       const dataRole = result[0];
+  //       self.jabatanLogin.set(dataRole);
+  //       Meteor.call(
+  //         "document.getDocumentByRoles",
+  //         dataRole,
+  //         function (error, result) {
+  //           // console.log(roleLogin);
+  //           if (result) {
+  //             // console.log(result);
+  //             self.dataDocumentByRole.set(result);
+  //           } else {
+  //             console.log(error);
+  //           }
+  //         }
+  //       );
+  //       Meteor.call(
+  //         "document.getHistoryByPengisi",
+  //         dataRole,
+  //         function (error, result) {
+  //           if (result) {
+  //             self.dataDocumentHistoryByRole.set(result);
+  //           } else {
+  //             console.log(error);
+  //           }
+  //         }
+  //       );
+  //     } else {
+  //       console.log(error);
+  //     }
+  //   });
+  // }
   Meteor.call("document.getAllDocuments", function (error1, result1) {
     if (result1) {
       // console.log(result1);
@@ -81,28 +81,48 @@ Template.list_document.helpers({
   }
 });
 
-Template.detailDocument.onCreated(function () {
-  // console.log("masuk");
-  const self = this;
-  self.dataDetailDokumen = new ReactiveVar();
-  self.jabatanLogin = new ReactiveVar();
-  const id = FlowRouter.getParam("_id");
-  // console.log(id);
-  const userId = Meteor.userId();
-  // console.log(userId);
-  if (userId) {
-    Meteor.call("employee.getDataLogin", userId, function (error, result) {
+Template.list_document.events({
+  "click #btn-search"(e, t) {
+    e.preventDefault();
+    const name = $("#documentName").val();
+    const source = $("#documentSource").val();
+    const date = $("#date").val()
+    console.log(name, source, date);
+    const data = {
+      name,
+      source,
+      date
+    }
+    Meteor.call("document.search", data, function(error, result) {
+      if(result) {
+        t.dataDocument.set(result)
+      }
+      else {
+        console.log(error);
+        failAlert(error)
+      }
+    })
+  },
+  "click #btn-refresh"(e, t) {
+    e.preventDefault();
+    Meteor.call("document.getAllDocuments", function (error, result) {
       if (result) {
-        const dataRole = result[0];
-        self.jabatanLogin.set(dataRole);
+        t.dataDocument.set(result);
       } else {
         console.log(error);
       }
     });
   }
+})
+
+Template.detailDocument.onCreated(function () {
+  const self = this;
+  self.dataDetailDokumen = new ReactiveVar();
+  self.jabatanLogin = new ReactiveVar();
+  const id = FlowRouter.getParam("_id");
+  const userId = Meteor.userId();
   Meteor.call("document.getDocumentsByID", id, function (error, result) {
     if (result) {
-      // console.log(result);
       self.dataDetailDokumen.set(result);
     } else {
       console.log(error);
@@ -120,18 +140,53 @@ Template.detailDocument.helpers({
 });
 
 Template.detailDocument.events({
-  "load #previewDoc"(event, template) {
-    console.log("Iframe content loaded successfully");
-  },
-
-  "error #previewDoc"(event, template) {
+  async "click #submit"(e, t) {
+    e.preventDefault();
     Swal.fire({
-      title: "Gagal",
-      text: "Dokumen gagal di preview, silahkan refresh halaman ini",
-      showConfirmButton: true,
-      allowOutsideClick: true,
+      title: "Loading...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
     });
-  },
+    const full_name = $("#input_fullName").val();
+    const sumber = $("#input_sumber").val();
+    const tanggal = $("#input_tanggal").val();
+    const jenisDokumen = $("#input_jenisDokumen").val();
+    const file = $(`#filePDF`).prop("files");
+    let dataSave = {
+      name: full_name,
+      source: sumber,
+      date: tanggal,
+      documentType: jenisDokumen
+    };
+    let thisForm = {};
+    if (file[0]) {
+      const uploadData = {
+        fileName: "kepegawaian/documents/" + file[0].name,
+        type: ".pdf",
+        Body: file[0],
+      };
+      thisForm.fileData = await uploadFiles(uploadData);
+      dataSave.link = thisForm.fileData;
+    }
+
+    const id = FlowRouter.getParam("_id");
+    console.log(id);
+    Meteor.call("document.update", dataSave, id, function(error, result) {
+      if(result) {
+        Swal.close();
+        successAlert("Data berhasil diubah");
+        location.reload();
+      }
+      else {
+        Swal.close();
+        failAlert(error);
+        console.log(error);
+      }
+    })
+  }
 });
 
 // Template.resepsionisDocument.helpers({
@@ -197,84 +252,38 @@ Template.create_document.events({
     const sumber = $("#input_sumber").val();
     const tanggal = $("#input_tanggal").val();
     const jenisDokumen = $("#input_jenisDokumen").val();
-    // console.log(full_name, tanggal, jenisDokumen);
     const file = $(`#filePDF`).prop("files");
-    // console.log(file);
+    let dataSave = {
+      name: full_name,
+      source: sumber,
+      date: tanggal,
+      documentType: jenisDokumen
+    };
     let thisForm = {};
     if (file[0]) {
       const uploadData = {
-        fileName: file[0].name,
+        fileName: "kepegawaian/documents/" + file[0].name,
         type: ".pdf",
         Body: file[0],
       };
       thisForm.fileData = await uploadFiles(uploadData);
+      dataSave.link = thisForm.fileData;
     }
 
-    const linkFilePDF = thisForm.fileData;
-    console.log(linkFilePDF == null);
-    if (linkFilePDF == null) {
-      Swal.close();
-      Swal.fire({
-        title: "Gagal",
-        text: "Dokumen gagal diunggah ke sistem, pastikan file sudah dipilih",
-        showConfirmButton: true,
-        allowOutsideClick: true,
-      });
-    } else {
-      const dataAlur = t.daftarAlur.get();
+    Meteor.call("document.tambahDokumen", dataSave, function(error, result) {
+      if(result) {
+        Swal.close();
+        successAlert("Data berhasil disimpan");
+        location.reload();
+        history.back();
+      }
+      else {
+        console.log(error);
+        failAlert(error);
+      }
+    })
 
-      // console.log(sumber);
-      const dataSave = {
-        full_name: full_name,
-        sumber: sumber,
-        tanggal: tanggal,
-        jenis_dokumen: jenisDokumen,
-        alur: dataAlur,
-        linkPDF: linkFilePDF,
-      };
-
-      setTimeout(() => {
-        Meteor.call(
-          "document.tambahDokumen",
-          dataSave,
-          function (error, result) {
-            Swal.close();
-            if (result) {
-              // console.log(result);
-              Swal.fire({
-                title: "Berhasil",
-                text: "Data berhasil dimasukkan",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
-              history.back();
-            } else {
-              // console.log(error);
-              Swal.fire({
-                title: "Gagal",
-                text: "Data gagal dimasukkan",
-                showConfirmButton: true,
-                allowOutsideClick: true,
-              });
-            }
-          }
-        );
-      }, 4000);
-    }
-  },
-  // "click #btn-remove"(e, t) {
-  //     e.preventDefault();
-  //     // console.log("masuk")
-  //     var dataRow = t.daftarAlur.get();
-  //     const jabatan = $(e.target).attr("milik");
-  //     console.log(jabatan);
-  //     const hapus = dataRow.indexOf(jabatan);
-  //     if(hapus !== -1) {
-  //         dataRow.splice(hapus, 1);
-  //     }
-  //     t.daftarAlur.set(dataRow);
-  //     console.log(t.daftarAlur.get())
-  //   },
+  }
 });
 
 Template.reviewDocument.onCreated(function () {
