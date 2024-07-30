@@ -198,125 +198,67 @@ Meteor.methods({
   },
 
   "korespondensi.create"(data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir} = data;
+    let {category,
+      receiver,
+      about,
+      letterCode,
+      tanggalBerlaku,
+      tanggalBerakhir,
+      links} = data;
+
+    if(receiver == null || receiver == undefined) {
+      receiver = ""
+    }
+    if(about == null || about == undefined) {
+      about = ""
+    }
 
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
-
     if (!thisUser) {
       throw new Meteor.Error(412, "No Access");
     }
     let modelData;
-    //status surat
-    //10 : draft
-    //11 : send to level 1
-    //20 : send to level 2
-    //30 : send to level 3
-    //60 : success
-    //80 : final cetak
-    //90 : reject
-    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
+    // Format no.surat
+    // nomor urut 3 digit - code surat - bulan (romawi) - tahun
+    let noSuratFinal;
+    let countNoSurat = Letters.find({partner: "keuskupan"}).count() + 1;
+    const formattedCount = countNoSurat.toString().padStart(3, '0');
+    const currentMonth = getCurrentMonthInRoman();
+    const currentYear = new Date().getFullYear();
 
-    //masih belum bisa generate nomor surat
-    // ALUR PENGECEKAN
-    // 1. Cek tanggalBerlaku dan tanggalBerakhir apakah undefined atau tidak (hasil kiriman dari client)
-    // 2. Cek dataAlurnya undefined atau tidak dari client
+    noSuratFinal = `${formattedCount}/${letterCode}/${currentMonth}/${currentYear}`
+    const categoryName = Configuration.findOne({_id: category})
 
     if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: [],
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: "",
-          partner: thisUser.partners[0],
-          createdAt: new Date(),
-          createdBy: thisUser._id,
-        };
-      }
-      else {
-        let dataAlurFinal = [];
-        for (let index = 0; index < dataAlur.length; index++) {
-          const element = dataAlur[index];
-          const data = {
-            order: index+1,
-            jabatan: element,
-            analisis: ""
-          }
-          dataAlurFinal.push(data);
-        }
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: dataAlurFinal,
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: dataAlur[0],
-          partner: thisUser.partners[0],
-          createdAt: new Date(),
-          createdBy: thisUser._id,
-        };
-      }
+      modelData = {
+        documentNumber: noSuratFinal,
+        categoryId: category,
+        categoryName: categoryName.name,
+        receiver,
+        about,
+        linksLetter: links,
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+        createdByName: thisUser.fullname,
+      };
     }
     else {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0) {
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: [],
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: "",
-          tanggalBerlaku: new Date(tanggalBerlaku),
-          tanggalBerakhir: new Date(tanggalBerakhir),
-          partner: thisUser.partners[0],
-          createdAt: new Date(),
-          createdBy: thisUser._id,
-        };
-      }
-      else {
-        let dataAlurFinal = [];
-        for (let index = 0; index < dataAlur.length; index++) {
-          const element = dataAlur[index];
-          const data = {
-            order: index+1,
-            jabatan: element,
-            analisis: ""
-          }
-          dataAlurFinal.push(data);
-        }
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: dataAlurFinal,
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: dataAlur[0],
-          tanggalBerlaku: new Date(tanggalBerlaku),
-          tanggalBerakhir: new Date(tanggalBerakhir),
-          partner: thisUser.partners[0],
-          createdAt: new Date(),
-          createdBy: thisUser._id,
-        };
-      }
+      modelData = {
+        documentNumber: noSuratFinal,
+        categoryId: category,
+        categoryName: categoryName.name,
+        receiver,
+        about,
+        linksLetter: links,
+        tanggalBerlaku: new Date(tanggalBerlaku),
+        tanggalBerakhir: new Date(tanggalBerakhir),
+        partner: thisUser.partners[0],
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+        createdByName: thisUser.fullname
+      };
     }
     
 
@@ -327,14 +269,6 @@ Meteor.methods({
       operatorName: thisUser.fullname,
       timestamp: new Date()
     }
-    //perlu penjagaan surat ini dibuat oleh siapa selain dari user
-    //maksud nya seperti partner (Keuskupan) atau department
-    //TINDAKAN:
-    //Penjagaan partner sudah diambil dari partner pembuat surat
-
-    // if (!thisUser.partner) {
-    //   modelData.partner = "default";
-    // }
 
     const insert = Letters.insert(modelData);
     return Letters.update({_id: insert}, {$push: {
@@ -342,126 +276,28 @@ Meteor.methods({
     }}, {upsert: true})
   },
 
-  "korespondensi.editSimpan"(id, data) {
-    const {category, note, purpose, attachment, subject, desc, dataAlur, tanggalBerlaku, tanggalBerakhir,dataSigner, dataTembusan } = data;
+  "korespondensi.editSimpan"(data, id) {
+    const {
+      receiver,
+      about,
+      links,
+      linksTTD } = data;
     const idUserPengisi = Meteor.userId();
     const thisUser = Meteor.users.findOne({ _id: idUserPengisi });
-    console.log(dataSigner);
     if (!thisUser) {
       throw new Meteor.Error(412, "No Access");
     }
     let modelData;
-    //status surat
-    //10 : draft
-    //11 : send to level 1
-    //20 : send to level 2
-    //30 : send to level 3
-    //60 : success
-    //80 : final cetak
-    //90 : reject
-    //BILA ALUR ADALAH NULL, MAKA AKAN LANGSUNG MENGARAH KE SEKRETARIS-KEUSKUPAN DAN STATUS LANGSUNG BERUBAH MENJADI 11
-
-    //masih belum bisa generate nomor surat
-    // ALUR PENGECEKAN
-    // 1. Cek tanggalBerlaku dan tanggalBerakhir apakah undefined atau tidak (hasil kiriman dari client)
-    // 2. Cek dataAlurnya undefined atau tidak dari client
-
-    if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0 ) {
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: [],
-          signer:[],
-          tembusan:[],
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: "",
-          partner: thisUser.partners[0],
-        };
-      }
-      else {
-        let dataAlurFinal = [];
-        for (let index = 0; index < dataAlur.length; index++) {
-          const element = dataAlur[index];
-          const data = {
-            order: index+1,
-            jabatan: element,
-            analisis: ""
-          }
-          dataAlurFinal.push(data);
-        }
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: dataAlurFinal,
-          signer: dataSigner,
-          tembusan: dataTembusan,
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: dataAlur[0].jabatan,
-          partner: thisUser.partners[0],
-        };
-      }
+    modelData = {
+      receiver,
+      about
     }
-    else {
-      if(dataAlur == undefined || dataAlur == null || dataAlur.length == 0 ) {
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: [],
-          signer:[],
-          tembusan:[],
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: "",
-          tanggalBerlaku: new Date(tanggalBerlaku),
-          tanggalBerakhir: new Date(tanggalBerakhir),
-          partner: thisUser.partners[0],
-        };
-      }
-      else {
-        let dataAlurFinal = [];
-        for (let index = 0; index < dataAlur.length; index++) {
-          const element = dataAlur[index];
-          const data = {
-            order: index+1,
-            jabatan: element,
-            analisis: ""
-          }
-          dataAlurFinal.push(data);
-        }
-        modelData = {
-          category,
-          note,
-          purpose,
-          attachment,
-          subject,
-          desc,
-          alur: dataAlurFinal,
-          signer: dataSigner,
-          tembusan: dataTembusan,
-          status: 10,
-          currentOrder: 0,
-          currentJabatan: dataAlur[0].jabatan,
-          tanggalBerlaku: new Date(tanggalBerlaku),
-          tanggalBerakhir: new Date(tanggalBerakhir),
-          partner: thisUser.partners[0],
-        };
-      }
-    }
+    if(links !== undefined || links !== null || links.length > 0) {
+      modelData.linksLetter = links
+    } 
+    if(linksTTD !== undefined || linksTTD !== null || linksTTD.length > 0) {
+      modelData.linksLetterSignatured = linksTTD
+    } 
 
     const timeline = {
       event: "edited",
@@ -469,30 +305,48 @@ Meteor.methods({
       operatorName: thisUser.fullname,
       timestamp: new Date()
     }
+    
+    return Letters.update({ _id: id }, { $set: modelData,
+      $set: modelData, 
+      $push: {
+        timeline: timeline
+      }
+    });
 
-    //perlu penjagaan surat ini dibuat oleh siapa selain dari user
-    //maksud nya seperti partner (Keuskupan) atau department
-    //TINDAKAN:
-    //Penjagaan partner sudah diambil dari partner pembuat surat
+    // Hidupkan lagi bila tanggalBerlaku dan berakhir SK bisa diganti dalam sistem
 
-    // if (!thisUser.partner) {
-    //   modelData.partner = "default";
+    // if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
+    //   return Letters.update({ _id: id }, { $set: modelData, $push: {
+    //     timeline: timeline
+    //   },
+    //   $unset: {
+    //     tanggalBerlaku: "",
+    //     tanggalBerakhir: ""
+    //   }});
     // }
+    // else {
+    //   return Letters.update({ _id: id }, { $set: modelData, $push: {
+    //     timeline: timeline
+    //   }});
+    // }
+  },
 
-    if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      return Letters.update({ _id: id }, { $set: modelData, $push: {
-        timeline: timeline
-      },
-      $unset: {
-        tanggalBerlaku: "",
-        tanggalBerakhir: ""
-      }});
+  "korespondensi.search"(data) {
+    const {about, tanggalBerakhir} = data;
+    let query = {};
+    if(about) {
+      query.about = { $regex: new RegExp(about, 'i') };
     }
-    else {
-      return Letters.update({ _id: id }, { $set: modelData, $push: {
-        timeline: timeline
-      }});
+    if(tanggalBerakhir) {
+      const inputDate = new Date(tanggalBerakhir);
+      const year = inputDate.getFullYear();
+      const startDate = new Date(year, 0, 1); // 1 Januari tahun input
+      const endDate = inputDate; // Tanggal yang diinput
+      query.tanggalBerakhir = { $gte: startDate, $lte: endDate };
     }
+    const filteredItems = Letters.find(query).fetch();
+    console.log(filteredItems);
+    return filteredItems
   },
 
   "korespondensi.save"(data) {
@@ -865,7 +719,7 @@ Meteor.methods({
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
       if(element.category!= "" || element.category != null || element.category != undefined) {
-        const dataKonfig = Configuration.findOne({_id: element.category})
+        const dataKonfig = Configuration.findOne({_id: element.categoryId})
         element.categoryName = dataKonfig.name;
       }
     }
@@ -963,3 +817,12 @@ Meteor.methods({
     }
   }
 });
+
+function getCurrentMonthInRoman() {
+  const monthsInRoman = [
+    "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"
+  ];
+  
+  const currentMonthIndex = new Date().getMonth(); // Mendapatkan bulan saat ini (0-11)
+  return monthsInRoman[currentMonthIndex];
+}

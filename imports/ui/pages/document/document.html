@@ -595,71 +595,53 @@
         </div>
         {{/if}}
         
-        {{#if equals jabatanLogin "sekretaris-keuskupan"}}
-        <h3>Data Dokumen Yang Harus Direview</h3>
-        <div class="d-lg-block table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Sumber</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Posisi</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each dataDocumentByRole}}
-                    <tr>
-                        <td> {{nomorUrut @index}} </td>
-                        <td style="text-transform: capitalize;"> {{name}} </td>
-                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
-                        <td> {{formatHRDate tanggal}} </td>
-                        <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td>
-                            <a href="/documents/review/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_review">Review</button>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
-
-        <br>
-        <h3>Riwayat Dokumen Direview</h3>
-        <div class="d-lg-block table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Sumber</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Posisi</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each dataDocumentHistoryByRole}}
-                    <tr>
-                        <td> {{nomorUrut @index}} </td>
-                        <td style="text-transform: capitalize;"> {{name}} </td>
-                        <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
-                        <td> {{formatHRDate tanggal}} </td>
-                        <td> {{setJabatanFormat currentJabatan}} </td>
-                        <td>
-                            <a href="/documents/details/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+        {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip"}}
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/documents/create" class="btn btn-primary">Tambah</a>
+            </div>
+            <h3>Semua List Dokumen</h3>
+            <div class="d-lg-block table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Sumber</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Posisi</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each dataDocument}}
+                        <tr>
+                            <td> {{nomorUrut @index}} </td>
+                            <td style="text-transform: capitalize;"> {{name}} </td>
+                            <td style="text-transform: capitalize;"> {{sumberDokumen}} </td>
+                            <td> {{formatHRDate tanggal}} </td>
+                            <td> {{setJabatanFormat currentJabatan}} </td>
+                            <td> 
+                                {{#if equals currentOrder 99}} 
+                                    Selesai Ditolak 
+                                {{else}}
+                                    {{#if equals currentOrder 80}} 
+                                        Selesai Diterima 
+                                    {{else}}
+                                        Proses Review Berlangsung
+                                    {{/if}}
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/documents/details/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         {{/if}}
 
         <!-- <div class="d-lg-block">
@@ -882,260 +864,32 @@
             <a href="/createKorespondensi" class="btn btn-primary">+ Buat Surat Baru</a>
         </div>
         <br><br>
-        {{#if equals jabatanLogin "sekretaris-keuskupan"}}
+        {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip"}}
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#all">Daftar Semua Surat</a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#review">Daftar Surat Lainnya</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#created">Daftar Surat Dibuat</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#history">Daftar Riwayat Review Surat</a>
-                </li>
             
             </ul>
             <div class="tab-content">
-                <div id="review" class="tab-pane fade  ">
-                    <h3>Daftar Surat Yang Harus Direview</h3>
-                    <div class="section-content-page">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>No</th>
-                                <th>No. Surat Keluar</th>
-                                <th>Kategori Surat</th>
-                                <th>Perihal Surat</th>
-                                <th>Penerima Surat</th>
-                                <th>Tanggal Surat</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody>
-                                {{#each listItems}}
-                                <tr>
-                                    <td>
-                                        {{setTableNumber @index}}
-                                    </td>
-                                    <td>
-        
-                                    </td>
-                                    <td>
-                                        {{categoryName}}
-                                    </td>
-                                    <td>
-                                        {{subject}}
-                                    </td>
-                                    <td>
-                                        {{purpose}}
-                                    </td>
-                                    <td>
-                                        {{formatHRDate createdAt}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 10}}
-                                            Draft
-                                        {{else}}
-                                            {{#if equals status 80}}
-                                                Diterima
-                                            {{else}}
-                                                {{#if equals status 99}}
-                                                    Ditolak
-                                                {{else}}
-                                                    Sedang Direview
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 11}}
-                                            <a href="/editKorespondensiAlur/{{_id}}">
-                                                <button class="btn btn-primary" type="button" id="btn_reviewAlur">Review Alur</button>
-                                            </a>
-                                        {{else}}
-                                            <a href="/documents/details/{{_id}}">
-                                                <button class="btn btn-secondary" type="button" id="btn_review">Review</button>
-                                            </a>
-                                        {{/if}}
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                    <br><br>
-                </div>
-                <div id="created" class="tab-pane fade">
-                    <h3>Daftar Surat Dibuat</h3>
-                    <div class="section-content-page">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>No</th>
-                                <th>No. Surat Keluar</th>
-                                <th>Kategori Surat</th>
-                                <th>Perihal Surat</th>
-                                <th>Penerima Surat</th>
-                                <th>Tanggal Surat</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody>
-                                {{#each dataKorespondensiPembuat}}
-                                <tr>
-                                    <td>
-                                        {{setTableNumber @index}}
-                                    </td>
-                                    <td>
-        
-                                    </td>
-                                    <td>
-                                        {{categoryName}}
-                                    </td>
-                                    <td>
-                                        {{subject}}
-                                    </td>
-                                    <td>
-                                        {{purpose}}
-                                    </td>
-                                    <td>
-                                        {{formatHRDate createdAt}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 10}}
-                                            Draft
-                                        {{else}}
-                                            {{#if equals status 80}}
-                                                Diterima
-                                            {{else}}
-                                                {{#if equals status 99}}
-                                                    Ditolak
-                                                {{else}}
-                                                    Sedang Direview
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 10}}
-                                                <a href="/editKorespondensi/{{_id}}">
-                                                    <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
-                                                </a>
-                                                <a href="/detailKorespondensi/{{_id}}">
-                                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                                </a>
-        
-                                            {{else}}
-                                                {{#if equals status 80}}
-                                                    <a href="/editKorespondensi/{{_id}}">
-                                                        <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
-                                                    </a>
-                                                    <a href="/detailKorespondensi/{{_id}}">
-                                                        <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                                    </a>
-                                                    <a href="/arsipKorespondensi/{{_id}}">
-                                                        <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
-                                                    </a>
-                                                {{else}}
-                                                    <a href="/detailKorespondensi/{{_id}}">
-                                                        <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                                    </a>
-                                                {{/if}}
-                                            {{/if}}
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                    <br><br>
-                </div>
-
-                <div id="history" class="tab-pane fade">
-                    <h3>Daftar Riwayat Review Surat</h3>
-                    <div class="section-content-page">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>No</th>
-                                <th>No. Surat Keluar</th>
-                                <th>Kategori Surat</th>
-                                <th>Perihal Surat</th>
-                                <th>Penerima Surat</th>
-                                <th>Tanggal Surat</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody>
-                                {{#each dataHistoryReviewer}}
-                                <tr>
-                                    <td>
-                                        {{setTableNumber @index}}
-                                    </td>
-                                    <td>
-        
-                                    </td>
-                                    <td>
-                                        {{categoryName}}
-                                    </td>
-                                    <td>
-                                        {{subject}}
-                                    </td>
-                                    <td>
-                                        {{purpose}}
-                                    </td>
-                                    <td>
-                                        {{formatHRDate createdAt}}
-                                    </td>
-                                    <td>
-                                        {{#if equals status 10}}
-                                            Draft
-                                        {{else}}
-                                            {{#if equals status 80}}
-                                                Diterima
-                                            {{else}}
-                                                {{#if equals status 99}}
-                                                    Ditolak
-                                                {{else}}
-                                                    Sedang Direview
-                                                {{/if}}
-                                            {{/if}}
-                                        {{/if}}
-                                    </td>
-                                    <td>
-                                        <a href="/detailKorespondensi/{{_id}}">
-                                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                    <br><br>
-                </div>
-             
                 <div id="all" class="tab-pane fade show active">
                     <h3>Daftar Semua Surat</h3>
                     <div class="input-group mb-3">
                         <div class="form-group">
-                            <label for="nameOfMail">Nama Surat</label>
-                            <input type="text" class="form-control search-input" id="nameOfMail" placeholder="Nama Surat">
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="nameOfdate">Masa Berlaku</label>
-                            <input type="date" class="form-control search-input" id="nameOfdate" placeholder="Masa Berlaku">
+                            <label for="nameOfPerihal">Perihal</label>
+                            <input type="text" class="form-control search-input" id="nameOfPerihal" placeholder="Perihal">
                         </div>
                         <div class="form-group ml-3">
                             <label for="nameOfExperiedDate">Masa Berakhir</label>
                             <input type="date" class="form-control search-input" id="nameOfExperiedDate" placeholder="Masa Berakhir">
                         </div>
-                        <div class="form-group ml-3">
-                            <label for="nameOfPersonMaker">Nama Pembuat Surat</label>
-                            <input type="text" class="form-control search-input" id="nameOfPersonMaker" placeholder="Nama Pembuat Surat">
-                        </div>
-                        <div class="form-group ml-3" style="margin-top:32px;">
-                            <button class="btn btn-primary " type="button" id="btn-search">Cari</button>
+                        <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
+                            <button class="btn btn-primary" type="button" id="btn-search">
+                                <i class="fas fa-search" id="btn-search"></i> Cari
+                            </button>
+                            <button id="btn-refresh" class="btn btn-primary">
+                                <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
+                            </button>
                         </div>
                     </div>
                     
@@ -1147,34 +901,28 @@
                                 <th>Kategori Surat</th>
                                 <th>Perihal Surat</th>
                                 <th>Penerima Surat</th>
-                                <th>Tanggal Surat</th>
-                                <th>Status</th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Masa Berakhir</th>
+                                <th>Pembuat</th>
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
                                 {{#each dataKorespondensi}}
                                 <tr>
                                   <td>{{setTableNumber @index}}</td>
-                                  <td>{{noSuratKeluar}}</td>
+                                  <td>{{documentNumber}}</td>
                                   <td>{{categoryName}}</td>
-                                  <td>{{subject}}</td>
-                                  <td>{{purpose}}</td>
+                                  <td>{{about}}</td>
+                                  <td>{{receiver}}</td>
                                   <td>{{formatHRDate createdAt}}</td>
                                   <td>
-                                    {{#if equals status 10}}
-                                    Draft
+                                    {{#if tanggalBerakhir}}
+                                        {{formatHRDate tanggalBerakhir}}
                                     {{else}}
-                                    {{#if equals status 80}}
-                                    Diterima
-                                    {{else}}
-                                    {{#if equals status 99}}
-                                    Ditolak
-                                    {{else}}
-                                    Sedang Direview
-                                    {{/if}}
-                                    {{/if}}
+                                        -
                                     {{/if}}
                                   </td>
+                                  <td>{{capitalizeWord createdByName}}</td>
                                   <td>
                                     <a href="/detailKorespondensi/{{_id}}">
                                       <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -1188,210 +936,6 @@
                     </div>
                 </div>
             </div>
-       
-        {{else}}
-            <h3>Daftar Surat Yang Harus Direview</h3>
-            <div class="section-content-page">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>No</th>
-                        <th>No. Surat Keluar</th>
-                        <th>Kategori Surat</th>
-                        <th>Perihal Surat</th>
-                        <th>Penerima Surat</th>
-                        <th>Tanggal Surat</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </thead>
-                    <tbody>
-                        {{#each listItems}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-                                
-                            </td>
-                            <td>
-                                {{categoryName}}
-                            </td>
-                            <td>
-                                {{attachment}}
-                            </td>
-                            <td>
-                                {{purpose}}
-                            </td>
-                            <td>
-                                {{formatHRDate createdAt}}
-                            </td>
-                            <td>
-                                {{#if equals status 10}}
-                                    Draft
-                                {{else}}
-                                    {{#if equals status 80}}
-                                        Diterima
-                                    {{else}}
-                                        {{#if equals status 99}}
-                                            Ditolak
-                                        {{else}}
-                                            Sedang Direview
-                                        {{/if}}
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                            <td>
-                                <a href="/detailKorespondensi/{{_id}}">
-                                    <button class="btn btn-primary" type="button" id="btn_review">Review</button>
-                                </a>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-            <br><br>
-            <h3>Daftar Surat Dibuat</h3>
-            <div class="section-content-page">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>No</th>
-                        <th>No. Surat Keluar</th>
-                        <th>Kategori Surat</th>
-                        <th>Perihal Surat</th>
-                        <th>Penerima Surat</th>
-                        <th>Tanggal Surat</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </thead>
-                    <tbody>
-                        {{#each dataKorespondensiPembuat}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                                {{categoryName}}
-                            </td>
-                            <td>
-                                {{subject}}
-                            </td>
-                            <td>
-                                {{purpose}}
-                            </td>
-                            <td>
-                                {{formatHRDate createdAt}}
-                            </td>
-                            <td>
-                                {{#if equals status 10}}
-                                    Draft
-                                {{else}}
-                                    {{#if equals status 80}}
-                                        Diterima
-                                    {{else}}
-                                        {{#if equals status 99}}
-                                            Ditolak
-                                        {{else}}
-                                            Sedang Direview
-                                        {{/if}}
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                            <td>
-                                <td>
-                                    {{#if equals status 10}}
-                                        <a href="/editKorespondensi/{{_id}}">
-                                            <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
-                                        </a>
-                                        <a href="/detailKorespondensi/{{_id}}">
-                                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                        </a>
-                                    {{else}}
-                                        {{#if equals status 80}}
-                                            <a href="/editKorespondensi/{{_id}}">
-                                                <button class="btn btn-primary" type="button" id="btn_edit">Ubah</button>
-                                            </a>
-                                            <a href="/detailKorespondensi/{{_id}}">
-                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                            </a>
-                                            <a href="/arsipKorespondensi/{{_id}}">
-                                                <button class="btn btn-primary" type="button" id="btn_arsip">Arsip</button>
-                                            </a>
-                                        {{else}}
-                                            <a href="/detailKorespondensi/{{_id}}">
-                                                <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                            </a>
-                                        {{/if}}
-                                    {{/if}}
-                                </td>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-            <br><br>
-            <h3>Daftar Riwayat Review Surat</h3>
-            <div class="section-content-page">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>No</th>
-                        <th>No. Surat Keluar</th>
-                        <th>Kategori Surat</th>
-                        <th>Perihal Surat</th>
-                        <th>Penerima Surat</th>
-                        <th>Tanggal Surat</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </thead>
-                    <tbody>
-                        {{#each dataHistoryReviewer}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-
-                            </td>
-                            <td>
-                                {{categoryName}}
-                            </td>
-                            <td>
-                                {{subject}}
-                            </td>
-                            <td>
-                                {{purpose}}
-                            </td>
-                            <td>
-                                {{formatHRDate createdAt}}
-                            </td>
-                            <td>
-                                {{#if equals status 10}}
-                                    Draft
-                                {{else}}
-                                    {{#if equals status 80}}
-                                        Diterima
-                                    {{else}}
-                                        {{#if equals status 99}}
-                                            Ditolak
-                                        {{else}}
-                                            Sedang Direview
-                                        {{/if}}
-                                    {{/if}}
-                                {{/if}}
-                            </td>
-                            <td>
-                                <a href="/detailKorespondensi/{{_id}}">
-                                    <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                </a>
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
         {{/if}}
     </div>
     
@@ -1400,7 +944,7 @@
 <template name="createKorespondensi">
     <div class="container">
         <div class="section-title-page">
-            <h3>Buat Surat Baru</h3>
+            <h3>Buat Surat Keluar</h3>
         </div>
         <div class="section-content-page">
             <div class="page">
@@ -1424,191 +968,22 @@
                     </div>
                 {{/if}}
                 <div class="form-group">
-                    <label for="">Catatan Surat</label>
-                    <input type="text" id="noteOfLetter" class="form-control">
-                </div>
-                <div class="form-group">
                     <label for="">Penerima</label>
-                    <input type="text" id="toLetter" class="form-control">
+                    <input type="text" id="receiver" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="">Perihal</label>
                     <input type="text" id="about" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Lampiran</label>
-                    <input type="text" id="attach" class="form-control">
+                    <label for="">Kode Surat</label>
+                    <input type="text" id="code" class="form-control">
                 </div>
 
-
-                <div class="form-group">
-                    <label for="">Isi surat</label>
-                    <div id="toolbar-containerDescription"></div>
-					<div id="editorDescription" class="toolbar-containerDescription"
-						style="background-color: white;color: black;">
-					</div>
-                </div>
-
-                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
-                    <div class="form-group">
-                        <label>Alur</label>
-                        <select id="input_alur" class="form-control select2" multiple>
-                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                            <option value="bidang">Bidang</option>
-                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                            <option value="dewan-pengurus">Dewan Pengurus</option>
-                            <option value="pengurus-inti">Pengurus Inti</option>
-                            <option value="administrasi-umum">Administrasi Umum</option>
-                        </select>
-                        <br><br>
-                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
-                    </div>
-                    {{#if daftarAlur}}
-                        <h4>Daftar Alur</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <th>Nomor</th>
-                                    <th>Jabatan</th>
-                                    <th>Aksi</th>
-                                </thead>
-                                <tbody>
-                                    {{#each i in daftarAlur}}
-                                    <tr>
-                                        <td>
-                                            {{setTableNumber @index}}
-                                        </td>
-                                        <td>
-                                            {{setJabatanFormat i}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-remove" posisi={{@index}}>
-                                                <i class="fa fa-trash" posisi={{@index}}>Hapus</i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
-                        </div>
-                    {{/if}}
-                {{/if}}
+                {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
 
                 <div class="form-actions">
-                    <button class="btn btn-primary" id="submit">Simpan Draft</button>
-                    <!-- <button class="btn btn-success" id="btn-send">Ajukan</button> -->
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
-<template name="editKorespondensiAlur">
-    <div class="container">
-        <div class="section-title-page">
-            <h3>Ubah Alur Surat</h3>
-        </div>
-        <div class="section-content-page">
-            <div class="page">
-                <div class="form-group">
-                    <label for="">Kategori Surat</label>
-                    <select id="category" class="form-control" disabled>
-                        <option>Pilih Kategori</option>
-                        {{#each categoryLetters}}
-                            {{#if equals dataKorespondensi.category _id}}
-                                <option value="{{_id}}" selected>{{ name }}</option>
-                            {{else}}
-                                <option value="{{_id}}">{{ name }}</option>
-                            {{/if}}
-                        {{/each}}
-                    </select>
-                </div>
-                {{#if equals isSKLetter true}}
-                    <div class="form-group">
-                        <label>Tanggal Berlaku</label>
-                        <input type="date" class="form-control" id="date-start" value="{{dateToHTML dataKorespondensi.tanggalBerlaku}}" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <label>Tanggal Berakhir</label>
-                        <input type="date" class="form-control" id="date-end" value="{{dateToHTML dataKorespondensi.tanggalBerakhir}}" disabled/>
-                    </div>
-                {{/if}}
-                <!-- <div class="form-group">
-                    <label for="">Nama Surat</label>
-                    <input type="text" id="nameOfLetter" class="form-control" value="{{dataKorespondensi.name}}" disabled>
-                </div> -->
-                <div class="form-group">
-                    <label for="">Catatan Surat</label>
-                    <input type="text" id="noteOfLetter" class="form-control" value="{{dataKorespondensi.note}}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="">Penerima</label>
-                    <input type="text" id="toLetter" class="form-control" value="{{dataKorespondensi.purpose}}" disabled>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="">Lampiran</label>
-                    <input type="text" id="attach" class="form-control" value="{{dataKorespondensi.attachment}}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="">Perihal</label>
-                    <input type="text" id="about" class="form-control" value="{{dataKorespondensi.subject}}" disabled>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="">Isi surat</label>
-                    {{{dataKorespondensi.desc}}}
-                </div>
-
-                {{#if equals jabatanLogin "sekretaris-keuskupan"}}
-                    <div class="form-group">
-                        <label>Alur</label>
-                        <select id="input_alur" class="form-control select2" multiple>
-                            <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                            <option value="bidang">Bidang</option>
-                            <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                            <option value="dewan-pengurus">Dewan Pengurus</option>
-                            <option value="pengurus-inti">Pengurus Inti</option>
-                            <option value="administrasi-umum">Administrasi Umum</option>
-                        </select>
-                        <br><br>
-                        <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
-                    </div>
-                    {{#if daftarAlur}}
-                        <h4>Daftar Alur</h4>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <th>Nomor</th>
-                                    <th colspan="2">Jabatan</th>
-
-                                </thead>
-                                <tbody>
-                                    {{#each i in daftarAlur}}
-                                    <tr>
-                                        <td>
-                                            {{setTableNumber @index}}
-                                        </td>
-                                        <td>
-                                            {{setJabatanFormat i}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{i}}>
-                                                <i class="fa fa-trash btn-remove" id="btn-remove" milik={{i}}></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
-                        </div>
-                    {{/if}}
-                {{/if}}
-
-                <div class="form-actions">
-                    <button class="btn btn-success" id="btn-send">Ajukan</button>
+                    <button class="btn btn-primary" id="submit">Simpan</button>
                 </div>
             </div>
         </div>
@@ -1852,189 +1227,75 @@
     </div>
 </template>
 
-<template name="formKorespondensi">
-    <div class="page">
-        <!-- <div class="form-group">
-            <label for="">Kategori Surat</label>
-            <select id="category" class="form-control ">
-                <option>Pilih Kategori</option>
-                {{#each categoryLetters}}
-                <option value="{{_id}}">{{ name }}</option>
-                {{/each}}
-            </select>
-        </div> -->
-        <div class="form-group">
-            <label for="">Catatan Surat</label>
-            <input type="text" id="nameOfLetter" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="">Penerima</label>
-            <input type="text" id="toLetter" class="form-control">
-        </div>
-
-
-        <div class="form-group">
-            <label for="">Lampiran</label>
-            <input type="text" id="attach" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="">Perihal</label>
-            <input type="text" id="about" class="form-control">
-        </div>
-
-
-        <div class="form-group">
-            <label for="">Isi surat</label>
-            <!-- The toolbar will be rendered in this container. -->
-            <div id="toolbar-container"></div>
-
-            <!-- This container will become the editable. -->
-            <div id="editor" class="toolbar-container" style="background-color: white;color: black;">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Alur</label>
-            <select id="input_alur" class="form-control select2" multiple>
-                <option value="sekretaris-eksekutif">Sekretaris Eksekutif</option>
-                <option value="bidang">Bidang</option>
-                <option value="sekretaris-yayasan">Sekretaris Yayasan</option>
-                <option value="dewan-pengurus">Dewan Pengurus</option>
-                <option value="pengurus-inti">Pengurus Inti</option>
-                <option value="administrasi-umum">Administrasi Umum</option>
-            </select>
-            <br><br>
-            <button class="btn btn-primary" id="btn-add-alur">Tambah</button>
-        </div>
-        {{#if daftarAlur}}
-            <h4>Daftar Alur</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <th>Nomor</th>
-                        <th>Jabatan</th>
-                        <!-- <th>Aksi</th> -->
-                    </thead>
-                    <tbody>
-                        {{#each i in daftarAlur}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-                                {{setJabatanFormat i}}
-                            </td>
-                            <td>
-                                <!-- <button class="btn btn-danger" id="btn-remove" milik={{i}}>
-                                    <i class="fa fa-trash"></i>
-                                </button> -->
-                            </td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-        {{/if}}
-
-        <div class="form-actions">
-            <button class="btn btn-primary" id="submit">Simpan Draft</button>
-            <button class="btn btn-success" id="btn-send">Ajukan</button>
-        </div>
-    </div>
-</template>
-
 <template name="detailKorespondensi">
     <div class="container">
-        <body style="font-family: serif; background-color: #ccc; color: #000;">
-            <div class="letterYoga" style="margin: 0 auto; background-color: #fff;  padding: 20px;">
-                {{> letterKopTemplate}}
-                <div class="d-flex flex-row-reverse">
-                    <div class="p-2">Surabaya, {{formatHRDate letterData.createdAt }}</div>
-                </div>
-                <table style="font-family: serif;padding : 2px;margin-top: 5px;">
-                    <tr>
-                        <td>
-                            Nomor
-                        </td>
-                        <td> : </td>
-                        <td>
-                            {{letterData.numberOfLetter}}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            Lampiran
-                        </td>
-                        <td> : </td>
-                        <td>
-                            {{letterData.attachment}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Perihal
-                        </td>
-                        <td> : </td>
-                        <td>
-                            {{letterData.subject}}
-                        </td>
-                    </tr>
-
-                </table>
-                <br>
-                <table class="table-border" style="font-family: serif;padding : 2px">
-                    <tr>
-                        <td>
-                            Kepada Yth :
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 400px; font-weight: bold;">
-                            {{letterData.purpose}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Di Tempat
-                        </td>
-
-                    </tr>
-
-                    <br>
-
-                </table>
-
-                <table style="font-family: serif;padding : 2px; width: auto;">
-                    <tr>
-                        <td style="text-align: justify;">
-                            {{{letterData.desc}}}
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
-
-        </body>
-        <div class="mt-5">
-            {{#if isInRole 'chief,generalManager,praeses,admin,superadmin'}}
-            <button class="btn btn-primary" id="btn-approve" milik="{{letterData._id}}">Setujui</button>
-            <button class="btn btn-warning" id="btn-revisi">Revisi</button>
-
-            {{#if equals formSubmit 1}}
-            <div class="form">
+        <div class="section-title-page">
+            <h3>Surat Keluar</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
                 <div class="form-group">
-                    <label for="">Catatan Revisi : </label>
-                    <textarea type="text" id="note" class="form-control"></textarea>
+                    <label for="">Nomor Surat</label>
+                    <input type="text" id="documentNumber" class="form-control" value="{{letterData.documentNumber}}" disabled>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary" id="revisi-save">Simpan</button>
+                    <label for="">Kategori Surat</label>
+                    <select id="category" class="form-control " disabled>
+                        <option>Pilih Kategori</option>
+                        {{#each categoryLetters}}
+                            {{#if equals letterData.categoryId _id}}
+                                <option value="{{_id}}" milik="{{slug}}" selected>{{ name }}</option>
+                            {{else}}
+                                <option value="{{_id}}" milik="{{slug}}">{{ name }}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+                {{#if equals isSKLetter true}}
+                    <div class="form-group">
+                        <label>Tanggal Berlaku</label>
+                        <input type="date" class="form-control" id="date-start" disabled value="{{dateToHTML letterData.tanggalBerlaku}}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Berakhir</label>
+                        <input type="date" class="form-control" id="date-end" disabled value="{{dateToHTML letterData.tanggalBerakhir}}"/>
+                    </div>
+                {{/if}}
+                <div class="form-group">
+                    <label for="">Penerima</label>
+                    <input type="text" id="receiver" class="form-control" value="{{letterData.receiver}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Perihal</label>
+                    <input type="text" id="about" class="form-control" value="{{letterData.about}}">
+                </div>
+
+                {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+
+                {{#if letterData.linksLetter}}
+                    <h3>Bila preview surat tidak tampil, silahkan reload halaman ini</h3>
+                    {{#each letterData.linksLetter}}
+                        <iframe src="https://docs.google.com/gview?url={{link}}&embedded=true" width="100%" height="500" style="border: none;"></iframe>
+                    {{/each}}
+                {{/if}}
+
+                <br><br>
+
+                {{> inputMultipleFilesSurat label="Pilih File Surat Tanda Tangan" id="buktiSuratTTD" files=buktiSuratTTD buttonLabel="Upload"}}
+                
+                {{#if letterData.linksLetterSignatured}}
+                    <h3>Bila preview tidak tampil, silahkan reload halaman ini</h3>
+                    {{#each letterData.linksLetterSignatured}}
+                        <iframe src="https://docs.google.com/gview?url={{link}}&embedded=true" width="100%" height="500" style="border: none;"></iframe>
+                    {{/each}}
+                {{/if}}
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submit">Simpan</button>
                 </div>
             </div>
-            {{/if}}
-            {{/if}}
         </div>
     </div>
+    <br>
     {{ >timelineWorkProgram timelines=letterData.timeline }}
 </template>
 
@@ -2325,7 +1586,7 @@
     </style>
 </template>
 
-  <template name="inputMultipleFilesSurat">
+<template name="inputMultipleFilesSurat">
 	<div class="form-group">
 	  <label for="">{{label}}</label>
 	  <div class="input-file-wrapper">

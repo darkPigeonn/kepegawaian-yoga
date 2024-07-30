@@ -15,8 +15,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
     integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
   <style scoped>
     .nav-item i {
       font-size: 24px;
@@ -33,9 +31,36 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav" style="justify-content: end;">
         <ul class="navbar-nav">
-          {{#if equals jabatanLogin "staff"}}
+          {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip"}}
             <li class="nav-item">
               <a class="nav-link" href="/">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/documents">Surat Masuk</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/korespondensi">Surat Keluar</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fa-solid fa-person mx-0"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="/notification">Notifikasi</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="btn_logout">Logout</a>
+              </div>
+            </li>
+          {{else}}
+            <li class="nav-item">
+              <a class="nav-link" href="/">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/employees">Pegawai</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/departements">Departemen</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/projects">Proyek</a>
@@ -47,10 +72,22 @@
               <a class="nav-link" href="/tickets">Tiket</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/proposal">Proposal</a>
+              <a class="nav-link" href="/presensi">Presensi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/documents">Dokumen</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/korespondensi">Korespondensi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/proposal">Proposal</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/payroll">Slip Gaji</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/listUser">User</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
@@ -61,151 +98,14 @@
                 <!-- <a class="dropdown-item" href="#">Profile</a>
                 <a class="dropdown-item" href="#">Settings</a> -->
                 <a class="dropdown-item" href="/notification">Notifikasi</a>
+                <a class="dropdown-item" href="/listKonfigurasi">Konfigurasi</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="btn_logout">Logout</a>
               </div>
             </li>
-
-          {{else}}
-            {{#if equals jabatanLogin "sekretaris-keuskupan"}}
-              <li class="nav-item">
-                <a class="nav-link" href="/">Beranda</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/employees">Pegawai</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/departements">Departemen</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/projects">Proyek</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/tasks">Tugas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/tickets">Tiket</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/presensi">Presensi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/documents">Dokumen</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/korespondensi">Korespondensi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/proposal">Proposal</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-                  <i class="fa-solid fa-person mx-0"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                  <!-- <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Settings</a> -->
-                  <a class="dropdown-item" href="/notification">Notifikasi</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" id="btn_logout">Logout</a>
-                </div>
-              </li>
-            {{else}}
-              <li class="nav-item">
-                <a class="nav-link" href="/">Beranda</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/employees">Pegawai</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/departements">Departemen</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/projects">Proyek</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/tasks">Tugas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/tickets">Tiket</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/presensi">Presensi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/documents">Dokumen</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/korespondensi">Korespondensi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/proposal">Proposal</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/payroll">Slip Gaji</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/listUser">User</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
-                  aria-haspopup="true" aria-expanded="false">
-                  <i class="fa-solid fa-person mx-0"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                  <!-- <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Settings</a> -->
-                  <a class="dropdown-item" href="/notification">Notifikasi</a>
-                  <a class="dropdown-item" href="/listKonfigurasi">Konfigurasi</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" id="btn_logout">Logout</a>
-                </div>
-              </li>
-            {{/if}}
           {{/if}}
-
         </ul>
       </div>
-      <!-- <div class="navbar-nav ml-auto">
-        <a class="nav-item nav-link" href="#"><i class="fas fa-search"></i></a>
-        <a class="nav-item nav-link" href="#"><i class="fas fa-envelope"></i></a>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa-solid fa-person mx-0"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">Profile</a>
-            <a class="dropdown-item" href="#">Settings</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" id="btn_logout">Logout</a>
-          </div>
-        </li>
-      </div> -->
     </nav>
   </body>
-
-  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light p-2">
-    <a class="navbar-brand" href="/">Kepegawaian</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Beranda</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/batch">Batch</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/employees">Employee</a>
-        </li>
-      </ul>
-      <span class="navbar-text">
-        <button class="btn btn-primary" id="btn_logout">Keluar</button>
-      </span>
-    </div>
-  </nav> -->
 </template>

@@ -14,37 +14,37 @@ Template.App_home.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   const userId = Meteor.userId();
 
-  Meteor.call("employee.getAll", function (error, result) {
-    if (result) {
-      self.employees.set(result);
-    } else {
-      console.log(error);
-    }
-  });
-  Meteor.call("employee.getEmployeeKeluar", function (error, result) {
-    if (result) {
-      self.employeesKeluar.set(result);
-    } else {
-      console.log(error);
-    }
-  });
-  Meteor.call("employee.getEmployeeMasuk", function (error, result) {
-    if (result) {
-      self.employeesMasuk.set(result);
-    } else {
-      console.log(error);
-    }
-  });
-  Meteor.call("employee.getDataLogin", userId, function (error, result) {  
-    if (result) {
-    const dataRole = result[0];
-    console.log(dataRole);
-    self.jabatanLogin.set(dataRole);
-    }
-    else{
-    console.log(error);
-    }
-  })
+  // Meteor.call("employee.getAll", function (error, result) {
+  //   if (result) {
+  //     self.employees.set(result);
+  //   } else {
+  //     console.log(error);
+  //   }
+  // });
+  // Meteor.call("employee.getEmployeeKeluar", function (error, result) {
+  //   if (result) {
+  //     self.employeesKeluar.set(result);
+  //   } else {
+  //     console.log(error);
+  //   }
+  // });
+  // Meteor.call("employee.getEmployeeMasuk", function (error, result) {
+  //   if (result) {
+  //     self.employeesMasuk.set(result);
+  //   } else {
+  //     console.log(error);
+  //   }
+  // });
+  // Meteor.call("employee.getDataLogin", userId, function (error, result) {  
+  //   if (result) {
+  //   const dataRole = result[0];
+  //   console.log(dataRole);
+  //   self.jabatanLogin.set(dataRole);
+  //   }
+  //   else{
+  //   console.log(error);
+  //   }
+  // })
   setTimeout(() => {
     let table = new DataTable('#example', {
       responsive: true
