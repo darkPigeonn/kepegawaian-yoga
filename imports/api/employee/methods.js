@@ -126,7 +126,7 @@ Meteor.methods({
       return Employee.find({statusDelete: 1, partnerCode: relatedUser.partners[0]}).fetch();
     },
     async "employee.insert"(data) {
-      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,linkGambar,golongan } = data
+      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,linkGambar,golongan } = data
       check(full_name, String);
       check(identification_number, String);
       check(gender, String);
@@ -184,7 +184,7 @@ Meteor.methods({
         number_of_children,
         emergency_contact_name,
         emergency_contact_phone,
-        // employment_history,
+        accountNumber,
         golongan,
         partnerCode,
         linkGambar,
@@ -310,7 +310,7 @@ Meteor.methods({
     },
 
     "employee.update"(id, data) {
-      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,golongan } = data
+      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,golongan } = data
       check(full_name, String);
       check(identification_number, String);
       check(gender, String);
@@ -356,7 +356,7 @@ Meteor.methods({
         number_of_children,
         emergency_contact_name,
         emergency_contact_phone,
-        // employment_history,
+        accountNumber,
         golongan
       };
       // console.log(dataSave, id);
@@ -367,7 +367,7 @@ Meteor.methods({
   },
 
   "employee.updateWithPicture"(id, data) {
-    let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,employment_history,partnerCode,linkGambar,golongan } = data
+    let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,partnerCode,linkGambar,golongan } = data
     check(full_name, String);
     check(identification_number, String);
     check(gender, String);
