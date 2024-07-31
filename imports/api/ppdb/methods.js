@@ -15,6 +15,8 @@ import { check } from "meteor/check";
 import { Schools, Units } from "../yoga/schools/schools";
 import XLSX from "xlsx";
 import { Notifications } from "../notification/notification";
+import { formatRupiah } from "../../startup/server";
+
 Meteor.methods({
   getDashboardData() {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -134,10 +136,61 @@ Meteor.methods({
       thisRegistrans.finalForm = thisFinalForm;
     }
 
+    //get biaya
+    let thisConfig = await Gelombangs.findOne({
+      _id: thisRegistrans.configId,
+    });
+    thisConfig.feeTotal = thisConfig.feeSpp + thisConfig.feeDonation+thisConfig.feeEvent+thisConfig.feeUtilty
+    thisRegistrans.config = thisConfig
     //get cicilan
     const credits = await CreditPayment.find({ studentId: id }).fetch();
     if (credits.length > 0) {
       thisRegistrans.listCredits = credits;
+      //count total cicilan
+      const totalFeeSpp = credits.reduce((result,item)=>{
+        return result + item.feeSpp
+      },0)
+      const totalFeeDonation = credits.reduce((result,item)=>{
+        return result + item.feeDonation
+      },0)
+      const totalFeeEvent = credits.reduce((result,item)=>{
+        return result + item.feeEvent
+      },0)
+      const totalFeeUtility = credits.reduce((result,item)=>{
+        return result + item.feeUtility
+      },0)
+      thisRegistrans.paid = {
+        feeSpp : totalFeeSpp,
+        feeDonation : totalFeeDonation,
+        feeEvent : totalFeeEvent,
+        feeUtility : totalFeeUtility,
+        feeTotal : totalFeeSpp + totalFeeDonation + totalFeeEvent + totalFeeUtility
+      }
+      //remainings
+      const remainingSpp = thisConfig.feeSpp - totalFeeSpp
+      const remainingDonation = thisConfig.feeDonation - totalFeeDonation
+      const remainingEvent = thisConfig.feeEvent - totalFeeEvent
+      const remainingUtility = thisConfig.feeUtility - totalFeeUtility
+      console.log(thisConfig);
+      console.log(thisConfig.feeUtility);
+      const totalRemaining = remainingSpp + remainingDonation + remainingEvent + remainingUtility
+
+      thisRegistrans.remainings = {
+        feeSpp : remainingSpp,
+        feeDonation : remainingDonation,
+        feeEvent : remainingEvent,
+        feeUtility : remainingUtility,
+        feeTotal : totalRemaining,
+      }
+      console.log(thisRegistrans.remainings);
+    }else{
+      thisRegistrans.remainings = {
+        feeSpp : thisConfig.feeSpp,
+        feeDonation : thisConfig.feeDonation,
+        feeEvent : thisConfig.feeEvent,
+        feeUtility : thisConfig.feeUtility,
+        feeTotal : thisConfig.feeTotal
+      };
     }
 
     return thisRegistrans;
@@ -820,7 +873,7 @@ Meteor.methods({
       feeSpp: spp,
       feeDonation: donation,
       feeEvent: event,
-      feeUtilty: utility,
+      feeUtility: utility,
       createdAt: new Date(),
       createdBy: thisUser._id,
       studentId: thisRegistran._id.toHexString(),
@@ -830,7 +883,6 @@ Meteor.methods({
       gelombang: thisRegistran.configId,
       status: 10,
     };
-
     return CreditPayment.insert(dataSave);
   },
   async "credit-lock"(id){
@@ -860,7 +912,7 @@ Meteor.methods({
     }
     //get cicilan ke 1
     const thisCredit = credits[0]
-    console.log(thisCredit);
+
     const total =
       (thisCredit.feeSpp ? thisCredit.feeSpp : 0 )+
       (thisCredit.feeEvent ? thisCredit.feeEvent : 0) +
@@ -939,6 +991,8 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
 
+    let listFail = []
+
     items.forEach((item) => {
       //1. check ke va dengan status 11(terpakai) ada atau tidak =>formulir
       const checkVa = VirtualAccounts.findOne({
@@ -946,7 +1000,18 @@ Meteor.methods({
         status: 20,
       });
 
+
       if (checkVa) {
+        //extension cek nominal
+        if (checkVa.amount != item.amount) {
+          listFail.push({
+            va: item.va,
+            amount: item.amount,
+            name : item.name,
+            message : 'nominal tidak sama. seharusnya Rp. ' + formatRupiah(checkVa.amount.toString())
+          })
+          return false;
+        }
         //2. check pengguna dengan va ini
         const registran = Registrans.findOne({
           noVA: item.va,
@@ -961,7 +1026,7 @@ Meteor.methods({
             const initialPayment = InitialPayment.findOne({
               _id: idPayment,
             });
-            //4. update intialPayment
+            // //4. update intialPayment
             InitialPayment.update(
               { _id: idPayment },
               {
@@ -1013,10 +1078,34 @@ Meteor.methods({
           }
 
           Notifications.insert(tempNotif);
+          listFail.push({
+            va: item.va,
+            amount: item.amount,
+            name : item.name,
+            message : 'Berhasil'
+          })
         }
+      }else{
+        listFail.push({
+          va: item.va,
+          amount: item.amount,
+          name : item.name,
+          message : 'nomor va tidak ditemukan'
+        })
       }
     });
-    return false;
+
+    if(listFail.length > 0){
+      return {
+        status : 203,
+        items : listFail
+      }
+    }else{
+      return {
+        status : 200
+      };
+    }
+
   },
   //export
   async "export-va"(unitId, schoolId, tag) {

@@ -300,6 +300,14 @@ Template.registerHelper("statusPpdb", function (data) {
       status = "Menunggu Konfirmasi Formulir oleh Admin Sekolah";
       break;
 
+    case 41 :
+      status = "Menunggu Jadwal Wawancara";
+      break;
+
+    case 46 :
+      status = "Menunggu Jadwal Wawancara";
+      break;
+
     case 45:
       status = "Menunggu Unggah SPO Pembayaran";
       break;

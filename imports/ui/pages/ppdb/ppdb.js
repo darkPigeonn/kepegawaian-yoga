@@ -293,11 +293,16 @@ Template.paymentPage.onCreated(function () {
   const self = this;
 
   self.items = new ReactiveVar();
+  self.listFail = new ReactiveVar()
 });
 Template.paymentPage.helpers({
+  listFail(){
+    return Template.instance().listFail.get();
+  },
   listPaymentVa() {
     return Template.instance().items.get();
   },
+
 });
 Template.paymentPage.events({
   "change #upload-csv"(e, t) {
@@ -355,9 +360,14 @@ Template.paymentPage.events({
       } else {
         successAlert("Berhasil");
         exitPreloader();
-        setTimeout(() => {
-          location.reload();
-        }, 500);
+        console.log(result);
+        if(result.status == 200){
+          setTimeout(() => {
+            location.reload();
+          }, 500);
+        }else{
+          t.listFail.set(result.items)
+        }
       }
     });
   },
@@ -469,6 +479,7 @@ Template.cicilanRegistran.onCreated(function () {
       console.log("Error fetch data");
       exitPreloader();
     } else {
+      console.log(result);
       self.detail.set(result);
 
       if (result.finalForm) {
@@ -533,7 +544,7 @@ Template.cicilanRegistran.events({
       }
     });
   },
-  "click #btn-save-cicilan"(e, t) {
+  "submit #add-cicilan"(e, t) {
     e.preventDefault();
     startPreloader();
 
@@ -543,6 +554,32 @@ Template.cicilanRegistran.events({
     const donation = convert2number($("#input-donation").val());
     const event = convert2number($("#input-event").val());
     const utility = convert2number($("#input-utility").val());
+
+    //get remainings
+    const thisDetail = t.detail.get();
+    const remainings = thisDetail.remainings
+
+    //kroscek
+    if(spp > remainings.feeSpp ){
+
+      infoAlert("SPP yang diinputkan melebihi batas atas");
+      return false
+    }
+    if(donation > remainings.feeDonation){
+
+      infoAlert("Donasi yang diinputkan melebihi batas atas");
+      return false
+    }
+    if(event > remainings.feeEvent){
+
+      infoAlert("Event yang diinputkan melebihi batas atas");
+      return false
+    }
+    if(utility > remainings.feeUtility){
+
+      infoAlert("Alat yang diinputkan melebihi batas atas");
+      return false
+    }
 
     Meteor.call(
       "set-cicil-student",

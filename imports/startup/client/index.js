@@ -94,6 +94,19 @@ failAlert = function (message) {
   Swal.fire(basicStyle(message, "fail"));
 };
 
+infoAlert = function(message){
+  Swal.fire({
+    icon: "info",
+    title: "Oops...",
+    allowOutsideClick: false,
+    text: message,
+    // footer: '<a href="#">Why do I have this issue?</a>'
+  }).then((result) => {
+    if(result.isConfirmed){
+      exitPreloader()
+    }
+  });
+}
 function isNumber(value) {
   return /^\d+$/.test(value);
 }

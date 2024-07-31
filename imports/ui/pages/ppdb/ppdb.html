@@ -292,6 +292,31 @@
             {{/each}}
           </tbody>
         </table>
+
+        <hr>
+        {{#if listFail}}
+        <h3>Hasil Konfirmasi Pembayaran</h3>
+        <table class="table table-borderless">
+          <thead>
+            <th>No</th>
+            <th>No. Va</th>
+            <th>Nama Pelanggan</th>
+            <th>Nominal</th>
+            <th>Keterangan</th>
+          </thead>
+          <tbody>
+            {{#each listFail}}
+            <tr>
+              <td>{{nomorUrut @index}}</td>
+              <td>{{va}}</td>
+              <td>{{name}}</td>
+              <td>{{formatRp amount}}</td>
+              <td>{{message}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{/if}}
       </div>
 
       <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
@@ -336,6 +361,8 @@
           </tbody>
         </table>
       </div>
+
+
 
       <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
     </div>
@@ -601,6 +628,8 @@
         </div>
       </div>
       {{#if lessThan registran.status 40}}
+
+      {{#if equals registran.status 46}}
       <button class="btn btn-primary btn-block btn-accepted" milik="{{toMeteorId registran._id}}">Terima</button>
       <button class="btn btn-danger btn-block btn-rejected" milik="{{toMeteorId registran._id}}">Tolak</button>
       {{/if}}
@@ -624,32 +653,34 @@
             Cicilan{{/if}}</button>
         </div>
         {{#if formCicilan}}
+        <form id="add-cicilan">
         <div class="row m-3">
-          <div class="col-12">
-            <div class="form-group">
-              <label>Cicilan ke : </label>
-              <input class="form-control" id="input-index" type="number" />
+            <div class="col-12">
+              <div class="form-group">
+                <label>Cicilan ke : </label>
+                <input class="form-control" id="input-index" type="number" min="1" required/>
+              </div>
             </div>
+            <div class="col-3">
+              <label>Uang SPP</label>
+              <input class="form-control inputNominal" id="input-spp" required/>
+            </div>
+            <div class="col-3">
+              <label>Uang Sumbangan</label>
+              <input class="form-control inputNominal" id="input-donation" required/>
+            </div>
+            <div class="col-3">
+              <label>Uang Kegiatan</label>
+              <input class="form-control inputNominal" id="input-event" required/>
+            </div>
+            <div class="col-3">
+              <label>Uang Alat</label>
+              <input class="form-control inputNominal" id="input-utility" required/>
+            </div>
+            <button class="btn btn-primary btn-block mt-3" id="btn-save-cicilan" type="submit">Simpan</button>
+            <hr>
           </div>
-          <div class="col-3">
-            <label>Uang SPP</label>
-            <input class="form-control inputNominal" id="input-spp" />
-          </div>
-          <div class="col-3">
-            <label>Uang Sumbangan</label>
-            <input class="form-control inputNominal" id="input-donation" />
-          </div>
-          <div class="col-3">
-            <label>Uang Kegiatan</label>
-            <input class="form-control inputNominal" id="input-event" />
-          </div>
-          <div class="col-3">
-            <label>Uang Alat</label>
-            <input class="form-control inputNominal" id="input-utility" />
-          </div>
-          <button class="btn btn-primary btn-block mt-3" id="btn-save-cicilan">Simpan</button>
-          <hr>
-        </div>
+        </form>
         {{/if}}
         <div class="row">
           <div class="col-4">
@@ -697,7 +728,100 @@
             </table>
           </div>
 
+          <!-- list biaya  -->
+           <div class="col-12">
+            <table class="table table-bordered">
+              <thead class="text-center">
+                <tr>
+                  <th colspan="2">SPP</th>
+                  <th colspan="2">SUMBANGAN</th>
+                  <th colspan="2">KEGIATAN</th>
+                  <th colspan="2">ALAT</th>
+
+                </tr>
+                <tr>
+                  <td>Terbayar</td>
+                  <td>Kurang</td>
+                  <td>Terbayar</td>
+                  <td>Kurang</td>
+                  <td>Terbayar</td>
+                  <td>Kurang</td>
+                  <td>Terbayar</td>
+                  <td>Kurang</td>
+
+                </tr>
+
+              </thead>
+              <tbody>
+                <tr class="amount">
+                  <td colspan="2">{{formatRp registran.config.feeSpp}}</td>
+                  <td colspan="2">{{formatRp registran.config.feeDonation}}</td>
+                  <td colspan="2">{{formatRp registran.config.feeEvent}}</td>
+                  <td colspan="2">{{formatRp registran.config.feeUtilty}}</td>
+                </tr>
+                <tr class="amount">
+                  <td>
+                    {{formatRp registran.paid.feeSpp}}
+                  </td>
+                  <td>
+                    {{formatRp registran.remainings.feeSpp}}
+                  </td>
+                  <td>
+                    {{formatRp registran.paid.feeDonation}}
+                  </td>
+                  <td>
+                    {{formatRp registran.remainings.feeDonation}}
+                  </td>
+                  <td>
+                    {{formatRp registran.paid.feeEvent}}
+                  </td>
+                  <td>
+                    {{formatRp registran.remainings.feeEvent}}
+                  </td>
+                  <td>
+                    {{formatRp registran.paid.feeUtility}}
+                  </td>
+                  <td>
+                    {{formatRp registran.remainings.feeUtility}}
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+           <div class="col-12">
+            <table class="table table-bordered">
+              <thead class="text-center">
+                <tr>
+                  <th colspan="2">
+                    <b>
+                      TOTAL
+                    </b>
+                  </th>
+                </tr>
+                <tr>
+                  <td>Terbayar</td>
+                  <td>Kurang</td>
+                </tr>
+
+              </thead>
+              <tbody>
+                <tr class="text-center">
+                  <td colspan="2">{{formatRp registran.config.feeTotal}}</td>
+                </tr>
+                <tr class="amount">
+                  <td>
+                    {{formatRp registran.paid.feeTotal}}
+                  </td>
+                  <td>
+                    {{formatRp registran.remainings.feeTotal}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <!-- list credit  -->
+           <h3>Daftar Cicilan</h3>
           <div class="col-12">
             <table class="table table-bordered">
               <thead>
@@ -717,7 +841,7 @@
                   <td>{{formatRp feeSpp}}</td>
                   <td>{{formatRp feeDonation}}</td>
                   <td>{{formatRp feeEvent}}</td>
-                  <td>{{formatRp feeUtilty}}</td>
+                  <td>{{formatRp feeUtility}}</td>
                   <td>{{statusCredit status}}</td>
                 </tr>
                 {{/each}}
