@@ -785,10 +785,10 @@
                         <label>Pengurangan Uang</label>
                         <input type="text" id="input_deductions" class="form-control" />
                     </div>
-                    <!-- <div class="form-group mb-2">
-                        <label>Pengalaman Employment</label>
-                        <input type="text" id="input_employmentHistory" class="form-control" />
-                    </div> -->
+                    <div class="form-group mb-2">
+                        <label>Nomor Rekening</label>
+                        <input type="text" id="input_accountNumber" class="form-control" />
+                    </div>
                     <div class="form-group mb-2">
                         <label>Golongan</label>
                         <select id="input_golongan" class="form-control">
@@ -1434,10 +1434,10 @@
                                     <td style="padding:0 15px 20px 15px;">Pengalaman Bekerja</td>
                                     <td style="padding:0 15px 20px 200px;">{{employee.previous_work_experience}}</td>
                                 </tr>
-                                <!-- <tr>
-                                    <td style="padding:0 15px 20px 15px;">Pengalaman Employment</td>
-                                    <td style="padding:0 15px 20px 200px;">{{employee.employment_history}}</td>
-                                </tr> -->
+                                <tr>
+                                    <td style="padding:0 15px 20px 15px;">Nomor Rekening</td>
+                                    <td style="padding:0 15px 20px 200px;">{{employee.accountNumber}}</td>
+                                </tr>
                                 <tr>
                                     <td style="padding:0 15px 20px 15px;">Golongan</td>
                                     <td style="padding:0 15px 20px 200px;">{{employee.golongan}}</td>
@@ -2192,11 +2192,11 @@
                     <label>Pengurangan Uang</label>
                     <input type="text" id="input_deductions" value="{{employee.deductions}}" class="form-control" />
                 </div>
-                <!-- <div class="form-group mb-2">
-                    <label>Pengalaman Employment</label>
-                    <input type="text" id="input_employmentHistory" value="{{employee.employment_history}}"
+                <div class="form-group mb-2">
+                    <label>Nomor Rekening</label>
+                    <input type="text" id="input_accountNumber" value="{{employee.accountNumber}}"
                         class="form-control" />
-                </div> -->
+                </div>
                 <div class="form-group mb-2">
                     <label>Golongan</label>
                     <select id="input_golongan" class="form-control">

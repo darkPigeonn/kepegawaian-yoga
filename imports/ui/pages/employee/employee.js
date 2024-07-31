@@ -389,16 +389,13 @@ Template.employee_create.events({
     const number_of_children = $("#input_numberOfChildren").val();
     const emergency_contact_name = $("#input_emergencyContactName").val();
     let emergency_contact_phone = $("#input_emergencyContactPhone").val();
-    // const employment_history = $("#input_employmentHistory").val();
-    // const partnerCode = $("#input_partnerCode").val();
     const golongan = $("#input_golongan").val();
+    const accountNumber = $("#input_accountNumber").val();
+
     dob = new Date(dob);
     start_date = new Date(start_date);
-    // console.log(isNumber(gajiPokok));
-    // console.log(full_name);
 
     const dataForm = $(".form-control")
-    // console.log(dataForm);
     let cek = false;
     for (let index = 0; index < dataForm.length; index++) {
       let data = dataForm[index].value;
@@ -493,7 +490,8 @@ Template.employee_create.events({
       // employment_history,
       // partnerCode,
       linkGambar,
-      golongan
+      golongan,
+      accountNumber
     }
     if(!linkGambar){
       Swal.fire({
@@ -589,11 +587,6 @@ Template.employee_create.events({
     const data = self.data
     self.file = new ReactiveVar()
     self.preview = new ReactiveVar()
-    // for (const key in data) {
-    //   console.log(key);
-    // }
-    // console.log(data);
-    // console.log("mmasuk");
     if(data.src){
       self.preview.set([
         {
@@ -613,11 +606,7 @@ Template.employee_create.events({
     })
     Template.inputFilesV2.events({
       'change .fileUpload'(e, t){
-        // if(!actiontick())return
         const file = e.target.files[0];
-          // const preview = $('#preview')
-          // console.log(file)
-          // console.log("masuk change");
           if (file) {
               t.file.set(file)
               t.preview.set(
@@ -631,9 +620,7 @@ Template.employee_create.events({
           }
       },
       'click .remove-image'(e, t){
-        // if(!actiontick())return
         const thisMilik = $(e.target).attr('milik');
-        // console.log(thisMilik);
         const hasMilik = $(e.target).hasClass(thisMilik);
         if(hasMilik){
           t.preview.set(null)
@@ -1035,24 +1022,17 @@ Template.employee_create.events({
       const number_of_children = $("#input_numberOfChildren").val();
       const emergency_contact_name = $("#input_emergencyContactName").val();
       let emergency_contact_phone = parseInt($("#input_emergencyContactPhone").val());
-      // const employment_history = $("#input_employmentHistory").val();
-      // const partnerCode = $("#input_partnerCode").val();
       const golongan = $("#input_golongan").val();
+      const accountNumber = $("#input_accountNumber").val();
+      console.log(accountNumber);
       dob = new Date(dob);
       start_date = new Date(start_date);
 
-      console.log(golongan);
-
       const id = FlowRouter.getParam("_id");
-      // console.log(id);
-      // return
 
       const dataForm = $(".form-control")
-      // console.log(dataForm);
       let cek = false;
       for (let index = 0; index < dataForm.length; index++) {
-        let data = dataForm[index].value;
-        // console.log(data);
         if(dataForm[index].value == ""){
           cek = true;
         }
@@ -1067,10 +1047,7 @@ Template.employee_create.events({
         return;
       }
 
-      console.log(base_salary);
-
       if(base_salary == undefined || base_salary == null){
-          // alert("Gaji pokok atau Allowance harus angka");
           Swal.fire({
             title: "Gagal",
             text: "Gaji pokok atau Allowance harus angka dan diisi",
@@ -1092,7 +1069,6 @@ Template.employee_create.events({
       phone_number = formatPhoneNumber(phone_number);
 
   const file = $(`#gambar`).prop('files');
-  console.log(file.length);
   if(file.length == 0){
     const data = {full_name,
       identification_number,
@@ -1118,8 +1094,7 @@ Template.employee_create.events({
       number_of_children,
       emergency_contact_name,
       emergency_contact_phone,
-      // employment_history,
-      // partnerCode,
+      accountNumber,
       golongan
     }
     Swal.fire({
@@ -1137,8 +1112,6 @@ Template.employee_create.events({
           data,
           function (error, result) {
             if (result) {
-              // console.log(result);
-              // alert("Sukses");
               Swal.fire({
                 title: "Berhasil",
                 text: "Data berhasil diupdate",
@@ -1150,7 +1123,6 @@ Template.employee_create.events({
                 }
               });
             } else {
-              // alert("Update employee error");
               Swal.fire({
                 title: "Gagal",
                 text: "Data gagal diupdate",
@@ -1174,7 +1146,6 @@ Template.employee_create.events({
     });
     const thisForm = {};
     thisForm[gambar] = "";
-    // console.log(file[0].name);
     if(file[0]){
       const uploadData = {
         fileName: "employee/"+file[0].name,
@@ -1183,7 +1154,6 @@ Template.employee_create.events({
       }
       thisForm[gambar] = await uploadFiles(uploadData)
       const linkGambar = thisForm[gambar];
-      console.log(linkGambar);
       const data = {full_name,
         identification_number,
         place_of_birth,
@@ -1208,8 +1178,7 @@ Template.employee_create.events({
         number_of_children,
         emergency_contact_name,
         emergency_contact_phone,
-        // employment_history,
-        // partnerCode,
+        accountNumber,
         linkGambar,
         golongan
       }
