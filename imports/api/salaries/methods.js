@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
 import _, { result } from 'underscore'
-import { MonthlyAttendance } from "../attendance/attendance";
+import { MonthlyAttendance, Permits } from "../attendance/attendance";
 
 Meteor.methods({
     async "payroll.cekValiditas"(id, month, year) {
@@ -16,7 +16,21 @@ Meteor.methods({
             const dataEmployee = Employee.findOne({_id:id})
             let result;
             if(cek) {
-                const detail = cek.details.find(detail => detail.userId === id);
+                let detail = cek.details.find(detail => detail.userId === id);
+                const permitLembur = Permits.find({creatorId: id}, {projection: {
+                    _id: 0, 
+                    datePermits: 0, 
+                    status: 0,
+                    reason: 0,
+                    datePermits: 0
+                }}).fetch()
+                let totalOvertime = 0;
+                for (let index = 0; index < permitLembur.length; index++) {
+                    const element = permitLembur[index];
+                    totalOvertime += parseInt(element.duration)
+                }
+                console.log(totalOvertime);
+                detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
                 result = {
                     _id: cek._id,
                     activeDayWorking: cek.activeDayWorking,
@@ -25,8 +39,15 @@ Meteor.methods({
                     year: cek.year,
                     outlets: cek.outlets,
                     baseSalary: dataEmployee.base_salary,
-                    details: detail 
+                    details: detail,
+                    overtimeList: permitLembur,
+                    accountNumber: dataEmployee.accountNumber,
+                    accountNumberBank: dataEmployee.accountNumberBank,
+                    accountNumberName: dataEmployee.accountNumberName,
+                    overtimeList: permitLembur,
+                    overtimeTotal: totalOvertime
                 };
+                console.log(result);
             }
             return result
         } catch (error) {

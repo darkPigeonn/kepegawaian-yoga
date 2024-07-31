@@ -89,6 +89,8 @@ Template.createPayroll.onCreated(function() {
     self.dataDetailSlip = new ReactiveVar([]);
     self.btnRekap = new ReactiveVar(false);
     self.total = new ReactiveVar(0);
+    self.totalTarifLembur = new ReactiveVar(0);
+    self.rateOvertime = new ReactiveVar(0);
     startSelect2();
     Meteor.call("employee.getAll", function (error, result) {
         if (result) {
@@ -122,6 +124,12 @@ Template.createPayroll.helpers({
     },
     total() {
         return Template.instance().total.get();
+    },
+    totalTarifLembur() {
+        return Template.instance().totalTarifLembur.get();
+    },
+    rateOvertime() {
+        return Template.instance().rateOvertime.get();
     }
 })
 
@@ -155,7 +163,40 @@ Template.createPayroll.events({
     "keyup #nominal"(e, t) {
         const idInput = $("#nominal").val();
         e.target.value = formatRupiah(idInput, "Rp. ");
-      },
+    },
+    "input #tarifLembur"(e, t) {
+        const inputValue = Number(e.target.value);
+        t.rateOvertime.set(inputValue)
+        const dataRekap = t.dataRekap.get();
+        const totalHour = dataRekap.overtimeTotal
+        const totalTarif = totalHour * inputValue
+        t.totalTarifLembur.set(totalTarif)
+    },
+    "click #btn-save-lembur"(e,t){
+        e.preventDefault();
+        const category = "allowance";
+        const name = `Tarif Lembur @Rp`+ formatRupiah(t.rateOvertime.get().toString());
+        const amount = t.totalTarifLembur.get();
+        const obj = {
+            category,
+            name,
+            amount
+        }
+        console.log(obj);
+        const dataDetailSlip = t.dataDetailSlip.get()
+        dataDetailSlip.push(obj);
+        t.dataDetailSlip.set(dataDetailSlip);
+        let gajiPokok = t.dataRekap.get();
+        let tempTotal = gajiPokok.baseSalary;
+        for (const iterator of dataDetailSlip) {
+            if (iterator.category == "allowance") {
+                tempTotal += iterator.amount;
+            } else if (iterator.category == "deduction") {
+                tempTotal -= iterator.amount;
+            }
+        }
+        t.total.set(tempTotal);
+    },
 
     "click #btn-tambah-detail"(e, t) {
         const dataDetailSlip = t.dataDetailSlip.get()

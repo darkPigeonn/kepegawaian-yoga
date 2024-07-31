@@ -790,6 +790,20 @@
                         <input type="text" id="input_accountNumber" class="form-control" />
                     </div>
                     <div class="form-group mb-2">
+                        <label>Bank Nomor Rekening</label>
+                        <input type="text" id="input_accountNumberBank" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="checkbox" id="checkNamaAccount" name="checklist-item">
+                        <label for="checklist-item">Nama pemilik nomor rekening tidak sama dengan nama lengkap pegawai</label>
+                    </div>
+                    {{#if equals changeBankAccountName true}}
+                        <div class="form-group mb-2">
+                            <label>Nama Pemilik Nomor Rekening</label>
+                            <input type="text" id="input_accountNumberName" class="form-control" />
+                        </div>
+                    {{/if}}
+                    <div class="form-group mb-2">
                         <label>Golongan</label>
                         <select id="input_golongan" class="form-control">
                             <option value="1">1</option>
@@ -2193,10 +2207,26 @@
                     <input type="text" id="input_deductions" value="{{employee.deductions}}" class="form-control" />
                 </div>
                 <div class="form-group mb-2">
+                    <label>Bank Nomor Rekening</label>
+                    <input type="text" id="input_accountNumberBank" value="{{employee.accountNumberBank}}"
+                        class="form-control" />
+                </div>
+                <div class="form-group mb-2">
                     <label>Nomor Rekening</label>
                     <input type="text" id="input_accountNumber" value="{{employee.accountNumber}}"
                         class="form-control" />
                 </div>
+                <div class="form-group mb-2">
+                    <input type="checkbox" id="checkNamaAccount" name="checklist-item">
+                    <label for="checklist-item">Nama pemilik nomor rekening tidak sama dengan nama lengkap pegawai</label>
+                </div>
+                {{#if equals changeBankAccountName true}}
+                    <div class="form-group mb-2">
+                        <label>Nama Pemilik Nomor Rekening</label>
+                        <input type="text" id="input_accountNumberName" value="{{employee.accountNumberName}}"
+                            class="form-control" />
+                    </div>
+                {{/if}}
                 <div class="form-group mb-2">
                     <label>Golongan</label>
                     <select id="input_golongan" class="form-control">

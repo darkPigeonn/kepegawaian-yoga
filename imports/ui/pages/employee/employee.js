@@ -323,6 +323,7 @@ Template.employee_create.onCreated(function () {
   const self = this;
   self.departements = new ReactiveVar();
   self.viewMode = new ReactiveVar("1");
+  self.changeBankAccountName = new ReactiveVar(false)
   Meteor.call("departement.getAll", function (error, result) {
     if (result) {
       // console.log(result);
@@ -340,6 +341,9 @@ Template.employee_create.helpers({
   viewMode() {
     return Template.instance().viewMode.get();
   },
+  changeBankAccountName() {
+    return Template.instance().changeBankAccountName.get();
+  }
 })
 
 Template.employee_create.events({
@@ -361,6 +365,10 @@ Template.employee_create.events({
   "click .change-page" (e, t) {
     const val = $(e.target).val();
     t.viewMode.set(val);
+  },
+  "change #checkNamaAccount" (e, t) {
+    const isChecked = e.target.checked;
+    t.changeBankAccountName.set(isChecked);
   },
   async "click #btn_save"(e, t) {
     e.preventDefault();
@@ -391,6 +399,14 @@ Template.employee_create.events({
     let emergency_contact_phone = $("#input_emergencyContactPhone").val();
     const golongan = $("#input_golongan").val();
     const accountNumber = $("#input_accountNumber").val();
+    const accountNumberBank = $("#input_accountNumberBank").val();
+    let accountNumberName;
+    if(t.changeBankAccountName.get() == true) {
+      accountNumberName = $("#input_accountNumberName").val();
+    }
+    else {
+      accountNumberName = $("#input_fullName").val();
+    }
 
     dob = new Date(dob);
     start_date = new Date(start_date);
@@ -491,7 +507,9 @@ Template.employee_create.events({
       // partnerCode,
       linkGambar,
       golongan,
-      accountNumber
+      accountNumber,
+      accountNumberBank,
+      accountNumberName
     }
     if(!linkGambar){
       Swal.fire({
@@ -954,12 +972,14 @@ Template.employee_create.events({
 
     self.employee = new ReactiveVar();
     self.viewMode = new ReactiveVar("1");
+    self.changeBankAccountName = new ReactiveVar(false);
     const id = FlowRouter.getParam("_id");
     // console.log(id);
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
-        // console.log(result);
         self.employee.set(result);
+        if(result.accountNumberName == result.full_name) self.changeBankAccountName.set(false)
+        else self.changeBankAccountName.set(true)
       } else {
         console.log(error);
       }
@@ -973,6 +993,9 @@ Template.employee_create.events({
     viewMode() {
       return Template.instance().viewMode.get();
     },
+    changeBankAccountName() {
+      return Template.instance().changeBankAccountName.get();
+    }
   });
 
   Template.employee_edit.events({
@@ -994,6 +1017,10 @@ Template.employee_create.events({
     "click .change-page" (e, t) {
       const val = $(e.target).val();
       t.viewMode.set(val);
+    },
+    "change #checkNamaAccount" (e, t) {
+      const isChecked = e.target.checked;
+      t.changeBankAccountName.set(isChecked);
     },
     async "click #btn_update"(e, t) {
       e.preventDefault();
@@ -1024,28 +1051,35 @@ Template.employee_create.events({
       let emergency_contact_phone = parseInt($("#input_emergencyContactPhone").val());
       const golongan = $("#input_golongan").val();
       const accountNumber = $("#input_accountNumber").val();
-      console.log(accountNumber);
+      const accountNumberBank = $("#input_accountNumberBank").val();
+      let accountNumberName;
+      if(t.changeBankAccountName.get() == true) {
+        accountNumberName = $("#input_accountNumberName").val();
+      }
+      else {
+        accountNumberName = $("#input_fullName").val();
+      }
       dob = new Date(dob);
       start_date = new Date(start_date);
 
       const id = FlowRouter.getParam("_id");
 
-      const dataForm = $(".form-control")
-      let cek = false;
-      for (let index = 0; index < dataForm.length; index++) {
-        if(dataForm[index].value == ""){
-          cek = true;
-        }
-      }
-      if(cek == true){
-        Swal.fire({
-          title: "Gagal",
-          text: "Data harus diisi semua",
-          showConfirmButton: true,
-          allowOutsideClick: true,
-        });
-        return;
-      }
+      // const dataForm = $(".form-control")
+      // let cek = false;
+      // for (let index = 0; index < dataForm.length; index++) {
+      //   if(dataForm[index].value == ""){
+      //     cek = true;
+      //   }
+      // }
+      // if(cek == true){
+      //   Swal.fire({
+      //     title: "Gagal",
+      //     text: "Data harus diisi semua",
+      //     showConfirmButton: true,
+      //     allowOutsideClick: true,
+      //   });
+      //   return;
+      // }
 
       if(base_salary == undefined || base_salary == null){
           Swal.fire({
@@ -1095,6 +1129,8 @@ Template.employee_create.events({
       emergency_contact_name,
       emergency_contact_phone,
       accountNumber,
+      accountNumberBank,
+      accountNumberName,
       golongan
     }
     Swal.fire({
@@ -1179,6 +1215,8 @@ Template.employee_create.events({
         emergency_contact_name,
         emergency_contact_phone,
         accountNumber,
+        accountNumberBank,
+        accountNumberName,
         linkGambar,
         golongan
       }

@@ -122,12 +122,14 @@
                             <div>Hadir: <span id="hadir">{{dataRekap.details.totalPresensi}}</span></div>
                             <div>Ijin: <span id="ijin">{{dataRekap.details.permit}}</span></div>
                             <div>Alpha: <span id="alpha">{{dataRekap.details.dafOf}}</span></div>
+                            <div>Tidak Hadir: <span id="tidakHadir">{{dataRekap.details.absence}}</span></div>
                             <div>H-efektif: <span id="h-efektif">{{dataRekap.activeDayWorking}}</span></div>
                             <div>% Hadir: <span id="persen-hadir">{{dataRekap.persentaseKehadiran}}</span></div>
                         </div>
                     </div>
                     <br>
                     <h5>Gaji Pokok : {{formatRp dataRekap.baseSalary}}</h5>
+                    <h5>Rekening : {{dataRekap.accountNumberBank}} / {{dataRekap.accountNumber}} a.n. {{dataRekap.accountNumberName}}</h5>
                     <hr style="border-top: 2px solid black;">
                     <div class="form-actions">
                         <h4>Masukkan Detail Slip Gaji</h4>
@@ -197,7 +199,58 @@
                             </table>
                         </div>
                     {{/if}}
-                    <br>
+
+                    {{#if dataRekap.overtimeList}}
+                        <h4>Daftar Lembur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>Hari Lembur</th>
+                                    <th>Durasi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataRekap.overtimeList}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{formatHRDate i.startDatePermit}}
+                                        </td>
+                                        <td>{{i.duration}} Jam</td>
+                                    </tr>
+                                    {{/each}}
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Total Durasi
+                                        </td>
+                                        <td colspan="1">
+                                            <b>{{dataRekap.overtimeTotal}} Jam</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Tarif / Jam
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="number" class="form-control" id="tarifLembur" placeholder="Tarif">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Total Tarif Lembur
+                                        </td>
+                                        <td colspan="1">
+                                            {{formatRp totalTarifLembur}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-primary" id="btn-save-lembur">Tambahkan Lembur Ke Detail</button>
+                    {{/if}}
+                    <br><br>
                     <div class="form-actions">
                         <button class="btn btn-primary w-100" id="btn-save">Simpan</button>
                     </div>
