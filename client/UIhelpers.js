@@ -182,7 +182,7 @@ Template.registerHelper("statusDetail", function (data) {
       status = "Sedang direview";
       break;
     case 90:
-      status = "Ditolak dengan revisi";
+      status = "Ditolak";
       break;
     case 99:
       status = "Ditolak";

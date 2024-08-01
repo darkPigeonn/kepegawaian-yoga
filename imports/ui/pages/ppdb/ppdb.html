@@ -388,7 +388,7 @@
     </nav>
     <div class="page-content">
       <div class="card">
-        {{> alertDiv status=registran.status}}
+        {{> alertDiv status=registran.status reason=registran.reason}}
         <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
@@ -437,9 +437,8 @@
                 {{#if equals registran.paymentMethod 'Kontan'}}
 
                 {{else}}
-                <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">Buat
-                    Konfigurasi
-                    Cicilan</a></td>
+                <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">
+                  {{#if greaterThan registran.status 45}}Lihat Konfigurasi Cicilan{{else}} Buat Konfigurasi Cicilan {{/if}}</a></td>
                 {{/if}}
                 {{/if}}
               </tr>
@@ -450,9 +449,21 @@
               <tr>
                 <th>Waktu Wawancara</th>
                 <td>{{formatHRDate registran.interview.date}} | {{registran.interview.time}}</td>
+                {{#if registran.interviewDone}}
+                <td> | Sudah Terlaksana</td>
+                {{/if}}
               </tr>
+              {{#if registran.interviewDone}}
               {{else}}
-              {{#if greaterThan registran.status 34}}
+              <tr>
+                <td colspan="3">
+                  <p>Klik tombol dibawah ini jika wawancara sudah selesai</p>
+                </td>
+              </tr>
+              <button class="btn btn-warning btn-block btn-interview-done">Wawancara Selesai</button>
+              {{/if}}
+              {{else}}
+              {{#if betweenEquals registran.status 34 50}}
               <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
               {{/if}}
               {{/if}}
@@ -656,12 +667,12 @@
           </table>
         </div>
       </div>
-      {{#if lessThan registran.status 40}}
-
-      {{#if equals registran.status 46}}
+      {{#if equals registran.status 30}}
       <button class="btn btn-primary btn-block btn-accepted" milik="{{toMeteorId registran._id}}">Terima</button>
       <button class="btn btn-danger btn-block btn-rejected" milik="{{toMeteorId registran._id}}">Tolak</button>
       {{/if}}
+      {{#if lessThan registran.status 40}}
+
       {{/if}}
       {{/if}}
     </div>
@@ -670,19 +681,38 @@
 
   </div>
 </template>
+
+
 <template name="cicilanRegistran">
   <div class="container mt-5">
     <div class="page-title">
       <h3>Detail Cicilan Pendaftar</h3>
     </div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb">Daftar PPDB</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb/details/{{toMeteorId registran._id}}">{{registran.fullName}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Konfigurasi Cicilan</li>
+      </ol>
+    </nav>
     <div class="page-content">
       <div class="card">
         <div class="m-2">
+          {{#if lessThan registran.status 46}}
           {{#if notEquals registran.status 46}}
+          {{#if formCicilan}}
+          {{else}}
           <button class="btn btn-warning float-right" id="lockCicilan">Kunci Cicilan</button>
+          {{/if}}
           <button class="btn btn-primary float-right" id="addCicilan"> {{#if formCicilan}}Tutup{{else}}+
             Cicilan{{/if}}</button>
 
+          {{else}}
+          <div class="alert alert-danger" role="alert">
+            Cicilan Sudah Terkunci
+          </div>
+          {{/if}}
           {{else}}
           <div class="alert alert-danger" role="alert">
             Cicilan Sudah Terkunci
@@ -868,6 +898,7 @@
                 <th>SUMBANGAN</th>
                 <th>KEGIATAN</th>
                 <th>ALAT</th>
+                <th>Aksi</th>
                 <th>Status</th>
               </thead>
               <tbody>
@@ -880,6 +911,10 @@
                   <td>{{formatRp feeEvent}}</td>
                   <td>{{formatRp feeUtility}}</td>
                   <td>{{statusCredit status}}</td>
+                  <td>
+                    <button class="btn btn-warning btn-edit" milik="{{_id}}">Ubah</button>
+                    <button class="btn btn-danger btn-hapus" milik="{{_id}}">Hapus</button>
+                  </td>
                 </tr>
                 {{/each}}
               </tbody>

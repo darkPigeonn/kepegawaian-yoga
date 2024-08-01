@@ -480,6 +480,77 @@ Template.detailRegistran.events({
       }
     );
   },
+  "click .btn-interview-done"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id =FlowRouter.current().params._id
+    Swal.fire({
+      title: "Konfirmasi Wawancara Selesai",
+      text: "Apakah wawancara sudah selesai?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-interview-done", id, function (error, result) {
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+
+  },
+  "click .btn-rejected"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menolak calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Swal.fire({
+          title: "Tuliskan alasan penolakkan",
+          input : "text",
+          inputAttributes: {
+            autocapitalize: "off"
+          },
+          preConfirm: (reason) => {
+             Meteor.call("ppdb-rejected-student", id,reason, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+          }
+        })
+
+      }
+    });
+  },
 });
 Template.cicilanRegistran.onCreated(function () {
   const self = this;
@@ -488,6 +559,8 @@ Template.cicilanRegistran.onCreated(function () {
   self.detailFinal = new ReactiveVar();
   self.photoStudent = new ReactiveVar("-");
   self.formCicilan = new ReactiveVar(false);
+  self.isEdit = new ReactiveVar(false);
+  self.selectedItem = new ReactiveVar({});
   const id = FlowRouter.current().params._id;
   Meteor.call("ppdb-registran-detailCicilan", id, function (error, result) {
     if (error) {
@@ -572,9 +645,35 @@ Template.cicilanRegistran.events({
 
     //get remainings
     const thisDetail = t.detail.get();
-    const remainings = thisDetail.remainings;
+    let remainings = thisDetail.remainings;
 
-    //kroscek
+    let postRoute =  "set-cicil-student"
+    //handle edit
+    let idCicil = '-';
+    const isEdit = t.isEdit.get();
+    if (isEdit) {
+      postRoute = "update-cicil-student";
+      idCicil = t.selectedItem.get()._id;
+      //hitung ulan untuk penjagaan
+      //1. get pembayaran
+      const paid = thisDetail.paid;
+      const config = thisDetail.config;
+      //2. hitung ulan
+      const thisItem = t.selectedItem.get();
+      remainings.feeSpp = config.feeSpp+thisItem.feeSpp;
+      remainings.feeDonation = config.feeDonation+thisItem.feeDonation;
+      remainings.feeEvent = config.feeEvent+thisItem.feeEvent;
+      remainings.feeUtility = config.feeUtility+thisItem.feeUtility;
+      remainings.feeTotal = remainings.feeSpp+remainings.feeDonation+remainings.feeEvent+remainings.feeUtility;
+      console.log(remainings);
+
+    }
+    console.log(remainings);
+    if(remainings.feeTotal == 0) {
+      infoAlert("Total Cicilan sudah terpenuhi");
+
+      return false;
+    }
     if (spp > remainings.feeSpp) {
       infoAlert("SPP yang diinputkan melebihi batas atas");
       return false;
@@ -592,14 +691,18 @@ Template.cicilanRegistran.events({
       return false;
     }
 
+
+
+
     Meteor.call(
-      "set-cicil-student",
+      postRoute,
       id,
       index,
       spp,
       donation,
       event,
       utility,
+      idCicil,
       function (error, result) {
         if (error) {
           swalInfo(error.reason);
@@ -676,6 +779,57 @@ Template.cicilanRegistran.events({
       }
     });
   },
+  "click .btn-edit"(e,t){
+    e.preventDefault()
+
+    const registran = t.detail.get();
+    const listCredits = registran.listCredits
+
+    const id = $(e.target).attr("milik")
+    const thisData = listCredits.find((item) => item._id === id)
+   t.selectedItem.set(thisData)
+   t.isEdit.set(!t.isEdit.get())
+    t.formCicilan.set(!t.formCicilan.get());
+      $('html, body').animate({
+        scrollTop: $('#add-cicilan')
+    }, 1000);
+
+    setTimeout(() => {
+      $("#input-index").val(thisData.index)
+      $("#input-spp").val(formatRupiah(thisData.feeSpp.toString(), "Rp. "))
+      $("#input-donation").val(formatRupiah(thisData.feeDonation.toString(), "Rp. "))
+      $("#input-event").val(formatRupiah(thisData.feeEvent.toString(), "Rp. "))
+      $("#input-utility").val(formatRupiah(thisData.feeUtility.toString(), "Rp. "))
+      $("#input-index").attr("disabled", true)
+    }, 500);
+
+  },
+  "click .btn-hapus"(e,t){
+    e.preventDefault()
+
+    const id = $(e.target).attr("milik")
+    Swal.fire({
+      title: "Konfirmasi Hapus",
+      text: "Apakah anda yakin ingin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Iya",
+      cancelButtonText: "Tidak",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call('credit.delete', id, function (error, result) {
+          if(error){
+            console.log(error)
+            failAlert(error)
+          }else{
+            successAlert("Berhasil")
+            location.reload()
+          }
+        })
+      }
+    })
+  },
+
 });
 
 Template.pageVa.onCreated(function () {

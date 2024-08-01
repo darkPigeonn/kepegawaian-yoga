@@ -156,6 +156,13 @@
       Semua Alur PPDB Sudah Selesai
     </div>
     {{/if}}
+    {{#if equals status 90}}
+    <div class="alert alert-danger" role="alert">
+      <b>
+        Ditolak
+      </b> <br>Alasan : {{reason}}
+    </div>
+    {{/if}}
   </div>
 </template>
 

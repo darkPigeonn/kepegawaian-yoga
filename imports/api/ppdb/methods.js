@@ -311,6 +311,31 @@ Meteor.methods({
     return Registrans.update({ _id: idObjet }, { $set: updatedData });
     // return RegistransFinal.update({ _id: formFinalId }, { $set: updatedData });
   },
+  async "ppdb-rejected-student"(id, reason) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const idObjet = new Meteor.Collection.ObjectID(id);
+
+    const thisRegistran = await Registrans.findOne({ _id: idObjet });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data tidak ditemukan");
+    }
+    const formFinalId = new Meteor.Collection.ObjectID(
+      thisRegistran.finalFormId
+    );
+
+    const updatedData = {
+      rejectedAt: new Date(),
+      rejectedBy: thisUser._id,
+      status : 90,
+      reason
+    };
+    return Registrans.update({ _id: idObjet }, { $set: updatedData });
+    // return RegistransFinal.update({ _id: formFinalId }, { $set: updatedData });
+  },
 
   //Periode PPDB
   async "periode-ppdb-insert"(name, year, code) {
@@ -894,6 +919,31 @@ Meteor.methods({
     };
     return CreditPayment.insert(dataSave);
   },
+  async "update-cicil-student"(id, index, spp, donation, event, utility, idCredit) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const objId = new Meteor.Collection.ObjectID(id);
+
+    const thisRegistran = await Registrans.findOne({ _id: objId });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data siswa tidak ditemukan");
+    }
+
+
+    const dataSave = {
+      index,
+      feeSpp: spp,
+      feeDonation: donation,
+      feeEvent: event,
+      feeUtility: utility,
+      updatedAt: new Date(),
+      updatedBy: thisUser._id,
+    };
+
+    return CreditPayment.update({_id : idCredit}, {$set: dataSave});
+  },
   async "credit-lock"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
@@ -1225,6 +1275,56 @@ Meteor.methods({
       }
     );
   },
+
+
+  'credit.delete'(id){
+    check(id, String);
+
+    const thisUser = Meteor.users.findOne({_id : this.userId});
+
+    if(!thisUser){
+      throw new Meteor.Error(403, "Forrbiden");
+    }
+
+    return CreditPayment.remove({_id : id});
+
+  },
+
+  "ppdb-interview-done"(idRegistran){
+    check(idRegistran, String);
+
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+
+    if(!thisUser){
+      throw new Meteor.Error(403, "Forrbiden");
+    }
+
+    const objectIdUser = new Meteor.Collection.ObjectID(idRegistran);
+    const thisRegistran = Registrans.findOne({ _id: objectIdUser });
+    if(!thisRegistran){
+      throw new Meteor.Error(404, "Registran Tidak Ditemukan");
+    }
+
+    const wawancara = {
+      interview : {
+        doneAt : new Date(),
+        doneBy : thisUser._id,
+      },
+      interviewDone : true,
+      status : 50
+    };
+
+    //update interview
+    Interviews.update({_id : thisRegistran.interviewId},{
+      $set : {
+        doneAt : new Date(),
+        updatedAt : new Date(),
+        updatedBy : thisUser._id,
+      }
+    })
+
+    return Registrans.update({_id : objectIdUser}, {$set : wawancara});
+  }
 });
 
 function generateUniqueVirtualAccount() {
