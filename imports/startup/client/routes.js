@@ -545,3 +545,9 @@ FlowRouter.route("/detailKorespondensi/:_id", {
     this.render("App_body", "detailKorespondensi");
   },
 });
+FlowRouter.route("/permits", {
+  name: "listPermits",
+  action() {
+    this.render("App_body", "listPermits");
+  },
+});

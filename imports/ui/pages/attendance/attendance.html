@@ -23,7 +23,7 @@
 
                         <ul class="list-group finance-items-list">
                             {{#if equals viewMode 0}}
-                            
+
                                 <li class="list-group-item text-center">
                                     <h4>Daftar Hadir {{formatHRDate thisDay}}</h4>
                                 </li>
@@ -41,7 +41,7 @@
                                     <option id={{value}}>{{value}}</option>
                                     {{/each}}
                                 </select>
-                            </div> 
+                            </div>
                             {{#if equals viewMode 1}}
                                 <li class="list-group-item">
                                     <h4 class="text-center">{{ userDetails.fullName }} - {{ userDetails.jabatan }} </h4>
@@ -71,9 +71,9 @@
                                                 <td>
                                                     Nama
                                                 </td>
-    
+
                                                 {{/if}}
-    
+
                                                 {{#if equals viewMode 1}}
                                                 <td>
                                                     Nama
@@ -82,7 +82,7 @@
                                                     Tanggal
                                                 </td>
                                                 {{/if}}
-    
+
                                                 <td>
                                                     Jam Masuk
                                                 </td>
@@ -99,7 +99,7 @@
                                                 {{/if}}
                                             </tr>
                                         </thead>
-    
+
                                         <tbody>
                                             {{#each presensi}}
                                             <tr>
@@ -113,7 +113,7 @@
                                                     </div>
                                                 </td>
                                                 {{/if}}
-    
+
                                                 {{#if equals viewMode 1}}
                                                 <td>
                                                     {{fullName}}
@@ -122,7 +122,7 @@
                                                     {{ formatHRDate checkIn}}
                                                 </td>
                                                 {{/if}}
-    
+
                                                 <td>
                                                     {{ formatTime checkIn }}
                                                 </td>
@@ -264,7 +264,7 @@
                                                     Tanggal
                                                 </td>
                                                 {{/if}}
-    
+
                                                 <td>
                                                     Total Hari Kerja
                                                 </td>
@@ -274,14 +274,14 @@
                                                 <td>
                                                     Telat
                                                 </td>
-    
+
                                             </tr>
                                         </thead>
-    
+
                                         <tbody>
                                             {{#each dataRekap.details}}
                                             <tr>
-    
+
                                                 <td>
                                                     <div class="column">
                                                         {{capitalizeWord fullName }}
@@ -291,8 +291,8 @@
                                                 <td>
                                                     {{ unit }}
                                                 </td>
-    
-    
+
+
                                                 <td>
                                                     {{ totalPresensi }}
                                                 </td>
@@ -302,7 +302,7 @@
                                                 <td>
                                                     {{totalLate}}
                                                 </td>
-    
+
                                             </tr>
                                             {{/each}}
                                         </tbody>
@@ -365,14 +365,14 @@
                     <td>
                         Tanggal Telat
                     </td>
-    
+
                 </tr>
             </thead>
-    
+
             <tbody>
                 {{#each dataRekap}}
                 <tr>
-    
+
                     <td>
                         {{capitalizeWord fullName }}
                     </td>
@@ -388,7 +388,7 @@
                     <td>
                         {{ dafOf }}
                     </td>
-    
+
                     <td>
                         {{totalLate}}
                     </td>
@@ -397,7 +397,7 @@
                         {{ timeStamp}} ,
                         {{/each}}
                     </td>
-    
+
                 </tr>
                 {{/each}}
             </tbody>
@@ -479,7 +479,7 @@
                                                 {{/if}}
                                             </tr>
                                         </thead>
-    
+
                                         <tbody>
                                             {{#each dataRekap.details}}
                                             <tr>
@@ -497,7 +497,7 @@
                                                 </td>
                                                 {{#if equals viewMode 0}}
                                                 <td>
-    
+
                                                     <a href="/cetak-rekap-individu/{{currentMonth}}/{{userId}}"
                                                         target="_blank" class="btn btn-primary btn-sm"><i
                                                             class="fa fa-eye"></i></a>
@@ -584,7 +584,7 @@
 
                 <thead style="display:table-header-group;">
                     <tr>
-    
+
                         <td>
                             Tanggal
                         </td>
@@ -603,15 +603,15 @@
                         <td>
                             Keterangan
                         </td>
-    
+
                     </tr>
                 </thead>
-    
+
                 <tbody>
                     {{#each dataRekap.details}}
                     <tr>
-    
-    
+
+
                         <td>
                             {{formatHRDate checkIn }}
                         </td>
@@ -634,8 +634,8 @@
                             -
                             {{/if}}
                         </td>
-    
-    
+
+
                     </tr>
                     {{/each}}
                 </tbody>
@@ -662,7 +662,7 @@
                                             <td>
                                                 Jam Masuk
                                             </td>
-    
+
                                             <td>
                                                 {{formatTime detailWfh.checkIn}}
                                             </td>
@@ -671,7 +671,7 @@
                                             <td>
                                                 Jam Keluar
                                             </td>
-    
+
                                             <td>
                                                 {{formatTime detailWfh.checkOut}}
                                             </td>
@@ -680,7 +680,7 @@
                                             <td>
                                                 Lokasi Presensi Masuk
                                             </td>
-    
+
                                             <td>
                                                 {{detailWfh.detailCheckIn.locationNote}}
                                             </td>
@@ -689,7 +689,7 @@
                                             <td>
                                                 Keterangan
                                             </td>
-    
+
                                             <td>
                                                 {{detailWfh.detailCheckIn.note}}
                                             </td>
@@ -698,7 +698,7 @@
                                             <td>
                                                 Foto Presensi Masuk
                                             </td>
-    
+
                                             <td>
                                                 <img width="150" src="{{detailWfh.detailCheckIn.images}}" />
                                             </td>
@@ -707,7 +707,7 @@
                                             <td>
                                                 Lokasi Presensi Keluar
                                             </td>
-    
+
                                             <td>
                                                 {{detailWfh.detailCheckOut.locationNote}}
                                                 <a class="btn btn-primary"
@@ -719,7 +719,7 @@
                                             <td>
                                                 Keterangan Presensi Keluar
                                             </td>
-    
+
                                             <td>
                                                 {{detailWfh.detailCheckOut.note}}
                                             </td>
@@ -728,14 +728,14 @@
                                             <td>
                                                 Foto Presensi Keluar
                                             </td>
-    
+
                                             <td>
                                                 <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
-                                
+
 
                             </li>
                         </ul>
@@ -745,7 +745,6 @@
         </div>
     </div>
 </template>
-
 
 <template name="configurasiList">
     <div class="container">
@@ -983,7 +982,7 @@
                                                 <td>
                                                     {{scheduleName}}
                                                 </td>
-    
+
                                                 {{/each}}
                                                 </td>
                                                 <td>
@@ -1025,7 +1024,7 @@
                                             <td>
                                                 {{name}}
                                             </td>
-    
+
                                             <td>
                                                 <a href="/configurasi/details/{{_id}}" class="btn btn-primary btn-aksi"
                                                     milik="">Daftar Karyawan</a>
@@ -1189,93 +1188,80 @@
     </div>
 </template>
 
-<!-- <template name="detailAttendance">
-    <div class="page">
-        <h1 class="page-title">Pelaporan Rincian Harian </h1>
-        <ul>
-            <li class="list-group-item text-center">
+<template name="listPermits">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="page-title">Daftar Izin</h1>
+                        <div class="form-group">
+                            <label>Silahkan Pilih Bulan</label>
+                            <input type="month" id="select-period" class="form-control"/>
+                            <button class="btn btn-primary btn-block" id="btn-search">Cari</button>
+                        </div>
+                        <a href="/configurasi/list">
+                            <button class="btn btn-warning" id="btn-back">Kembali</button>
+                        </a>
+                        <div class="table-responsive">
+                            <table class="table table-bordered dataTable2" id="mytable">
+                                <thead>
+                                    <th>
+                                        No.
+                                    </th>
+                                    <th>
+                                        Nama
+                                    </th>
+                                    <th>
+                                        Izin
+                                    </th>
+                                    <th>
+                                        Tanggal
+                                    </th>
+                                    <th>
+                                        Durasi (Jam)
+                                    </th>
+                                    <th>
+                                        Aksi
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    {{#each dataPermit}}
+                                    <tr>
+                                        <td>
+                                            {{nomorUrut @index}}
+                                        </td>
 
-                <h4>{{ detailWfh.fullName }} - {{ detailWfh.jabatan }} </h4>
-                <img alt="No Image Found" id="profile" src="test" height="300" width="300" />
-                <table class="table table-responsive">
-                    <tr>
-                        <td>
-                            Jam Masuk
-                        </td>
+                                        <td>
+                                            {{fullName}} <span class="badge badge-info"> {{type}}</span> <span class="badge badge-{{#if equals status 60}}success{{else}}{{#if equals status 90}}danger{{else}}warning{{/if}}{{/if}}">
+                                                {{statusPermit status}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{reason}}
+                                        </td>
+                                        <td>
+                                            {{formatHRDate startDatePermit}} - {{formatHRDate endDatePermit}}
+                                        </td>
 
-                        <td>
-                            {{formatTime detailWfh.checkIn}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Jam Keluar
-                        </td>
+                                        <td>
+                                            {{duration}}
+                                        </td>
+                                        <td>
+                                            {{#if lessThan status 11}}
+                                                <button class="btn btn-warning btn-approve" milik="{{toMeteorId _id}}">Terima</button>
+                                                <button class="btn btn-danger btn-reject" milik="{{toMeteorId _id}}">Tolak</button>
+                                            {{/if}}
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
 
-                        <td>
-                            {{formatTime detailWfh.checkOut}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Lokasi Presensi Masuk
-                        </td>
-
-                        <td>
-                            {{detailWfh.detailCheckIn.locationNote}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Keterangan
-                        </td>
-
-                        <td>
-                            {{detailWfh.detailCheckIn.note}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Foto Presensi Masuk
-                        </td>
-
-                        <td>
-                            <img width="150" src="{{detailWfh.detailCheckIn.images}}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Lokasi Presensi Keluar
-                        </td>
-
-                        <td>
-                            {{detailWfh.detailCheckOut.locationNote}}
-                            <a class="btn btn-primary"
-                                href="https://maps.google.com/?q={{ detailWfh.detailCheckOut.location.latitude }},{{ detailWfh.detailCheckOut.location.longitude }}"
-                                target="_blank"><i class="fa fa-map"></i> Lihat di Google Map</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Keterangan Presensi Keluar
-                        </td>
-
-                        <td>
-                            {{detailWfh.detailCheckOut.note}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Foto Presensi Keluar
-                        </td>
-
-                        <td>
-                            <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
-                        </td>
-                    </tr>
-                </table>
-
-            </li>
-        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</template> -->
+</template>

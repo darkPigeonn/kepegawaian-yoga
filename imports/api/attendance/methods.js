@@ -6,6 +6,7 @@ import {
     ScheduleAttendance,
     ConfigAttendanceUser,
     Partner,
+    Permits,
 } from "./attendance.js";
 import _ from "underscore";
 require("moment-weekday-calc");
@@ -370,8 +371,8 @@ Meteor.methods({
                         dataUser.totalPresensi = dataStaffsAttendance.length;
                         dataUser.dafOf = activeWorkingDays - dataStaffsAttendance.length;
                         const permitLembur = Permits.find({creatorId: x.profileId, status: 60}, {projection: {
-                            _id: 0, 
-                            datePermits: 0, 
+                            _id: 0,
+                            datePermits: 0,
                             status: 0,
                             reason: 0,
                             datePermits: 0
@@ -614,5 +615,115 @@ Meteor.methods({
     async getPartnersUser() {
         const thisUser = Meteor.users.findOne({_id: this.userId});
         return thisUser.partners;
+    },
+
+
+    async "getAll.permit"() {
+        const thisUser = Meteor.users.findOne({_id: this.userId});
+        if(!thisUser) {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+
+        const employee = Employee.find({
+            outlets : thisUser.outlets
+        }).fetch();
+
+        console.log(employee);
+
+        const thisStartMonth = moment().utcOffset("+07:00").startOf("month");
+        const thisEndMonth = moment().utcOffset("+07:00").endOf("month");
+
+        const thisStartLastMonth = moment().utcOffset("+07:00").subtract(1, "month").startOf("month");
+        const thisEndLastMonth = moment().utcOffset("+07:00").subtract(1, "month").endOf("month");
+
+        const permits =  Permits.find({
+            createdAt: {
+                $gte: new Date(thisStartLastMonth),
+                $lte: new Date(thisEndLastMonth),
+            },
+            createdBy: {
+                $in: employee
+            }
+        }).fetch();
+
+        console.log(permits);
+    },
+    async "getPermit.byMonth"(month) {
+        const thisUser = Meteor.users.findOne({_id: this.userId});
+        if(!thisUser) {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+
+        const employee = Employee.find({
+            outlets : thisUser.outlets
+        }).fetch();
+
+
+        const thisStartMonth = moment(month).utcOffset("+07:00").startOf("month");
+        const thisEndMonth = moment(month).utcOffset("+07:00").endOf("month");
+
+        const stringArray = employee.map(item => item._id);
+        const permits =  Permits.find({
+            createdAt: {
+                $gte: new Date(thisStartMonth),
+                $lte: new Date(thisEndMonth),
+            },
+            creatorId: {
+                $in: stringArray
+            }
+        },{
+            sort: { startDatePermit: 1 }
+        }).fetch();
+
+        const finalData = permits.map(item => {
+            const data = _.find(employee, function (x) {
+                return x._id == item.creatorId
+            })
+            return {
+                ...item,
+                fullName: data.full_name
+            }
+        })
+
+       return finalData
+    },
+    'approvePermit'(id) {
+        check(id, String);
+
+        const thisUser = Meteor.users.findOne({_id: this.userId});
+        if(!thisUser) {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+
+        const idObject = new Mongo.ObjectID(id);
+        return Permits.update({
+            _id: idObject
+        }, {
+            $set: {
+                status: 60,
+                updatedAt : new Date(),
+                updatedBy : thisUser._id
+            }
+        })
+    },
+    'rejectPermit'(id,reason) {
+        check(id, String);
+
+        const thisUser = Meteor.users.findOne({_id: this.userId});
+        if(!thisUser) {
+            throw new Meteor.Error(404, "Anda tidak memiliki akses");
+        }
+
+        const idObject = new Mongo.ObjectID(id);
+        return Permits.update({
+            _id: idObject
+        }, {
+            $set: {
+                status: 90,
+                updatedAt : new Date(),
+                updatedBy : thisUser._id,
+                reason
+            }
+        })
     },
 });

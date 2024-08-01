@@ -31,3 +31,10 @@ export const Partner = new Mongo.Collection( 'partners');
 export const ConfigAttendanceUser = new Mongo.Collection(
   "configAttendanceUser"
 );
+
+
+export const statusPermits = [
+  { code: 10, label: "Menunggu Persetujuan" },
+  { code: 60, label: "Diterima" },
+  { code: 90, label: "Ditolak" },
+];

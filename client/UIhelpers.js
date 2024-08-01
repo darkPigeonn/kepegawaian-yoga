@@ -1,6 +1,7 @@
 import Intl from "intl";
 import "intl/locale-data/jsonp/id-ID";
 import moment from "moment";
+import { statusPermits } from "../imports/api/attendance/attendance";
 
 Template.registerHelper("formatRp", function (context, options) {
   if (context)
@@ -15,6 +16,9 @@ Template.registerHelper("formatRp", function (context, options) {
 
 Template.registerHelper("greaterThan", function (a, b) {
   return a > b;
+});
+Template.registerHelper("lessThan", function (a, b) {
+  return a < b;
 });
 
 Template.registerHelper(
@@ -145,7 +149,7 @@ Template.registerHelper("setTableNumber", function (value) {
   let number = parseInt(value);
   return number + 1;
 });
-Template.registerHelper("setJabatanFormat", function (value) { 
+Template.registerHelper("setJabatanFormat", function (value) {
   let words = value.split('-');
 
   // Mengonversi setiap kata menjadi huruf kapital untuk memulai
@@ -209,6 +213,15 @@ Template.registerHelper("statusDetail", function (data) {
 Template.registerHelper("formatMonthYear", function(month, year) {
   const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
   return `${monthNames[month - 1]} ${year}`;
+})
+Template.registerHelper("statusPermit", function(status) {
+
+  const dataPermit = statusPermits.find(item=>{
+    return item.code === status
+  });
+
+  return dataPermit ? dataPermit.label : '-';
+
 })
 
 // startSelect2 = function () {
