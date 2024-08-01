@@ -17,18 +17,13 @@ Meteor.methods({
             let result;
             if(cek) {
                 let detail = cek.details.find(detail => detail.userId === id);
-                const permitLembur = Permits.find({creatorId: id, status: 60}, {projection: {
+                const permitLembur = Permits.find({creatorId: id, status: 20, type: "Lembur"}, {projection: {
                     _id: 0, 
                     datePermits: 0, 
                     status: 0,
                     reason: 0,
                     datePermits: 0
                 }}).fetch()
-                let totalOvertime = 0;
-                for (let index = 0; index < permitLembur.length; index++) {
-                    const element = permitLembur[index];
-                    totalOvertime += parseInt(element.duration)
-                }
                 detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
                 result = {
                     _id: cek._id,
@@ -43,7 +38,6 @@ Meteor.methods({
                     accountNumber: dataEmployee.accountNumber,
                     accountNumberBank: dataEmployee.accountNumberBank,
                     accountNumberName: dataEmployee.accountNumberName,
-                    overtimeTotal: totalOvertime
                 };
                 // console.log(result);
             }
@@ -142,19 +136,14 @@ Meteor.methods({
         let result;
         if(cek) {
             let detail = cek.details.find(detail => detail.userId === dataSalaries.employeeId);
-            const permitLembur = Permits.find({creatorId: dataSalaries.employeeId, status: 60}, {projection: {
+            const permitLembur = Permits.find({creatorId: dataSalaries.employeeId, status: 20, type: "Lembur"}, {projection: {
                 _id: 0, 
                 datePermits: 0, 
                 status: 0,
                 reason: 0,
                 datePermits: 0
             }}).fetch()
-            console.log(permitLembur);
-            let totalOvertime = 0;
-            for (let index = 0; index < permitLembur.length; index++) {
-                const element = permitLembur[index];
-                totalOvertime += parseInt(element.duration)
-            }
+            console.log(detail);
             detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
             result = {
                 _id: cek._id,
@@ -166,11 +155,11 @@ Meteor.methods({
                 baseSalary: dataEmployee.base_salary,
                 details: detail,
                 overtimeList: permitLembur,
-                overtimeTotal: totalOvertime
             };
             // console.log(result);
         }
         dataSalaries.detailRekap = result
+        // console.log(dataSalaries);
         return dataSalaries
     }
 })

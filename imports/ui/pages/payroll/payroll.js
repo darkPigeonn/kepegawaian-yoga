@@ -168,7 +168,7 @@ Template.createPayroll.events({
         const inputValue = Number(e.target.value);
         t.rateOvertime.set(inputValue)
         const dataRekap = t.dataRekap.get();
-        const totalHour = dataRekap.overtimeTotal
+        const totalHour = dataRekap.details.totalOvertime
         const totalTarif = totalHour * inputValue
         t.totalTarifLembur.set(totalTarif)
     },

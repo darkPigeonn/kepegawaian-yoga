@@ -324,13 +324,6 @@ Meteor.methods({
           _.each(dataStaffsAttendance, function (x) {
             const dataUser = {};
             if (x._id) {
-            //   const userObjecId = new Mongo.Collection.ObjectID(x.profileId);
-            //   const userProfile = AppProfiles.findOne({
-            //     _id: userObjecId,
-            //     outlets: {
-            //       $in: [outlet],
-            //     },
-            //   });
               const employeeProfile = Employee.findOne({
                 _id: x.profileId,
                 partnerCode: outlet
@@ -369,8 +362,7 @@ Meteor.methods({
                             dataUser.totalLate = late.length;
                         }
                         dataUser.totalPresensi = dataStaffsAttendance.length;
-                        dataUser.dafOf = activeWorkingDays - dataStaffsAttendance.length;
-                        const permitLembur = Permits.find({creatorId: x.profileId, status: 60}, {projection: {
+                        const permitLembur = Permits.find({creatorId: x.profileId, status: 20, type: "Lembur"}, {projection: {
                             _id: 0,
                             datePermits: 0,
                             status: 0,
@@ -383,6 +375,11 @@ Meteor.methods({
                             totalOvertime += parseInt(element.duration)
                         }
                         dataUser.totalOvertime = totalOvertime
+                        const permitAbsence = Permits.find({creatorId: x.profileId, status: 20, type: {
+                            $in: ["Sakit", "Perjalanan Dinas", "Cuti"]
+                        }}).count()
+                        dataUser.permit = permitAbsence
+                        dataUser.dafOf = activeWorkingDays - dataStaffsAttendance.length - dataUser.permit;
                     }
                     dataReturn.push(dataUser);
                 }
