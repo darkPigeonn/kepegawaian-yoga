@@ -369,6 +369,19 @@ Meteor.methods({
                         }
                         dataUser.totalPresensi = dataStaffsAttendance.length;
                         dataUser.dafOf = activeWorkingDays - dataStaffsAttendance.length;
+                        const permitLembur = Permits.find({creatorId: x.profileId, status: 60}, {projection: {
+                            _id: 0, 
+                            datePermits: 0, 
+                            status: 0,
+                            reason: 0,
+                            datePermits: 0
+                        }}).fetch()
+                        let totalOvertime = 0;
+                        for (let index = 0; index < permitLembur.length; index++) {
+                            const element = permitLembur[index];
+                            totalOvertime += parseInt(element.duration)
+                        }
+                        dataUser.totalOvertime = totalOvertime
                     }
                     dataReturn.push(dataUser);
                 }
@@ -377,6 +390,7 @@ Meteor.methods({
 
             }
           });
+
           const dataNew = {
             activeDayWorking: activeWorkingDays,
             dayOf: totalDayOf,
