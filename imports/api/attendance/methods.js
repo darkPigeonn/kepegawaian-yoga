@@ -290,8 +290,8 @@ Meteor.methods({
         // console.log(thisUser);
 
         startDate = moment(startDate);
-        endDate = moment(endDate).utcOffset("+07:00").endOf("day");
-        // console.log(startDate, endDate);
+        endDate = moment(endDate).endOf("day");
+        console.log(startDate, endDate);
 
         const totalDay = moment().weekdayCalc(startDate, endDate, [1, 2, 3, 4, 5,6]);
 
@@ -323,7 +323,6 @@ Meteor.methods({
           _.each(dataStaffsAttendance, function (x) {
             const dataUser = {};
             if (x._id) {
-                console.log("masuk");
             //   const userObjecId = new Mongo.Collection.ObjectID(x.profileId);
             //   const userProfile = AppProfiles.findOne({
             //     _id: userObjecId,
