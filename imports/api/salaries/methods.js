@@ -17,7 +17,7 @@ Meteor.methods({
             let result;
             if(cek) {
                 let detail = cek.details.find(detail => detail.userId === id);
-                const permitLembur = Permits.find({creatorId: id}, {projection: {
+                const permitLembur = Permits.find({creatorId: id, status: 60}, {projection: {
                     _id: 0, 
                     datePermits: 0, 
                     status: 0,
@@ -29,7 +29,6 @@ Meteor.methods({
                     const element = permitLembur[index];
                     totalOvertime += parseInt(element.duration)
                 }
-                console.log(totalOvertime);
                 detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
                 result = {
                     _id: cek._id,
@@ -44,10 +43,9 @@ Meteor.methods({
                     accountNumber: dataEmployee.accountNumber,
                     accountNumberBank: dataEmployee.accountNumberBank,
                     accountNumberName: dataEmployee.accountNumberName,
-                    overtimeList: permitLembur,
                     overtimeTotal: totalOvertime
                 };
-                console.log(result);
+                // console.log(result);
             }
             return result
         } catch (error) {
@@ -56,7 +54,7 @@ Meteor.methods({
         }
         
     },
-    async "payroll.createPayroll"(data, id, month, year) {
+    async "payroll.createPayroll"(data, dataRekap, id, month, year) {
         check(data, Array);
         check(id, String);
         const cekSlipGaji = Salaries.findOne({employeeId: id, month: month, year: year})
@@ -84,9 +82,11 @@ Meteor.methods({
         const dataDeduction = data.filter(item => item.category === 'deduction').map(({ category, ...rest }) => rest);
         const dataSave = {
             employeeId: id,
+            employeeName: dataRekap.details.fullName,
             accountData: {
-                name: dataEmployee.full_name,
-                accountNumber: ""
+                name: dataRekap.accountNumberName,
+                accountNumber: dataRekap.accountNumber,
+                bank: dataRekap.accountNumberBank
             },
             month,
             year,
@@ -136,6 +136,41 @@ Meteor.methods({
     },
     async "payroll.getDetail"(id) {
         check(id, String);
-        return Salaries.findOne({_id: id});
+        const dataSalaries = Salaries.findOne({_id: id});
+        const cek = MonthlyAttendance.findOne({month: dataSalaries.month, year: dataSalaries.year, 'details.userId': dataSalaries.employeeId});
+        const dataEmployee = Employee.findOne({_id: dataSalaries.employeeId})
+        let result;
+        if(cek) {
+            let detail = cek.details.find(detail => detail.userId === dataSalaries.employeeId);
+            const permitLembur = Permits.find({creatorId: dataSalaries.employeeId, status: 60}, {projection: {
+                _id: 0, 
+                datePermits: 0, 
+                status: 0,
+                reason: 0,
+                datePermits: 0
+            }}).fetch()
+            console.log(permitLembur);
+            let totalOvertime = 0;
+            for (let index = 0; index < permitLembur.length; index++) {
+                const element = permitLembur[index];
+                totalOvertime += parseInt(element.duration)
+            }
+            detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
+            result = {
+                _id: cek._id,
+                activeDayWorking: cek.activeDayWorking,
+                dayOf: cek.dayOf,
+                month: cek.month,
+                year: cek.year,
+                outlets: cek.outlets,
+                baseSalary: dataEmployee.base_salary,
+                details: detail,
+                overtimeList: permitLembur,
+                overtimeTotal: totalOvertime
+            };
+            // console.log(result);
+        }
+        dataSalaries.detailRekap = result
+        return dataSalaries
     }
 })

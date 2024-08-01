@@ -182,7 +182,6 @@ Template.createPayroll.events({
             name,
             amount
         }
-        console.log(obj);
         const dataDetailSlip = t.dataDetailSlip.get()
         dataDetailSlip.push(obj);
         t.dataDetailSlip.set(dataDetailSlip);
@@ -242,27 +241,38 @@ Template.createPayroll.events({
     },
     "click #btn-save"(e, t) {
         e.preventDefault();
-        const dataSave = t.dataDetailSlip.get();
-        const id = $("#inputKaryawan").val();
-        const monthYearValue = $("#monthYear").val(); // Dapatkan nilai dari input monthYear
-        let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
-        month = parseInt(month);
-        year = parseInt(year);
-        Meteor.call("payroll.createPayroll", dataSave, id, month, year, function (error, result) {
-            if(result) {
-                console.log(result);
-                alert("pembuatan Slip Gaji berhasil")
-                location.reload();
+        Swal.fire({
+            title: "Warning",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+            text: "Apakah anda yakin ingin membuat slip gaji pegawai ini?",
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const dataSave = t.dataDetailSlip.get();
+                const dataRekap = t.dataRekap.get();
+                const id = $("#inputKaryawan").val();
+                const monthYearValue = $("#monthYear").val(); // Dapatkan nilai dari input monthYear
+                let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
+                month = parseInt(month);
+                year = parseInt(year);
+                Meteor.call("payroll.createPayroll", dataSave, dataRekap, id, month, year, function (error, result) {
+                    if(result) {
+                        alert("pembuatan Slip Gaji berhasil")
+                        location.reload();
+                    }
+                    else{
+                        if(error.error == 412) {
+                            alert(error.reason)
+                        }
+                        else {
+                            alert("Pembuatan Slip Gaji gagal");
+                        }
+                    }
+                });
             }
-            else{
-                if(error.error == 412) {
-                    alert(error.reason)
-                }
-                else {
-                    alert("Pembuatan Slip Gaji gagal");
-                }
-            }
-        });
+        })
     }
 })
 

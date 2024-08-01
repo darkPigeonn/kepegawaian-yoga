@@ -9,6 +9,9 @@
                 <button class="btn btn-warning" id="resetFilter">
                     <i class="fa fa-refresh"></i>
                 </button>
+                <div class="ml-auto">
+                    <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
+                </div>
             </div>
         </div>
         <div class="d-lg-block table-responsive">
@@ -46,7 +49,8 @@
                                     <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-primary btn-detail">
                                     <i class="fa fa-eye btn-detail"></i></a>
                                 {{else}}
-                                    <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
+                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-primary btn-detail" style="pointer-events: none; cursor: not-allowed; background-color:gray ;">
+                                    <i class="fa fa-eye btn-detail"></i></a>
                                 {{/if}}
                             </td>
                         </tr>
@@ -62,21 +66,64 @@
         <h1 class="mb-4">Detail Slip Gaji</h1>
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title">{{dataSalarie.accountData.name}}</h2>
+                <h2 class="card-title">{{dataSalarie.employeeName}}</h2>
             </div>
             <div class="card-body">
                 <p><strong>Periode:</strong> {{formatMonthYear dataSalarie.month dataSalarie.year}}</p>
-                {{dataSalarie.month}}
-                <p><strong>Account Number:</strong> -</p>
+                <p><strong>Nomor Rekening:</strong> {{dataSalarie.accountData.accountNumber}}</p>
+                <p><strong>Pemilik Nomor Rekening:</strong> {{dataSalarie.accountData.name}}</p>
+                <p><strong>Bank Nomor Rekening:</strong> {{dataSalarie.accountData.bank}}</p>
                 <hr>
-                <p><strong>Base Salary:</strong> {{formatRp dataSalarie.baseSalary}}</p>
-                <p><strong>Total Allowances:</strong> {{formatRp dataSalarie.totalAllowance}}</p>
+                <p><strong>Kehadiran</strong></p>
+                <ul>
+                    <li>Hadir: {{dataSalarie.detailRekap.details.totalPresensi}} Hari</li>
+                    <li>Ijin: {{dataSalarie.detailRekap.details.permit}} Hari</li>
+                    <li>Alpha: {{dataSalarie.detailRekap.details.dafof}} Hari</li>
+                    <li>Tidak Hadir: {{dataSalarie.detailRekap.details.absence}} Hari</li>
+                    <li>Hari Efektif: {{dataSalarie.detailRekap.activeDayWorking}} Hari</li>
+                </ul>
+                {{#if dataSalarie.detailRekap.overtimeList}}
+                    <p><strong>Daftar Lembur</strong></p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>No.</th>
+                                <th>Hari Lembur</th>
+                                <th>Durasi</th>
+                            </thead>
+                            <tbody>
+                                {{#each i in dataSalarie.detailRekap.overtimeList}}
+                                <tr>
+                                    <td>
+                                        {{setTableNumber @index}}
+                                    </td>
+                                    <td>
+                                        {{formatHRDate i.startDatePermit}}
+                                    </td>
+                                    <td>{{i.duration}} Jam</td>
+                                </tr>
+                                {{/each}}
+                                <tr>
+                                    <td colspan="2" style="font-weight: bold;">
+                                        Total Durasi
+                                    </td>
+                                    <td colspan="1">
+                                        <b>{{dataSalarie.detailRekap.overtimeTotal}} Jam</b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {{/if}}
+                <p><strong></strong></p>
+                <p><strong>Gaji Pokok:</strong> {{formatRp dataSalarie.baseSalary}}</p>
+                <p><strong>Total Penambahan:</strong> {{formatRp dataSalarie.totalAllowance}}</p>
                 <ul>
                     {{#each dataSalarie.allowances}}
                         <li>{{name}}: {{formatRp amount}}</li>
                     {{/each}}
                 </ul>
-                <p><strong>Total Deductions:</strong> {{formatRp dataSalarie.totalDeduction}}</p>
+                <p><strong>Total Pengurangan:</strong> {{formatRp dataSalarie.totalDeduction}}</p>
                 <ul>
                     {{#each dataSalarie.deductions}}
                         <li>{{name}}: {{formatRp amount}}</li>
@@ -115,7 +162,7 @@
                         {{/each}}
                     </select>
                 </div>
-                <button class="btn btn-primary w-100" id="btn-process">Process</button>
+                <button class="btn btn-primary w-100" id="btn-process">Proses</button>
                 {{#if dataRekap}}
                     <div class="attendance-info mt-3 border p-3">
                         <div class="d-flex justify-content-between">
