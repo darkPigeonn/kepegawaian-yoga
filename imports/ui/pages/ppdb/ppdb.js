@@ -243,7 +243,7 @@ Template.pageGenerateVa.events({
     const selectedTag = $("#select-tag").val();
     if (!selectedTag || selectedTag == "0" || selectedTag == "null") {
       failAlert("Silahkan pilih tag");
-      exitPreloader()
+      exitPreloader();
       return false;
     }
     Meteor.call(
@@ -293,16 +293,15 @@ Template.paymentPage.onCreated(function () {
   const self = this;
 
   self.items = new ReactiveVar();
-  self.listFail = new ReactiveVar()
+  self.listFail = new ReactiveVar();
 });
 Template.paymentPage.helpers({
-  listFail(){
+  listFail() {
     return Template.instance().listFail.get();
   },
   listPaymentVa() {
     return Template.instance().items.get();
   },
-
 });
 Template.paymentPage.events({
   "change #upload-csv"(e, t) {
@@ -361,12 +360,12 @@ Template.paymentPage.events({
         successAlert("Berhasil");
         exitPreloader();
         console.log(result);
-        if(result.status == 200){
+        if (result.status == 200) {
           setTimeout(() => {
             location.reload();
           }, 500);
-        }else{
-          t.listFail.set(result.items)
+        } else {
+          t.listFail.set(result.items);
         }
       }
     });
@@ -379,6 +378,7 @@ Template.detailRegistran.onCreated(function () {
   self.detail = new ReactiveVar();
   self.detailFinal = new ReactiveVar();
   self.photoStudent = new ReactiveVar("-");
+  self.formInterview = new ReactiveVar(false);
   const id = FlowRouter.current().params._id;
   Meteor.call("ppdb-registran-detail", id, function (error, result) {
     if (error) {
@@ -400,6 +400,9 @@ Template.detailRegistran.onCreated(function () {
   });
 });
 Template.detailRegistran.helpers({
+  formInterview() {
+    return Template.instance().formInterview.get();
+  },
   registran() {
     return Template.instance().detail.get();
   },
@@ -413,7 +416,12 @@ Template.detailRegistran.helpers({
 Template.detailRegistran.events({
   "click .btn-create-schedule"(e, t) {
     e.preventDefault();
-    $("#addSchedule").modal("show");
+    t.formInterview.set(!t.formInterview.get());
+    setTimeout(() => {
+      document
+        .getElementById("formInterview")
+        .scrollIntoView({ behavior: "smooth" });
+    }, 500);
   },
   "click .btn-accepted"(e, t) {
     e.preventDefault();
@@ -448,23 +456,30 @@ Template.detailRegistran.events({
   },
   "submit #setScheduleForm"(e, t) {
     e.preventDefault();
-    startPreloader()
+    startPreloader();
     const date = $("#inputDate").val();
     const time = $("#inputTime").val();
     const note = $("#inputNote").val();
 
-    const thisData =  t.detail.get();
+    const thisData = t.detail.get();
 
-    Meteor.call('interviews.insert', thisData._id, date, time, note, function(error, result){
-      if(error){
-        failAlert(error.reason);
-        exitPreloader()
-      }else{
-        successAlert("Berhasil");
-        location.reload();
+    Meteor.call(
+      "interviews.insert",
+      thisData._id,
+      date,
+      time,
+      note,
+      function (error, result) {
+        if (error) {
+          failAlert(error.reason);
+          exitPreloader();
+        } else {
+          successAlert("Berhasil");
+          location.reload();
+        }
       }
-    })
-  }
+    );
+  },
 });
 Template.cicilanRegistran.onCreated(function () {
   const self = this;
@@ -557,28 +572,24 @@ Template.cicilanRegistran.events({
 
     //get remainings
     const thisDetail = t.detail.get();
-    const remainings = thisDetail.remainings
+    const remainings = thisDetail.remainings;
 
     //kroscek
-    if(spp > remainings.feeSpp ){
-
+    if (spp > remainings.feeSpp) {
       infoAlert("SPP yang diinputkan melebihi batas atas");
-      return false
+      return false;
     }
-    if(donation > remainings.feeDonation){
-
+    if (donation > remainings.feeDonation) {
       infoAlert("Donasi yang diinputkan melebihi batas atas");
-      return false
+      return false;
     }
-    if(event > remainings.feeEvent){
-
+    if (event > remainings.feeEvent) {
       infoAlert("Event yang diinputkan melebihi batas atas");
-      return false
+      return false;
     }
-    if(utility > remainings.feeUtility){
-
+    if (utility > remainings.feeUtility) {
       infoAlert("Alat yang diinputkan melebihi batas atas");
-      return false
+      return false;
     }
 
     Meteor.call(
@@ -609,6 +620,35 @@ Template.cicilanRegistran.events({
   "click #lockCicilan"(e, t) {
     e.preventDefault();
     const id = FlowRouter.current().params._id;
+
+    //cek current paid vs remainings
+    const detail = t.detail.get();
+    const remainings = detail.remainings;
+
+    if (remainings.feeSpp > 0) {
+      infoAlert(
+        "Total Cicilan SPP masih belum sesuai, silahkan cek total cicilan SPP"
+      );
+      return false;
+    }
+    if (remainings.feeDonation > 0) {
+      infoAlert(
+        "Total Cicilan Sumbangan masih belum sesuai, silahkan cek total cicilan sumbangan"
+      );
+      return false;
+    }
+    if (remainings.feeEvent > 0) {
+      infoAlert(
+        "Total Cicilan Kegiatan masih belum sesuai, silahkan cek total cicilan kegiatan"
+      );
+      return false;
+    }
+    if (remainings.feeUtility > 0) {
+      infoAlert(
+        "Total Cicilan Alat masih belum sesuai, silahkan cek total cicilan alat"
+      );
+      return false;
+    }
 
     Swal.fire({
       title: "Konfirmasi Pengkuncian",
@@ -648,22 +688,28 @@ Template.pageVa.onCreated(function () {
   self.totalItems = new ReactiveVar(0);
   self.formUnduh = new ReactiveVar(false);
   self.formAktif = new ReactiveVar(false);
-  self.selectedCategori = new ReactiveVar()
+  self.selectedCategori = new ReactiveVar();
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
-    const queryReq = self.selectedCategori.get()
-    Meteor.call("va-school-getAll", currentPage, perPage,queryReq, (error, result) => {
-      if (error) {
-        console.error("Error while fetching students:", error);
-        exitPreloader();
-      } else {
-        console.log(result);
-        self.items.set(result.items);
-        self.totalItems.set(result.totalItems);
-        exitPreloader();
+    const queryReq = self.selectedCategori.get();
+    Meteor.call(
+      "va-school-getAll",
+      currentPage,
+      perPage,
+      queryReq,
+      (error, result) => {
+        if (error) {
+          console.error("Error while fetching students:", error);
+          exitPreloader();
+        } else {
+          console.log(result);
+          self.items.set(result.items);
+          self.totalItems.set(result.totalItems);
+          exitPreloader();
+        }
       }
-    });
+    );
   });
 });
 Template.pageVa.helpers({
@@ -695,10 +741,9 @@ Template.pageVa.helpers({
   },
 });
 Template.pageVa.events({
-  "change .selected-category"(event, template){
+  "change .selected-category"(event, template) {
     event.preventDefault();
-    template.selectedCategori.set(event.target.value)
-
+    template.selectedCategori.set(event.target.value);
   },
   "click .page-link"(event, template) {
     event.preventDefault();

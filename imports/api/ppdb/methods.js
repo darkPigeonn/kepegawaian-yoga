@@ -100,8 +100,10 @@ Meteor.methods({
       thisRegistrans.finalForm = thisFinalForm;
     }
 
-    if(thisRegistrans.interviewId){
-      const thisInterview  = await Interviews.findOne({_id : thisRegistrans.interviewId});
+    if (thisRegistrans.interviewId) {
+      const thisInterview = await Interviews.findOne({
+        _id: thisRegistrans.interviewId,
+      });
       thisRegistrans.interview = thisInterview;
     }
 
@@ -140,56 +142,62 @@ Meteor.methods({
     let thisConfig = await Gelombangs.findOne({
       _id: thisRegistrans.configId,
     });
-    thisConfig.feeTotal = thisConfig.feeSpp + thisConfig.feeDonation+thisConfig.feeEvent+thisConfig.feeUtilty
-    thisRegistrans.config = thisConfig
+    thisConfig.feeTotal =
+      thisConfig.feeSpp +
+      thisConfig.feeDonation +
+      thisConfig.feeEvent +
+      thisConfig.feeUtilty;
+    thisRegistrans.config = thisConfig;
     //get cicilan
     const credits = await CreditPayment.find({ studentId: id }).fetch();
     if (credits.length > 0) {
       thisRegistrans.listCredits = credits;
       //count total cicilan
-      const totalFeeSpp = credits.reduce((result,item)=>{
-        return result + item.feeSpp
-      },0)
-      const totalFeeDonation = credits.reduce((result,item)=>{
-        return result + item.feeDonation
-      },0)
-      const totalFeeEvent = credits.reduce((result,item)=>{
-        return result + item.feeEvent
-      },0)
-      const totalFeeUtility = credits.reduce((result,item)=>{
-        return result + item.feeUtility
-      },0)
+      const totalFeeSpp = credits.reduce((result, item) => {
+        return result + item.feeSpp;
+      }, 0);
+      const totalFeeDonation = credits.reduce((result, item) => {
+        return result + item.feeDonation;
+      }, 0);
+      const totalFeeEvent = credits.reduce((result, item) => {
+        return result + item.feeEvent;
+      }, 0);
+      const totalFeeUtility = credits.reduce((result, item) => {
+        return result + item.feeUtility;
+      }, 0);
       thisRegistrans.paid = {
-        feeSpp : totalFeeSpp,
-        feeDonation : totalFeeDonation,
-        feeEvent : totalFeeEvent,
-        feeUtility : totalFeeUtility,
-        feeTotal : totalFeeSpp + totalFeeDonation + totalFeeEvent + totalFeeUtility
-      }
+        feeSpp: totalFeeSpp,
+        feeDonation: totalFeeDonation,
+        feeEvent: totalFeeEvent,
+        feeUtility: totalFeeUtility,
+        feeTotal:
+          totalFeeSpp + totalFeeDonation + totalFeeEvent + totalFeeUtility,
+      };
       //remainings
-      const remainingSpp = thisConfig.feeSpp - totalFeeSpp
-      const remainingDonation = thisConfig.feeDonation - totalFeeDonation
-      const remainingEvent = thisConfig.feeEvent - totalFeeEvent
-      const remainingUtility = thisConfig.feeUtility - totalFeeUtility
+      const remainingSpp = thisConfig.feeSpp - totalFeeSpp;
+      const remainingDonation = thisConfig.feeDonation - totalFeeDonation;
+      const remainingEvent = thisConfig.feeEvent - totalFeeEvent;
+      const remainingUtility = thisConfig.feeUtility - totalFeeUtility;
       console.log(thisConfig);
       console.log(thisConfig.feeUtility);
-      const totalRemaining = remainingSpp + remainingDonation + remainingEvent + remainingUtility
+      const totalRemaining =
+        remainingSpp + remainingDonation + remainingEvent + remainingUtility;
 
       thisRegistrans.remainings = {
-        feeSpp : remainingSpp,
-        feeDonation : remainingDonation,
-        feeEvent : remainingEvent,
-        feeUtility : remainingUtility,
-        feeTotal : totalRemaining,
-      }
+        feeSpp: remainingSpp,
+        feeDonation: remainingDonation,
+        feeEvent: remainingEvent,
+        feeUtility: remainingUtility,
+        feeTotal: totalRemaining,
+      };
       console.log(thisRegistrans.remainings);
-    }else{
+    } else {
       thisRegistrans.remainings = {
-        feeSpp : thisConfig.feeSpp,
-        feeDonation : thisConfig.feeDonation,
-        feeEvent : thisConfig.feeEvent,
-        feeUtility : thisConfig.feeUtility,
-        feeTotal : thisConfig.feeTotal
+        feeSpp: thisConfig.feeSpp,
+        feeDonation: thisConfig.feeDonation,
+        feeEvent: thisConfig.feeEvent,
+        feeUtility: thisConfig.feeUtility,
+        feeTotal: thisConfig.feeTotal,
       };
     }
 
@@ -233,7 +241,7 @@ Meteor.methods({
           (thisConfig.feeSpp ?? 0) +
           (thisConfig.feeEvent ?? 0) +
           (thisConfig.feeDonation ?? 0) +
-          (thisConfig.feeUtilty ?? 0) ;
+          (thisConfig.feeUtilty ?? 0);
         //get config va units
         const thisVaConfig = await VirtualAccountsConfig.findOne({
           unitId: thisUnit._id,
@@ -253,7 +261,6 @@ Meteor.methods({
         if (!thisPeriode) {
           throw new Meteor.Error(404, "Konfigurasi Periode tidak ada");
         }
-
 
         const newVa =
           thisVaConfig.code +
@@ -285,10 +292,13 @@ Meteor.methods({
           feeSpp: thisConfig.feeSpp ?? 0,
           feeEvent: thisConfig.feeEvent ?? 0,
           feeDonation: thisConfig.feeDonation ?? 0,
-          feeUtility: thisConfig.feeUtilty ??0,
-        }
+          feeUtility: thisConfig.feeUtilty ?? 0,
+        };
         VirtualAccounts.insert(vaModel);
-        Registrans.update({_id : idObjet},{$set : {paymentDetail, noVA : newVa}})
+        Registrans.update(
+          { _id: idObjet },
+          { $set: { paymentDetail, noVA: newVa } }
+        );
       } else {
         status = 41;
       }
@@ -416,8 +426,11 @@ Meteor.methods({
         schoolId: element,
         periodeId: thisPeriod._id,
       });
-      if(!configPpdb){
-        throw new Meteor.Error(404, `Tidak ada gelombang aktif untuk sekolah ${thisSchool.name}`);
+      if (!configPpdb) {
+        throw new Meteor.Error(
+          404,
+          `Tidak ada gelombang aktif untuk sekolah ${thisSchool.name}`
+        );
       }
 
       let startIndex = 1;
@@ -494,20 +507,16 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
     console.log(codeCategory);
-    const queryReq = codeCategory && codeCategory !== 'all'
-  ? { category: codeCategory }
-  : {};
+    const queryReq =
+      codeCategory && codeCategory !== "all" ? { category: codeCategory } : {};
     const skip = (pageNum - 1) * perPage;
 
     return {
-      items: VirtualAccounts.find(
-        queryReq,
-        {
-          limit: perPage,
-          skip,
-          sort: { virtualAccountNumber: 1 },
-        }
-      ).fetch(),
+      items: VirtualAccounts.find(queryReq, {
+        limit: perPage,
+        skip,
+        sort: { virtualAccountNumber: 1 },
+      }).fetch(),
       totalItems: VirtualAccounts.find(queryReq).count(),
     };
   },
@@ -885,7 +894,7 @@ Meteor.methods({
     };
     return CreditPayment.insert(dataSave);
   },
-  async "credit-lock"(id){
+  async "credit-lock"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -897,7 +906,9 @@ Meteor.methods({
       throw new Meteor.Error(404, "Data siswa tidak ditemukan");
     }
     //get all credit
-    const credits = CreditPayment.find({studentId : thisRegistran._id.toHexString()}).fetch();
+    const credits = CreditPayment.find({
+      studentId: thisRegistran._id.toHexString(),
+    }).fetch();
 
     //make va cicilan
     const thisConfig = await Gelombangs.findOne({
@@ -911,14 +922,13 @@ Meteor.methods({
       throw new Meteor.Error(404, "Data ini tidak mengandung perwakilan");
     }
     //get cicilan ke 1
-    const thisCredit = credits[0]
+    const thisCredit = credits[0];
 
     const total =
-      (thisCredit.feeSpp ? thisCredit.feeSpp : 0 )+
+      (thisCredit.feeSpp ? thisCredit.feeSpp : 0) +
       (thisCredit.feeEvent ? thisCredit.feeEvent : 0) +
-      (thisCredit.feeDonation  ? thisCredit.feeDonation : 0)+
+      (thisCredit.feeDonation ? thisCredit.feeDonation : 0) +
       (thisCredit.feeUtilty ? thisCredit.feeUtilty : 0);
-
 
     //get config va units
     const thisVaConfig = await VirtualAccountsConfig.findOne({
@@ -964,7 +974,7 @@ Meteor.methods({
       feeDonation: thisCredit.feeDonation,
       feeUtilty: thisCredit.feeUtilty,
       virtualAccountNumber: newVa,
-      creditId : thisCredit._id
+      creditId: thisCredit._id,
     };
     const paymentDetail = {
       amount: total,
@@ -972,11 +982,14 @@ Meteor.methods({
       feeEvent: thisCredit.feeEvent,
       feeDonation: thisCredit.feeDonation,
       feeUtility: thisCredit.feeUtilty,
-      indexPayment : 1
-    }
+      indexPayment: 1,
+    };
 
     const vaInsert = VirtualAccounts.insert(vaModel);
-    return Registrans.update({ _id: objId }, { $set: {status: 46, creditList: credits, noVA : newVa, paymentDetail}});
+    return Registrans.update(
+      { _id: objId },
+      { $set: { status: 46, creditList: credits, noVA: newVa, paymentDetail } }
+    );
   },
 
   //payment
@@ -991,7 +1004,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
 
-    let listFail = []
+    let listFail = [];
 
     items.forEach((item) => {
       //1. check ke va dengan status 11(terpakai) ada atau tidak =>formulir
@@ -1000,16 +1013,17 @@ Meteor.methods({
         status: 20,
       });
 
-
       if (checkVa) {
         //extension cek nominal
         if (checkVa.amount != item.amount) {
           listFail.push({
             va: item.va,
             amount: item.amount,
-            name : item.name,
-            message : 'nominal tidak sama. seharusnya Rp. ' + formatRupiah(checkVa.amount.toString())
-          })
+            name: item.name,
+            message:
+              "nominal tidak sama. seharusnya Rp. " +
+              formatRupiah(checkVa.amount.toString()),
+          });
           return false;
         }
         //2. check pengguna dengan va ini
@@ -1018,7 +1032,8 @@ Meteor.methods({
         });
 
         if (registran) {
-          if(registran.status < 20){ //ini untuk formulir
+          if (registran.status < 20) {
+            //ini untuk formulir
             //3. check initialPayment
             const idPayment = new Mongo.Collection.ObjectID(
               registran.initialPaymentId
@@ -1068,44 +1083,43 @@ Meteor.methods({
             }
           );
           //7. Notif to user
-          const tempNotif ={
-            "senderId": thisUser._id,
-            "receiverId": registran.createdBy,
-            "message": `Pembayaran anda untuk pembayaran formulir ${registran.fullName} sudah terkonfirmasi`,
-            "createdAt": new Date(),
-            "createdBy": thisUser._id,
-            "timestamp" : new Date()
-          }
+          const tempNotif = {
+            senderId: thisUser._id,
+            receiverId: registran.createdBy,
+            message: `Pembayaran anda untuk pembayaran formulir ${registran.fullName} sudah terkonfirmasi`,
+            createdAt: new Date(),
+            createdBy: thisUser._id,
+            timestamp: new Date(),
+          };
 
           Notifications.insert(tempNotif);
           listFail.push({
             va: item.va,
             amount: item.amount,
-            name : item.name,
-            message : 'Berhasil'
-          })
+            name: item.name,
+            message: "Berhasil",
+          });
         }
-      }else{
+      } else {
         listFail.push({
           va: item.va,
           amount: item.amount,
-          name : item.name,
-          message : 'nomor va tidak ditemukan'
-        })
+          name: item.name,
+          message: "nomor va tidak ditemukan",
+        });
       }
     });
 
-    if(listFail.length > 0){
+    if (listFail.length > 0) {
       return {
-        status : 203,
-        items : listFail
-      }
-    }else{
+        status: 203,
+        items: listFail,
+      };
+    } else {
       return {
-        status : 200
+        status: 200,
       };
     }
-
   },
   //export
   async "export-va"(unitId, schoolId, tag) {
@@ -1189,21 +1203,27 @@ Meteor.methods({
       throw new Meteor.Error(403, "Forrbiden");
     }
     const data = {
-      registranId : id,
+      registranId: id,
       date,
       time,
       note,
       createdAt: new Date(),
       createdBy: thisUser._id,
-    }
-    const result =await Interviews.insert(data);
+    };
+    const result = await Interviews.insert(data);
 
-    return Registrans.update({_id : id},{$set : {
-      interviewId : result,
-
-      updatedAt : new Date(),
-      updatedBy : thisUser._id
-    }})
+    return Registrans.update(
+      { _id: id },
+      {
+        $set: {
+          interviewId: result,
+          status: 48,
+          interviewDone: false,
+          updatedAt: new Date(),
+          updatedBy: thisUser._id,
+        },
+      }
+    );
   },
 });
 

@@ -291,7 +291,7 @@ Template.registerHelper("statusPpdb", function (data) {
   let status = "";
   switch (data) {
     case 10:
-      status = "Menunggu Pembayaran dan Konfirmasi Admin";
+      status = "Menunggu Pembayaran Uang Formulir dan Konfirmasi Admin Yayasan";
       break;
     case 20:
       status = "Mengisi Formulir PPDB";
@@ -300,16 +300,20 @@ Template.registerHelper("statusPpdb", function (data) {
       status = "Menunggu Konfirmasi Formulir oleh Admin Sekolah";
       break;
 
-    case 41 :
+    case 41:
       status = "Menunggu Jadwal Wawancara";
       break;
 
-    case 46 :
+    case 46:
       status = "Menunggu Jadwal Wawancara";
       break;
 
     case 45:
       status = "Menunggu Unggah SPO Pembayaran";
+      break;
+
+    case 48:
+      status = "Menunggu Proses Wawancara";
       break;
 
     case 90:

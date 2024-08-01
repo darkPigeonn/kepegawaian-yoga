@@ -293,33 +293,34 @@
           </tbody>
         </table>
 
-        <hr>
-        {{#if listFail}}
-        <h3>Hasil Konfirmasi Pembayaran</h3>
-        <table class="table table-borderless">
-          <thead>
-            <th>No</th>
-            <th>No. Va</th>
-            <th>Nama Pelanggan</th>
-            <th>Nominal</th>
-            <th>Keterangan</th>
-          </thead>
-          <tbody>
-            {{#each listFail}}
-            <tr>
-              <td>{{nomorUrut @index}}</td>
-              <td>{{va}}</td>
-              <td>{{name}}</td>
-              <td>{{formatRp amount}}</td>
-              <td>{{message}}</td>
-            </tr>
-            {{/each}}
-          </tbody>
-        </table>
-        {{/if}}
       </div>
-
+      <hr>
+      {{#if listFail}}
+      <h3>Hasil Konfirmasi Pembayaran</h3>
+      <table class="table table-borderless">
+        <thead>
+          <th>No</th>
+          <th>No. Va</th>
+          <th>Nama Pelanggan</th>
+          <th>Nominal</th>
+          <th>Keterangan</th>
+        </thead>
+        <tbody>
+          {{#each listFail}}
+          <tr>
+            <td>{{nomorUrut @index}}</td>
+            <td>{{va}}</td>
+            <td>{{name}}</td>
+            <td>{{formatRp amount}}</td>
+            <td>{{message}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}
       <button class="btn btn-primary btn-block" id="btn-save" disabled>Proses</button>
+      {{/if}}
+
     </div>
   </div>
 </template>
@@ -388,7 +389,7 @@
     <div class="page-content">
       <div class="card">
         {{> alertDiv status=registran.status}}
-       <div class="row">
+        <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
               {{#if photoStudent.uploaded}}
@@ -443,20 +444,48 @@
                 {{/if}}
               </tr>
 
+
+
               {{#if registran.interviewId}}
               <tr>
-                <th>Waktu Interview</th>
+                <th>Waktu Wawancara</th>
                 <td>{{formatHRDate registran.interview.date}} | {{registran.interview.time}}</td>
               </tr>
               {{else}}
               {{#if greaterThan registran.status 34}}
               <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
-                {{/if}}
+              {{/if}}
               {{/if}}
             </table>
+
+
           </div>
         </div>
       </div>
+      {{#if formInterview}}
+      <div class="card" id="formInterview">
+        <div class="card-header">
+          <h3>Form Wawancara</h3>
+        </div>
+        <div class="card-body">
+          <form id="setScheduleForm">
+            <div class="form-group">
+              <label for="inputDate">Tanggal</label>
+              <input type="date" class="form-control" id="inputDate" required>
+            </div>
+            <div class="form-group">
+              <label for="inputTime">Jam</label>
+              <input type="time" class="form-control" id="inputTime" required>
+            </div>
+            <div class="form-group">
+              <label for="inputNote">Catatan : </label>
+              <input type="text" class="form-control" id="inputNote" required>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Simpan</button>
+          </form>
+        </div>
+      </div>
+      {{/if}}
       <!-- ini kalau sudah ngisi form lengkap  -->
       {{#if registran.initialPaymentStatus}}
       <div class="card">
@@ -634,6 +663,7 @@
       <button class="btn btn-danger btn-block btn-rejected" milik="{{toMeteorId registran._id}}">Tolak</button>
       {{/if}}
       {{/if}}
+      {{/if}}
     </div>
 
     {{> c_modal title='Buat Jadwal Wawancara' idModal="addSchedule" bodyTemplate="formInputSchedule" bodyData=yourFormData formId="setScheduleForm"}}
@@ -648,34 +678,41 @@
     <div class="page-content">
       <div class="card">
         <div class="m-2">
+          {{#if notEquals registran.status 46}}
           <button class="btn btn-warning float-right" id="lockCicilan">Kunci Cicilan</button>
           <button class="btn btn-primary float-right" id="addCicilan"> {{#if formCicilan}}Tutup{{else}}+
             Cicilan{{/if}}</button>
+
+          {{else}}
+          <div class="alert alert-danger" role="alert">
+            Cicilan Sudah Terkunci
+          </div>
+          {{/if}}
         </div>
         {{#if formCicilan}}
         <form id="add-cicilan">
-        <div class="row m-3">
+          <div class="row m-3">
             <div class="col-12">
               <div class="form-group">
                 <label>Cicilan ke : </label>
-                <input class="form-control" id="input-index" type="number" min="1" required/>
+                <input class="form-control" id="input-index" type="number" min="1" required />
               </div>
             </div>
             <div class="col-3">
               <label>Uang SPP</label>
-              <input class="form-control inputNominal" id="input-spp" required/>
+              <input class="form-control inputNominal" id="input-spp" required />
             </div>
             <div class="col-3">
               <label>Uang Sumbangan</label>
-              <input class="form-control inputNominal" id="input-donation" required/>
+              <input class="form-control inputNominal" id="input-donation" required />
             </div>
             <div class="col-3">
               <label>Uang Kegiatan</label>
-              <input class="form-control inputNominal" id="input-event" required/>
+              <input class="form-control inputNominal" id="input-event" required />
             </div>
             <div class="col-3">
               <label>Uang Alat</label>
-              <input class="form-control inputNominal" id="input-utility" required/>
+              <input class="form-control inputNominal" id="input-utility" required />
             </div>
             <button class="btn btn-primary btn-block mt-3" id="btn-save-cicilan" type="submit">Simpan</button>
             <hr>
@@ -729,7 +766,7 @@
           </div>
 
           <!-- list biaya  -->
-           <div class="col-12">
+          <div class="col-12">
             <table class="table table-bordered">
               <thead class="text-center">
                 <tr>
@@ -740,13 +777,13 @@
 
                 </tr>
                 <tr>
-                  <td>Terbayar</td>
+                  <td>Total Cicilan</td>
                   <td>Kurang</td>
-                  <td>Terbayar</td>
+                  <td>Total Cicilan</td>
                   <td>Kurang</td>
-                  <td>Terbayar</td>
+                  <td>Total Cicilan</td>
                   <td>Kurang</td>
-                  <td>Terbayar</td>
+                  <td>Total Cicilan</td>
                   <td>Kurang</td>
 
                 </tr>
@@ -789,7 +826,7 @@
               </tbody>
             </table>
           </div>
-           <div class="col-12">
+          <div class="col-12">
             <table class="table table-bordered">
               <thead class="text-center">
                 <tr>
@@ -800,7 +837,7 @@
                   </th>
                 </tr>
                 <tr>
-                  <td>Terbayar</td>
+                  <td>Total Cicilan</td>
                   <td>Kurang</td>
                 </tr>
 
@@ -821,7 +858,7 @@
             </table>
           </div>
           <!-- list credit  -->
-           <h3>Daftar Cicilan</h3>
+          <h3>Daftar Cicilan</h3>
           <div class="col-12">
             <table class="table table-bordered">
               <thead>
