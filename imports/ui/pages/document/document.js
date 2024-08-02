@@ -17,6 +17,8 @@ Template.list_document.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.dataDocumentByRole = new ReactiveVar();
   self.dataDocumentHistoryByRole = new ReactiveVar();
+  self.startDate = new ReactiveVar();
+  self.endDate = new ReactiveVar();
   Meteor.call("document.getAllDocuments", function (error1, result1) {
     if (result1) {
       // console.log(result1);
@@ -42,6 +44,12 @@ Template.list_document.helpers({
   },
   listKorespondensiSigner() {
     return Template.instance().listKorespondensi
+  },
+  startDate() {
+    return Template.instance().startDate.get();
+  },
+  endDate() {
+    return Template.instance().endDate.get();
   }
 });
 
@@ -86,6 +94,10 @@ Template.list_document.events({
   },
   "click #btn-refresh"(e, t) {
     e.preventDefault();
+    document.getElementById('documentName').value = '';
+    document.getElementById('documentSource').value = '';
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
     Meteor.call("document.getAllDocuments", function (error, result) {
       if (result) {
         t.dataDocument.set(result);
@@ -93,6 +105,14 @@ Template.list_document.events({
         console.log(error);
       }
     });
+  },
+  "change #startDate"(e, t) {
+    const endDate = $("#startDate").val();
+    t.endDate.set(endDate)
+  },
+  "change #endDate"(e, t) {
+    const startDate = $("#endDate").val();
+    t.startDate.set(startDate)
   }
 })
 
@@ -375,8 +395,8 @@ Template.createKorespondensi.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.categoryLetters = new ReactiveVar();
   self.isSKLetter = new ReactiveVar();
-  self.buktiSurat = new ReactiveVar([]);
-  self.allFileNames = new ReactiveVar([]);
+  self.nomorSurat = new ReactiveVar();
+  // self.buktiSurat = new ReactiveVar([]);
   const jenis = "kategori-surat"
   setTimeout(() => {
     startSelect2();
@@ -393,14 +413,6 @@ Template.createKorespondensi.onCreated(function () {
       }
     }
   );
-  // Meteor.call('fileName.getAll', function (error, result) {
-  //   if (error) {
-  //     console.log(error);
-  //   } else {
-  //     console.log(result)
-  //     self.allFileNames.set(result)
-  //   }
-  // })
 });
 Template.createKorespondensi.onRendered(function () {
   const template = Template.instance();
@@ -421,55 +433,63 @@ Template.createKorespondensi.helpers({
     const user = Meteor.users.findOne({ _id: userId });
     return user ? user.profile.fullName : '';
   },
-  buktiSurat() {
-    return Template.instance().buktiSurat.get();
-  },
-  allFileNames() {
-    return Template.instance().allFileNames.get();
-  },
+  nomorSurat() {
+    return Template.instance().nomorSurat.get();
+  }
+  // buktiSurat() {
+  //   return Template.instance().buktiSurat.get();
+  // },
 })
 Template.createKorespondensi.events({
-  "change #buktiSurat": function (e, t) {
-    const buktiSurat = t.buktiSurat.get();
-    const files = $("#buktiSurat").prop("files");
-    for (let index = 0; index < files.length; index++) {
-      const file = files[index];
-      if (file) {
-        const reader = new FileReader();
-        const body = {
-          file: file,
-        };
-        reader.addEventListener("load", function () {
-          body.src = this.result;
-          if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
-            $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
-              "href",
-              this.result
-            );
-          }
-        });
-        reader.readAsDataURL(file);
-        buktiSurat.push(body);
-        t.buktiSurat.set(buktiSurat);
-      }
-    }
-  },
-  "click .remove-buktiSurat": function (e, t) {
-    e.preventDefault();
-    const index = $(e.target).attr("milik");
-    const buktiSurat = t.buktiSurat.get();
-    buktiSurat.splice(parseInt(index), 1);
-    t.buktiSurat.set(buktiSurat);
-  },
+  // "change #buktiSurat": function (e, t) {
+  //   const buktiSurat = t.buktiSurat.get();
+  //   const files = $("#buktiSurat").prop("files");
+  //   for (let index = 0; index < files.length; index++) {
+  //     const file = files[index];
+  //     if (file) {
+  //       const reader = new FileReader();
+  //       const body = {
+  //         file: file,
+  //       };
+  //       reader.addEventListener("load", function () {
+  //         body.src = this.result;
+  //         if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
+  //           $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
+  //             "href",
+  //             this.result
+  //           );
+  //         }
+  //       });
+  //       reader.readAsDataURL(file);
+  //       buktiSurat.push(body);
+  //       t.buktiSurat.set(buktiSurat);
+  //     }
+  //   }
+  // },
+  // "click .remove-buktiSurat": function (e, t) {
+  //   e.preventDefault();
+  //   const index = $(e.target).attr("milik");
+  //   const buktiSurat = t.buktiSurat.get();
+  //   buktiSurat.splice(parseInt(index), 1);
+  //   t.buktiSurat.set(buktiSurat);
+  // },
   "change #category"(e, t) {
     const categorySlug = e.target.options[e.target.selectedIndex].getAttribute("milik");
-    console.log(categorySlug);
     if (categorySlug == "surat-keputusan") {
       t.isSKLetter.set(true);
     }
     else {
       t.isSKLetter.set(false)
     }
+    Meteor.call("korespondensi.getNomor", function(error, result) {
+      if(result) {
+        t.nomorSurat.set(result)
+      }
+      else {
+        console.log(error);
+        failAlert(error);
+      }
+    })
   },
   async "click #submit"(e, t) {
     e.preventDefault();
@@ -502,27 +522,6 @@ Template.createKorespondensi.events({
       data.tanggalBerakhir = skLetterTanggalAkhir;
     }
 
-    const files = t.buktiSurat.get();
-    const thisForm = {};
-    thisForm[files] = [];
-    if (files.length > 0) {
-      for (let index = 0; index < files.length; index++) {
-        const fileName = files[index].file.name;
-        const uploadData = {
-          fileName: "kepegawaian/letters/" + fileName,
-          type: "image/png",
-          Body: files[index].file
-        }
-        const linkUpload = await uploadFiles(uploadData);
-        thisForm[files].push(
-          {
-            name: files[index].file.name,
-            link: linkUpload
-          });
-      }
-      data.links = thisForm[files]
-    }
-
     Meteor.call("korespondensi.create", data, function (error, result) {
       if (result) {
         Swal.close();
@@ -545,6 +544,8 @@ Template.listKorespondensi.onCreated(function () {
   self.dataKorespondensi = new ReactiveVar();
   self.dataKorespondensiPembuat = new ReactiveVar();
   self.dataHistoryReviewer = new ReactiveVar();
+  self.startDate = new ReactiveVar();
+  self.endDate = new ReactiveVar();
   const listItems = []
 
   // const userId = Meteor.userId();
@@ -579,6 +580,15 @@ Template.listKorespondensi.onCreated(function () {
   // }
   Meteor.call("korespondensi.getAll", function (error1, result1) {
     if (result1) {
+      for (let index = 0; index < result1.length; index++) {
+        const element = result1[index];
+        if(element.linksLetter) {
+          element.linksLetter = element.linksLetter[0]
+        }
+        if(element.linksLetterSignatured) {
+          element.linksLetterSignatured = element.linksLetterSignatured[0]
+        }
+      }
       self.dataKorespondensi.set(result1);
     } else {
       console.log(error1);
@@ -610,6 +620,12 @@ Template.listKorespondensi.helpers({
   },
   dataHistoryReviewer() {
     return Template.instance().dataHistoryReviewer.get();
+  },
+  startDate() {
+    return Template.instance().startDate.get();
+  },
+  endDate() {
+    return Template.instance().endDate.get();
   }
 });
 
@@ -642,16 +658,68 @@ Template.listKorespondensi.events({
   "click #btn-search"(e, t) {
     e.preventDefault();
 
+    const nameOfNumber = $("#nameOfNumber").val();
     const nameOfPerihal = $("#nameOfPerihal").val();
-    const nameOfExperiedDate = $("#nameOfExperiedDate").val();
+    const nameOfPenerima = $("#nameOfPenerima").val();
+    const startDate = $("#startDate").val();
+    const endDate = $("#endDate").val();
 
-    const data = {
-      about: nameOfPerihal,
-      tanggalBerakhir: nameOfExperiedDate
+    let cek = true;
+    if(startDate != "") {
+      if(endDate == "") {
+        cek = false
+      }
+    }
+    if(endDate != "") {
+      if(startDate == ""){
+        cek = false
+      }
     }
 
-    Meteor.call("korespondensi.search", data, function (error, result) {
+    const data = {
+      documentNumber: nameOfNumber,
+      about: nameOfPerihal,
+      receiver: nameOfPenerima,
+      startDate,
+      endDate
+    }
+
+    if(cek == true) {
+      Meteor.call("korespondensi.search", data, function (error, result) {
+        if(result) {
+          t.dataKorespondensi.set(result);
+        }
+        else {
+          console.log(error);
+          failAlert("Error")
+        }
+      })
+    }
+    else {
+      failAlert("Pastikan input tanggal sudah benar")
+    }
+
+    // Template.instance().listItems.set(filteredItems);
+  },
+
+  "click #btn-refresh"(e, t) {
+    e.preventDefault();
+    document.getElementById('nameOfNumber').value = '';
+    document.getElementById('nameOfPerihal').value = '';
+    document.getElementById('nameOfPenerima').value = '';
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+    Meteor.call("korespondensi.getAll", function (error, result) {
       if(result) {
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          if(element.linksLetter) {
+            element.linksLetter = element.linksLetter[0]
+          }
+          if(element.linksLetterSignatured) {
+            element.linksLetterSignatured = element.linksLetterSignatured[0]
+          }
+        }
         t.dataKorespondensi.set(result);
       }
       else {
@@ -663,25 +731,13 @@ Template.listKorespondensi.events({
     // Template.instance().listItems.set(filteredItems);
   },
 
-  "click #btn-refresh"(e, t) {
-    e.preventDefault();
-
-    const data = {
-      about: nameOfPerihal,
-      tanggalBerakhir: nameOfExperiedDate
-    }
-
-    Meteor.call("korespondensi.getAll", data, function (error, result) {
-      if(result) {
-        t.dataKorespondensi.set(result);
-      }
-      else {
-        console.log(error);
-        failAlert("Error")
-      }
-    })
-
-    // Template.instance().listItems.set(filteredItems);
+  "change #startDate"(e, t) {
+    const endDate = $("#startDate").val();
+    t.endDate.set(endDate)
+  },
+  "change #endDate"(e, t) {
+    const startDate = $("#endDate").val();
+    t.startDate.set(startDate)
   }
 
 });

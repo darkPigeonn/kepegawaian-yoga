@@ -73,7 +73,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          Router.go("home");
+          Router.go("/documents");
         }
       });
     } else {

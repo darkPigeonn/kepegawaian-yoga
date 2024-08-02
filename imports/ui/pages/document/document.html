@@ -18,11 +18,11 @@
                 <div class="form-group ml-3 d-flex">
                     <div class="mr-3">
                         <label for="documentDate">Tanggal Surat Masuk Mulai</label>
-                        <input type="date" class="form-control search-input" id="startDate" placeholder="Tanggal Surat Masuk">
+                        <input type="date" class="form-control search-input" id="startDate" max={{startDate}} placeholder="Tanggal Surat Masuk">
                     </div>
                     <div>
                         <label for="endDate">Tanggal Surat Masuk Sampai</label>
-                        <input type="date" class="form-control search-input" id="endDate" placeholder="Masa Berakhir">
+                        <input type="date" class="form-control search-input" id="endDate" min={{endDate}} placeholder="Masa Berakhir">
                     </div>
                 </div>
                 <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
@@ -207,7 +207,7 @@
             <a href="/createKorespondensi" class="btn btn-primary">+ Buat Surat Baru</a>
         </div>
         <br><br>
-        {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip"}}
+        {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip, admin, super-admin"}}
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#all">Daftar Semua Surat</a>
@@ -219,22 +219,45 @@
                     <h3>Daftar Semua Surat</h3>
                     <div class="input-group mb-3">
                         <div class="form-group">
+                            <label for="nameOfNumber">Nomor Surat</label>
+                            <input type="text" class="form-control search-input" id="nameOfNumber" placeholder="Perihal">
+                        </div>
+                        <div class="form-group ml-3">
                             <label for="nameOfPerihal">Perihal</label>
                             <input type="text" class="form-control search-input" id="nameOfPerihal" placeholder="Perihal">
                         </div>
                         <div class="form-group ml-3">
-                            <label for="nameOfExperiedDate">Masa Berakhir</label>
-                            <input type="date" class="form-control search-input" id="nameOfExperiedDate" placeholder="Masa Berakhir">
+                            <label for="nameOfPenerima">Penerima</label>
+                            <input type="text" class="form-control search-input" id="nameOfPenerima" placeholder="Penerima">
                         </div>
-                        <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
+                        <div class="form-group ml-3 d-flex">
+                            <div class="mr-3">
+                                <label for="documentDate">Tanggal SK Berakhir Mulai</label>
+                                <input type="date" class="form-control search-input" id="startDate" max={{startDate}} placeholder="Tanggal Surat Masuk">
+                            </div>
+                            <div>
+                                <label for="endDate">Tanggal SK Berakhir Sampai</label>
+                                <input type="date" class="form-control search-input" id="endDate" min={{endDate}} placeholder="Masa Berakhir">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
                             <button class="btn btn-primary" type="button" id="btn-search">
                                 <i class="fas fa-search" id="btn-search"></i> Cari
                             </button>
                             <button id="btn-refresh" class="btn btn-primary">
                                 <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
                             </button>
-                        </div>
+                        </div> -->
                     </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" type="button" id="btn-search">
+                            <i class="fas fa-search" id="btn-search"></i> Cari
+                        </button>
+                        <button id="btn-refresh" class="btn btn-primary">
+                            <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
+                        </button>
+                    </div>
+                    <br>
                     
                     <div class="section-content-page">
                         <table class="table table-bordered">
@@ -247,6 +270,7 @@
                                 <th>Tanggal Dibuat</th>
                                 <th>Masa Berakhir</th>
                                 <th>Pembuat</th>
+                                <th>Berkas</th>
                                 <th>Aksi</th>
                             </thead>
                             <tbody>
@@ -266,6 +290,22 @@
                                     {{/if}}
                                   </td>
                                   <td>{{capitalizeWord createdByName}}</td>
+                                  <td>
+                                    {{#if linksLetter}}
+                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" target="_blank" class="pdf-link">
+                                            <i class="fas fa-file-word"></i>
+                                        </a>
+                                    {{else}}
+                                        <i class="fas fa-file-word"></i>
+                                    {{/if}}
+                                    {{#if linksLetterSignatured}}
+                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetterSignatured.link}}" target="_blank" class="pdf-link">
+                                            <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
+                                        </a>
+                                    {{else}}
+                                        <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
+                                    {{/if}}
+                                  </td>
                                   <td>
                                     <a href="/detailKorespondensi/{{_id}}">
                                       <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
@@ -300,6 +340,24 @@
                         {{/each}}
                     </select>
                 </div>
+                <div class="form-group-container" style="display: flex; justify-content: space-between; gap: 15px;">
+                    <div class="form-group" style="flex: 1; min-width: 0;">
+                        <label for="field1">Nomor Urut Surat</label>
+                        <input type="text" id="field1" class="form-control" placeholder="Nomor Urut" value={{nomorSurat.number}} disabled>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 0;">
+                        <label for="field2">Kode Surat</label>
+                        <input type="text" id="code" class="form-control" placeholder="Kode">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 0;">
+                        <label for="field3">Bulan</label>
+                        <input type="text" id="bulan" class="form-control" placeholder="Bulan" value={{nomorSurat.currentMonth}} disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="field4">Tahun</label>
+                        <input type="text" id="tahun" class="form-control" placeholder="Tahun" value={{nomorSurat.currentYear}} disabled>
+                    </div>
+                </div>
                 {{#if equals isSKLetter true}}
                     <div class="form-group">
                         <label>Tanggal Berlaku</label>
@@ -318,13 +376,6 @@
                     <label for="">Perihal</label>
                     <input type="text" id="about" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="">Kode Surat</label>
-                    <input type="text" id="code" class="form-control">
-                </div>
-
-                {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
-
                 <div class="form-actions">
                     <button class="btn btn-primary" id="submit">Simpan</button>
                 </div>

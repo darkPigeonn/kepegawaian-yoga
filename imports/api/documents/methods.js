@@ -92,9 +92,6 @@ Meteor.methods({
       // Menetapkan waktu akhir ke 23:59:59
       const endOfDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999);
 
-      console.log(startOfDay);
-      console.log(endOfDay);
-
       query.date = { $gte: startOfDay, $lte: endOfDay };
     }
     query.partner = "keuskupan"
@@ -231,8 +228,7 @@ Meteor.methods({
       about,
       letterCode,
       tanggalBerlaku,
-      tanggalBerakhir,
-      links} = data;
+      tanggalBerakhir} = data;
 
     if(receiver == null || receiver == undefined) {
       receiver = ""
@@ -265,7 +261,6 @@ Meteor.methods({
         categoryName: categoryName.name,
         receiver,
         about,
-        linksLetter: links,
         partner: thisUser.partners[0],
         createdAt: new Date(),
         createdBy: thisUser._id,
@@ -279,7 +274,6 @@ Meteor.methods({
         categoryName: categoryName.name,
         receiver,
         about,
-        linksLetter: links,
         tanggalBerlaku: new Date(tanggalBerlaku),
         tanggalBerakhir: new Date(tanggalBerakhir),
         partner: thisUser.partners[0],
@@ -360,21 +354,30 @@ Meteor.methods({
   },
 
   "korespondensi.search"(data) {
-    const {about, tanggalBerakhir} = data;
+    let {documentNumber, about, receiver, startDate, endDate} = data;
     let query = {};
+    if(documentNumber) {
+      query.documentNumber = { $regex: new RegExp(documentNumber, 'i') };
+    }
     if(about) {
       query.about = { $regex: new RegExp(about, 'i') };
     }
-    if(tanggalBerakhir) {
-      const inputDate = new Date(tanggalBerakhir);
-      const year = inputDate.getFullYear();
-      const startDate = new Date(year, 0, 1); // 1 Januari tahun input
-      const endDate = inputDate; // Tanggal yang diinput
-      query.tanggalBerakhir = { $gte: startDate, $lte: endDate };
-      query.partner = "keuskupan"
+    if(receiver) {
+      query.receiver = { $regex: new RegExp(receiver, 'i') };
     }
+    if (startDate && endDate) {
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+      // Menetapkan waktu mulai ke 00:00:00
+      const startOfDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0, 0);
+
+      // Menetapkan waktu akhir ke 23:59:59
+      const endOfDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999);
+
+      query.tanggalBerakhir = { $gte: startOfDay, $lte: endOfDay };
+    }
+    query.partner = "keuskupan"
     const filteredItems = Letters.find(query).fetch();
-    console.log(filteredItems);
     return filteredItems
   },
 
@@ -743,7 +746,7 @@ Meteor.methods({
 
   "korespondensi.getAll"() {
     const data = Letters.find({},
-      { $sort: { createdAt: -1 } }
+      { sort: { createdAt: -1 } }
     ).fetch();
     for (let index = 0; index < data.length; index++) {
       const element = data[index];
@@ -843,6 +846,18 @@ Meteor.methods({
       })
     } catch (error) {
       throw new Meteor.Error(412, "Unggah File Arsip Gagal");
+    }
+  },
+
+  "korespondensi.getNomor"() {
+    let countNoSurat = Letters.find({partner: "keuskupan"}).count() + 1;
+    const formattedCount = countNoSurat.toString().padStart(3, '0');
+    const currentMonth = getCurrentMonthInRoman();
+    const currentYear = new Date().getFullYear();
+    return {
+      number: formattedCount,
+      currentMonth,
+      currentYear
     }
   }
 });
