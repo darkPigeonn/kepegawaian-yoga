@@ -437,9 +437,11 @@
                 {{#if equals registran.paymentMethod 'Kontan'}}
 
                 {{else}}
+                {{#if betweenEquals registran.status 48 50}}
                 <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">
-                  {{#if greaterThan registran.status 45}}Lihat Konfigurasi Cicilan{{else}} Buat Konfigurasi Cicilan {{/if}}</a></td>
+                  {{#if greaterThan registran.status 48}}Lihat Konfigurasi Cicilan{{else}} Buat Konfigurasi Cicilan {{/if}}</a></td>
                 {{/if}}
+                  {{/if}}
                 {{/if}}
               </tr>
 
@@ -463,7 +465,7 @@
               <button class="btn btn-warning btn-block btn-interview-done">Wawancara Selesai</button>
               {{/if}}
               {{else}}
-              {{#if betweenEquals registran.status 34 50}}
+              {{#if betweenEquals registran.status 34 45}}
               <button class="btn btn-primary btn-block btn-create-schedule">Buat Jadwal Wawancara</button>
               {{/if}}
               {{/if}}
@@ -699,7 +701,7 @@
     <div class="page-content">
       <div class="card">
         <div class="m-2">
-          {{#if lessThan registran.status 46}}
+          {{#if lessThan registran.status 49}}
           {{#if notEquals registran.status 46}}
           {{#if formCicilan}}
           {{else}}
@@ -898,8 +900,8 @@
                 <th>SUMBANGAN</th>
                 <th>KEGIATAN</th>
                 <th>ALAT</th>
-                <th>Aksi</th>
                 <th>Status</th>
+                <th>Aksi</th>
               </thead>
               <tbody>
                 {{#each registran.listCredits}}
@@ -912,8 +914,10 @@
                   <td>{{formatRp feeUtility}}</td>
                   <td>{{statusCredit status}}</td>
                   <td>
+                    {{#if lessThan registran.status 49}}
                     <button class="btn btn-warning btn-edit" milik="{{_id}}">Ubah</button>
                     <button class="btn btn-danger btn-hapus" milik="{{_id}}">Hapus</button>
+                    {{/if}}
                   </td>
                 </tr>
                 {{/each}}

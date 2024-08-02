@@ -1045,7 +1045,7 @@ Meteor.methods({
     const vaInsert = VirtualAccounts.insert(vaModel);
     return Registrans.update(
       { _id: objId },
-      { $set: { status: 46, creditList: credits, noVA: newVa, paymentDetail } }
+      { $set: { status: 49, creditList: credits, noVA: newVa, paymentDetail } }
     );
   },
 
@@ -1270,6 +1270,11 @@ Meteor.methods({
     };
     const result = await Interviews.insert(data);
 
+    //fetch data untuk create
+
+
+
+
     return Registrans.update(
       { _id: id },
       {
@@ -1310,6 +1315,33 @@ Meteor.methods({
     if (!thisRegistran) {
       throw new Meteor.Error(404, "Registran Tidak Ditemukan");
     }
+
+    //cek data kontan atau tidak
+
+    if(thisRegistran.paymentMethod == "Cicil"){
+      if(thisRegistran.status != 49){
+        return {code : 404, message : "Silahkan buat cicilan dan menguncinya cicilan dahulu"}
+      }
+    }
+    let postURL =
+    process.env.USE_LOCAL === "true"
+      ? "http://localhost:3005/yayoga/"
+      : "https://api.imavi.org/yayoga/";
+
+      try{
+        HTTP.call("POST", `${postURL}schools/unduhSpo?template=educationCostSpo&registerId=${idRegistran}`, {
+          headers: {
+            Id: Meteor.settings.APP_ID,
+            Secret: Meteor.settings.APP_SECRET,
+          },
+          data: {},
+        });
+
+      }catch(e){
+
+      }
+
+
 
     const wawancara = {
       interview: {

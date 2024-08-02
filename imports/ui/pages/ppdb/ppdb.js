@@ -495,10 +495,18 @@ Template.detailRegistran.events({
         startPreloader();
         Meteor.call("ppdb-interview-done", id, function (error, result) {
           if (result) {
-            successAlert("Berhasil");
-            setTimeout(function () {
-              location.reload();
-            }, 200);
+
+            if(result.code){
+              infoAlert(result.message)
+              setTimeout(() => {
+                exitPreloader();
+              }, 2500);
+            }else{
+              successAlert("Berhasil");
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            }
           } else {
             console.log(error);
             failAlert("Gagal!");
