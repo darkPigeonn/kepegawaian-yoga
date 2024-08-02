@@ -330,8 +330,8 @@ Meteor.methods({
     const updatedData = {
       rejectedAt: new Date(),
       rejectedBy: thisUser._id,
-      status : 90,
-      reason
+      status: 90,
+      reason,
     };
     return Registrans.update({ _id: idObjet }, { $set: updatedData });
     // return RegistransFinal.update({ _id: formFinalId }, { $set: updatedData });
@@ -919,7 +919,15 @@ Meteor.methods({
     };
     return CreditPayment.insert(dataSave);
   },
-  async "update-cicil-student"(id, index, spp, donation, event, utility, idCredit) {
+  async "update-cicil-student"(
+    id,
+    index,
+    spp,
+    donation,
+    event,
+    utility,
+    idCredit
+  ) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -931,7 +939,6 @@ Meteor.methods({
       throw new Meteor.Error(404, "Data siswa tidak ditemukan");
     }
 
-
     const dataSave = {
       index,
       feeSpp: spp,
@@ -942,7 +949,7 @@ Meteor.methods({
       updatedBy: thisUser._id,
     };
 
-    return CreditPayment.update({_id : idCredit}, {$set: dataSave});
+    return CreditPayment.update({ _id: idCredit }, { $set: dataSave });
   },
   async "credit-lock"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -1042,7 +1049,8 @@ Meteor.methods({
     );
   },
 
-  //payment
+  //payme
+
   async "konfirmasi-payment-upload"(items) {
     check(items, Array);
 
@@ -1276,55 +1284,56 @@ Meteor.methods({
     );
   },
 
-
-  'credit.delete'(id){
+  "credit.delete"(id) {
     check(id, String);
 
-    const thisUser = Meteor.users.findOne({_id : this.userId});
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
 
-    if(!thisUser){
+    if (!thisUser) {
       throw new Meteor.Error(403, "Forrbiden");
     }
 
-    return CreditPayment.remove({_id : id});
-
+    return CreditPayment.remove({ _id: id });
   },
 
-  "ppdb-interview-done"(idRegistran){
+  "ppdb-interview-done"(idRegistran) {
     check(idRegistran, String);
 
     const thisUser = Meteor.users.findOne({ _id: this.userId });
 
-    if(!thisUser){
+    if (!thisUser) {
       throw new Meteor.Error(403, "Forrbiden");
     }
 
     const objectIdUser = new Meteor.Collection.ObjectID(idRegistran);
     const thisRegistran = Registrans.findOne({ _id: objectIdUser });
-    if(!thisRegistran){
+    if (!thisRegistran) {
       throw new Meteor.Error(404, "Registran Tidak Ditemukan");
     }
 
     const wawancara = {
-      interview : {
-        doneAt : new Date(),
-        doneBy : thisUser._id,
+      interview: {
+        doneAt: new Date(),
+        doneBy: thisUser._id,
       },
-      interviewDone : true,
-      status : 50
+      interviewDone: true,
+      status: 50,
     };
 
     //update interview
-    Interviews.update({_id : thisRegistran.interviewId},{
-      $set : {
-        doneAt : new Date(),
-        updatedAt : new Date(),
-        updatedBy : thisUser._id,
+    Interviews.update(
+      { _id: thisRegistran.interviewId },
+      {
+        $set: {
+          doneAt: new Date(),
+          updatedAt: new Date(),
+          updatedBy: thisUser._id,
+        },
       }
-    })
+    );
 
-    return Registrans.update({_id : objectIdUser}, {$set : wawancara});
-  }
+    return Registrans.update({ _id: objectIdUser }, { $set: wawancara });
+  },
 });
 
 function generateUniqueVirtualAccount() {

@@ -311,7 +311,6 @@ Template.paymentPage.events({
     //pakai yoga dulu ya
     const reader = new FileReader();
     let dataJson = [];
-    console.log(file);
 
     reader.onload = function (e) {
       const data = new Uint8Array(e.target.result);

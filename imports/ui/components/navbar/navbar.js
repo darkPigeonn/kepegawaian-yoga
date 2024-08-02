@@ -5,6 +5,7 @@ Template.navbar.onCreated(function () {
   const self = this;
   self.jabatanLogin = new ReactiveVar();
   self.partnerCode = new ReactiveVar();
+  self.notifications = new ReactiveVar();
   const userId = Meteor.userId();
 
   Meteor.call("employee.getDataLogin", userId, function (error, result) {
@@ -21,6 +22,14 @@ Template.navbar.onCreated(function () {
       self.partnerCode.set(result);
     }
   });
+  Meteor.call("notifications.getByUser", userId, function (error, result) {
+    if (result) {
+      self.notifications.set(result);
+      console.log(result);
+    } else {
+      console.log(error);
+    }
+  });
 });
 
 Template.navbar.helpers({
@@ -29,6 +38,9 @@ Template.navbar.helpers({
   },
   isYoga() {
     return Template.instance().partnerCode.get() === "yyg";
+  },
+  notifications() {
+    return Template.instance().notifications.get();
   },
 });
 
@@ -61,6 +73,25 @@ Template.navbar.events({
         });
       }
     });
+  },
+  "click #userDropdown"(e, t) {
+
+    e.preventDefault();
+
+    Meteor.call('notifications.markAsRead',function (err, res) {
+      if(error){
+        console.log(error);
+      }else{
+        Meteor.call("notifications.getByUser", userId, function (error, result) {
+          if (result) {
+            t.notifications.set(result);
+            console.log(result);
+          } else {
+            console.log(error);
+          }
+        });
+      }
+    })
   },
 });
 
