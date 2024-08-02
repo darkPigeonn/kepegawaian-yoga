@@ -17,42 +17,6 @@ Template.list_document.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.dataDocumentByRole = new ReactiveVar();
   self.dataDocumentHistoryByRole = new ReactiveVar();
-  const userId = Meteor.userId();
-  // console.log(userId);
-  // if (userId) {
-  //   Meteor.call("employee.getDataLogin", userId, function (error, result) {
-  //     if (result) {
-  //       const dataRole = result[0];
-  //       self.jabatanLogin.set(dataRole);
-  //       Meteor.call(
-  //         "document.getDocumentByRoles",
-  //         dataRole,
-  //         function (error, result) {
-  //           // console.log(roleLogin);
-  //           if (result) {
-  //             // console.log(result);
-  //             self.dataDocumentByRole.set(result);
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         }
-  //       );
-  //       Meteor.call(
-  //         "document.getHistoryByPengisi",
-  //         dataRole,
-  //         function (error, result) {
-  //           if (result) {
-  //             self.dataDocumentHistoryByRole.set(result);
-  //           } else {
-  //             console.log(error);
-  //           }
-  //         }
-  //       );
-  //     } else {
-  //       console.log(error);
-  //     }
-  //   });
-  // }
   Meteor.call("document.getAllDocuments", function (error1, result1) {
     if (result1) {
       // console.log(result1);
@@ -86,22 +50,39 @@ Template.list_document.events({
     e.preventDefault();
     const name = $("#documentName").val();
     const source = $("#documentSource").val();
-    const date = $("#date").val()
-    console.log(name, source, date);
+    const startDate = $("#startDate").val();
+    const endDate = $("#endDate").val();
+    let cek = true;
+    if(startDate != "") {
+      if(endDate == "") {
+        cek = false
+      }
+    }
+    if(endDate != "") {
+      if(startDate == ""){
+        cek = false
+      }
+    }
     const data = {
       name,
       source,
-      date
+      startDate,
+      endDate
     }
-    Meteor.call("document.search", data, function(error, result) {
-      if(result) {
-        t.dataDocument.set(result)
-      }
-      else {
-        console.log(error);
-        failAlert(error)
-      }
-    })
+    if(cek == true) {
+      Meteor.call("document.search", data, function(error, result) {
+        if(result) {
+          t.dataDocument.set(result)
+        }
+        else {
+          console.log(error);
+          failAlert(error)
+        }
+      })
+    }
+    else {
+      failAlert("Pastikan input tanggal sudah benar")
+    }
   },
   "click #btn-refresh"(e, t) {
     e.preventDefault();

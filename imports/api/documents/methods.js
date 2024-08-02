@@ -75,7 +75,7 @@ Meteor.methods({
   },
 
   "document.search"(data) {
-    let {name, source, date} = data;
+    let {name, source, startDate, endDate} = data;
     let query = {};
     if (name) {
       query.name = { $regex: new RegExp(name, 'i') }; // 'i' untuk case-insensitive
@@ -83,12 +83,19 @@ Meteor.methods({
     if (source) {
       query.source = { $regex: new RegExp(source, 'i') }; // 'i' untuk case-insensitive
     }
-    if (date) {
-      const inputDate = new Date(date);
-      const startDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate());
-      const endDate = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate(), 23, 59, 59, 999);
+    if (startDate && endDate) {
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+      // Menetapkan waktu mulai ke 00:00:00
+      const startOfDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0, 0);
 
-      query.date = { $gte: startDate, $lte: endDate };
+      // Menetapkan waktu akhir ke 23:59:59
+      const endOfDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999);
+
+      console.log(startOfDay);
+      console.log(endOfDay);
+
+      query.date = { $gte: startOfDay, $lte: endOfDay };
     }
     query.partner = "keuskupan"
     const filteredItems = Document.find(query, {sort: {date: -1}}).fetch();
