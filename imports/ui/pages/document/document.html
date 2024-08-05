@@ -217,7 +217,7 @@
             <div class="tab-content">
                 <div id="all" class="tab-pane fade show active">
                     <h3>Daftar Semua Surat</h3>
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3 d-flex justify-content-center">
                         <div class="form-group">
                             <label for="nameOfNumber">Nomor Surat</label>
                             <input type="text" class="form-control search-input" id="nameOfNumber" placeholder="Perihal">
@@ -230,24 +230,26 @@
                             <label for="nameOfPenerima">Penerima</label>
                             <input type="text" class="form-control search-input" id="nameOfPenerima" placeholder="Penerima">
                         </div>
-                        <div class="form-group ml-3 d-flex">
-                            <div class="mr-3">
-                                <label for="documentDate">Tanggal SK Berakhir Mulai</label>
-                                <input type="date" class="form-control search-input" id="startDate" max={{startDate}} placeholder="Tanggal Surat Masuk">
-                            </div>
-                            <div>
-                                <label for="endDate">Tanggal SK Berakhir Sampai</label>
-                                <input type="date" class="form-control search-input" id="endDate" min={{endDate}} placeholder="Masa Berakhir">
+                    </div>
+                    <div class="input-group mb-3 d-flex justify-content-center">
+                        <div class="form-group mr-3">
+                            <label for="startDateMulai">Tanggal SK Dimulai</label>
+                            <input type="date" class="form-control search-input" id="startDateMulai" max="{{startDateMulai}}" placeholder="Tanggal Dimulai">
+                        </div>
+                        <div class="form-group mr-3">
+                            <label for="endDateMulai" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                            <input type="date" class="form-control search-input" id="endDateMulai" min="{{endDateMulai}}" placeholder="Tanggal Dimulai">
+                        </div>
+                        <div class="form-group">
+                            <div class="mr-3 mb-3 mb-sm-0">
+                                <label for="startDate">Tanggal SK Berakhir</label>
+                                <input type="date" class="form-control search-input" id="startDate" max="{{startDate}}" placeholder="Tanggal Surat Masuk">
                             </div>
                         </div>
-                        <!-- <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
-                            <button class="btn btn-primary" type="button" id="btn-search">
-                                <i class="fas fa-search" id="btn-search"></i> Cari
-                            </button>
-                            <button id="btn-refresh" class="btn btn-primary">
-                                <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
-                            </button>
-                        </div> -->
+                        <div class="form-group">
+                            <label for="endDate" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                            <input type="date" class="form-control search-input" id="endDate" min="{{endDate}}" placeholder="Masa Berakhir">
+                        </div>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary" type="button" id="btn-search">
@@ -268,8 +270,10 @@
                                 <th>Perihal Surat</th>
                                 <th>Penerima Surat</th>
                                 <th>Tanggal Dibuat</th>
-                                <th>Masa Berakhir</th>
+                                <th>Tanggal Awal</th>
+                                <th>Tanggal Berakhir</th>
                                 <th>Pembuat</th>
+                                <th>Status</th>
                                 <th>Berkas</th>
                                 <th>Aksi</th>
                             </thead>
@@ -283,6 +287,13 @@
                                   <td>{{receiver}}</td>
                                   <td>{{formatHRDate createdAt}}</td>
                                   <td>
+                                    {{#if tanggalBerlaku}}
+                                        {{formatHRDate tanggalBerlaku}}
+                                    {{else}}
+                                        -
+                                    {{/if}}
+                                  </td>
+                                  <td>
                                     {{#if tanggalBerakhir}}
                                         {{formatHRDate tanggalBerakhir}}
                                     {{else}}
@@ -290,6 +301,17 @@
                                     {{/if}}
                                   </td>
                                   <td>{{capitalizeWord createdByName}}</td>
+                                  <td>
+                                    {{#if equals status 10}}
+                                        Draft
+                                    {{/if}}
+                                    {{#if equals status 60}}
+                                        Diterbitkan
+                                    {{/if}}
+                                    {{#if equals status 90}}
+                                        Dibatalkan
+                                    {{/if}}
+                                  </td>
                                   <td>
                                     {{#if linksLetter}}
                                         <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" target="_blank" class="pdf-link">
@@ -339,8 +361,12 @@
                         <option value="{{_id}}" milik="{{slug}}">{{ name }}</option>
                         {{/each}}
                     </select>
-                </div>
-                <div class="form-group-container" style="display: flex; justify-content: space-between; gap: 15px;">
+                </div> 
+                <!-- <div class="form-group">
+                    <label for="field2">Kode Surat</label>
+                    <input type="text" id="code" class="form-control" placeholder="Kode">
+                </div> -->
+                <!-- <div class="form-group-container" style="display: flex; justify-content: space-between; gap: 15px;">
                     <div class="form-group" style="flex: 1; min-width: 0;">
                         <label for="field1">Nomor Urut Surat</label>
                         <input type="text" id="field1" class="form-control" placeholder="Nomor Urut" value={{nomorSurat.number}} disabled>
@@ -357,10 +383,10 @@
                         <label for="field4">Tahun</label>
                         <input type="text" id="tahun" class="form-control" placeholder="Tahun" value={{nomorSurat.currentYear}} disabled>
                     </div>
-                </div>
+                </div> -->
                 {{#if equals isSKLetter true}}
                     <div class="form-group">
-                        <label>Tanggal Berlaku</label>
+                        <label>Tanggal Awal Berlaku</label>
                         <input type="date" class="form-control" id="date-start" />
                     </div>
                     <div class="form-group">
@@ -368,6 +394,10 @@
                         <input type="date" class="form-control" id="date-end" />
                     </div>
                 {{/if}}
+                <div class="form-group">
+                    <label for="field2">Nomor Surat</label>
+                    <input type="text" id="documentNumber" class="form-control" placeholder="Nomor Surat">
+                </div>
                 <div class="form-group">
                     <label for="">Penerima</label>
                     <input type="text" id="receiver" class="form-control">
@@ -647,7 +677,7 @@
                 </div>
                 {{#if equals isSKLetter true}}
                     <div class="form-group">
-                        <label>Tanggal Berlaku</label>
+                        <label>Tanggal Awal Berlaku</label>
                         <input type="date" class="form-control" id="date-start" disabled value="{{dateToHTML letterData.tanggalBerlaku}}"/>
                     </div>
                     <div class="form-group">
@@ -662,6 +692,14 @@
                 <div class="form-group">
                     <label for="">Perihal</label>
                     <input type="text" id="about" class="form-control" value="{{letterData.about}}">
+                </div>
+                <div class="form-group">
+                    <label for="">Status</label>
+                    <select id="status" class="form-control">
+                        <option>Pilih Status</option>
+                        <option value="60">Diterbitkan</option>
+                        <option value="90">Dibatalkan</option>
+                    </select>
                 </div>
 
                 {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}

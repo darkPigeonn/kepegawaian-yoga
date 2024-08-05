@@ -226,7 +226,8 @@ Meteor.methods({
     let {category,
       receiver,
       about,
-      letterCode,
+      // letterCode,
+      documentNumber,
       tanggalBerlaku,
       tanggalBerakhir} = data;
 
@@ -235,6 +236,18 @@ Meteor.methods({
     }
     if(about == null || about == undefined) {
       about = ""
+    }
+    if(tanggalBerlaku == null || tanggalBerlaku == undefined) {
+      delete data.tanggalBerlaku
+    }
+    else {
+      data.tanggalBerlaku = new Date(data.tanggalBerlaku)
+    }
+    if(tanggalBerakhir == null || tanggalBerakhir == undefined) {
+      delete data.tanggalBerakhir
+    }
+    else {
+      data.tanggalBerlaku = new Date(data.tanggalBerlaku)
     }
 
     const idUserPengisi = Meteor.userId();
@@ -245,43 +258,28 @@ Meteor.methods({
     let modelData;
     // Format no.surat
     // nomor urut 3 digit - code surat - bulan (romawi) - tahun
-    let noSuratFinal;
-    let countNoSurat = Letters.find({partner: "keuskupan"}).count() + 1;
-    const formattedCount = countNoSurat.toString().padStart(3, '0');
-    const currentMonth = getCurrentMonthInRoman();
-    const currentYear = new Date().getFullYear();
+    // Hidupkan lagi kalau inputan sudah tidak manual
+    // let noSuratFinal;
+    // let countNoSurat = Letters.find({partner: "keuskupan"}).count() + 1;
+    // const formattedCount = countNoSurat.toString().padStart(3, '0');
+    // const currentMonth = getCurrentMonthInRoman();
+    // const currentYear = new Date().getFullYear();
 
-    noSuratFinal = `${formattedCount}/${letterCode}/${currentMonth}/${currentYear}`
+    // noSuratFinal = `${formattedCount}/${letterCode}/${currentMonth}/${currentYear}`
     const categoryName = Configuration.findOne({_id: category})
 
-    if(tanggalBerlaku == undefined || tanggalBerakhir == undefined) {
-      modelData = {
-        documentNumber: noSuratFinal,
-        categoryId: category,
-        categoryName: categoryName.name,
-        receiver,
-        about,
-        partner: thisUser.partners[0],
-        createdAt: new Date(),
-        createdBy: thisUser._id,
-        createdByName: thisUser.fullname,
-      };
-    }
-    else {
-      modelData = {
-        documentNumber: noSuratFinal,
-        categoryId: category,
-        categoryName: categoryName.name,
-        receiver,
-        about,
-        tanggalBerlaku: new Date(tanggalBerlaku),
-        tanggalBerakhir: new Date(tanggalBerakhir),
-        partner: thisUser.partners[0],
-        createdAt: new Date(),
-        createdBy: thisUser._id,
-        createdByName: thisUser.fullname
-      };
-    }
+    //status 10 = draft, 60 = published, 90 = dibatalkan
+    modelData = {
+      ...data,
+      // documentNumber: noSuratFinal,
+      categoryId: category,
+      categoryName: categoryName.name,
+      status: 10,
+      partner: thisUser.partners[0],
+      createdAt: new Date(),
+      createdBy: thisUser._id,
+      createdByName: thisUser.fullname
+    };
     
 
     //buat timeline
@@ -302,6 +300,7 @@ Meteor.methods({
     const {
       receiver,
       about,
+      status,
       links,
       linksTTD } = data;
     const idUserPengisi = Meteor.userId();
@@ -312,7 +311,8 @@ Meteor.methods({
     let modelData;
     modelData = {
       receiver,
-      about
+      about,
+      status
     }
     if(links !== undefined || links !== null || links.length > 0) {
       modelData.linksLetter = links
@@ -354,8 +354,9 @@ Meteor.methods({
   },
 
   "korespondensi.search"(data) {
-    let {documentNumber, about, receiver, startDate, endDate} = data;
+    let {documentNumber, about, receiver, startDate, endDate, startDateMulai, endDateMulai} = data;
     let query = {};
+    console.log(data);
     if(documentNumber) {
       query.documentNumber = { $regex: new RegExp(documentNumber, 'i') };
     }
@@ -376,7 +377,20 @@ Meteor.methods({
 
       query.tanggalBerakhir = { $gte: startOfDay, $lte: endOfDay };
     }
+
+    if (startDateMulai && endDateMulai) {
+      startDateMulai = new Date(startDateMulai);
+      endDateMulai = new Date(endDateMulai);
+      // Menetapkan waktu mulai ke 00:00:00
+      const startOfDay = new Date(startDateMulai.getFullYear(), startDateMulai.getMonth(), startDateMulai.getDate(), 0, 0, 0, 0);
+
+      // Menetapkan waktu akhir ke 23:59:59
+      const endOfDay = new Date(endDateMulai.getFullYear(), endDateMulai.getMonth(), endDateMulai.getDate(), 23, 59, 59, 999);
+
+      query.tanggalBerlaku = { $gte: startOfDay, $lte: endOfDay };
+    }
     query.partner = "keuskupan"
+    console.log(query);
     const filteredItems = Letters.find(query).fetch();
     return filteredItems
   },

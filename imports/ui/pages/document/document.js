@@ -503,7 +503,9 @@ Template.createKorespondensi.events({
     });
     const category = $("#category").val();
     const receiver = $("#receiver").val();
-    const letterCode = $("#code").val();
+    // const letterCode = $("#code").val();
+    // sementara pakai documentNumber karena inputan manual untuk pengarsipan
+    const documentNumber = $("#documentNumber").val();
     const about = $("#about").val()
     const skLetterTanggalAwal = $("#date-start").val();
     const skLetterTanggalAkhir = $("#date-end").val();
@@ -512,7 +514,8 @@ Template.createKorespondensi.events({
       category,
       receiver,
       about,
-      letterCode,
+      // letterCode,
+      documentNumber
     };
 
 
@@ -546,6 +549,8 @@ Template.listKorespondensi.onCreated(function () {
   self.dataHistoryReviewer = new ReactiveVar();
   self.startDate = new ReactiveVar();
   self.endDate = new ReactiveVar();
+  self.startDateMulai = new ReactiveVar();
+  self.endDateMulai = new ReactiveVar();
   const listItems = []
 
   // const userId = Meteor.userId();
@@ -626,6 +631,12 @@ Template.listKorespondensi.helpers({
   },
   endDate() {
     return Template.instance().endDate.get();
+  },
+  startDateMulai() {
+    return Template.instance().startDateMulai.get();
+  },
+  endDateMulai() {
+    return Template.instance().endDateMulai.get();
   }
 });
 
@@ -663,6 +674,8 @@ Template.listKorespondensi.events({
     const nameOfPenerima = $("#nameOfPenerima").val();
     const startDate = $("#startDate").val();
     const endDate = $("#endDate").val();
+    const startDateMulai = $("#startDateMulai").val();
+    const endDateMulai = $("#endDateMulai").val();
 
     let cek = true;
     if(startDate != "") {
@@ -676,13 +689,28 @@ Template.listKorespondensi.events({
       }
     }
 
+    if(startDateMulai != "") {
+      if(endDateMulai == "") {
+        cek = false
+      }
+    }
+    if(endDateMulai != "") {
+      if(startDateMulai == ""){
+        cek = false
+      }
+    }
+
     const data = {
       documentNumber: nameOfNumber,
       about: nameOfPerihal,
       receiver: nameOfPenerima,
       startDate,
-      endDate
+      endDate,
+      startDateMulai,
+      endDateMulai
     }
+
+    console.log(data);
 
     if(cek == true) {
       Meteor.call("korespondensi.search", data, function (error, result) {
@@ -709,6 +737,8 @@ Template.listKorespondensi.events({
     document.getElementById('nameOfPenerima').value = '';
     document.getElementById('startDate').value = '';
     document.getElementById('endDate').value = '';
+    document.getElementById('startDateMulai').value = '';
+    document.getElementById('endDateMulai').value = '';
     Meteor.call("korespondensi.getAll", function (error, result) {
       if(result) {
         for (let index = 0; index < result.length; index++) {
@@ -738,6 +768,16 @@ Template.listKorespondensi.events({
   "change #endDate"(e, t) {
     const startDate = $("#endDate").val();
     t.startDate.set(startDate)
+  },
+
+  "change #startDateMulai"(e, t) {
+    const endDateMulai = $("#startDateMulai").val();
+    t.endDateMulai.set(endDateMulai)
+  },
+  "change #endDateMulai"(e, t) {
+    console.log("masuk");
+    const startDateMulai = $("#endDateMulai").val();
+    t.startDateMulai.set(startDateMulai)
   }
 
 });
@@ -1264,10 +1304,13 @@ Template.detailKorespondensi.events({
       if (result.isConfirmed) {
         const id = FlowRouter.getParam("_id");
         const receiver = $("#receiver").val();
-        const about = $("#about").val()
+        const about = $("#about").val();
+        let status = $("#status").val();
+        status = parseInt(status);
         const data = {
           receiver,
           about,
+          status
         };
 
         const files = t.buktiSurat.get();
