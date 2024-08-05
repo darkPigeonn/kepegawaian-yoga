@@ -4,3 +4,4 @@ settings.json
 .deploy-imavi/
 .deploy-siter/
 
+.deploy*
