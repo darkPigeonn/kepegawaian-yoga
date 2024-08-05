@@ -1037,9 +1037,9 @@ Template.employee_create.events({
       const department_unit = $("#input_departementUnit").val();
       let start_date = $("#input_startDate").val();
       const employment_status = $("#input_employmentStatus").val();
-      const base_salary = parseInt($("#input_baseSalery").val());
-      const allowances = parseInt($("#input_allowances").val());
-      const deductions = parseInt($("#input_deductions").val());
+      const base_salary = parseInt(convert2number($("#input_baseSalery").val()));
+      const allowances = parseInt(convert2number($("#input_allowances").val()));
+      const deductions = parseInt(convert2number($("#input_deductions").val()));
       const highest_education = $("#input_highestEducation").val();
       const education_institution = $("#input_educationInstitution").val();
       const major_in_highest_education = $("#input_majorInHighestEducation").val();
@@ -1133,6 +1133,8 @@ Template.employee_create.events({
       accountNumberName,
       golongan
     }
+    console.log(data.base_salary, data.deductions, data.allowances);
+    
     Swal.fire({
       title: "Warning",
       icon: "warning",
