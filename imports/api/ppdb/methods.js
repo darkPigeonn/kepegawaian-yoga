@@ -418,8 +418,15 @@ Meteor.methods({
     if (!thisVaConfig) {
       throw new Meteor.Error(404, "Config VA perwakilan belum tersedia");
     }
+    //get gelombang
+    const thisGelombang = await Gelombangs.findOne({ _id: codePeriode });
+    if (!thisGelombang) {
+      throw new Meteor.Erro(404, "Gelombang tidak ditemukan");
+    }
     //get periode ppdb
-    const thisPeriod = await PeriodePpdb.findOne({ _id: codePeriode });
+    const thisPeriod = await PeriodePpdb.findOne({
+      _id: thisGelombang.periodeId,
+    });
     if (!thisPeriod) {
       throw new Meteor.Error(404, "Periode PPDB ini tidak ada");
     }
@@ -488,8 +495,11 @@ Meteor.methods({
           schoolName: thisSchool.name,
           schoolId: thisSchool._id,
           va: newVa,
+          configId: thisGelombang._id,
+          configName: thisGelombang.name,
           codePeriode,
           periodeId: thisPeriod._id,
+          periodeYear: thisGelombang.periodeYear,
           countNumber,
           amount: configPpdb.feeForm ? configPpdb.feeForm : 0,
           status: 0,
@@ -777,6 +787,14 @@ Meteor.methods({
     }
 
     return Gelombangs.find({ schoolId: thisSchool._id }).fetch();
+  },
+  async "getAll-gelombang-bySchoolId"(schoolId) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    return Gelombangs.find({ schoolId: schoolId }).fetch();
   },
   async "aktivated-gelombang"(id, status) {
     check(id, String);
@@ -1272,9 +1290,6 @@ Meteor.methods({
 
     //fetch data untuk create
 
-
-
-
     return Registrans.update(
       { _id: id },
       {
@@ -1318,30 +1333,32 @@ Meteor.methods({
 
     //cek data kontan atau tidak
 
-    if(thisRegistran.paymentMethod == "Cicil"){
-      if(thisRegistran.status != 49){
-        return {code : 404, message : "Silahkan buat cicilan dan menguncinya cicilan dahulu"}
+    if (thisRegistran.paymentMethod == "Cicil") {
+      if (thisRegistran.status != 49) {
+        return {
+          code: 404,
+          message: "Silahkan buat cicilan dan menguncinya cicilan dahulu",
+        };
       }
     }
     let postURL =
-    process.env.USE_LOCAL === "true"
-      ? "http://localhost:3005/yayoga/"
-      : "https://api.imavi.org/yayoga/";
+      process.env.USE_LOCAL === "true"
+        ? "http://localhost:3005/yayoga/"
+        : "https://api.imavi.org/yayoga/";
 
-      try{
-        HTTP.call("POST", `${postURL}schools/unduhSpo?template=educationCostSpo&registerId=${idRegistran}`, {
+    try {
+      HTTP.call(
+        "POST",
+        `${postURL}schools/unduhSpo?template=educationCostSpo&registerId=${idRegistran}`,
+        {
           headers: {
             Id: Meteor.settings.APP_ID,
             Secret: Meteor.settings.APP_SECRET,
           },
           data: {},
-        });
-
-      }catch(e){
-
-      }
-
-
+        }
+      );
+    } catch (e) {}
 
     const wawancara = {
       interview: {

@@ -90,14 +90,14 @@ Template.pageGenerateVa.onCreated(function () {
 
   self.listPeriode = new ReactiveVar();
 
-  Meteor.call("periode-ppdb-getAll", function (error, result) {
-    if (error) {
-      console.log("fetch error:", error);
-    } else {
-      console.log(result);
-      self.listPeriode.set(result);
-    }
-  });
+  // Meteor.call("periode-ppdb-getAll", function (error, result) {
+  //   if (error) {
+  //     console.log("fetch error:", error);
+  //   } else {
+  //     console.log(result);
+  //     self.listPeriode.set(result);
+  //   }
+  // });
 });
 Template.pageGenerateVa.onRendered(function () {
   const templateInstance = this;
@@ -231,8 +231,20 @@ Template.pageGenerateVa.events({
   },
   "change #select-school"(e, t) {
     e.preventDefault();
+    const schoolId = e.target.value;
 
-    $("#btn-generate").prop("disabled", false);
+    Meteor.call(
+      "getAll-gelombang-bySchoolId",
+      schoolId,
+      function (error, result) {
+        if (error) {
+          failAlert("Gelombang belum di atur sekolah");
+        } else {
+          t.listPeriode.set(result);
+          $("#btn-generate").prop("disabled", false);
+        }
+      }
+    );
   },
   "click #btn-generate"(e, t) {
     e.preventDefault();
@@ -482,7 +494,7 @@ Template.detailRegistran.events({
   "click .btn-interview-done"(e, t) {
     e.preventDefault();
     startPreloader();
-    const id =FlowRouter.current().params._id
+    const id = FlowRouter.current().params._id;
     Swal.fire({
       title: "Konfirmasi Wawancara Selesai",
       text: "Apakah wawancara sudah selesai?",
@@ -495,13 +507,12 @@ Template.detailRegistran.events({
         startPreloader();
         Meteor.call("ppdb-interview-done", id, function (error, result) {
           if (result) {
-
-            if(result.code){
-              infoAlert(result.message)
+            if (result.code) {
+              infoAlert(result.message);
               setTimeout(() => {
                 exitPreloader();
               }, 2500);
-            }else{
+            } else {
               successAlert("Berhasil");
               setTimeout(function () {
                 location.reload();
@@ -515,7 +526,6 @@ Template.detailRegistran.events({
         });
       }
     });
-
   },
   "click .btn-rejected"(e, t) {
     e.preventDefault();
@@ -534,27 +544,31 @@ Template.detailRegistran.events({
         startPreloader();
         Swal.fire({
           title: "Tuliskan alasan penolakkan",
-          input : "text",
+          input: "text",
           inputAttributes: {
-            autocapitalize: "off"
+            autocapitalize: "off",
           },
           preConfirm: (reason) => {
-             Meteor.call("ppdb-rejected-student", id,reason, function (error, result) {
-          // console.log(result, error);
-          if (result) {
-            successAlert("Berhasil");
-            setTimeout(function () {
-              location.reload();
-            }, 200);
-          } else {
-            console.log(error);
-            failAlert("Gagal!");
-            exitPreloader();
-          }
+            Meteor.call(
+              "ppdb-rejected-student",
+              id,
+              reason,
+              function (error, result) {
+                // console.log(result, error);
+                if (result) {
+                  successAlert("Berhasil");
+                  setTimeout(function () {
+                    location.reload();
+                  }, 200);
+                } else {
+                  console.log(error);
+                  failAlert("Gagal!");
+                  exitPreloader();
+                }
+              }
+            );
+          },
         });
-          }
-        })
-
       }
     });
   },
@@ -654,9 +668,9 @@ Template.cicilanRegistran.events({
     const thisDetail = t.detail.get();
     let remainings = thisDetail.remainings;
 
-    let postRoute =  "set-cicil-student"
+    let postRoute = "set-cicil-student";
     //handle edit
-    let idCicil = '-';
+    let idCicil = "-";
     const isEdit = t.isEdit.get();
     if (isEdit) {
       postRoute = "update-cicil-student";
@@ -667,16 +681,19 @@ Template.cicilanRegistran.events({
       const config = thisDetail.config;
       //2. hitung ulan
       const thisItem = t.selectedItem.get();
-      remainings.feeSpp = config.feeSpp+thisItem.feeSpp;
-      remainings.feeDonation = config.feeDonation+thisItem.feeDonation;
-      remainings.feeEvent = config.feeEvent+thisItem.feeEvent;
-      remainings.feeUtility = config.feeUtility+thisItem.feeUtility;
-      remainings.feeTotal = remainings.feeSpp+remainings.feeDonation+remainings.feeEvent+remainings.feeUtility;
+      remainings.feeSpp = config.feeSpp + thisItem.feeSpp;
+      remainings.feeDonation = config.feeDonation + thisItem.feeDonation;
+      remainings.feeEvent = config.feeEvent + thisItem.feeEvent;
+      remainings.feeUtility = config.feeUtility + thisItem.feeUtility;
+      remainings.feeTotal =
+        remainings.feeSpp +
+        remainings.feeDonation +
+        remainings.feeEvent +
+        remainings.feeUtility;
       console.log(remainings);
-
     }
     console.log(remainings);
-    if(remainings.feeTotal == 0) {
+    if (remainings.feeTotal == 0) {
       infoAlert("Total Cicilan sudah terpenuhi");
 
       return false;
@@ -697,9 +714,6 @@ Template.cicilanRegistran.events({
       infoAlert("Alat yang diinputkan melebihi batas atas");
       return false;
     }
-
-
-
 
     Meteor.call(
       postRoute,
@@ -786,35 +800,41 @@ Template.cicilanRegistran.events({
       }
     });
   },
-  "click .btn-edit"(e,t){
-    e.preventDefault()
+  "click .btn-edit"(e, t) {
+    e.preventDefault();
 
     const registran = t.detail.get();
-    const listCredits = registran.listCredits
+    const listCredits = registran.listCredits;
 
-    const id = $(e.target).attr("milik")
-    const thisData = listCredits.find((item) => item._id === id)
-   t.selectedItem.set(thisData)
-   t.isEdit.set(!t.isEdit.get())
+    const id = $(e.target).attr("milik");
+    const thisData = listCredits.find((item) => item._id === id);
+    t.selectedItem.set(thisData);
+    t.isEdit.set(!t.isEdit.get());
     t.formCicilan.set(!t.formCicilan.get());
-      $('html, body').animate({
-        scrollTop: $('#add-cicilan')
-    }, 1000);
+    $("html, body").animate(
+      {
+        scrollTop: $("#add-cicilan"),
+      },
+      1000
+    );
 
     setTimeout(() => {
-      $("#input-index").val(thisData.index)
-      $("#input-spp").val(formatRupiah(thisData.feeSpp.toString(), "Rp. "))
-      $("#input-donation").val(formatRupiah(thisData.feeDonation.toString(), "Rp. "))
-      $("#input-event").val(formatRupiah(thisData.feeEvent.toString(), "Rp. "))
-      $("#input-utility").val(formatRupiah(thisData.feeUtility.toString(), "Rp. "))
-      $("#input-index").attr("disabled", true)
+      $("#input-index").val(thisData.index);
+      $("#input-spp").val(formatRupiah(thisData.feeSpp.toString(), "Rp. "));
+      $("#input-donation").val(
+        formatRupiah(thisData.feeDonation.toString(), "Rp. ")
+      );
+      $("#input-event").val(formatRupiah(thisData.feeEvent.toString(), "Rp. "));
+      $("#input-utility").val(
+        formatRupiah(thisData.feeUtility.toString(), "Rp. ")
+      );
+      $("#input-index").attr("disabled", true);
     }, 500);
-
   },
-  "click .btn-hapus"(e,t){
-    e.preventDefault()
+  "click .btn-hapus"(e, t) {
+    e.preventDefault();
 
-    const id = $(e.target).attr("milik")
+    const id = $(e.target).attr("milik");
     Swal.fire({
       title: "Konfirmasi Hapus",
       text: "Apakah anda yakin ingin menghapus data ini?",
@@ -824,19 +844,18 @@ Template.cicilanRegistran.events({
       cancelButtonText: "Tidak",
     }).then((result) => {
       if (result.isConfirmed) {
-        Meteor.call('credit.delete', id, function (error, result) {
-          if(error){
-            console.log(error)
-            failAlert(error)
-          }else{
-            successAlert("Berhasil")
-            location.reload()
+        Meteor.call("credit.delete", id, function (error, result) {
+          if (error) {
+            console.log(error);
+            failAlert(error);
+          } else {
+            successAlert("Berhasil");
+            location.reload();
           }
-        })
+        });
       }
-    })
+    });
   },
-
 });
 
 Template.pageVa.onCreated(function () {

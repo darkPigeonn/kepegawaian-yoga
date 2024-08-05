@@ -65,18 +65,17 @@ export const RegistransDummy = [
   },
 ];
 
-
 //observed
-Meteor.startup(function(){
+Meteor.startup(function () {
   Registrans.find().observeChanges({
-    added: function(id, fields) {
-      console.log('added', id, fields);
+    added: function (id, fields) {
+      console.log("added", id, fields);
     },
-    changed: function(id, fields) {
-      console.log('changed', id, fields);
+    changed: function (id, fields) {
+      console.log("changed", id, fields);
     },
-    removed: function(id) {
-      console.log('removed', id);
-    }
-  })
-})
+    removed: function (id) {
+      console.log("removed", id);
+    },
+  });
+});
