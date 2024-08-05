@@ -17,8 +17,10 @@ Template.list_document.onCreated(function () {
   self.jabatanLogin = new ReactiveVar();
   self.dataDocumentByRole = new ReactiveVar();
   self.dataDocumentHistoryByRole = new ReactiveVar();
-  self.startDate = new ReactiveVar();
-  self.endDate = new ReactiveVar();
+  self.startDateTerbit = new ReactiveVar();
+  self.endDateTerbit = new ReactiveVar();
+  self.startDateTerima = new ReactiveVar();
+  self.endDateTerima = new ReactiveVar();
   Meteor.call("document.getAllDocuments", function (error1, result1) {
     if (result1) {
       // console.log(result1);
@@ -45,11 +47,17 @@ Template.list_document.helpers({
   listKorespondensiSigner() {
     return Template.instance().listKorespondensi
   },
-  startDate() {
-    return Template.instance().startDate.get();
+  startDateTerbit() {
+    return Template.instance().startDateTerbit.get();
   },
-  endDate() {
-    return Template.instance().endDate.get();
+  endDateTerbit() {
+    return Template.instance().endDateTerbit.get();
+  },
+  startDateTerima() {
+    return Template.instance().startDateTerima.get();
+  },
+  endDateTerima() {
+    return Template.instance().endDateTerima.get();
   }
 });
 
@@ -58,24 +66,40 @@ Template.list_document.events({
     e.preventDefault();
     const name = $("#documentName").val();
     const source = $("#documentSource").val();
-    const startDate = $("#startDate").val();
-    const endDate = $("#endDate").val();
+    const startDateTerbit = $("#startDateTerbit").val();
+    const endDateTerbit = $("#endDateTerbit").val();
+    const startDateTerima = $("#startDateTerima").val();
+    const endDateTerima = $("#endDateTerima").val();
     let cek = true;
-    if(startDate != "") {
-      if(endDate == "") {
+    if(startDateTerbit != "") {
+      if(endDateTerbit == "") {
         cek = false
       }
     }
-    if(endDate != "") {
-      if(startDate == ""){
+    if(endDateTerbit != "") {
+      if(startDateTerbit == ""){
         cek = false
       }
     }
+
+    if(startDateTerima != "") {
+      if(endDateTerima == "") {
+        cek = false
+      }
+    }
+    if(endDateTerima != "") {
+      if(startDateTerima == ""){
+        cek = false
+      }
+    }
+
     const data = {
       name,
       source,
-      startDate,
-      endDate
+      startDateTerbit,
+      endDateTerbit,
+      startDateTerima,
+      endDateTerima
     }
     if(cek == true) {
       Meteor.call("document.search", data, function(error, result) {
@@ -96,8 +120,10 @@ Template.list_document.events({
     e.preventDefault();
     document.getElementById('documentName').value = '';
     document.getElementById('documentSource').value = '';
-    document.getElementById('startDate').value = '';
-    document.getElementById('endDate').value = '';
+    document.getElementById('startDateTerbit').value = '';
+    document.getElementById('endDateTerbit').value = '';
+    document.getElementById('startDateTerima').value = '';
+    document.getElementById('endDateTerima').value = '';
     Meteor.call("document.getAllDocuments", function (error, result) {
       if (result) {
         t.dataDocument.set(result);
@@ -106,13 +132,22 @@ Template.list_document.events({
       }
     });
   },
-  "change #startDate"(e, t) {
-    const endDate = $("#startDate").val();
-    t.endDate.set(endDate)
+  "change #startDateTerbit"(e, t) {
+    const endDateTerbit = $("#startDateTerbit").val();
+    t.endDateTerbit.set(endDateTerbit)
   },
-  "change #endDate"(e, t) {
-    const startDate = $("#endDate").val();
-    t.startDate.set(startDate)
+  "change #endDateTerbit"(e, t) {
+    const startDateTerbit = $("#endDateTerbit").val();
+    t.startDateTerbit.set(startDateTerbit)
+  },
+
+  "change #startDateTerima"(e, t) {
+    const endDateTerima = $("#startDateTerima").val();
+    t.endDateTerima.set(endDateTerima)
+  },
+  "change #endDateTerima"(e, t) {
+    const startDateTerima = $("#endDateTerima").val();
+    t.startDateTerima.set(startDateTerima)
   }
 })
 
@@ -251,15 +286,23 @@ Template.create_document.events({
     // console.log("masuk");
     const full_name = $("#input_fullName").val();
     const sumber = $("#input_sumber").val();
-    const tanggal = $("#input_tanggal").val();
+    const datePublication = $("#input_tanggal").val();
+    const dateReceived = $("#input_tanggal_diterima").val();
     const jenisDokumen = $("#input_jenisDokumen").val();
     const file = $(`#filePDF`).prop("files");
-    let dataSave = {
+    let dataSave;
+    dataSave = {
       name: full_name,
       source: sumber,
-      date: tanggal,
       documentType: jenisDokumen
     };
+    if(datePublication != "") {
+      dataSave.datePublication = datePublication;
+
+    }
+    if(dateReceived != "") {
+      dataSave.dateReceived = dateReceived;
+    }
     let thisForm = {};
     if (file[0]) {
       const uploadData = {
@@ -521,8 +564,13 @@ Template.createKorespondensi.events({
 
 
     if (cekSK == true) {
-      data.tanggalBerlaku = skLetterTanggalAwal;
-      data.tanggalBerakhir = skLetterTanggalAkhir;
+      if(skLetterTanggalAwal != "") {
+        data.tanggalBerlaku = skLetterTanggalAwal;
+
+      }
+      if(skLetterTanggalAkhir != "") {
+        data.tanggalBerakhir = skLetterTanggalAkhir;
+      }
     }
 
     Meteor.call("korespondensi.create", data, function (error, result) {
@@ -775,7 +823,6 @@ Template.listKorespondensi.events({
     t.endDateMulai.set(endDateMulai)
   },
   "change #endDateMulai"(e, t) {
-    console.log("masuk");
     const startDateMulai = $("#endDateMulai").val();
     t.startDateMulai.set(startDateMulai)
   }
@@ -1092,8 +1139,13 @@ Template.editKorespondensi.events({
     };
 
     if (cekSK == true) {
-      data.tanggalBerlaku = skLetterTanggalAwal;
-      data.tanggalBerakhir = skLetterTanggalAkhir;
+      if(skLetterTanggalAwal != "") {
+        data.tanggalBerlaku = skLetterTanggalAwal;
+
+      }
+      if(skLetterTanggalAkhir != "") {
+        data.tanggalBerakhir = skLetterTanggalAkhir;
+      }
     }
 
     Meteor.call("korespondensi.editSimpan", id, data, function (error, result) {
@@ -1137,8 +1189,13 @@ Template.editKorespondensi.events({
     };
 
     if (cekSK == true) {
-      data.tanggalBerlaku = skLetterTanggalAwal;
-      data.tanggalBerakhir = skLetterTanggalAkhir;
+      if(skLetterTanggalAwal != "") {
+        data.tanggalBerlaku = skLetterTanggalAwal;
+
+      }
+      if(skLetterTanggalAkhir != "") {
+        data.tanggalBerakhir = skLetterTanggalAkhir;
+      }
     }
 
     Meteor.call("korespondensi.editKirim", id, data, function (error, result) {

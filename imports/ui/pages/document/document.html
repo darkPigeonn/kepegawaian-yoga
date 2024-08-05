@@ -6,7 +6,7 @@
                 <a href="/documents/create" class="btn btn-primary">+Tambah</a>
             </div>
             <h3>Daftar Surat Masuk</h3>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 d-flex justify-content-center">
                 <div class="form-group">
                     <label for="documentName">Nama Surat</label>
                     <input type="text" class="form-control search-input" id="documentName" placeholder="Nama Surat">
@@ -15,7 +15,7 @@
                     <label for="documentSource">Asal Surat</label>
                     <input type="text" class="form-control search-input" id="documentSource" placeholder="Asal Surat">
                 </div>
-                <div class="form-group ml-3 d-flex">
+                <!-- <div class="form-group ml-3 d-flex">
                     <div class="mr-3">
                         <label for="documentDate">Tanggal Surat Masuk Mulai</label>
                         <input type="date" class="form-control search-input" id="startDate" max={{startDate}} placeholder="Tanggal Surat Masuk">
@@ -23,6 +23,26 @@
                     <div>
                         <label for="endDate">Tanggal Surat Masuk Sampai</label>
                         <input type="date" class="form-control search-input" id="endDate" min={{endDate}} placeholder="Masa Berakhir">
+                    </div>
+                </div> -->
+                <div class="input-group mb-3 d-flex justify-content-center">
+                    <div class="form-group mr-3">
+                        <label for="documentDate">Tanggal Surat Terbit</label>
+                        <input type="date" class="form-control search-input" id="startDateTerbit" max={{startDateTerbit}} placeholder="Tanggal Surat Masuk">
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="endDate" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                        <input type="date" class="form-control search-input" id="endDateTerbit" min={{endDateTerbit}} placeholder="Masa Berakhir">
+                    </div>
+                    <div class="form-group">
+                        <div class="mr-3 mb-3 mb-sm-0">
+                            <label for="startDate">Tanggal Surat Diterima</label>
+                            <input type="date" class="form-control search-input" id="startDateTerima" max="{{startDateTerima}}" placeholder="Tanggal Surat Masuk">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                        <input type="date" class="form-control search-input" id="endDateTerima" min="{{endDateTerima}}" placeholder="Masa Berakhir">
                     </div>
                 </div>
                 <div class="form-group ml-3" style="margin-top:32px; padding-left: 10px;">
@@ -41,7 +61,8 @@
                             <th scope="col">No</th>
                             <th scope="col">Nama</th>
                             <th scope="col">Sumber</th>
-                            <th scope="col">Tanggal</th>
+                            <th scope="col">Tanggal Terbit</th>
+                            <th scope="col">Tanggal Diterima</th>
                             <th scope="col">Berkas</th>
                             <th scope="col">Aksi</th>
                         </tr>
@@ -52,10 +73,23 @@
                             <td> {{nomorUrut @index}} </td>
                             <td style="text-transform: capitalize;"> {{name}} </td>
                             <td style="text-transform: capitalize;"> {{source}} </td>
-                            <td> {{formatHRDate date}} </td>
+                            <td> 
+                                {{#if datePublication}}
+                                    {{formatHRDate datePublication}} 
+                                {{else}}
+                                    -
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if dateReceived}}
+                                    {{formatHRDate dateReceived}} 
+                                {{else}}
+                                    -
+                                {{/if}}
+                            </td>
                             {{#if link}}
                             <td>
-                                <a href="https://drive.google.com/viewerng/viewer?url={{link}}" target="_blank" class="pdf-link">
+                                <a href="https://drive.google.com/viewerng/viewer?url={{link}}" class="pdf-link">
                                 <i class="fas fa-file-pdf"></i>
                                 </a>
                             </td>
@@ -91,8 +125,12 @@
                 <input type="text" id="input_sumber" class="form-control" required>
             </div>
             <div class="form-group mb-2">
-                <label>Tanggal</label>
+                <label>Tanggal Surat Terbit</label>
                 <input type="date" id="input_tanggal" class="form-control" />
+            </div>
+            <div class="form-group mb-2">
+                <label>Tanggal Surat Diterima</label>
+                <input type="date" id="input_tanggal_diterima" class="form-control" />
             </div>
             <div class="form-group mb-2">
                 <label>Jenis Surat</label>
@@ -132,8 +170,12 @@
                 <input type="text" id="input_sumber" class="form-control" value="{{dataDokumen.source}}">
             </div>
             <div class="form-group mb-2">
-                <label>Tanggal</label>
-                <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.date}}">
+                <label>Tanggal Surat Terbit</label>
+                <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.datePublication}}">
+            </div>
+            <div class="form-group mb-2">
+                <label>Tanggal Surat Diterima</label>
+                <input type="date" id="input_tanggal_mulai" class="form-control" value="{{dateToHTML dataDokumen.dateReceived}}">
             </div>
             <div class="form-group mb-2">
                 <label>Jenis Dokumen</label>
@@ -314,14 +356,14 @@
                                   </td>
                                   <td>
                                     {{#if linksLetter}}
-                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" target="_blank" class="pdf-link">
+                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" class="pdf-link">
                                             <i class="fas fa-file-word"></i>
                                         </a>
                                     {{else}}
                                         <i class="fas fa-file-word"></i>
                                     {{/if}}
                                     {{#if linksLetterSignatured}}
-                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetterSignatured.link}}" target="_blank" class="pdf-link">
+                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetterSignatured.link}}" class="pdf-link">
                                             <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
                                         </a>
                                     {{else}}
@@ -678,11 +720,20 @@
                 {{#if equals isSKLetter true}}
                     <div class="form-group">
                         <label>Tanggal Awal Berlaku</label>
-                        <input type="date" class="form-control" id="date-start" disabled value="{{dateToHTML letterData.tanggalBerlaku}}"/>
+                        {{#if letterData.tanggalBerlaku}}
+                            <input type="date" class="form-control" id="date-start" disabled value="{{dateToHTML letterData.tanggalBerlaku}}"/>
+                        {{else}}
+                            <input type="date" class="form-control" id="date-start" disabled/>
+                        {{/if}}
                     </div>
                     <div class="form-group">
                         <label>Tanggal Berakhir</label>
-                        <input type="date" class="form-control" id="date-end" disabled value="{{dateToHTML letterData.tanggalBerakhir}}"/>
+                        {{#if letterData.tanggalBerakhir}}
+                            <input type="date" class="form-control" id="date-end" disabled value="{{dateToHTML letterData.tanggalBerakhir}}"/>
+                        {{else}}
+                            <input type="date" class="form-control" id="date-end" disabled />
+                        {{/if}}
+
                     </div>
                 {{/if}}
                 <div class="form-group">

@@ -7,11 +7,23 @@ import moment from "moment";
 
 Meteor.methods({
   async "document.tambahDokumen"(data) {
-    let { name, source, date, documentType, link} = data;
+    let { name, source, datePublication, dateReceived, documentType, link} = data;
     check(name, String);
     check(source, String);
     check(documentType, String);
-    date = new Date(date);
+    if(datePublication == undefined || datePublication == null) {
+      delete data.datePublication
+    }
+    else {
+      data.datePublication = new Date(datePublication);
+    }
+
+    if(dateReceived == undefined || dateReceived == null) {
+      delete data.dateReceived
+    }
+    else {
+      data.dateReceived = new Date(dateReceived);
+    }
 
 
     let partnerCode;
@@ -22,10 +34,7 @@ Meteor.methods({
     partnerCode = dataUser.partners[0];
 
     let dataSave = {
-      name,
-      source,
-      date,
-      documentType,
+      ...data,
       partner: partnerCode,
       createdAt: new Date(),
       createdBy: dataUser._id,
@@ -75,7 +84,7 @@ Meteor.methods({
   },
 
   "document.search"(data) {
-    let {name, source, startDate, endDate} = data;
+    let {name, source, startDateTerbit, endDateTerbit, startDateTerima, endDateTerima} = data;
     let query = {};
     if (name) {
       query.name = { $regex: new RegExp(name, 'i') }; // 'i' untuk case-insensitive
@@ -83,16 +92,28 @@ Meteor.methods({
     if (source) {
       query.source = { $regex: new RegExp(source, 'i') }; // 'i' untuk case-insensitive
     }
-    if (startDate && endDate) {
-      startDate = new Date(startDate);
-      endDate = new Date(endDate);
+    if (startDateTerbit && endDateTerbit) {
+      startDateTerbit = new Date(startDateTerbit);
+      endDateTerbit = new Date(endDateTerbit);
       // Menetapkan waktu mulai ke 00:00:00
-      const startOfDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0, 0);
+      const startOfDay = new Date(startDateTerbit.getFullYear(), startDateTerbit.getMonth(), startDateTerbit.getDate(), 0, 0, 0, 0);
 
       // Menetapkan waktu akhir ke 23:59:59
-      const endOfDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 23, 59, 59, 999);
+      const endOfDay = new Date(endDateTerbit.getFullYear(), endDateTerbit.getMonth(), endDateTerbit.getDate(), 23, 59, 59, 999);
 
-      query.date = { $gte: startOfDay, $lte: endOfDay };
+      query.datePublication = { $gte: startOfDay, $lte: endOfDay };
+    }
+
+    if (startDateTerima && endDateTerima) {
+      startDateTerima = new Date(startDateTerima);
+      endDateTerima = new Date(endDateTerima);
+      // Menetapkan waktu mulai ke 00:00:00
+      const startOfDay = new Date(startDateTerima.getFullYear(), startDateTerima.getMonth(), startDateTerima.getDate(), 0, 0, 0, 0);
+
+      // Menetapkan waktu akhir ke 23:59:59
+      const endOfDay = new Date(endDateTerima.getFullYear(), endDateTerima.getMonth(), endDateTerima.getDate(), 23, 59, 59, 999);
+
+      query.dateReceived = { $gte: startOfDay, $lte: endOfDay };
     }
     query.partner = "keuskupan"
     const filteredItems = Document.find(query, {sort: {date: -1}}).fetch();
@@ -230,7 +251,6 @@ Meteor.methods({
       documentNumber,
       tanggalBerlaku,
       tanggalBerakhir} = data;
-
     if(receiver == null || receiver == undefined) {
       receiver = ""
     }
@@ -247,7 +267,7 @@ Meteor.methods({
       delete data.tanggalBerakhir
     }
     else {
-      data.tanggalBerlaku = new Date(data.tanggalBerlaku)
+      data.tanggalBerakhir = new Date(data.tanggalBerakhir)
     }
 
     const idUserPengisi = Meteor.userId();
