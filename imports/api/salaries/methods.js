@@ -17,13 +17,27 @@ Meteor.methods({
             let result;
             if(cek) {
                 let detail = cek.details.find(detail => detail.userId === id);
-                const permitLembur = Permits.find({creatorId: id, status: 20, type: "Lembur"}, {projection: {
-                    _id: 0, 
-                    datePermits: 0, 
-                    status: 0,
-                    reason: 0,
-                    datePermits: 0
-                }}).fetch()
+                const startOfMonth = moment().year(year).month(month - 1).startOf('month').toDate();
+                const endOfMonth = moment().year(year).month(month - 1).endOf('month').toDate();
+                const permitLembur = Permits.find(
+                {
+                    creatorId: id, 
+                    status: 20, 
+                    type: "Lembur",
+                    startDatePermit: {
+                        $gte: startOfMonth,
+                        $lte: endOfMonth
+                    }
+                }, 
+                {
+                    projection: {
+                        _id: 0,
+                        datePermits: 0,
+                        status: 0,
+                        reason: 0,
+                        datePermits: 0
+                    }
+                }).fetch()
                 detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
                 result = {
                     _id: cek._id,
