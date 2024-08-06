@@ -1,6 +1,6 @@
 
 <template name="list_document">
-    <div class="container">
+    <div class="page">
         {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip, admin, super-admin"}}
             <div class="d-flex justify-content-end mb-2">
                 <a href="/documents/create" class="btn btn-primary">+Tambah</a>
@@ -116,23 +116,23 @@
             <h3> Tambah Surat Masuk </h3>
         </div>
         <form>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Nama Surat</label>
                 <input type="text" id="input_fullName" class="form-control" required />
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Asal Surat</label>
                 <input type="text" id="input_sumber" class="form-control" required>
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Tanggal Surat Terbit</label>
                 <input type="date" id="input_tanggal" class="form-control" />
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Tanggal Surat Diterima</label>
                 <input type="date" id="input_tanggal_diterima" class="form-control" />
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Jenis Surat</label>
                 <select id="input_jenisDokumen" class="form-control">
                     <option value="Surat Keputusan">Surat Keputusan</option>
@@ -141,7 +141,7 @@
                 </select>
             </div>
             <br>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <input type="file" name="filePDF" id="filePDF" accept=".pdf" required>
             </div>
             <!-- <button type="button" class="btn btn-primary" onclick="previewPDF()">Preview</button> -->
@@ -158,26 +158,26 @@
 <template name="detailDocument">
     <div class="container">
         <div class="title-page">
-            <h3> Detail Surat Masuk </h3>
+            <h1> Detail Surat Masuk </h1>
         </div>
         <form>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Nama Dokumen</label>
                 <input type="text" id="input_fullName" class="form-control" value="{{dataDokumen.name}}">
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Asal Dokumen</label>
                 <input type="text" id="input_sumber" class="form-control" value="{{dataDokumen.source}}">
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Tanggal Surat Terbit</label>
                 <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataDokumen.datePublication}}">
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Tanggal Surat Diterima</label>
                 <input type="date" id="input_tanggal_mulai" class="form-control" value="{{dateToHTML dataDokumen.dateReceived}}">
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label>Jenis Dokumen</label>
                 <select id="input_jenisDokumen" class="form-control">
                     {{#if equals dataDokumen.documentType "Surat Penting"}}
@@ -198,7 +198,7 @@
                 </select>
             </div>
             <br>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <input type="file" name="filePDF" id="filePDF" accept=".pdf" required>
             </div>
             {{#if dataDokumen.link}}
@@ -241,147 +241,135 @@
 
 <!-- Start Korespondensi -->
 <template name="listKorespondensi" id ="listKorespondensi">
-    <div class="container">
+    <div class="page">
         <div class="section-label-page">
-            <h3>Surat Keluar</h3>
+            <h1>Surat Keluar</h1>
         </div>
-        <div class="section-action-page">
-            <a href="/createKorespondensi" class="btn btn-primary">+ Buat Surat Baru</a>
-        </div>
-        <br><br>
         {{#if isInRole "sekretaris-keuskupan, sekretariat, arsip, admin, super-admin"}}
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#all">Daftar Semua Surat</a>
-                </li>
-            
-            </ul>
-            <div class="tab-content">
-                <div id="all" class="tab-pane fade show active">
-                    <h3>Daftar Semua Surat</h3>
-                    <div class="input-group mb-3 d-flex justify-content-center">
-                        <div class="form-group">
-                            <label for="nameOfNumber">Nomor Surat</label>
-                            <input type="text" class="form-control search-input" id="nameOfNumber" placeholder="Perihal">
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="nameOfPerihal">Perihal</label>
-                            <input type="text" class="form-control search-input" id="nameOfPerihal" placeholder="Perihal">
-                        </div>
-                        <div class="form-group ml-3">
-                            <label for="nameOfPenerima">Penerima</label>
-                            <input type="text" class="form-control search-input" id="nameOfPenerima" placeholder="Penerima">
-                        </div>
-                    </div>
-                    <div class="input-group mb-3 d-flex justify-content-center">
-                        <div class="form-group mr-3">
-                            <label for="startDateMulai">Tanggal SK Dimulai</label>
-                            <input type="date" class="form-control search-input" id="startDateMulai" max="{{startDateMulai}}" placeholder="Tanggal Dimulai">
-                        </div>
-                        <div class="form-group mr-3">
-                            <label for="endDateMulai" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
-                            <input type="date" class="form-control search-input" id="endDateMulai" min="{{endDateMulai}}" placeholder="Tanggal Dimulai">
-                        </div>
-                        <div class="form-group">
-                            <div class="mr-3 mb-3 mb-sm-0">
-                                <label for="startDate">Tanggal SK Berakhir</label>
-                                <input type="date" class="form-control search-input" id="startDate" max="{{startDate}}" placeholder="Tanggal Surat Masuk">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="endDate" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
-                            <input type="date" class="form-control search-input" id="endDate" min="{{endDate}}" placeholder="Masa Berakhir">
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button class="btn btn-primary" type="button" id="btn-search">
-                            <i class="fas fa-search" id="btn-search"></i> Cari
-                        </button>
-                        <button id="btn-refresh" class="btn btn-primary">
-                            <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
-                        </button>
-                    </div>
-                    <br>
-                    
-                    <div class="section-content-page">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>No</th>
-                                <th>No. Surat Keluar</th>
-                                <th>Kategori Surat</th>
-                                <th>Perihal Surat</th>
-                                <th>Penerima Surat</th>
-                                <th>Tanggal Dibuat</th>
-                                <th>Tanggal Awal</th>
-                                <th>Tanggal Berakhir</th>
-                                <th>Pembuat</th>
-                                <th>Status</th>
-                                <th>Berkas</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody>
-                                {{#each dataKorespondensi}}
-                                <tr>
-                                  <td>{{setTableNumber @index}}</td>
-                                  <td>{{documentNumber}}</td>
-                                  <td>{{categoryName}}</td>
-                                  <td>{{about}}</td>
-                                  <td>{{receiver}}</td>
-                                  <td>{{formatHRDate createdAt}}</td>
-                                  <td>
-                                    {{#if tanggalBerlaku}}
-                                        {{formatHRDate tanggalBerlaku}}
-                                    {{else}}
-                                        -
-                                    {{/if}}
-                                  </td>
-                                  <td>
-                                    {{#if tanggalBerakhir}}
-                                        {{formatHRDate tanggalBerakhir}}
-                                    {{else}}
-                                        -
-                                    {{/if}}
-                                  </td>
-                                  <td>{{capitalizeWord createdByName}}</td>
-                                  <td>
-                                    {{#if equals status 10}}
-                                        Draft
-                                    {{/if}}
-                                    {{#if equals status 60}}
-                                        Diterbitkan
-                                    {{/if}}
-                                    {{#if equals status 90}}
-                                        Dibatalkan
-                                    {{/if}}
-                                  </td>
-                                  <td>
-                                    {{#if linksLetter}}
-                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" class="pdf-link">
-                                            <i class="fas fa-file-word"></i>
-                                        </a>
-                                    {{else}}
-                                        <i class="fas fa-file-word"></i>
-                                    {{/if}}
-                                    {{#if linksLetterSignatured}}
-                                        <a href="https://drive.google.com/viewerng/viewer?url={{linksLetterSignatured.link}}" class="pdf-link">
-                                            <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
-                                        </a>
-                                    {{else}}
-                                        <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
-                                    {{/if}}
-                                  </td>
-                                  <td>
-                                    <a href="/detailKorespondensi/{{_id}}">
-                                      <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
-                                    </a>
-                                  </td>
-                                </tr>
-                                {{/each}}
-                              </tbody>
-                              
-                        </table>
+            <h2>Daftar Semua Surat</h2>
+            <div class="input-group mb-3 d-flex justify-content-center">
+                <div class="form-group">
+                    <label for="nameOfNumber">Nomor Surat</label>
+                    <input type="text" class="form-control search-input" id="nameOfNumber" placeholder="Perihal">
+                </div>
+                <div class="form-group ml-3">
+                    <label for="nameOfPerihal">Perihal</label>
+                    <input type="text" class="form-control search-input" id="nameOfPerihal" placeholder="Perihal">
+                </div>
+                <div class="form-group ml-3">
+                    <label for="nameOfPenerima">Penerima</label>
+                    <input type="text" class="form-control search-input" id="nameOfPenerima" placeholder="Penerima">
+                </div>
+            </div>
+            <div class="input-group mb-3 d-flex justify-content-center">
+                <div class="form-group mr-3">
+                    <label for="startDateMulai">Tanggal SK Dimulai</label>
+                    <input type="date" class="form-control search-input" id="startDateMulai" max="{{startDateMulai}}" placeholder="Tanggal Dimulai">
+                </div>
+                <div class="form-group mr-3">
+                    <label for="endDateMulai" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                    <input type="date" class="form-control search-input" id="endDateMulai" min="{{endDateMulai}}" placeholder="Tanggal Dimulai">
+                </div>
+                <div class="form-group">
+                    <div class="mr-3 mb-3 mb-sm-0">
+                        <label for="startDate">Tanggal SK Berakhir</label>
+                        <input type="date" class="form-control search-input" id="startDate" max="{{startDate}}" placeholder="Tanggal Surat Masuk">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="endDate" style="visibility: hidden; display: inline-block; height: 1.5em;">Sampai Dengan</label>
+                    <input type="date" class="form-control search-input" id="endDate" min="{{endDate}}" placeholder="Masa Berakhir">
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" id="btn-search">
+                    <i class="fas fa-search" id="btn-search"></i> Cari
+                </button>
+                <button id="btn-refresh" class="btn btn-primary">
+                    <i class="fas fa-sync-alt" id="btn-refresh"></i> Refresh
+                </button>
+            </div>
+            <br>
+            <div class="section-action-page">
+                <a href="/createKorespondensi" class="btn btn-primary">+ Buat Surat Baru</a>
+            </div>
+            <div class="section-content-page">
+                <table class="table table-bordered">
+                    <thead>
+                        <th>No</th>
+                        <th>No. Surat Keluar</th>
+                        <th>Kategori Surat</th>
+                        <th>Perihal Surat</th>
+                        <th>Penerima Surat</th>
+                        <th>Tanggal Dibuat</th>
+                        <th>Tanggal Awal</th>
+                        <th>Tanggal Berakhir</th>
+                        <th>Pembuat</th>
+                        <th>Status</th>
+                        <th>Berkas</th>
+                        <th>Aksi</th>
+                    </thead>
+                    <tbody>
+                        {{#each dataKorespondensi}}
+                        <tr>
+                        <td>{{setTableNumber @index}}</td>
+                        <td>{{documentNumber}}</td>
+                        <td>{{categoryName}}</td>
+                        <td>{{about}}</td>
+                        <td>{{receiver}}</td>
+                        <td>{{formatHRDate createdAt}}</td>
+                        <td>
+                            {{#if tanggalBerlaku}}
+                                {{formatHRDate tanggalBerlaku}}
+                            {{else}}
+                                -
+                            {{/if}}
+                        </td>
+                        <td>
+                            {{#if tanggalBerakhir}}
+                                {{formatHRDate tanggalBerakhir}}
+                            {{else}}
+                                -
+                            {{/if}}
+                        </td>
+                        <td>{{capitalizeWord createdByName}}</td>
+                        <td>
+                            {{#if equals status 10}}
+                                Draft
+                            {{/if}}
+                            {{#if equals status 60}}
+                                Diterbitkan
+                            {{/if}}
+                            {{#if equals status 90}}
+                                Dibatalkan
+                            {{/if}}
+                        </td>
+                        <td>
+                            {{#if linksLetter}}
+                                <a href="https://drive.google.com/viewerng/viewer?url={{linksLetter.link}}" class="pdf-link">
+                                    <i class="fas fa-file-word"></i>
+                                </a>
+                            {{else}}
+                                <i class="fas fa-file-word"></i>
+                            {{/if}}
+                            {{#if linksLetterSignatured}}
+                                <a href="https://drive.google.com/viewerng/viewer?url={{linksLetterSignatured.link}}" class="pdf-link">
+                                    <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
+                                </a>
+                            {{else}}
+                                <i class="fas fa-file-pdf" style="margin-left: 10px;"></i>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <a href="/detailKorespondensi/{{_id}}">
+                            <button class="btn btn-primary" type="button" id="btn_details">Detail</button>
+                            </a>
+                        </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    
+                </table>
             </div>
         {{/if}}
     </div>
