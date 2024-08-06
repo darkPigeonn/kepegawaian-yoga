@@ -61,14 +61,32 @@ Template.listPayroll.events({
         let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
         month = parseInt(month);
         year = parseInt(year);
-
+        let messageBulan;
+        let messageTahun;
+        if(Number.isNaN(month)) {
+            const currentMoment = moment();
+            const month = currentMoment.month() + 1;
+            messageBulan = month
+        }
+        else {
+            messageBulan = month
+        }
+        if(Number.isNaN(year)) {
+            const currentMoment = moment();
+            const year = currentMoment.year();
+            messageTahun = year;
+        }
+        else {
+            messageTahun = year;
+        }
+        
         Swal.fire({
             title: "Warning",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Iya",
             cancelButtonText: "Tidak",
-            text: `Apakah anda yakin ingin melakukan publish slip gaji pegawai bulanan?`,
+            text: `Apakah anda yakin ingin melakukan publish slip gaji pegawai bulan ${messageBulan} tahun ${messageTahun}?`,
         }).then((result) => {
             if(result.isConfirmed) {
                 Meteor.call("payroll.publishMonthly", month, year, function(error, result) {
