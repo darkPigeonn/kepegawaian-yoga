@@ -80,6 +80,33 @@ Template.detailPayroll.helpers({
     },
 }) 
 
+Template.detailPayroll.events({
+    "click #btn-publish"(e, t) {
+        Swal.fire({
+            title: "Warning",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+            text: "Apakah anda yakin ingin melakukan publish slip gaji pegawai ini?",
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const id = FlowRouter.getParam("_id");
+                Meteor.call("payroll.publish", id, function(error, result) {
+                    if(result) {
+                        successAlert("Slip gaji berhasil di publish")
+                        location.reload()
+                    }
+                    else {
+                        console.log(error);
+                        failAlert(error)
+                    }
+                })
+            }
+        })
+    }
+})
+
 Template.createPayroll.onCreated(function() {
     const self = this;
     self.pegawai = new ReactiveVar();

@@ -133,10 +133,22 @@
                     {{/each}}
                 </ul>
                 <p><strong>Total Salary:</strong> {{formatRp dataSalarie.totalSalary}}</p>
+                <p><strong>Status Slip Gaji:</strong> 
+                    {{#if equals dataSalarie.status 10}}
+                        Terbuat
+                    {{/if}}
+                    {{#if equals dataSalarie.status 60}}
+                        Terpublish
+                    {{/if}}
+                </p>
                 <hr>
                 <p><strong>Dibuat Pada Tanggal:</strong> {{formatHRDate createdAt}}</p>
             </div>
-            <!-- <button class="btn btn-primary" id="btn-publish">Publish Payroll</button> -->
+            {{#if equals dataSalarie.status 10}}
+                <button class="btn btn-primary" id="btn-publish">Publish Slip Gaji</button>
+            {{else}}
+                <button class="btn btn-primary" disabled>Slip Gaji Sudah Publish</button>
+            {{/if}}
         </div>
     </div>
 </template>

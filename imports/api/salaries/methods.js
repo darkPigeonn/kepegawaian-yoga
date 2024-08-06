@@ -172,7 +172,6 @@ Meteor.methods({
                     datePermits: 0
                 }
             }).fetch()
-            console.log(permitLembur);
             detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
             result = {
                 _id: cek._id,
@@ -190,5 +189,18 @@ Meteor.methods({
         dataSalaries.detailRekap = result
         // console.log(dataSalaries);
         return dataSalaries
+    },
+
+    "payroll.publish"(id) {
+        check(id, String)
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+        });
+        return Salaries.update({_id: id}, {$set: {
+            status: 60,
+            publishedAt: new Date(),
+            publishedBy: adminPartner.fullname
+        }})
     }
 })
