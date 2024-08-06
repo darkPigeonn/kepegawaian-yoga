@@ -893,6 +893,14 @@ Meteor.methods({
       currentMonth,
       currentYear
     }
+  },
+  "surat.getCountAll"() {
+    const totalSuratMasuk = Document.find({partner: "keuskupan"}).count()
+    const totalSuratKeluar = Letters.find({partner: "keuskupan"}).count()
+    return {
+      totalSuratMasuk,
+      totalSuratKeluar
+    }
   }
 });
 
