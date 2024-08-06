@@ -104,6 +104,7 @@ Meteor.methods({
             totalAllowance,
             allowances: dataAllowance,
             deductions: dataDeduction,
+            status: 10,
             timestamp: new Date(),
             createdAt: new Date(),
             createdBy: Meteor.userId()
@@ -150,14 +151,28 @@ Meteor.methods({
         let result;
         if(cek) {
             let detail = cek.details.find(detail => detail.userId === dataSalaries.employeeId);
-            const permitLembur = Permits.find({creatorId: dataSalaries.employeeId, status: 20, type: "Lembur"}, {projection: {
-                _id: 0, 
-                datePermits: 0, 
-                status: 0,
-                reason: 0,
-                datePermits: 0
-            }}).fetch()
-            console.log(detail);
+            const startOfMonth = moment().year(dataSalaries.year).month(dataSalaries.month - 1).startOf('month').toDate();
+            const endOfMonth = moment().year(dataSalaries.year).month(dataSalaries.month - 1).endOf('month').toDate();
+            const permitLembur = Permits.find(
+            {
+                creatorId: dataSalaries.employeeId, 
+                status: 20, 
+                type: "Lembur",
+                startDatePermit: {
+                    $gte: startOfMonth,
+                    $lte: endOfMonth
+                }
+            }, 
+            {
+                projection: {
+                    _id: 0,
+                    datePermits: 0,
+                    status: 0,
+                    reason: 0,
+                    datePermits: 0
+                }
+            }).fetch()
+            console.log(permitLembur);
             detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
             result = {
                 _id: cek._id,
