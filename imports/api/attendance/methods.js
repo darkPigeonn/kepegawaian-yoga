@@ -362,23 +362,65 @@ Meteor.methods({
                             dataUser.totalLate = late.length;
                         }
                         dataUser.totalPresensi = dataStaffsAttendance.length;
-                        const permitLembur = Permits.find({creatorId: x.profileId, status: 20, type: "Lembur"}, {projection: {
-                            _id: 0,
-                            datePermits: 0,
-                            status: 0,
-                            reason: 0,
-                            datePermits: 0
-                        }}).fetch()
+                        const startOfMonth = startDate.startOf('month').toDate();
+                        const endOfMonth = startDate.endOf('month').toDate();
+                        const permitLembur = Permits.find(
+                            {
+                                creatorId: x.profileId, 
+                                status: 20, 
+                                type: "Lembur",
+                                startDatePermit: {
+                                    $gte: startOfMonth,
+                                    $lte: endOfMonth
+                                }
+                            }, 
+                            {
+                                projection: {
+                                    _id: 0,
+                                    datePermits: 0,
+                                    status: 0,
+                                    reason: 0,
+                                    datePermits: 0
+                                }
+                            }).fetch()
                         let totalOvertime = 0;
                         for (let index = 0; index < permitLembur.length; index++) {
                             const element = permitLembur[index];
                             totalOvertime += parseInt(element.duration)
                         }
+                        
                         dataUser.totalOvertime = totalOvertime
-                        const permitAbsence = Permits.find({creatorId: x.profileId, status: 20, type: {
-                            $in: ["Sakit", "Perjalanan Dinas", "Cuti"]
-                        }}).count()
-                        dataUser.permit = permitAbsence
+                        
+                        const permitAbsence = Permits.find(
+                        {
+                            creatorId: x.profileId, 
+                            status: 20, 
+                            type: {
+                                $in: ["Sakit", "Perjalanan Dinas", "Cuti"]
+                            },
+                            "datesPermits.date": {
+                                $gte: startOfMonth,
+                                $lte: endOfMonth
+                            }
+                        },
+                        {
+                            projection: {
+                                _id: 0,
+                                datesPermits: 1
+                            }
+                        }
+                        ).fetch()
+                        let totalPermit = 0;
+                        
+                        permitAbsence.forEach(doc => {
+                            doc.datesPermits.forEach(datePermits => {
+                                const permitDate = new Date(datePermits.date);
+                                if(permitDate >= startOfMonth && permitDate <= endOfMonth) {
+                                    totalPermit += 1;
+                                }
+                            })
+                        })
+                        dataUser.permit = totalPermit
                         dataUser.dafOf = activeWorkingDays - dataStaffsAttendance.length - dataUser.permit;
                     }
                     dataReturn.push(dataUser);
