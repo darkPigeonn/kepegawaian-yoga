@@ -202,5 +202,46 @@ Meteor.methods({
             publishedAt: new Date(),
             publishedBy: adminPartner.fullname
         }})
+    },
+
+    "payroll.publishMonthly"(month, year) {
+        let startOfMonth;
+        let endOfMonth;
+        let dataPayroll;
+        if(!Number.isNaN(month) && !Number.isNaN(year)) {
+            startOfMonth = moment().year(year).month(month - 1).startOf('month').toDate();
+            endOfMonth = moment().year(year).month(month - 1).endOf('month').toDate();
+            dataPayroll = Salaries.find({
+                month: month,
+                year: year,
+                status: 10
+            }).fetch();
+            
+        }
+        else {
+            const currentMoment = moment();
+            const year = currentMoment.year();
+            const month = currentMoment.month() + 1;
+            startOfMonth = moment().year(year).month(month - 1).startOf('month').toDate();
+            endOfMonth = moment().year(year).month(month - 1).endOf('month').toDate();
+            dataPayroll = Salaries.find({
+                month: month,
+                year: year,
+                status: 10
+            }).fetch();
+        }
+        const payrollIds = dataPayroll.map(payroll => payroll._id);
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+        });
+        if (payrollIds.length > 0) {
+            return Salaries.update(
+                { _id: { $in: payrollIds } },
+                { $set: { status: 60, publishedAt: new Date(), publishedBy: adminPartner.fullname} },
+                { multi: true }
+            );
+        }
+        
     }
 })

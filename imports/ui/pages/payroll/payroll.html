@@ -2,7 +2,7 @@
     <div class="container">
         <div class="mt-5">
             <h1>Payroll</h1>
-            <div class="form-inline mt-3">
+            <div class="form-inline mt-3 d-flex align-items-center">
                 <label for="filterMonthYear" class="mr-2">Filter Bulan dan Tahun</label>
                 <input type="month" id="filterMonthYear" class="form-control mr-2">
                 <button class="btn btn-primary mr-2" id="btn-filter">Filter</button>
@@ -10,13 +10,14 @@
                     <i class="fa fa-refresh"></i>
                 </button>
                 {{#if isInRole "admin"}}
-                    <div class="ml-auto">
+                    <div class="ml-auto d-flex align-items-center">
+                        <button class="btn btn-primary mr-2" id="btn-publish-monthly">Publish Payroll Bulanan</button>
                         <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
                     </div>
                 {{/if}}
-
             </div>
-        </div>
+        </div>        
+        
         <div class="d-lg-block table-responsive">
             <table class="table">
                 <thead>
@@ -25,6 +26,7 @@
                         <th scope="col">Nama</th>
                         <th scope="col">Posisi</th>
                         <th scope="col">Tanggal Dibuat</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -45,6 +47,17 @@
                                 {{formatHRDate i.salaries.timestamp}}
                                 {{else}}
                                 Belum Dibuat
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if equals i.salaries.status 10}}
+                                    Terbuat
+                                {{else}}
+                                    {{#if equals i.salaries.status 60}}
+                                        Terpublish
+                                    {{else}}
+                                        Belum Dibuat
+                                    {{/if}}
                                 {{/if}}
                             </td>
                             <td>

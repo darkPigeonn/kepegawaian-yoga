@@ -44,7 +44,6 @@ Template.listPayroll.events({
             }
         });
     },
-
     "click #resetFilter"(e, t) {
         e.preventDefault();
         document.getElementById('filterMonthYear').value = '';
@@ -56,7 +55,40 @@ Template.listPayroll.events({
                 console.log(error);
             }
         });
-    }
+    },
+    "click #btn-publish-monthly"(e, t) {
+        const monthYearValue = $("#filterMonthYear").val(); // Dapatkan nilai dari input monthYear
+        let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
+        month = parseInt(month);
+        year = parseInt(year);
+
+        Swal.fire({
+            title: "Warning",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+            text: `Apakah anda yakin ingin melakukan publish slip gaji pegawai bulanan?`,
+        }).then((result) => {
+            if(result.isConfirmed) {
+                Meteor.call("payroll.publishMonthly", month, year, function(error, result) {
+                    if(error) {
+                        console.log(error);
+                        failAlert(error)
+                    }
+                    else {
+                        if(result == undefined) {
+                            successAlert("Tidak ada payroll yang di publish")
+                        }
+                        else {
+                            successAlert("Payroll bulanan berhasil dipublish")
+                            location.reload()
+                        }
+                    }
+                })
+            }
+        })
+    },
 })
 
 Template.detailPayroll.onCreated(function() {
