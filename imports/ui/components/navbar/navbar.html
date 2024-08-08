@@ -118,13 +118,13 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       {{#each crumbs}}
-        <li class="breadcrumb-item {{#if isActive}}active{{/if}}">
-          {{#if isActive}}
-            {{title}}
-          {{else}}
-            <a href="{{path}}">{{title}}</a>
-          {{/if}}
-        </li>
+      <li class="breadcrumb-item {{#if isActive}}active{{/if}}">
+        {{#if isActive}}
+        {{title}}
+        {{else}}
+        <a href="{{path}}">{{title}}</a>
+        {{/if}}
+      </li>
       {{/each}}
     </ol>
   </nav>

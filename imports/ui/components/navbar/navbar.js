@@ -75,26 +75,28 @@ Template.navbar.events({
     });
   },
   "click #userDropdown"(e, t) {
-
     e.preventDefault();
 
-    Meteor.call('notifications.markAsRead',function (err, res) {
-      if(error){
+    Meteor.call("notifications.markAsRead", function (err, res) {
+      if (error) {
         console.log(error);
-      }else{
-        Meteor.call("notifications.getByUser", userId, function (error, result) {
-          if (result) {
-            t.notifications.set(result);
-            console.log(result);
-          } else {
-            console.log(error);
+      } else {
+        Meteor.call(
+          "notifications.getByUser",
+          userId,
+          function (error, result) {
+            if (result) {
+              t.notifications.set(result);
+              console.log(result);
+            } else {
+              console.log(error);
+            }
           }
-        });
+        );
       }
-    })
+    });
   },
 });
-
 
 Template.breadcrumb_c.helpers({
   crumbs() {
