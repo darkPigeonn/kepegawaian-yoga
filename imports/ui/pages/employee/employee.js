@@ -239,6 +239,12 @@ Template.dashboard.onRendered(function () {
 // $('.carousel-control').hide();
 });
 
+Template.dashboard.onRendered(function () {
+  setInterval(function(){
+    location.reload()
+  }, 30 * 60 * 1000);
+});
+
 
 Template.dashboard.helpers({
   events(){
@@ -1134,7 +1140,7 @@ Template.employee_create.events({
       golongan
     }
     console.log(data.base_salary, data.deductions, data.allowances);
-    
+
     Swal.fire({
       title: "Warning",
       icon: "warning",
