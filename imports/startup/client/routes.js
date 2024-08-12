@@ -564,3 +564,9 @@ FlowRouter.route("/ppdb/details/:_id/setCicil", {
     this.render("App_body", "cicilanRegistran");
   },
 });
+FlowRouter.route("/forgotPassword", {
+  name: "forgotPassword",
+  action() {
+    this.render("forgotPassword");
+  },
+});
