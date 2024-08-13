@@ -374,6 +374,9 @@ Template.registerHelper("lenghtBool", function (data) {
   }
   return false;
 });
+Template.registerHelper("getLength", function(data){
+  return data.length
+})
 
 function convertTanggal(tanggal) {
   // Mengonversi bulan dari teks ke angka

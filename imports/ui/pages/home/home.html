@@ -374,6 +374,42 @@
           </div>
         </div>
       </div>
+      <div class="col-xl-4 col-lg-4 summary">
+        <div class="card l-bg-warning">
+          <div class="card-statistic-3 p-4">
+            <div class="card-icon card-icon-large pr-5"><i class="fas fa-money-bill"></i></div>
+            <div class="mb-4">
+              <h5 class="card-title mb-0">CSB Belum Bayar Formulir </h5>
+            </div>
+            <div class="row align-items-center mb-2 d-flex">
+              <div class="col-8">
+                <h2 class="d-flex align-items-center mb-0">
+                  <!-- Nomor VA Terpakai -->
+                  {{totalRegistrans.totalInFormRegister}} Siswa
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-4 summary">
+        <div class="card l-bg-success">
+          <div class="card-statistic-3 p-4">
+            <div class="card-icon card-icon-large pr-5"><i class="fas fa-money-bill"></i></div>
+            <div class="mb-4">
+              <h5 class="card-title mb-0">CSB Sudah Bayar Formulir </h5>
+            </div>
+            <div class="row align-items-center mb-2 d-flex">
+              <div class="col-8">
+                <h2 class="d-flex align-items-center mb-0">
+                  <!-- Nomor VA Terpakai -->
+                  {{totalRegistrans.totalFormPaid}} Siswa
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -384,6 +420,9 @@
     <div class="card">
       <div class="card-header">
         <h4>Data Pendaftar Terkini</h4>
+        <div class="float-end">
+          <a href="/ppdb/">Lihat lebih banyak...</a>
+        </div>
       </div>
       <div class="card-body">
         <table class="table table-bordered">
@@ -415,7 +454,7 @@
         </table>
 
         <div class="float-end">
-          <a href="/ppdb/">Lihat lebih banyak</a>
+          <a href="/ppdb/">Lihat lebih banyak...</a>
         </div>
       </div>
     </div>

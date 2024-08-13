@@ -101,6 +101,16 @@ Template.home_admin_school.onCreated(function () {
       exitPreloader();
     }
   });
+  Meteor.call("ppdb-school-getAll-summary", (error, result) => {
+    if (error) {
+      console.error("Error while fetching students:", error);
+      exitPreloader();
+    } else {
+      self.items.set(result.registrans);
+      self.totalItems.set(result.totalRegistrans);
+      exitPreloader();
+    }
+  });
   isLoading(false);
 });
 Template.home_admin_school.helpers({
@@ -118,8 +128,13 @@ Template.home_admin_school.helpers({
       const totalAccepted = allRegistrans.filter(
         (item) => item.status == 60
       ).length;
-      console.log(totalRegistrans, totalWaiting, totalAccepted);
-      return { totalRegistrans, totalWaiting, totalAccepted };
+      const totalInFormRegister = allRegistrans.filter(
+        (item) => item.status == 10
+      ).length
+      const totalFormPaid = allRegistrans.filter(
+        (item) => item.status == 20
+      ).length
+      return { totalRegistrans, totalWaiting, totalAccepted, totalInFormRegister, totalFormPaid };
     }
   },
 

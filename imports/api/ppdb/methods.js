@@ -71,6 +71,36 @@ Meteor.methods({
       totalRegistrans: Registrans.find().count(),
     };
   },
+  "ppdb-school-getAll-status"(pageNum, perPage, status) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    const skip = (pageNum - 1) * perPage;
+    if(status == 'all'){
+      return {
+        registrans: Registrans.find(
+          {
+
+          },
+          { limit: perPage, skip, sort: { createdAt: -1 } }
+        ).fetch(),
+        totalRegistrans: Registrans.find().count(),
+      };
+    }
+    return {
+      registrans: Registrans.find(
+        {
+          status: parseInt(status),
+        },
+        { limit: perPage, skip, sort: { createdAt: -1 } }
+      ).fetch(),
+      totalRegistrans: Registrans.find( {
+        status: parseInt(status),
+      }).count(),
+    };
+  },
   async "ppdb-registran-detail"(id) {
     check(id, String);
     const thisUser = Meteor.users.findOne({ _id: this.userId });

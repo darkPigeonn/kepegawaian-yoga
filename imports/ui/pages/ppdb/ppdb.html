@@ -4,6 +4,26 @@
       <h3>Daftar Calon Siswa Baru</h3>
     </div>
     <div class="page-content mt-3">
+      <div class="section-filter">
+        <div class="form-group">
+          <label>Cari Berdasarkan Status...</label>
+          <select class="form-control" id="filter-status">
+            <option value="all">Semua</option>
+            <option value="10">Belum Bayar Uang Formulir</option>
+            <option value="20">Sudah Bayar Uang Formulir</option>
+            <option value="30">Menunggu Konfirmasi Formulir oleh Admin Sekolah</option>
+            <option value="46">Menunggu Jadwal Wawancara</option>
+            <option value="48">Proses Wawancara</option>
+            <option value="60">Diterima</option>
+            <option value="99">Ditolak</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <h3>
+          Total CSB : {{totalStudents}}
+        </h3>
+      </div>
       <table class="table table-group-divider">
         <thead>
           <th>No.</th>
@@ -56,6 +76,7 @@
   </div>
 </template>
 
+<!-- Page PPDB Admin -->
 
 <!-- Virtual Account  -->
 <template name="pageVa">

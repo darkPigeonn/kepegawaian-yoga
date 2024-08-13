@@ -312,4 +312,26 @@ Meteor.methods({
       return "success";
     }
   },
+
+
+  //forgot password
+  'check.fpNpsn'(npsn, email){
+    check(email, String);
+    check(npsn, String)
+
+
+    //cek email
+    const thisUser = Meteor.users.findOne({ 'emails.address': email });
+    if (!thisUser) {
+      throw new Meteor.Error("403", "Email tidak ditemukan");
+    }
+
+
+    //cek npsn
+    const checkNpsn = Schools.findOne({npsn: parseInt(npsn), _id : thisUser.schoolId});
+    if(!checkNpsn){
+      throw new Meteor.Error("403", "NPSN tidak ditemukan");
+    }
+    return true
+  }
 });

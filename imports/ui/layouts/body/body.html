@@ -12117,15 +12117,38 @@
 </template>
 
 <template name="forgotPassword">
-  <div class="container w-25 d-flex align-items-center">
+  <div class="mx-5 my-5">
     <div class="card">
+      <div class="card-header">
+        Lupa Password
+      </div>
       <div class="card-body">
-        <form>
+        {{#if isSetPassword}}
+        <h3>Silahkan Masukkan Kata Sandi Baru</h3>
+        <form id="form-forgot">
           <div class="form-group">
-            <label>Masukan NPSN anda :</label>
-            <input class="form-control" id="input-npsn" />
+            <label>Masukkan Kata Sandi Baru </label>
+            <input class="form-control mt-2" id="input-password"  required/>
           </div>
+          <div class="form-group">
+            <label>Ulangi Kata Sandi</label>
+            <input class="form-control mt-2" id="input-password2"  required/>
+          </div>
+          <button class="btn btn-primary mt-2 float-end" id="btn-submit-forgot-password" type="submit">Submit</button>
         </form>
+        {{else}}
+        <form id="form-forgot">
+          <div class="form-group">
+            <label>Masukkan Email/Username </label>
+            <input class="form-control mt-2" id="input-email"  required/>
+          </div>
+          <div class="form-group">
+            <label>Masukkan NPSN Sekolah </label>
+            <input class="form-control mt-2" id="input-npsn"  required/>
+          </div>
+          <button class="btn btn-primary mt-2 float-end" id="btn-submit-forgot-password" type="submit">Submit</button>
+        </form>
+        {{/if}}
       </div>
     </div>
   </div>

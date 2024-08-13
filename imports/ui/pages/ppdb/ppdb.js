@@ -37,6 +37,9 @@ Template.pagePpdb.onCreated(function () {
   });
 });
 Template.pagePpdb.helpers({
+  totalStudents: function () {
+    return Template.instance().totalStudents.get();
+  },
   students: function () {
     console.log(Template.instance().students.get());
     console.log(Template.instance().totalStudents.get());
@@ -66,6 +69,23 @@ Template.pagePpdb.events({
     const pageNumber = parseInt(event.target.getAttribute("data-page"));
     template.currentPage.set(pageNumber);
   },
+  "change #filter-status"(e,t){
+    e.preventDefault();
+    const currentPage = t.currentPage.get();
+    const perPage = 10
+    const status = e.target.value
+
+    Meteor.call("ppdb-school-getAll-status", currentPage, perPage, status, (error, result) => {
+      if (error) {
+        console.error("Error while fetching students:", error);
+        exitPreloader();
+      } else {
+        t.students.set(result.registrans);
+        t.totalStudents.set(result.totalRegistrans);
+        exitPreloader();
+      }
+    });
+  }
 });
 
 // <-- virtual account -->
