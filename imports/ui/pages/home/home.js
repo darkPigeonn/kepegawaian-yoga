@@ -66,6 +66,17 @@ Template.home_admin.onCreated(function () {
       exitPreloader();
     }
   });
+  self.listPpdb = new ReactiveVar()
+  Meteor.call("getPpdbSchool", function(error, result){
+    if(error){
+      console.log(error);
+
+    }else{
+      console.log(result);
+
+      self.listPpdb.set(result)
+    }
+  })
 });
 Template.home_admin.helpers({
   dashboardData() {
@@ -74,6 +85,9 @@ Template.home_admin.helpers({
   today() {
     return new Date();
   },
+  listPpdb(){
+    return Template.instance().listPpdb.get();
+  }
 });
 Template.home_admin_school.onCreated(function () {
   isLoading(true);

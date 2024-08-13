@@ -71,6 +71,24 @@ Meteor.methods({
       totalRegistrans: Registrans.find().count(),
     };
   },
+  "ppdb-school-getAll-bySchool"(pageNum, perPage,schoolId) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    const skip = (pageNum - 1) * perPage;
+
+    return {
+      registrans: Registrans.find(
+        {
+          schoolId: schoolId
+        },
+        { limit: perPage, skip, sort: { createdAt: -1 } }
+      ).fetch(),
+      totalRegistrans: Registrans.find({schoolId: schoolId}).count(),
+    };
+  },
   "ppdb-school-getAll-status"(pageNum, perPage, status) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
@@ -1413,6 +1431,108 @@ Meteor.methods({
 
     return Registrans.update({ _id: objectIdUser }, { $set: wawancara });
   },
+
+  getPpdbSchool() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(403, "Forrbiden");
+    }
+    const pipeline = [
+      {
+        $match:
+          /**
+           * query: The query in MQL.
+           */
+          {
+            periodeStudi: "HfMszDwqCmN433ZLp",
+          },
+      },
+      {
+        $project:
+          /**
+           * specifications: The fields to
+           *   include or exclude.
+           */
+          {
+            _id: 1,
+            schoolId: 1,
+            schoolName: 1,
+            status: 1,
+            periodeStudi: 1,
+          },
+      },
+      {
+        $group:
+          /**
+           * _id: The id of the group.
+           * fieldN: The first field name.
+           */
+          {
+            _id: "$schoolId",
+            schoolName: {
+              $first: "$schoolName",
+            },
+            total: {
+              $sum: 1,
+            },
+          },
+      },
+      {
+        $lookup:
+          /**
+           * from: The target collection.
+           * localField: The local join field.
+           * foreignField: The target join field.
+           * as: The name for the results.
+           * pipeline: Optional pipeline to run on the foreign collection.
+           * let: Optional variables to use in the pipeline field stages.
+           */
+          {
+            from: "schools",
+            localField: "_id",
+            foreignField: "_id",
+            as: "school",
+          },
+      },
+      {
+        $unwind: "$school",
+      },
+      {
+        $project:
+          /**
+           * specifications: The fields to
+           *   include or exclude.
+           */
+          {
+            _id: 1,
+            schoolName: 1,
+            total: 1,
+            unitId: "$school.unitId",
+            unitName: "$school.unitName",
+          },
+      },
+      {
+        $group:
+          /**
+           * _id: The id of the group.
+           * fieldN: The first field name.
+           */
+          {
+            _id: "$unitId",
+            unitName: {
+              $first: "$unitName",
+            },
+            total: {
+              $sum: "$total",
+            },
+            schools: {
+              $push: "$$ROOT",
+            },
+          },
+      },
+    ]
+    return Registrans.aggregate(pipeline);
+  }
 });
 
 function generateUniqueVirtualAccount() {

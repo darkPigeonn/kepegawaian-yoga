@@ -570,3 +570,9 @@ FlowRouter.route("/forgotPassword", {
     this.render("forgotPassword");
   },
 });
+FlowRouter.route("/ppdb/:schoolId", {
+  name: "pagePpdbSchool",
+  action() {
+    this.render("App_body", "pagePpdbSchool");
+  },
+});

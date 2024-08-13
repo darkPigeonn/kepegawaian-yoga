@@ -1034,3 +1034,99 @@ Template.pageVa.events({
     );
   },
 });
+
+
+Template.pagePpdbSchool.onCreated(function () {
+  const self = this;
+  startPreloader();
+
+  const schoolId = FlowRouter.current().params.schoolId;
+
+  this.currentPage = new ReactiveVar(1);
+  this.perPage = 10; // Jumlah data per halaman
+  self.students = new ReactiveVar([]);
+  self.totalStudents = new ReactiveVar(0);
+  self.thisSchool = new ReactiveVar()
+  this.autorun(() => {
+    const currentPage = this.currentPage.get();
+    const perPage = this.perPage;
+
+    Meteor.call("ppdb-school-getAll-bySchool", currentPage, perPage,schoolId, (error, result) => {
+      if (error) {
+        console.error("Error while fetching students:", error);
+        exitPreloader();
+      } else {
+        console.log(result);
+
+        self.students.set(result.registrans);
+        self.totalStudents.set(result.totalRegistrans);
+        exitPreloader();
+      }
+    });
+  });
+
+  Meteor.call("school.getBy", schoolId, function(error, result){
+    if(error){
+      console.log(error);
+
+    }else{
+      console.log(result);
+
+      self.thisSchool.set(result);
+    }
+  })
+});
+Template.pagePpdbSchool.helpers({
+  totalStudents: function () {
+    return Template.instance().totalStudents.get();
+  },
+  students: function () {
+    console.log(Template.instance().students.get());
+    console.log(Template.instance().totalStudents.get());
+    return Template.instance().students.get();
+  },
+  totalPages: function () {
+    const totalStudents = Template.instance().totalStudents.get();
+    const perPage = Template.instance().perPage;
+    return Math.ceil(totalStudents / perPage);
+  },
+  getPageNumbers: function (totalPages) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  },
+  isActive: function (pageNumber) {
+    return Template.instance().currentPage.get() === pageNumber ? "active" : "";
+  },
+  getNumber(index) {
+    const template = Template.instance();
+    const currentPage = template.currentPage.get();
+    const perPage = template.perPage;
+    return (currentPage - 1) * perPage + index + 1;
+  },
+  thisSchool(){
+    return Template.instance().thisSchool.get();
+  }
+});
+Template.pagePpdbSchool.events({
+  "click .page-link"(event, template) {
+    event.preventDefault();
+    const pageNumber = parseInt(event.target.getAttribute("data-page"));
+    template.currentPage.set(pageNumber);
+  },
+  "change #filter-status"(e,t){
+    e.preventDefault();
+    const currentPage = t.currentPage.get();
+    const perPage = 10
+    const status = e.target.value
+
+    Meteor.call("ppdb-school-getAll-status", currentPage, perPage, status, (error, result) => {
+      if (error) {
+        console.error("Error while fetching students:", error);
+        exitPreloader();
+      } else {
+        t.students.set(result.registrans);
+        t.totalStudents.set(result.totalRegistrans);
+        exitPreloader();
+      }
+    });
+  }
+});

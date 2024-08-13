@@ -1,6 +1,16 @@
 import { Schools, Units } from "./schools";
 import { check } from "meteor/check";
 Meteor.methods({
+  "school.getBy"(id) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    console.log(Schools.findOne({ _id: id }));
+
+    return Schools.findOne({ _id: id });
+  },
   "schools.getAll"(pageNum, perPage, query) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {

@@ -76,6 +76,79 @@
   </div>
 </template>
 
+<template name="pagePpdbSchool">
+  <div class="container">
+    <div class="page-title mt-2">
+      <h3>Daftar Calon Siswa Baru</h3>
+      <h3>{{thisSchool.name}} - {{thisSchool.unitName}}</h3>
+    </div>
+    <div class="page-content mt-3">
+      <div class="section-filter">
+        <div class="form-group">
+          <label>Cari Berdasarkan Status...</label>
+          <select class="form-control" id="filter-status">
+            <option value="all">Semua</option>
+            <option value="10">Belum Bayar Uang Formulir</option>
+            <option value="20">Sudah Bayar Uang Formulir</option>
+            <option value="30">Menunggu Konfirmasi Formulir oleh Admin Sekolah</option>
+            <option value="46">Menunggu Jadwal Wawancara</option>
+            <option value="48">Proses Wawancara</option>
+            <option value="60">Diterima</option>
+            <option value="99">Ditolak</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <h3>
+          Total CSB : {{totalStudents}}
+        </h3>
+      </div>
+      <table class="table table-group-divider">
+        <thead>
+          <th>No.</th>
+          <th>Nama</th>
+          <th>Tanggal Lahir | Umur</th>
+          <th>Tanggal Daftar</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          {{#each students}}
+          <tr>
+            <td>
+              {{getNumber @index}}
+            </td>
+            <td>
+              {{capitalizeWord fullName}} <br>
+              <span class="span-nis">{{#if notEquals nis "-"}}{{nis}} {{else}} NIS Tidak diisi {{/if}}</span>
+            </td>
+            <td>
+              {{formatHRDate2 dob}} <br> {{thisAge dob}}
+            </td>
+            <td>
+              {{formatHRDate createdAt}}
+            </td>
+            <td>
+              {{statusPpdb status}}
+            </td>
+            <td>
+              <a href="/ppdb/details/{{toMeteorId _id}}" class="btn btn-primary" id="btn-detail">Lihat</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <nav>
+        <ul class="pagination">
+          {{#each getPageNumbers totalPages}}
+          <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+          {{/each}}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</template>
+
 <!-- Page PPDB Admin -->
 
 <!-- Virtual Account  -->
