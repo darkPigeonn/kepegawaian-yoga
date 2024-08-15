@@ -69,20 +69,19 @@ Template.createTicket.onCreated(function (){
   self.buktiTiket = new ReactiveVar([]);
   Meteor.call("tickets.getPekerja", function (error, result) {
     if (result) {
-      console.log(result);
       self.workers.set(result);
     } else {
       console.log(error);
     }
   });
-  Meteor.call('fileName.getAll', function(error, result) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(result)
-      self.allFileNames.set(result)
-    }
-  })
+  // Meteor.call('fileName.getAll', function(error, result) {
+  //   if (error) {
+  //     console.log(error);
+  //   } else {
+  //     console.log(result)
+  //     self.allFileNames.set(result)
+  //   }
+  // })
   startSelect2();
 })
 
@@ -93,9 +92,9 @@ Template.createTicket.helpers({
   daftarWorker() {
     return Template.instance().daftarWorker.get();
   },
-  allFileNames(){
-    return Template.instance().allFileNames.get();
-  },
+  // allFileNames(){
+  //   return Template.instance().allFileNames.get();
+  // },
   buktiTiket(){
     return Template.instance().buktiTiket.get();
   },
@@ -180,7 +179,7 @@ Template.createTicket.events({
     const files = t.buktiTiket.get();
     const thisForm = {};
     thisForm[files] = [];
-    const allFileNames = t.allFileNames.get();
+    // const allFileNames = t.allFileNames.get();
     Swal.fire({
       title: "Konfirmasi",
       text: "Apakah anda ingin menyimpan data ini?",
@@ -219,9 +218,9 @@ Template.createTicket.events({
         else{
           for (let index = 0; index < files.length; index++) {
             const fileName = files[index].file.name;
-            const sendFileName = checkDuplicateFileName(fileName, allFileNames);
+            // const sendFileName = checkDuplicateFileName(fileName, allFileNames);
             const uploadData = {
-              fileName: "kepegawaian/"+sendFileName,
+              fileName: "kepegawaian/"+fileName,
               type: "image/png",
               Body: files[index].file
             }
