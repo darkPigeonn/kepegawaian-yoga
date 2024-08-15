@@ -46,17 +46,14 @@ Meteor.methods({
     }
   },
   "employee.getAll"() {
-    let partnerCode;
-    const thisUser = Meteor.userId();
-    const adminPartner = Meteor.users.findOne({
-      _id: thisUser,
-    });
-    partnerCode = adminPartner.partners[0];
+    // let partnerCode;
+    // const thisUser = Meteor.userId();
+    // const adminPartner = Meteor.users.findOne({
+    //   _id: thisUser,
+    // });
+    // partnerCode = adminPartner.partners[0];
 
-    return Employee.find(
-      { partnerCode: partnerCode },
-      { sort: { createdAt: 1 } }
-    ).fetch();
+    return Employee.find({ sort: { createdAt: 1 } }).fetch();
   },
   "employee.getAllEmployee"() {
     return Employee.find(
@@ -560,12 +557,11 @@ Meteor.methods({
           $set: {
             roles: [data.role],
             fullname: dataSend.fullname,
-            schoolId : dataSend.school,
+            schoolId: dataSend.school,
             profileId: dataSend.idEmployee,
           },
         }
       );
-
     } catch (error) {
       return error;
     }

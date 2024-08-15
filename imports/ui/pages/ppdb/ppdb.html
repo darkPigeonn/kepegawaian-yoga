@@ -192,6 +192,7 @@
           <th>Nomor VA</th>
           <th>Nama Sekolah</th>
           <th>Nominal</th>
+          <th>Gelombang</th>
           <th>Tanggal dibuat</th>
           <th>Status</th>
           <th>Kategori</th>
@@ -213,6 +214,9 @@
               {{formatRp amount}}
             </td>
             <td>
+              {{configName}}
+            </td>
+            <td>
               {{formatHRDate createdAt}}
             </td>
 
@@ -229,14 +233,19 @@
           {{/each}}
         </tbody>
       </table>
-      <nav>
-        <ul class="pagination">
-
-          {{#each getPageNumbers totalPages}}
-          <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
-          {{/each}}
-        </ul>
-      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <nav>
+              <ul class="pagination">
+                {{#each getPageNumbers totalPages}}
+                <li class="{{isActive this}}"><a href="#" class="page-link" data-page="{{this}}">{{this}}</a></li>
+                {{/each}}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

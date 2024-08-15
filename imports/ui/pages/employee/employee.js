@@ -467,7 +467,7 @@ Template.employee_detail.events({
   "click #btn-tambah-akun"(e, t) {
     e.preventDefault();
     console.log(t.employee.get());
-    const fullName = t.employee.get().fullName    ;
+    const fullName = t.employee.get().fullName;
     const email = t.employee.get().email;
     const dob = moment(t.employee.get().dob).format("DD-MM-YYYY");
     const splitDob = dob.split("-");
@@ -477,7 +477,7 @@ Template.employee_detail.events({
     const password = tempPassword;
     const partner = t.employee.get().partnerCode;
     const profileId = FlowRouter.getParam("_id");
-    let roles = ['staff'];
+    let roles = ["staff"];
 
     const body = {
       fullName,
@@ -1576,8 +1576,10 @@ Template.employeeSearch.onCreated(function (error, result) {
   self.listEmployee = new ReactiveVar();
   self.listEmployeeSearch = new ReactiveVar();
 
-  Meteor.call("employee.getAll", function (error, result) {
+  Meteor.call("registran.getAll", function (error, result) {
     if (result) {
+      console.log(result);
+
       self.listEmployee.set(result);
     }
   });

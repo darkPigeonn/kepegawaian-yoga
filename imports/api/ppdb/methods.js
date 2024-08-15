@@ -18,6 +18,9 @@ import { Notifications } from "../notification/notification";
 import { formatRupiah } from "../../startup/server";
 
 Meteor.methods({
+  "registran.getAll"() {
+    return Registrans.find({}, { sort: { createdAt: 1 } }).fetch();
+  },
   getDashboardData() {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
@@ -71,7 +74,7 @@ Meteor.methods({
       totalRegistrans: Registrans.find().count(),
     };
   },
-  "ppdb-school-getAll-bySchool"(pageNum, perPage,schoolId) {
+  "ppdb-school-getAll-bySchool"(pageNum, perPage, schoolId) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -82,11 +85,11 @@ Meteor.methods({
     return {
       registrans: Registrans.find(
         {
-          schoolId: schoolId
+          schoolId: schoolId,
         },
         { limit: perPage, skip, sort: { createdAt: -1 } }
       ).fetch(),
-      totalRegistrans: Registrans.find({schoolId: schoolId}).count(),
+      totalRegistrans: Registrans.find({ schoolId: schoolId }).count(),
     };
   },
   "ppdb-school-getAll-status"(pageNum, perPage, status) {
@@ -96,12 +99,10 @@ Meteor.methods({
     }
 
     const skip = (pageNum - 1) * perPage;
-    if(status == 'all'){
+    if (status == "all") {
       return {
         registrans: Registrans.find(
-          {
-
-          },
+          {},
           { limit: perPage, skip, sort: { createdAt: -1 } }
         ).fetch(),
         totalRegistrans: Registrans.find().count(),
@@ -114,7 +115,7 @@ Meteor.methods({
         },
         { limit: perPage, skip, sort: { createdAt: -1 } }
       ).fetch(),
-      totalRegistrans: Registrans.find( {
+      totalRegistrans: Registrans.find({
         status: parseInt(status),
       }).count(),
     };
@@ -1530,9 +1531,9 @@ Meteor.methods({
             },
           },
       },
-    ]
+    ];
     return Registrans.aggregate(pipeline);
-  }
+  },
 });
 
 function generateUniqueVirtualAccount() {

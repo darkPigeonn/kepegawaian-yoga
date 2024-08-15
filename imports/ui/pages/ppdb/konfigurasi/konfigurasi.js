@@ -415,6 +415,7 @@ Template.gelombangPage.events({
     $("#inputUangSumbangan").val(formatRupiah(this.feeDonation.toString()));
     $("#inputUangKegiatan").val(formatRupiah(this.feeEvent.toString()));
     $("#inputUangAlat").val(formatRupiah(this.feeUtilty.toString()));
+    console.log("clicked");
 
     t.isEdit.set(true);
     $("#addModalGelombang").modal("show");

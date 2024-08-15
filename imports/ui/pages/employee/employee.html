@@ -2469,44 +2469,49 @@
     <div class="container">
         <div class="contentAtas">
             <p style="color: blue; margin: 0;"> <a href="/"> Beranda</a> / <a href="/employees/search">
-                    Cari Pegawai</a></p>
+                    Cari Calon Siswa</a></p>
         </div>
         <hr>
         <div class="page-body">
             <div class="form-group">
-                <label>Cari Pegawai</label>
+                <label>Cari Calon Siswa</label>
                 <input class="form-control" type="text" id="input-name"
                     placeholder="Silahkan input minimal 3 karakter..." />
             </div>
 
             {{#if listEmployeeSearch}}
-            ada
             <table class="table" id="table-pegawai">
                 <thead>
                     <tr>
-                        <th scope="col">NIY</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Jabatan</th>
-                        <th scope="col">Perwakilan</th>
-                        <th scope="col">Unit Kerja</th>
-                        <th scope="col">Aksi</th>
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Tanggal Lahir | Umur</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each listEmployeeSearch}}
                     <tr>
-                        <td> {{niy}}</td>
-                        <td> {{fullName}} </td>
-                        <td> {{pekerjaan.position}} </td>
-                        <td>{{unit.perwakilan}}</td>
-                        <td>{{unit.school}}</td>
                         <td>
-
-                            <a href="/employees/detail/{{_id}}">
-                                <button class="btn btn-primary" type="button" id="btn_details"><i
-                                        class="fa fa-info-circle"></i></button>
-                            </a>
-
+                            {{nomorUrut @index}}
+                        </td>
+                        <td>
+                            {{capitalizeWord fullName}} <br>
+                            <span class="span-nis">{{#if notEquals nis "-"}}{{nis}} {{else}} NIS Tidak diisi
+                                {{/if}}</span>
+                        </td>
+                        <td>
+                            {{formatHRDate2 dob}} <br> {{thisAge dob}}
+                        </td>
+                        <td>
+                            {{formatHRDate createdAt}}
+                        </td>
+                        <td>
+                            {{statusPpdb status}}
+                        </td>
+                        <td>
+                            <a href="/ppdb/details/{{toMeteorId _id}}" class="btn btn-primary" id="btn-detail">Lihat</a>
                         </td>
                     </tr>
                     {{/each}}
