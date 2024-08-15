@@ -19,7 +19,7 @@ Meteor.methods({
         // ke employee
         let partner
         console.log(relatedUser.partners.length);
-        if(relatedUser.partners.length == 0 || relatedUser.partner == undefined || relatedUser.partner == null) {
+        if(relatedUser.partners.length == 0 || relatedUser.partners == undefined || relatedUser.partners == null) {
             const getPartner = Employee.findOne({_id: relatedUser.profileId})
             partner = getPartner.partnerCode;
             const data = Employee.find({partnerCode: partner}).fetch();
