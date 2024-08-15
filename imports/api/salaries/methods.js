@@ -1,4 +1,5 @@
 import { Salaries } from "./salaries";
+import { SalariesActionRequests } from "./salaries";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
@@ -237,5 +238,204 @@ Meteor.methods({
             );
         }
         
-    }
+    },
+    "payroll.delete"(id) {
+        check(id, String);
+        const cek = Salaries.findOne({_id: id})
+        if(!cek) throw new Meteor.Error(412, "Data salaries tidak ditemukan")
+        return Salaries.remove({_id: id})
+    },
+    "payroll.request"(data) {
+        const {id, request, reason} = data
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        const dataSalaries = Salaries.findOne({_id: id})
+        const dataSave = {
+            salariesId: id,
+            type: request,
+            reason,
+            employeeId: dataSalaries.employeeId,
+            employeeName: dataSalaries.employeeName,
+            createdAt: new Date(),
+            createdBy: thisUser,
+            createdByName: adminPartner.fullname
+        }
+        const update = Salaries.update({_id: id}, {
+            $set: {
+                isRequesting: true,
+                isRequestingType: request
+            }
+        })
+        return SalariesActionRequests.insert(dataSave);
+    },
+    "payroll.listRequest"() {
+        const data = SalariesActionRequests.find({}, {sort: {createdAt: -1}}).fetch()
+        return data;
+    },
+    "payroll.approvalActionRequest"(data) {
+        const {id, type} = data;
+        // update data action diterima / ditolak
+        let status = 0;
+        if(type == "accept") status = 60
+        if(type == "decline") status = 90
+        const dataRequest = SalariesActionRequests.findOne({_id: id})
+        if(dataRequest) {
+            const updateAction = SalariesActionRequests.update({_id: id}, {
+                $set: {
+                    status,
+                    confirmedAt: new Date()
+                }
+            })
+            // update data salaries agar bisa melakukana aksi update / delete
+            if(status == 60) {
+                return Salaries.update({_id: dataRequest.salariesId}, {
+                    $set: {
+                        isAction: true,
+                        isActionType: dataRequest.type
+                    },
+                    $unset: {
+                        isRequesting: "",
+                        isRequestingType: ""
+                    }
+                })
+            }
+            if(status == 90) {
+                return Salaries.update({_id: dataRequest.salariesId}, {
+                    $set: {
+                        isAction: false,
+                        isActionType: dataRequest.type
+                    },
+                    $unset: {
+                        isRequesting: "",
+                        isRequestingType: ""
+                    }
+                })
+            }
+        }
+    },
+    async "payroll.loadEdit"(idPayroll) {
+        try {
+            const dataPayroll = Salaries.findOne({_id: idPayroll});
+            let month = dataPayroll.month;
+            let year = dataPayroll.year;
+            let id = dataPayroll.employeeId;
+            const cekRekap = MonthlyAttendance.findOne({month: month, year: year});
+            if(!cekRekap) {
+                throw new Meteor.Error(412, `Belum ada rekap absensi pada bulan ${month} tahun ${year}`)
+            }
+            const cek = MonthlyAttendance.findOne({month: month, year: year, 'details.userId': id});
+            const dataEmployee = Employee.findOne({_id:id})
+            let result;
+            if(cek) {
+                let detail = cek.details.find(detail => detail.userId === id);
+                const startOfMonth = moment().year(year).month(month - 1).startOf('month').toDate();
+                const endOfMonth = moment().year(year).month(month - 1).endOf('month').toDate();
+                const permitLembur = Permits.find(
+                {
+                    creatorId: id, 
+                    status: 20, 
+                    type: "Lembur",
+                    startDatePermit: {
+                        $gte: startOfMonth,
+                        $lte: endOfMonth
+                    }
+                }, 
+                {
+                    projection: {
+                        _id: 0,
+                        datePermits: 0,
+                        status: 0,
+                        reason: 0,
+                        datePermits: 0
+                    }
+                }).fetch()
+                detail.absence = parseInt(detail.dafOf) + parseInt(detail.permit)
+                result = {
+                    _id: cek._id,
+                    activeDayWorking: cek.activeDayWorking,
+                    dayOf: cek.dayOf,
+                    month: cek.month,
+                    year: cek.year,
+                    outlets: cek.outlets,
+                    baseSalary: dataEmployee.base_salary,
+                    details: detail,
+                    overtimeList: permitLembur,
+                    accountNumber: dataEmployee.accountNumber,
+                    accountNumberBank: dataEmployee.accountNumberBank,
+                    accountNumberName: dataEmployee.accountNumberName,
+                };
+                // console.log(result);
+            }
+            // ambil data yang sudah ada di slip sebelumnya untuk data allowances dan deductions
+            result.detailSlip = [];
+            for (let index = 0; index < dataPayroll.allowances.length; index++) {
+                const element = dataPayroll.allowances[index];
+                element.category = "allowance"
+                result.detailSlip.push(element)
+            }
+            for (let index = 0; index < dataPayroll.deductions.length; index++) {
+                const element = dataPayroll.deductions[index];
+                element.category = "deduction"
+                result.detailSlip.push(element)
+            }
+            return result
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+        
+    },
+    async "payroll.editPayroll"(data, dataRekap, id, month, year, idSalaries) {
+        check(data, Array);
+        check(id, String);
+        check(idSalaries, String);
+        const dataSalaries = Salaries.findOne({_id: idSalaries});
+        const dataEmployee = Employee.findOne({_id: id});
+        const baseSalary = dataEmployee.base_salary;
+        let total = 0;
+        let totalDeduction = 0;
+        let totalAllowance = 0;
+        data.forEach(item => {
+            if(item.category == "allowance") {
+                total += item.amount;
+                totalAllowance += item.amount
+            }
+            else if(item.category == "deduction") {
+                total -= item.amount;
+                totalDeduction += item.amount
+            }
+        })
+        const totalSalary = baseSalary + total;
+        // Mapnya berfungsi untuk hilangkan data field category dari setiap data
+        const dataAllowance = data.filter(item => item.category === 'allowance').map(({ category, ...rest }) => rest);
+        const dataDeduction = data.filter(item => item.category === 'deduction').map(({ category, ...rest }) => rest);
+        // update data salariesnya
+        const dataSave = {
+            employeeId: id,
+            employeeName: dataRekap.details.fullName,
+            accountData: {
+                name: dataRekap.accountNumberName,
+                accountNumber: dataRekap.accountNumber,
+                bank: dataRekap.accountNumberBank
+            },
+            month,
+            year,
+            baseSalary,
+            totalSalary,
+            totalDeduction,
+            totalAllowance,
+            allowances: dataAllowance,
+            deductions: dataDeduction,
+            status: dataSalaries.status,
+        }
+        return Salaries.update({_id: idSalaries}, {
+            $set: dataSave,
+            $unset: {
+                isAction: "",
+                isActionType: ""
+            }
+        });
+    },
 })

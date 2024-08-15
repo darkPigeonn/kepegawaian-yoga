@@ -481,6 +481,18 @@ FlowRouter.route("/payroll/detail/:_id", {
     this.render("App_body", "detailPayroll");
   },
 });
+FlowRouter.route("/payroll/requestAction", {
+  name: "requestActionPayroll",
+  action() {
+    this.render("App_body", "requestActionPayroll");
+  }
+});
+FlowRouter.route("/payroll/edit/:_id", {
+  name: "editPayroll",
+  action() {
+    this.render("App_body", "editPayroll")
+  }
+})
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {

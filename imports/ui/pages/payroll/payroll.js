@@ -107,15 +107,41 @@ Template.listPayroll.events({
             }
         })
     },
+    "click .btn-delete"(e, t) {
+        e.preventDefault();
+        const id = e.target.getAttribute('milik');
+        Swal.fire({
+            title: "Konfirmasi Hapus",
+            text: "Apakah anda yakin ingin menghapus slip gaji ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if(result.isConfirmed) {
+                Meteor.call("payroll.delete", id, function(error, result) {
+                    if(result) {
+                        successAlert("Slip gaji berhasil dihapus")
+                        location.reload()
+                    }
+                    else {
+                        console.log(error);
+                        failAlert("Slip gaji gagal dihapus")
+                    }
+                })
+            }
+        })
+    }
 })
 
 Template.detailPayroll.onCreated(function() {
     const self = this;
     self.dataSalarie = new ReactiveVar();
+    self.fillReason = new ReactiveVar(false);
+    self.request = new ReactiveVar();
     const id = FlowRouter.getParam("_id");
     Meteor.call("payroll.getDetail", id, function (error, result) {
         if (result) {
-            console.log(result);
             self.dataSalarie.set(result)
         }
         else {
@@ -128,6 +154,12 @@ Template.detailPayroll.helpers({
     dataSalarie() {
         return Template.instance().dataSalarie.get();
     },
+    fillReason() {
+        return Template.instance().fillReason.get();
+    },
+    request() {
+        return Template.instance().request.get();
+    }
 }) 
 
 Template.detailPayroll.events({
@@ -150,6 +182,42 @@ Template.detailPayroll.events({
                     else {
                         console.log(error);
                         failAlert(error)
+                    }
+                })
+            }
+        })
+    },
+    "click #btn-request"(e, t) {
+        const request = e.target.getAttribute('milik')
+        t.fillReason.set(true);
+        t.request.set(request)
+    },
+    "click #btn-send"(e, t) {
+        Swal.fire({
+            title: "Konfirmasi Permintaan",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "ya",
+            cancelButtonText: "Tidak",
+            text: `Apakah anda yakin ingin melakukan permintaan ${t.request.get()} slip gaji?`,
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const id = FlowRouter.getParam("_id")
+                const reason = $("#input-reason").val();
+                const data = {
+                    id,
+                    request: t.request.get(),
+                    reason
+                }
+                
+                Meteor.call("payroll.request", data, function(error, result) {
+                    if(result) {
+                        successAlert("Permintaan berhasil diajukan ke chief")
+                        history.back()
+                    }
+                    else {
+                        console.log(error);
+                        failAlert("Permintaan gagal diajukan ke chief")
                     }
                 })
             }
@@ -319,7 +387,7 @@ Template.createPayroll.events({
     "click #btn-save"(e, t) {
         e.preventDefault();
         Swal.fire({
-            title: "Warning",
+            title: "Konfirmasi",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Iya",
@@ -336,18 +404,269 @@ Template.createPayroll.events({
                 year = parseInt(year);
                 Meteor.call("payroll.createPayroll", dataSave, dataRekap, id, month, year, function (error, result) {
                     if(result) {
-                        alert("pembuatan Slip Gaji berhasil")
+                        successAlert("pembuatan Slip Gaji berhasil")
                         location.reload();
                     }
                     else{
                         if(error.error == 412) {
-                            alert(error.reason)
+                            failAlert(error.reason)
                         }
                         else {
-                            alert("Pembuatan Slip Gaji gagal");
+                            failAlert("Pembuatan Slip Gaji gagal");
                         }
                     }
                 });
+            }
+        })
+    }
+})
+
+Template.editPayroll.onCreated(function() {
+    const self = this;
+    self.dataRekap = new ReactiveVar();
+    self.pegawai = new ReactiveVar();
+    self.isEmployeeDisabled = new ReactiveVar();
+    self.isMonthDisabled = new ReactiveVar();
+    self.dataDetailSlip = new ReactiveVar([]);
+    self.btnRekap = new ReactiveVar(false);
+    self.total = new ReactiveVar(0);
+    self.totalTarifLembur = new ReactiveVar(0);
+    self.rateOvertime = new ReactiveVar(0);
+    const id = FlowRouter.getParam("_id")
+    Meteor.call("payroll.loadEdit", id, function (error, result) {
+        if(result) {
+            const persentaseKehadiran = ((result.details.totalPresensi / result.activeDayWorking)*100).toFixed(2)
+            result.persentaseKehadiran = persentaseKehadiran
+            self.dataRekap.set(result);
+            let tempTotal = 0;
+            tempTotal += result.baseSalary
+            if(result.detailSlip.length > 0) {
+                self.dataDetailSlip.set(result.detailSlip)
+                for (const iterator of result.detailSlip) {
+                    if (iterator.category == "allowance") {
+                        tempTotal += iterator.amount;
+                    } else if (iterator.category == "deduction") {
+                        tempTotal -= iterator.amount;
+                    }
+                }
+                self.total.set(tempTotal)
+            }
+        }
+        else{
+            console.log(error);
+            failAlert("Cek kembali rekap absen");
+        }
+    })
+})
+
+Template.editPayroll.helpers({
+    pegawai() {
+        return Template.instance().pegawai.get();
+    },
+    dataRekap() {
+        return Template.instance().dataRekap.get();
+    },
+    dataDetailSlip() {
+        return Template.instance().dataDetailSlip.get();
+    },
+    isEmployeeDisabled() {
+        return Template.instance().isEmployeeDisabled.get();
+    },
+    isMonthDisabled() {
+        return Template.instance().isMonthDisabled.get();
+    },
+    btnRekap() {
+        return Template.instance().btnRekap.get();
+    },
+    total() {
+        return Template.instance().total.get();
+    },
+    totalTarifLembur() {
+        return Template.instance().totalTarifLembur.get();
+    },
+    rateOvertime() {
+        return Template.instance().rateOvertime.get();
+    }
+})
+
+Template.editPayroll.events({
+    "keyup #nominal"(e, t) {
+        const idInput = $("#nominal").val();
+        e.target.value = formatRupiah(idInput, "Rp. ");
+    },
+    "input #tarifLembur"(e, t) {
+        const inputValue = Number(e.target.value);
+        t.rateOvertime.set(inputValue)
+        const dataRekap = t.dataRekap.get();
+        const totalHour = dataRekap.details.totalOvertime
+        const totalTarif = totalHour * inputValue
+        t.totalTarifLembur.set(totalTarif)
+    },
+    "click #btn-save-lembur"(e,t){
+        e.preventDefault();
+        const category = "allowance";
+        const name = `Tarif Lembur @Rp`+ formatRupiah(t.rateOvertime.get().toString());
+        const amount = t.totalTarifLembur.get();
+        const obj = {
+            category,
+            name,
+            amount
+        }
+        const dataDetailSlip = t.dataDetailSlip.get()
+        dataDetailSlip.push(obj);
+        t.dataDetailSlip.set(dataDetailSlip);
+        let gajiPokok = t.dataRekap.get();
+        let tempTotal = gajiPokok.baseSalary;
+        for (const iterator of dataDetailSlip) {
+            if (iterator.category == "allowance") {
+                tempTotal += iterator.amount;
+            } else if (iterator.category == "deduction") {
+                tempTotal -= iterator.amount;
+            }
+        }
+        t.total.set(tempTotal);
+    },
+
+    "click #btn-tambah-detail"(e, t) {
+        const dataDetailSlip = t.dataDetailSlip.get()
+        const category = $("#kategori").val();
+        const name = $("#keterangan").val();
+        let amount = convert2number($("#nominal").val());
+        const obj = {
+            category,
+            name,
+            amount
+        }
+        dataDetailSlip.push(obj);
+        t.dataDetailSlip.set(dataDetailSlip);
+        let gajiPokok = t.dataRekap.get();
+        let tempTotal = gajiPokok.baseSalary;
+
+        for (const iterator of dataDetailSlip) {
+            if (iterator.category == "allowance") {
+                tempTotal += iterator.amount;
+            } else if (iterator.category == "deduction") {
+                tempTotal -= iterator.amount;
+            }
+        }
+
+        t.total.set(tempTotal);
+    },
+    "click .btn-remove"(e, t) {
+        e.preventDefault();
+        const index = $(e.target).attr("milik");
+        let tempTotal = t.total.get();
+        let dataDetailSlip = t.dataDetailSlip.get();
+        if(index != undefined) {
+            const itemToRemove = dataDetailSlip[index];
+            if (itemToRemove.category == "allowance") {
+                tempTotal -= itemToRemove.amount;
+            } else if (itemToRemove.category == "deduction") {
+                tempTotal += itemToRemove.amount;
+            }
+            dataDetailSlip.splice(index, 1);
+        }
+        t.dataDetailSlip.set(dataDetailSlip);
+        t.total.set(tempTotal);
+    },
+    "click #btn-save"(e, t) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Konfirmasi",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+            text: "Apakah anda yakin ingin membuat slip gaji pegawai ini?",
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const dataSave = t.dataDetailSlip.get();
+                const dataRekap = t.dataRekap.get();
+                const idEmployee = dataRekap.details.userId // employee id
+                const idSalaries = FlowRouter.getParam("_id")
+                let month = dataRekap.month
+                let year = dataRekap.year
+                month = parseInt(month);
+                year = parseInt(year);
+                Meteor.call("payroll.editPayroll", dataSave, dataRekap, idEmployee, month, year, idSalaries, function (error, result) {
+                    if(result) {
+                        successAlert("Pengubahan Slip Gaji berhasil")
+                        history.back();
+                    }
+                    else{
+                        if(error.error == 412) {
+                            failAlert(error.reason)
+                        }
+                        else {
+                            failAlert("Pengubahan Slip Gaji gagal");
+                        }
+                    }
+                });
+            }
+        })
+    }
+})
+
+Template.requestActionPayroll.onCreated(function() {
+    const self = this;
+    self.dataRequest = new ReactiveVar();
+    Meteor.call("payroll.listRequest", function (error, result) {
+        if(result) {
+            self.dataRequest.set(result)
+            for (let index = 0; index < result.length; index++) {
+                const element = result[index];
+                if(element.status == 60 || element.status == 90) {
+                    element.isAction = false
+                }
+                else if(element.status == undefined || element.status == null) {
+                    element.isAction = true
+                }
+            }
+        }
+        else {
+            console.log(error);
+            failAlert("Gagal")
+        }
+    })
+})
+
+Template.requestActionPayroll.helpers({
+    dataRequest () {
+        return Template.instance().dataRequest.get();
+    }
+})
+
+Template.requestActionPayroll.events({
+    "click .btn-action" (e, t) {
+        e.preventDefault();
+        const type = e.target.getAttribute("milik")
+        let text = "";
+        if(type == "accept") text = "menerima"
+        if(type == "decline") text = "menolak"
+        Swal.fire({
+            title: "Konfirmasi",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Iya",
+            cancelButtonText: "Tidak",
+            text: `Apakah anda yakin ingin ${text} aksi slip gaji ini?`
+        }).then((result) => {
+            if(result.isConfirmed) {
+                const id = e.target.getAttribute("id")
+                const data = {
+                    id,
+                    type
+                }
+                Meteor.call("payroll.approvalActionRequest", data, function(error, result) {
+                    if(result) {
+                        successAlert(`Berhasil ${text} permintaan aksi slip gaji`)
+                        location.reload()
+                    }
+                    else {
+                        console.log(error);
+                        failAlert(`Gagal ${text} permintaan aksi slip gaji`)
+                    }
+                })
             }
         })
     }

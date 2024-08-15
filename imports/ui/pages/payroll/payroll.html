@@ -1,22 +1,23 @@
 <template name="listPayroll">
-    <div class="container">
-        <div class="mt-5">
-            <h1>Payroll</h1>
-            <div class="form-inline mt-3 d-flex align-items-center">
-                <label for="filterMonthYear" class="mr-2">Filter Bulan dan Tahun</label>
-                <input type="month" id="filterMonthYear" class="form-control mr-2">
-                <button class="btn btn-primary mr-2" id="btn-filter">Filter</button>
-                <button class="btn btn-warning" id="resetFilter">
-                    <i class="fa fa-refresh"></i>
-                </button>
-                {{#if isInRole "admin"}}
-                    <div class="ml-auto d-flex align-items-center">
-                        <button class="btn btn-primary mr-2" id="btn-publish-monthly">Publish Payroll Bulanan</button>
-                        <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
-                    </div>
-                {{/if}}
-            </div>
-        </div>        
+    <div class="page">
+        <h1>Payroll</h1>
+        <div class="form-inline mt-3 d-flex align-items-center">
+            <label for="filterMonthYear" class="mr-2">Filter Bulan dan Tahun</label>
+            <input type="month" id="filterMonthYear" class="form-control mr-2">
+            <button class="btn btn-primary mr-2" id="btn-filter">Filter</button>
+            <button class="btn btn-warning" id="resetFilter">
+                <i class="fa fa-refresh"></i>
+            </button>
+            {{#if isInRole "admin, chief"}}
+                <div class="ml-auto d-flex align-items-center">
+                    {{#if isInRole "chief"}}
+                        <a href="/payroll/requestAction" class="btn btn-primary mr-2">Permintaan Aksi</a>
+                    {{/if}}
+                    <button class="btn btn-primary mr-2" id="btn-publish-monthly">Publish Payroll Bulanan</button>
+                    <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
+                </div>
+            {{/if}}
+        </div>    
         
         <div class="d-lg-block table-responsive">
             <table class="table">
@@ -61,12 +62,40 @@
                                 {{/if}}
                             </td>
                             <td>
+                                {{#if equals i.salaries.status 10}}
+                                    <a href="/payroll/edit/{{i.salaries._id}}" class="btn btn-primary btn-edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                {{/if}}
+                                {{#if equals i.salaries.status 60}}
+                                    {{#if equals i.salaries.isAction true}}
+                                        {{#if equals i.salaries.isActionType "edit"}}
+                                            <a href="/payroll/edit/{{i.salaries._id}}" class="btn btn-primary btn-edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
                                 {{#if i.salaries}}
-                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-primary btn-detail">
+                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-warning btn-detail">
                                     <i class="fa fa-eye btn-detail"></i></a>
                                 {{else}}
-                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn-primary btn-detail" style="pointer-events: none; cursor: not-allowed; background-color:gray ;">
+                                    <a href="/payroll/detail/{{i.salaries._id}}" class="btn btn btn-detail" style="pointer-events: none; cursor: not-allowed; background-color:gray ;">
                                     <i class="fa fa-eye btn-detail"></i></a>
+                                {{/if}}
+                                {{#if equals i.salaries.status 10}}
+                                    <button class="btn btn-danger btn-delete" milik="{{i.salaries._id}}">
+                                        <i class="fa fa-trash btn-delete"></i>
+                                    </button>
+                                {{/if}}
+                                {{#if equals i.salaries.status 60}}
+                                    {{#if equals i.salaries.isAction true}}
+                                        {{#if equals i.salaries.isActionType "delete"}}
+                                            <button class="btn btn-danger btn-delete" milik="{{i.salaries._id}}">
+                                                <i class="fa fa-trash btn-delete"></i>
+                                            </button>
+                                        {{/if}}
+                                    {{/if}}
                                 {{/if}}
                             </td>
                         </tr>
@@ -157,9 +186,29 @@
                 <hr>
                 <p><strong>Dibuat Pada Tanggal:</strong> {{formatHRDate createdAt}}</p>
             </div>
-            {{#if equals dataSalarie.status 10}}
+            {{#if equals dataSalarie.isRequesting true}}
+                <h3> Anda sudah meminta pengajuan permintaaan {{dataSalarie.isRequestingType}} slip gaji ini</h3>
+            {{else}}
+                {{#if equals dataSalarie.status 10}}
                 <button class="btn btn-primary" id="btn-publish">Publish Slip Gaji</button>
-            {{/if}}
+                {{/if}}
+                {{#if equals dataSalarie.status 60}}
+                    <button class="btn btn-warning" id="btn-request" milik="edit">Ajukan Permintaan Pengubahan</button>
+                    <br>
+                    <button class="btn btn-danger" id="btn-request" milik="delete">Ajukan Permintaan Penghapusan</button>
+                {{/if}}
+                {{#if equals fillReason true}}
+                    {{#if equals request "delete"}}
+                        <label class="mt-3">Alasan Permintaan Penghapusan</label>
+                        <input type="text" id="input-reason">
+                    {{/if}}
+                    {{#if equals request "edit"}}
+                        <label class="mt-3">Alasan Permintaan Pengubahan</label>
+                        <input type="text" id="input-reason">
+                    {{/if}}
+                    <button class="btn btn-primary mt-2" id="btn-send">Ajukan</button>
+                {{/if}}
+            {{/if}}  
         </div>
     </div>
 </template>
@@ -336,4 +385,213 @@
     {{else}}
         <h3>Anda tidak memiliki akses</h3>
     {{/if}}
+</template>
+
+<template name="editPayroll">
+    {{#if isInRole "admin"}}
+        <div class="container">
+            <div class="section-title-page">
+                <h3>Ubah Slip Gaji</h3>
+            </div>
+            <div class="section-content-page">
+                <div class="page">
+                    <div class="attendance-info mt-3 border p-3">
+                        <div class="d-flex justify-content-between">
+                            <div>Hadir: <span id="hadir">{{dataRekap.details.totalPresensi}}</span></div>
+                            <div>Ijin: <span id="ijin">{{dataRekap.details.permit}}</span></div>
+                            <div>Alpha: <span id="alpha">{{dataRekap.details.dafOf}}</span></div>
+                            <div>Tidak Hadir: <span id="tidakHadir">{{dataRekap.details.absence}}</span></div>
+                            <div>H-efektif: <span id="h-efektif">{{dataRekap.activeDayWorking}}</span></div>
+                            <div>% Hadir: <span id="persen-hadir">{{dataRekap.persentaseKehadiran}}</span></div>
+                        </div>
+                    </div>
+                    <br>
+                    <h5>Gaji Pokok : {{formatRp dataRekap.baseSalary}}</h5>
+                    <h5>Rekening : {{dataRekap.accountNumberBank}} / {{dataRekap.accountNumber}} a.n. {{dataRekap.accountNumberName}}</h5>
+                    <hr style="border-top: 2px solid black;">
+                    <div class="form-actions">
+                        <h4>Masukkan Detail Slip Gaji</h4>
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <select class="form-control" id="kategori">
+                                    <optgroup label="Kategori">
+                                        <option value="allowance">Tunjangan</option>
+                                        <option value="deduction">Deduksi</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="keterangan" placeholder="Keterangan">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="nominal" placeholder="Nominal">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" id="btn-tambah-detail">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {{#if dataDetailSlip}}
+                        <h4>Daftar Detail Slip Gaji</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>Kategori</th>
+                                    <th>Keterangan</th>
+                                    <th>Nominal</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataDetailSlip}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{#if equals i.category 'allowance'}}
+                                                Tunjangan
+                                            {{else}}
+                                                Deduksi
+                                            {{/if}}
+                                        </td>
+                                        <td>{{i.name}}</td>
+                                        <td>{{formatRp i.amount}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" id="btn-remove" milik={{@index}}>
+                                                <i class="fa fa-trash btn-remove" milik={{@index}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                    <tr>
+                                        <td colspan="3" style="font-weight: bold;">
+                                            Total
+                                        </td>
+                                        <td colspan="2">
+                                            <b>{{formatRp total}}</b>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+
+                    {{#if dataRekap.overtimeList}}
+                        <h4>Daftar Lembur</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>Hari Lembur</th>
+                                    <th>Durasi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataRekap.overtimeList}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{formatHRDate i.startDatePermit}}
+                                        </td>
+                                        <td>{{i.duration}} Jam</td>
+                                    </tr>
+                                    {{/each}}
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Total Durasi
+                                        </td>
+                                        <td colspan="1">
+                                            <b>{{dataRekap.details.totalOvertime}} Jam</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Tarif / Jam
+                                        </td>
+                                        <td colspan="1">
+                                            <input type="number" class="form-control" id="tarifLembur" placeholder="Tarif">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="font-weight: bold;">
+                                            Total Tarif Lembur
+                                        </td>
+                                        <td colspan="1">
+                                            {{formatRp totalTarifLembur}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-primary" id="btn-save-lembur">Tambahkan Lembur Ke Detail</button>
+                    {{/if}}
+                    <br><br>
+                    <div class="form-actions">
+                        <button class="btn btn-primary w-100" id="btn-save">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <h3>Anda tidak memiliki akses</h3>
+    {{/if}} 
+</template>
+
+<template name="requestActionPayroll">
+    <h1>Daftar Permintaan Aksi Slip Gaji</h1>
+    <div class="d-lg-block table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama Pegawai</th>
+                    <th scope="col">Tipe</th>
+                    <th scope="col">Alasan</th>
+                    <th scope="col">Tanggal Dibuat</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each i in dataRequest}}
+                    <tr>
+                        <td>
+                            {{setTableNumber @index}}
+                        </td>
+                        <td>
+                            {{i.employeeName}}
+                        </td>
+                        <td>
+                            {{capitalizeWord i.type}}
+                        </td>
+                        <td>
+                            {{capitalizeWord i.reason}}
+                        </td>
+                        <td>
+                            {{formatHRDate i.createdAt}}
+                        </td>
+                        <td>
+                            {{#if equals i.isAction true}}
+                                <button class="btn btn-primary btn-action" milik="accept" id="{{i._id}}">
+                                <i class="fa fa-check"></i> 
+                                </button>
+                                <button class="btn btn-danger btn-action" milik="decline" id="{{i._id}}">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            {{else}}
+                                <button class="btn btn-primary btn-action" milik="accept" disabled>
+                                    <i class="fa fa-check btn-action" milik="accept" disabled></i> 
+                                    </button>
+                                    <button class="btn btn-danger btn-action" milik="decline" disabled>
+                                        <i class="fa fa-times btn-action" milik="decline" disabled></i>
+                                    </button>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
 </template>
