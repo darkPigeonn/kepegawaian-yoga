@@ -214,16 +214,16 @@ Meteor.methods({
         return AppUsers.find({outlets: partnerCode}).fetch()
     },
 
-    async "users.updateProfileIdAppUser"(data){
+    "users.updateProfileIdAppUser"(data){
         console.log(data);
-
+        // data = idEmployee, emailEmployee, idAppUser, emailAppUser, yang terpakai hanya idEmployee dan idAppUser
         for (const iterator of data) {
             const objectIdString = iterator.idAppUser.toString().slice(10, -2);
             const objectId = new Meteor.Collection.ObjectID(objectIdString);
-            let getEmployee = await Employee.findOne({_id: iterator.idEmployee});
-            const cek = await AppUsers.findOne({_id : objectId});
+            let getEmployee = Employee.findOne({_id: iterator.idEmployee});
+            const cek = AppUsers.findOne({_id : objectId});
             const objectIdProfile = new Meteor.Collection.ObjectID(cek.profileId);
-            const getAppProfiles = await AppProfiles.findOne({_id: objectIdProfile});
+            const getAppProfiles = AppProfiles.findOne({_id: objectIdProfile});
             const oldIdProfile = getAppProfiles._id.toString().slice(10, -2);
             delete getAppProfiles._id;
             getEmployee = { ...getEmployee, ...getAppProfiles };
@@ -234,9 +234,9 @@ Meteor.methods({
                 getEmployee.isUpdated = false;
             }
 
-            if(!getEmployee.isUpdated){
+            if(getEmployee.isUpdated == false){
                 getEmployee.isUpdated = true;
-                const updateEmployee = await Employee.update({
+                const updateEmployee = Employee.update({
                     _id: iterator.idEmployee
                 },
                 {
@@ -249,9 +249,9 @@ Meteor.methods({
         for (const iterator of data) {
             const objectIdString = iterator.idAppUser.toString().slice(10, -2);
             const objectId = new Meteor.Collection.ObjectID(objectIdString);
-            const cek = await AppUsers.findOne({_id : objectId});
+            const cek = AppUsers.findOne({_id : objectId});
 
-            const makeOldIdProfile = await AppUsers.update({
+            const makeOldIdProfile = AppUsers.update({
                 _id: objectId
             },
             {
@@ -268,7 +268,7 @@ Meteor.methods({
                 console.log(iterator.idEmployee);
                 const objectIdString = iterator.idAppUser.toString().slice(10, -2);
                 const objectId = new Meteor.Collection.ObjectID(objectIdString);
-                const updateProfileId = await AppUsers.update({
+                const updateProfileId = AppUsers.update({
                     _id : objectId
                 },
                 {
