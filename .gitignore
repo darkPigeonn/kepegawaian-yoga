@@ -3,5 +3,6 @@ settings.json
 .deploy/
 .deploy-imavi/
 .deploy-siter/
+.deploy-ppdb/
 
 .deploy*

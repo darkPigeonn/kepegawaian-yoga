@@ -1,7 +1,8 @@
 module.exports = {
   servers: {
     one: {
-      host: "188.166.229.238",
+      // host: "188.166.229.238",
+      host: "146.190.103.40",
       username: "root",
       pem: "~/.ssh/id_rsa",
       opts: {
