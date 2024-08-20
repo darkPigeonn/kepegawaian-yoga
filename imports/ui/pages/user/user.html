@@ -90,6 +90,7 @@
 
             <div class="form-group">
                 <label for="input_school">Sekolah</label>
+                <span style="font-size: 11px;"><i>*Kosongkan jika akun bukan untuk admin sekolah</i></span>
                 <select id="input_school" class="form-control select2" style="max-width: auto;">
                     <option value="0">-- Silahkan Pilih Sekolah --</option>
                     {{#each schools}}
@@ -97,10 +98,21 @@
                     {{/each}}
                 </select>
             </div>
+            <div class="form-group">
+                <label for="input_unit">Perwakilan</label>
+                <span style="font-size: 11px;"><i>*Kosongkan jika akun bukan untuk admin perwakilan</i></span>
+                <select id="input_unit" class="form-control" style="max-width: auto;">
+                    <option value="0">-- Silahkan Pilih Perwakilan --</option>
+                    {{#each units}}
+                    <option value="{{_id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
 
             <div class="form-group">
                 <label>Akses</label>
-               <select id="input_roles" class="form-control" style="max-width: auto;">
+                <select id="input_roles" class="form-control" style="max-width: auto;">
+                    <option value="adminPpdbPerwakilan">Admin PPDB Perwakilan</option>
                     <option value="adminPpdbSchool">Admin PPDB Sekolah</option>
                 </select>
             </div>

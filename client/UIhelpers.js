@@ -374,9 +374,13 @@ Template.registerHelper("lenghtBool", function (data) {
   }
   return false;
 });
-Template.registerHelper("getLength", function(data){
-  return data.length
-})
+Template.registerHelper("getLength", function (data) {
+  return data.length;
+});
+
+Template.registerHelper("getLabelNationality", function (data) {
+  return data.includes("indo") ? "Indonesia" : data;
+});
 
 function convertTanggal(tanggal) {
   // Mengonversi bulan dari teks ke angka

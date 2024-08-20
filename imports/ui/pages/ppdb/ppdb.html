@@ -30,6 +30,9 @@
           <th>Nama</th>
           <th>Tanggal Lahir | Umur</th>
           <th>Tanggal Daftar</th>
+          {{#if isInRole 'superadmin,adminPpdbYayasan,adminPpdbPerwakilan'}}
+          <th>Sekolah</th>
+          {{/if}}
           <th>Status</th>
           <th>Aksi</th>
         </thead>
@@ -49,6 +52,9 @@
             <td>
               {{formatHRDate createdAt}}
             </td>
+            {{#if isInRole 'superadmin,adminPpdbYayasan,adminPpdbPerwakilan'}}
+            <td>{{schoolName}}</td>
+            {{/if}}
             <td>
               {{statusPpdb status}}
             </td>
@@ -493,7 +499,19 @@
     </nav>
     <div class="page-content">
       <div class="card">
+
+        {{#if registran.spoUploaded}}
+        {{#if greaterThan registran.status 50}}
         {{> alertDiv status=registran.status reason=registran.reason}}
+        {{else}}
+        <div class="alert alert-success" role="alert">
+          SPO Sudah diunggah , silahkan melakukan verifikasi!
+          <button class="btn btn-primary btn-view-spo">Lihat SPO</button>
+        </div>
+        {{/if}}
+        {{else}}
+        {{> alertDiv status=registran.status reason=registran.reason}}
+        {{/if}}
         <div class="row">
           <div class="col-4">
             <div class="img-rounded ml-2">
@@ -636,11 +654,11 @@
                 </tr>
                 <tr>
                   <td>Kewarganegaraan</td>
-                  <td>{{registran.father.nationality}}</td>
+                  <td>{{getLabelNationality registran.father.nationality}}</td>
                 </tr>
                 <tr>
                   <td>Pendidikan Terakhir</td>
-                  <td>{{registran.father.lastEducation}}</td>
+                  <td>{{ registran.father.lastEducation}}</td>
                 </tr>
                 <tr>
                   <td>Pekerjaan</td>
@@ -679,7 +697,7 @@
                 </tr>
                 <tr>
                   <td>Kewarganegaraan</td>
-                  <td>{{registran.mother.nationality}}</td>
+                  <td>{{getLabelNationality registran.mother.nationality}}</td>
                 </tr>
                 <tr>
                   <td>Pendidikan Terakhir</td>
@@ -699,6 +717,7 @@
                 </tr>
               </table>
             </div>
+            {{#if registran.wali.fullName}}
             <div class="col-6">
               <div class="card-title">
                 Data Wali
@@ -742,10 +761,51 @@
                 </tr>
               </table>
             </div>
+            {{/if}}
           </div>
 
         </div>
       </div>
+
+
+      {{#if registran.spoUploaded}}
+      <div class="card" id="viewSpo">
+        <div class="card-header">
+          Data SPO
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <th>Nama Unggahan</th>
+              <th>Detail Unggahan</th>
+            </thead>
+            <tbody>
+              {{#each item in registran.spoUploaded}}
+              {{#each item}}
+              <tr>
+                <td>
+                  {{nama}}
+                </td>
+                <td>
+                  {{#if uploaded}}
+                  {{> fancyBox url=uploaded class='img-preview'}}
+                  {{else}}
+                  Tidak ada unggahan
+                  {{/if}}
+                </td>
+              </tr>
+              {{/each}}
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        {{#if registran.spoVerified}}
+        <h3 class="text-center">Sudah Terverifikasi</h3>
+        {{else}}
+        <button class="btn btn-primary btn-verified-spo" milik="{{toMeteorId registran._id}}">Terima SPO</button>
+        {{/if}}
+      </div>
+      {{/if}}
       <div class="card">
         <div class="card-header">
           Data Unggahan

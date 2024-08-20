@@ -54,15 +54,13 @@
 
   <div class="container">
     <!-- summary pegawai , perwakilan, sekolah -->
-    {{#if isInRole 'superadmin, adminPpdbYayasan'}}
+    {{#if isInRole 'superadmin, adminPpdbYayasan, adminPpdbPerwakilan'}}
     {{> home_admin}}
     {{else}}
     {{> home_admin_school}}
     {{/if}}
   </div>
 </template>
-
-
 <template name="home_admin">
   <div class="page ">
     <div class="container-fluid mt-5 page-content">
@@ -267,11 +265,12 @@
     }
   </style>
 </template>
+
 <template name="home_admin_school">
   <div class="page ">
     <div class="container-fluid mt-5 page-content">
       <div class="d-flex justify-content-between">
-        <h5>Halo, Admin</h5>
+        <h5>Halo, {{thisUser.schoolName}}</h5>
         <h5>{{formatHRDate today}}</h5>
       </div>
       <hr>

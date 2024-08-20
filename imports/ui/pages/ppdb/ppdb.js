@@ -20,6 +20,7 @@ Template.pagePpdb.onCreated(function () {
   this.perPage = 10; // Jumlah data per halaman
   self.students = new ReactiveVar([]);
   self.totalStudents = new ReactiveVar(0);
+
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
@@ -69,23 +70,29 @@ Template.pagePpdb.events({
     const pageNumber = parseInt(event.target.getAttribute("data-page"));
     template.currentPage.set(pageNumber);
   },
-  "change #filter-status"(e,t){
+  "change #filter-status"(e, t) {
     e.preventDefault();
     const currentPage = t.currentPage.get();
-    const perPage = 10
-    const status = e.target.value
+    const perPage = 10;
+    const status = e.target.value;
 
-    Meteor.call("ppdb-school-getAll-status", currentPage, perPage, status, (error, result) => {
-      if (error) {
-        console.error("Error while fetching students:", error);
-        exitPreloader();
-      } else {
-        t.students.set(result.registrans);
-        t.totalStudents.set(result.totalRegistrans);
-        exitPreloader();
+    Meteor.call(
+      "ppdb-school-getAll-status",
+      currentPage,
+      perPage,
+      status,
+      (error, result) => {
+        if (error) {
+          console.error("Error while fetching students:", error);
+          exitPreloader();
+        } else {
+          t.students.set(result.registrans);
+          t.totalStudents.set(result.totalRegistrans);
+          exitPreloader();
+        }
       }
-    });
-  }
+    );
+  },
 });
 
 // <-- virtual account -->
@@ -454,6 +461,43 @@ Template.detailRegistran.events({
         .scrollIntoView({ behavior: "smooth" });
     }, 500);
   },
+  "click .btn-view-spo"(e, t) {
+    e.preventDefault();
+
+    setTimeout(() => {
+      document.getElementById("viewSpo").scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "click .btn-verified-spo"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima spo ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-accepted-spo", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
   "click .btn-accepted"(e, t) {
     e.preventDefault();
     startPreloader();
@@ -796,7 +840,7 @@ Template.cicilanRegistran.events({
 
     Swal.fire({
       title: "Konfirmasi Pengkuncian",
-      text: "Penguncian ini akan memembuka pembayaran cicilan untuk CSB & Tidak bisa dibuka kembali, apakah anda yakin?",
+      text: "Penguncian ini akan membuka pembayaran cicilan untuk CSB & Tidak bisa dibuka kembali, apakah anda yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
@@ -1035,7 +1079,6 @@ Template.pageVa.events({
   },
 });
 
-
 Template.pagePpdbSchool.onCreated(function () {
   const self = this;
   startPreloader();
@@ -1046,35 +1089,40 @@ Template.pagePpdbSchool.onCreated(function () {
   this.perPage = 10; // Jumlah data per halaman
   self.students = new ReactiveVar([]);
   self.totalStudents = new ReactiveVar(0);
-  self.thisSchool = new ReactiveVar()
+  self.thisSchool = new ReactiveVar();
   this.autorun(() => {
     const currentPage = this.currentPage.get();
     const perPage = this.perPage;
 
-    Meteor.call("ppdb-school-getAll-bySchool", currentPage, perPage,schoolId, (error, result) => {
-      if (error) {
-        console.error("Error while fetching students:", error);
-        exitPreloader();
-      } else {
-        console.log(result);
+    Meteor.call(
+      "ppdb-school-getAll-bySchool",
+      currentPage,
+      perPage,
+      schoolId,
+      (error, result) => {
+        if (error) {
+          console.error("Error while fetching students:", error);
+          exitPreloader();
+        } else {
+          console.log(result);
 
-        self.students.set(result.registrans);
-        self.totalStudents.set(result.totalRegistrans);
-        exitPreloader();
+          self.students.set(result.registrans);
+          self.totalStudents.set(result.totalRegistrans);
+          exitPreloader();
+        }
       }
-    });
+    );
   });
 
-  Meteor.call("school.getBy", schoolId, function(error, result){
-    if(error){
+  Meteor.call("school.getBy", schoolId, function (error, result) {
+    if (error) {
       console.log(error);
-
-    }else{
+    } else {
       console.log(result);
 
       self.thisSchool.set(result);
     }
-  })
+  });
 });
 Template.pagePpdbSchool.helpers({
   totalStudents: function () {
@@ -1102,9 +1150,9 @@ Template.pagePpdbSchool.helpers({
     const perPage = template.perPage;
     return (currentPage - 1) * perPage + index + 1;
   },
-  thisSchool(){
+  thisSchool() {
     return Template.instance().thisSchool.get();
-  }
+  },
 });
 Template.pagePpdbSchool.events({
   "click .page-link"(event, template) {
@@ -1112,21 +1160,27 @@ Template.pagePpdbSchool.events({
     const pageNumber = parseInt(event.target.getAttribute("data-page"));
     template.currentPage.set(pageNumber);
   },
-  "change #filter-status"(e,t){
+  "change #filter-status"(e, t) {
     e.preventDefault();
     const currentPage = t.currentPage.get();
-    const perPage = 10
-    const status = e.target.value
+    const perPage = 10;
+    const status = e.target.value;
 
-    Meteor.call("ppdb-school-getAll-status", currentPage, perPage, status, (error, result) => {
-      if (error) {
-        console.error("Error while fetching students:", error);
-        exitPreloader();
-      } else {
-        t.students.set(result.registrans);
-        t.totalStudents.set(result.totalRegistrans);
-        exitPreloader();
+    Meteor.call(
+      "ppdb-school-getAll-status",
+      currentPage,
+      perPage,
+      status,
+      (error, result) => {
+        if (error) {
+          console.error("Error while fetching students:", error);
+          exitPreloader();
+        } else {
+          t.students.set(result.registrans);
+          t.totalStudents.set(result.totalRegistrans);
+          exitPreloader();
+        }
       }
-    });
-  }
+    );
+  },
 });

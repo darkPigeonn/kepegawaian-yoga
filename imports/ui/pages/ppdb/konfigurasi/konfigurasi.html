@@ -265,7 +265,7 @@
     </div>
   </div>
   {{else}}
-  No
+  <center>Maaf , Anda belum memiliki akses</center>
   {{/if}}
 </template>
 
@@ -276,7 +276,12 @@
 
       {{#if isActiveGel}}
       <div class="alert alert-success" role="alert">
-        Gelombang yang aktif : {{isActiveGel.name}}
+        Gelombang yang aktif :
+        <ul>
+          {{#each isActiveGel}}
+          <li>{{name}}</li>
+          {{/each}}
+        </ul>
       </div>
       {{else}}
       <div class="alert alert-danger" role="alert">
@@ -299,6 +304,7 @@
           <th>Nama Gelombang</th>
           <th>Kode Gelombang</th>
           <th>Status</th>
+          <th>Va Status</th>
           <th>Aksi</th>
         </thead>
         <tbody>
@@ -308,6 +314,13 @@
             <td>{{name}}</td>
             <td>{{code}}</td>
             <td>{{#if status}}Aktif{{else}}Non Aktif{{/if}}</td>
+            <td>
+              {{#if haveVa}}
+              VA Belum Aktif : {{vaDeActivated}} | Va Aktif : {{vaActivated}} | Va Terpakai : {{vaUsed}}
+              {{else}}
+              Belum Ada VA
+              {{/if}}
+            </td>
             <td>
               <label class="switch">
                 {{#if status}}
@@ -325,7 +338,7 @@
           {{/each}}
         </tbody>
       </table>
-      {{> c_modal title='Tambah Periode Tahun Ajaran' idModal="addModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm" type="modal-xl"}}
+      {{> c_modal title='Tambah Gelombang' idModal="addModalGelombang" bodyTemplate="formAddGelombang"  formId="addForm" type="modal-xl"}}
     </div>
   </div>
 </template>

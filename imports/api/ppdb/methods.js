@@ -26,7 +26,13 @@ Meteor.methods({
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
-    if (!Roles.userIsInRole(thisUser, ["adminPpdbYayasan", "superadmin"])) {
+    if (
+      !Roles.userIsInRole(thisUser, [
+        "adminPpdbYayasan",
+        "superadmin",
+        "adminPpdbPerwakilan",
+      ])
+    ) {
       throw new Meteor.Error(404, "No Access");
     }
 
@@ -34,23 +40,30 @@ Meteor.methods({
     const thisPeriode = PeriodePpdb.findOne({ status: true });
 
     //get registran
-    const thisRegistran = Registrans.find(
-      {
-        periodeStudi: thisPeriode._id,
+    let filter = {
+      periodeStudi: thisPeriode._id,
+    };
+    if (Roles.userIsInRole(thisUser, ["adminPpdbPerwakilan"])) {
+      filter.unitId = thisUser.unitId;
+    }
+    const thisRegistran = Registrans.find(filter, {
+      sort: {
+        registrationNumber: 1,
       },
-      {
-        sort: {
-          registrationNumber: 1,
-        },
-      }
-    ).fetch();
+    }).fetch();
 
     const registranDahboard = {
       totalRegistrans: thisRegistran.length,
       listRegistrans: thisRegistran.slice(0, 5),
     };
     //get va
-    const vaList = VirtualAccounts.find({ periodeId: thisPeriode._id }).fetch();
+    let filterVa = {
+      periodeId: thisPeriode._id,
+    };
+    if (Roles.userIsInRole(thisUser, ["adminPpdbPerwakilan"])) {
+      filterVa.unitId = thisUser.unitId;
+    }
+    const vaList = VirtualAccounts.find(filterVa).fetch();
     const vaDashboard = {
       totalVa: vaList.filter((item) => item.status == 10).length,
       totalVaUsed: vaList.filter((item) => item.status >= 20).length,
@@ -65,6 +78,29 @@ Meteor.methods({
     }
 
     return PeriodePpdb.findOne({ status: true });
+  },
+  "ppdb-school-getAll"(pageNum, perPage) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    const skip = (pageNum - 1) * perPage;
+    let filter = {};
+    if (Roles.userIsInRole(thisUser, ["adminPpdbPerwakilan"])) {
+      filter.unitId = thisUser.unitId;
+    }
+    if (Roles.userIsInRole(thisUser, ["adminPpdbSchool"])) {
+      filter.schoolId = thisUser.schoolId;
+    }
+    return {
+      registrans: Registrans.find(filter, {
+        limit: perPage,
+        skip,
+        sort: { createdAt: -1 },
+      }).fetch(),
+      totalRegistrans: Registrans.find().count(),
+    };
   },
   "ppdb-school-getAll-bySchool"(pageNum, perPage, schoolId) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -350,6 +386,48 @@ Meteor.methods({
       status,
     };
     return Registrans.update({ _id: idObjet }, { $set: updatedData });
+    // return RegistransFinal.update({ _id: formFinalId }, { $set: updatedData });
+  },
+  async "ppdb-accepted-spo"(id) {
+    check(id, String);
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const idObjet = new Meteor.Collection.ObjectID(id);
+
+    const thisRegistran = await Registrans.findOne({ _id: idObjet });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data tidak ditemukan");
+    }
+    const formFinalId = new Meteor.Collection.ObjectID(
+      thisRegistran.finalFormId
+    );
+    // const thisRegistran = await RegistransFinal.findOne(formFinalId);
+    // if (!thisRegistransFinal) {
+    //   throw new Meteor.Error(404, "Data tidak ditemukan(2)");
+    // }
+    const tempNotif = {
+      senderId: thisUser._id,
+      receiverId: thisRegistran.createdBy,
+      message: `SPO anda untuk  ${thisRegistran.fullName} sudah terverifikasi`,
+      createdAt: new Date(),
+      createdBy: thisUser._id,
+      timestamp: new Date(),
+    };
+
+    Notifications.insert(tempNotif);
+    return Registrans.update(
+      { _id: idObjet },
+      {
+        $set: {
+          status: 51,
+          spoVerified: true,
+          spoVerifiedAt: new Date(),
+          spoVerifiedBy: thisUser._id,
+        },
+      }
+    );
     // return RegistransFinal.update({ _id: formFinalId }, { $set: updatedData });
   },
   async "ppdb-rejected-student"(id, reason) {
@@ -827,7 +905,32 @@ Meteor.methods({
       throw new Meteor.Error(404, "No School Founded");
     }
 
-    return Gelombangs.find({ schoolId: thisSchool._id }).fetch();
+    let gelombangs = await Gelombangs.find({
+      schoolId: thisSchool._id,
+    }).fetch();
+
+    gelombangs.map((item) => {
+      //get va
+      const va = VirtualAccounts.find({ configId: item._id }).fetch();
+      if (va.length > 0) {
+        item.haveVa = true;
+        item.vaDeActivated =
+          va.filter((x) => {
+            return x.status == 0;
+          }).length ?? 0;
+        item.vaActivated =
+          va.filter((x) => {
+            return x.status == 10;
+          }).length ?? 0;
+        item.vaUsed =
+          va.filter((x) => {
+            return x.status == 20;
+          }).length ?? 0;
+      } else {
+        item.haveVa = false;
+      }
+    });
+    return gelombangs;
   },
   async "getAll-gelombang-bySchoolId"(schoolId) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -835,7 +938,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
 
-    return Gelombangs.find({ schoolId: schoolId }).fetch();
+    return Gelombangs.find({ schoolId: schoolId, status: true }).fetch();
   },
   async "aktivated-gelombang"(id, status) {
     check(id, String);
@@ -1172,6 +1275,11 @@ Meteor.methods({
               }
             );
           }
+          let status = 20;
+          //cek va nya
+          if (registran.status > 20) {
+            status = 60;
+          }
           //5. update form
           Registrans.update(
             {
@@ -1183,7 +1291,7 @@ Meteor.methods({
                 updatedAt: new Date(),
                 updatedBy: thisUser._id,
                 note: item.note,
-                status: 20,
+                status,
               },
             }
           );
@@ -1399,7 +1507,9 @@ Meteor.methods({
           data: {},
         }
       );
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
 
     const wawancara = {
       interview: {
@@ -1430,15 +1540,22 @@ Meteor.methods({
     if (!thisUser) {
       throw new Meteor.Error(403, "Forrbiden");
     }
+    const thisPeriode = PeriodePpdb.findOne({ status: true });
+    let filter = {
+      periodeStudi: thisPeriode._id,
+    };
+
+    if (Roles.userIsInRole(thisUser, ["adminPpdbPerwakilan"])) {
+      filter.unitId = thisUser.unitId;
+    }
+
     const pipeline = [
       {
         $match:
           /**
            * query: The query in MQL.
            */
-          {
-            periodeStudi: "HfMszDwqCmN433ZLp",
-          },
+          filter,
       },
       {
         $project:
@@ -1570,7 +1687,7 @@ Meteor.methods({
             },
           },
       },
-    ]
+    ];
     return Registrans.aggregate(pipeline);
   },
 });

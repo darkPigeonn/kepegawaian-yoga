@@ -66,29 +66,27 @@ Template.home_admin.onCreated(function () {
       exitPreloader();
     }
   });
-  self.listPpdb = new ReactiveVar()
-  Meteor.call("getPpdbSchool", function(error, result){
-    if(error){
+  self.listPpdb = new ReactiveVar();
+  Meteor.call("getPpdbSchool", function (error, result) {
+    if (error) {
       console.log(error);
-
-    }else{
+    } else {
       console.log(result);
 
-      self.listPpdb.set(result)
+      self.listPpdb.set(result);
     }
-  })
+  });
 });
 Template.home_admin.helpers({
-
   dashboardData() {
     return Template.instance().dashboardData.get();
   },
   today() {
     return new Date();
   },
-  listPpdb(){
+  listPpdb() {
     return Template.instance().listPpdb.get();
-  }
+  },
 });
 Template.home_admin_school.onCreated(function () {
   isLoading(true);
@@ -99,6 +97,7 @@ Template.home_admin_school.onCreated(function () {
   const userId = Meteor.userId();
 
   self.summaryStatus = new ReactiveVar();
+  self.thisUser = new ReactiveVar();
 
   setTimeout(() => {
     let table = new DataTable("#example", {
@@ -117,20 +116,28 @@ Template.home_admin_school.onCreated(function () {
       exitPreloader();
     }
   });
-  Meteor.call("ppdb-school-getAll-summary", (error, result) => {
+  Meteor.call("get-thisUser", function (error, result) {
     if (error) {
-      console.error("Error while fetching students:", error);
-      exitPreloader();
     } else {
-      self.items.set(result.registrans);
-      self.totalItems.set(result.totalRegistrans);
-      exitPreloader();
+      self.thisUser.set(result);
     }
   });
+  // Meteor.call("ppdb-school-getAll-summary", (error, result) => {
+  //   if (error) {
+  //     console.error("Error while fetching students:", error);
+  //     exitPreloader();
+  //   } else {
+  //     self.items.set(result.registrans);
+  //     self.totalItems.set(result.totalRegistrans);
+  //     exitPreloader();
+  //   }
+  // });
   isLoading(false);
 });
 Template.home_admin_school.helpers({
-
+  thisUser() {
+    return Template.instance().thisUser.get();
+  },
   items() {
     return Template.instance().items.get();
   },
@@ -147,11 +154,17 @@ Template.home_admin_school.helpers({
       ).length;
       const totalInFormRegister = allRegistrans.filter(
         (item) => item.status == 10
-      ).length
+      ).length;
       const totalFormPaid = allRegistrans.filter(
         (item) => item.status == 20
-      ).length
-      return { totalRegistrans, totalWaiting, totalAccepted, totalInFormRegister, totalFormPaid };
+      ).length;
+      return {
+        totalRegistrans,
+        totalWaiting,
+        totalAccepted,
+        totalInFormRegister,
+        totalFormPaid,
+      };
     }
   },
 
@@ -160,60 +173,56 @@ Template.home_admin_school.helpers({
   },
 });
 
-
 Template.resetPw.onCreated(function () {
   isLoading(true);
   const self = this;
 
-  self.items  = new ReactiveVar()
+  self.items = new ReactiveVar();
 });
 Template.resetPw.helpers({
-  items(){
-    return Template.instance().items.get()
-  }
-})
-Template.resetPw.events({
-  'click .btn-reset-pw'(){
-    $('#input-csv').val()
+  items() {
+    return Template.instance().items.get();
   },
-  'change #input-csv'(e,t){
+});
+Template.resetPw.events({
+  "click .btn-reset-pw"() {
+    $("#input-csv").val();
+  },
+  "change #input-csv"(e, t) {
     Papa.parse(e.target.files[0], {
       header: true,
       dynamicTyping: false,
       complete(results, file) {
-          const tempArray = [];
+        const tempArray = [];
 
-          for (let index = 0; index < results.data.length; index++) {
-              const element = results.data[index];
-              const checkObject = isEmptyData(element);
-              if (checkObject != 0) {
-                  element.status = 1
-              }
-              console.log(element);
-
-
-              const dataPush = {
-                  'username' : element.username,
-                  'password' : element.PASSWORD,
-
-              }
-              tempArray.push(dataPush);
+        for (let index = 0; index < results.data.length; index++) {
+          const element = results.data[index];
+          const checkObject = isEmptyData(element);
+          if (checkObject != 0) {
+            element.status = 1;
           }
-         t.items.set(tempArray)
-      }
+          console.log(element);
 
-  });
+          const dataPush = {
+            username: element.username,
+            password: element.PASSWORD,
+          };
+          tempArray.push(dataPush);
+        }
+        t.items.set(tempArray);
+      },
+    });
   },
-  'click .btn-reset-pw'(e,t){
+  "click .btn-reset-pw"(e, t) {
     e.preventDefault();
 
     const items = t.items.get();
-    Meteor.call('update-bulk-password', items, function(error, result){
-      if(error){
-        alert('gagal reset password');
-      }else{
-        alert('sukses reset password');
+    Meteor.call("update-bulk-password", items, function (error, result) {
+      if (error) {
+        alert("gagal reset password");
+      } else {
+        alert("sukses reset password");
       }
-    })
-  }
-})
+    });
+  },
+});

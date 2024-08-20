@@ -7,7 +7,7 @@ import { Roles } from "meteor/alanning:roles";
 import moment from "moment";
 import { Employee } from "../employee/employee";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
-import { Schools } from "../yoga/schools/schools.js";
+import { Schools, Units } from "../yoga/schools/schools.js";
 Meteor.methods({
   async "users.getAll"() {
     let partnerCode;
@@ -37,13 +37,21 @@ Meteor.methods({
   async "users.createAppMeteor"(dataSend) {
     check(dataSend, Object);
 
-
     let newAccountData = {
       username: dataSend.username,
       email: dataSend.username,
       password: dataSend.password,
     };
     let _id;
+    //get school
+    const thisSchool = Schools.findOne({ _id: dataSend.school });
+    if (thisSchool) {
+      dataSend.schoolName = thisSchool.name;
+    }
+    const thisUnit = Units.findOne({ _id: dataSend.unitId });
+    if (thisUnit) {
+      dataSend.unitName = thisUnit.name;
+    }
     try {
       _id = Accounts.createUser(newAccountData);
       return Meteor.users.update(
@@ -53,11 +61,12 @@ Meteor.methods({
             roles: [dataSend.role],
             fullname: dataSend.fullname,
             schoolId: dataSend.school,
+            schoolName: dataSend.schoolName,
+            unitId: dataSend.unitId,
+            unitName: dataSend.unitName,
           },
         }
       );
-
-
     } catch (error) {
       console.log(error);
       return error;
@@ -313,67 +322,85 @@ Meteor.methods({
     }
   },
 
+  async "get-thisUser"() {
+    let thisUser = await Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+
+    const thisSchool = Schools.findOne({ _id: thisUser.schoolId });
+    if (thisSchool) {
+      thisUser.schoolName = thisSchool.name;
+    } else {
+      thisUser.schoolName = "Sekolah";
+    }
+    return thisUser;
+  },
 
   //forgot password
-  'check.fpNpsn'(npsn, email){
+  "check.fpNpsn"(npsn, email) {
     check(email, String);
-    check(npsn, String)
-
+    check(npsn, String);
 
     //cek email
-    const thisUser = Meteor.users.findOne({ 'emails.address': email });
+    const thisUser = Meteor.users.findOne({ "emails.address": email });
     if (!thisUser) {
       throw new Meteor.Error("403", "Email tidak ditemukan");
     }
 
-
     //cek npsn
-    const checkNpsn = Schools.findOne({npsn: parseInt(npsn), _id : thisUser.schoolId});
-    if(!checkNpsn){
+    const checkNpsn = Schools.findOne({
+      npsn: parseInt(npsn),
+      _id: thisUser.schoolId,
+    });
+    if (!checkNpsn) {
       throw new Meteor.Error("403", "NPSN tidak ditemukan");
     }
-    return true
+    return true;
   },
-  'set.password'(npsn, email, password){
+  "set.password"(npsn, email, password) {
     check(email, String);
-    check(npsn, String)
-    check(password, String)
-
+    check(npsn, String);
+    check(password, String);
 
     //cek email
-    const thisUser = Meteor.users.findOne({ 'emails.address': email });
+    const thisUser = Meteor.users.findOne({ "emails.address": email });
     if (!thisUser) {
       throw new Meteor.Error("403", "Email tidak ditemukan");
     }
 
     //cek npsn
-    const checkNpsn = Schools.findOne({npsn: parseInt(npsn), _id : thisUser.schoolId});
-    if(!checkNpsn){
+    const checkNpsn = Schools.findOne({
+      npsn: parseInt(npsn),
+      _id: thisUser.schoolId,
+    });
+    if (!checkNpsn) {
       throw new Meteor.Error("403", "NPSN tidak ditemukan");
     }
     console.log(password);
 
-    return Accounts.setPassword(thisUser._id, password)
+    return Accounts.setPassword(thisUser._id, password);
   },
 
-  async 'update-bulk-password'(items){
-    const thisUser = Meteor.users.findOne({_id : this.userId})
-    if(!thisUser){
-      throw new Meteor.Error("No Access")
+  async "update-bulk-password"(items) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error("No Access");
     }
 
     for (let index = 0; index < items.length; index++) {
       const element = items[index];
 
-     const thisGuy =await Meteor.users.findOne({username : element.username.toLowerCase()})
-     console.log(thisGuy);
+      const thisGuy = await Meteor.users.findOne({
+        username: element.username.toLowerCase(),
+      });
+      console.log(thisGuy);
 
-     if(thisGuy){
-        console.log('this user',thisGuy.username);
+      if (thisGuy) {
+        console.log("this user", thisGuy.username);
         Accounts.setPassword(thisGuy._id, element.password);
-        console.log('sukses',thisGuy.username);
-
+        console.log("sukses", thisGuy.username);
       }
     }
-  }
+  },
 });

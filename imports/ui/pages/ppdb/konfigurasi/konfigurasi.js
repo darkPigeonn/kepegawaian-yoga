@@ -347,7 +347,7 @@ Template.gelombangPage.helpers({
   },
   isActiveGel() {
     const listGelombang = Template.instance().items.get();
-    const getActive = listGelombang.find((item) => item.status == true);
+    const getActive = listGelombang.filter((item) => item.status == true);
     return getActive;
   },
   selectedItem() {
@@ -415,7 +415,6 @@ Template.gelombangPage.events({
     $("#inputUangSumbangan").val(formatRupiah(this.feeDonation.toString()));
     $("#inputUangKegiatan").val(formatRupiah(this.feeEvent.toString()));
     $("#inputUangAlat").val(formatRupiah(this.feeUtilty.toString()));
-    console.log("clicked");
 
     t.isEdit.set(true);
     $("#addModalGelombang").modal("show");
@@ -463,8 +462,24 @@ Template.gelombangPage.events({
             }
           }
         );
+      } else {
+        e.target.checked = !e.target.checked;
+        exitLoading();
       }
     });
+  },
+  "click #btn-add"(e, t) {
+    setTimeout(() => {
+      $("#selectedPeriod").val("");
+      $("#inputNameGelombang").val("");
+      $("#inputCode").val("");
+      $("#inputClass").val("");
+      $("#inputUangForm").val("");
+      $("#inputUangSpp").val("");
+      $("#inputUangSumbangan").val("");
+      $("#inputUangKegiatan").val("");
+      $("#inputUangAlat").val("");
+    }, 500);
   },
 });
 

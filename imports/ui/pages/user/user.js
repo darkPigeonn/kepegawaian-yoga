@@ -27,7 +27,6 @@ Template.listUser.onCreated(function () {
 
   Meteor.call("users.getAllSuperAdmin", function (error, result) {
     if (result) {
-
       self.dataListUserSuperAdmin.set(result);
     } else {
       console.log(error);
@@ -95,7 +94,8 @@ Template.listUser.events({
 Template.createUser.onCreated(function () {
   const self = this;
   self.partnerLogin = new ReactiveVar();
-  self.schools = new ReactiveVar()
+  self.schools = new ReactiveVar();
+  self.units = new ReactiveVar();
 
   const userId = Meteor.userId();
   if (userId) {
@@ -108,20 +108,27 @@ Template.createUser.onCreated(function () {
     });
   }
 
-  Meteor.call('schools.getAllForm', function(error, result){
-    if(error) {
+  Meteor.call("schools.getAllForm", function (error, result) {
+    if (error) {
       console.log(error);
-    }else{
-      self.schools.set(result)
+    } else {
+      self.schools.set(result);
     }
-  })
+  });
+  Meteor.call("getList-perwakilan", function (error, result) {
+    if (error) {
+      console.log(error);
+    } else {
+      self.units.set(result);
+    }
+  });
 });
 
 Template.createUser.onRendered(function () {
   setTimeout(() => {
-    startSelect2()
+    startSelect2();
   }, 500);
-})
+});
 
 Template.createUser.helpers({
   partnerLogin() {
@@ -129,8 +136,11 @@ Template.createUser.helpers({
   },
   schools() {
     return Template.instance().schools.get();
-  }
-})
+  },
+  units() {
+    return Template.instance().units.get();
+  },
+});
 
 Template.createUser.events({
   "click #btn_save_user"(e, t) {
@@ -139,13 +149,15 @@ Template.createUser.events({
     const role = $("#input_roles").val();
     const fullname = $("#input_fullname").val();
     const school = $("#input_school").val();
+    const unit = $("#input_unit").val();
 
     const dataSend = {
       username,
       password,
       fullname,
       role,
-      school
+      school,
+      unitId: unit,
     };
 
     Meteor.call("users.createAppMeteor", dataSend, function (error, result) {

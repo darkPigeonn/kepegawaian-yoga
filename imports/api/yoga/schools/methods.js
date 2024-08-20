@@ -34,7 +34,7 @@ Meteor.methods({
           skip,
         }
       ).fetch(),
-      totalItems: Schools.find( {
+      totalItems: Schools.find({
         name: {
           $regex: query,
           $options: "i",
@@ -48,8 +48,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
 
-
-    return Schools.find().fetch()
+    return Schools.find().fetch();
   },
 
   "schools.getByPerwakilan"(idPerwakilan) {
@@ -86,5 +85,12 @@ Meteor.methods({
       ).fetch(),
       totalItems: Units.find().count(),
     };
+  },
+  async "getList-perwakilan"() {
+    const thisUser = await Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    return Units.find({ status: true }).fetch();
   },
 });
