@@ -71,9 +71,7 @@
         <h5>{{formatHRDate today}}</h5>
       </div>
       <hr>
-      <div>
-        <h4>Tahun Ajaran : 2023/2024</h4>
-      </div>
+      {{>psActive}}
     </div>
 
     <!-- summary pegawai , perwakilan, sekolah -->
@@ -178,6 +176,9 @@
       <thead>
         <th>Sekolah</th>
         <th>Total Pendaftar</th>
+        <th>Belum Bayar Uang Formulir</th>
+        <th>Sudah Bayar Uang Formulir</th>
+        <th>Sudah Bayar Pangkal</th>
         <th>Aksi</th>
       </thead>
       {{#each listPpdb}}
@@ -185,6 +186,9 @@
       <tr>
         <th>{{schoolName}} - {{unitName}}</th>
         <th>{{total}}</th>
+        <th>{{unpaidForm}}</th>
+        <th>{{paidForm}}</th>
+        <th>{{paidPangkal}}</th>
         <th>
           <a class="btn" href="/ppdb/{{_id}}">Lihat Detail</a>
         </th>
@@ -271,9 +275,7 @@
         <h5>{{formatHRDate today}}</h5>
       </div>
       <hr>
-      <div>
-        <h4>Tahun Ajaran : 2023/2024</h4>
-      </div>
+      {{>psActive}}
     </div>
 
     <!-- summary pegawai , perwakilan, sekolah -->
@@ -489,3 +491,29 @@
     }
   </style>
 </template>
+
+
+<template name="resetPw">
+
+  <div class="row">
+    <div class="form-group">
+      <input type="file" class="form-control" id="input-csv"/>
+      <table class="table">
+        <thead>
+          <th>Username</th>
+          <th>Password</th>
+        </thead>
+        <tbody>
+          {{#each items}}
+          <tr>
+            <td>{{username}}</td>
+            <td>{{password}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <button class="btn btn-primary btn-reset-pw" type="button">Reset Password</button>
+    </div>
+  </div>
+</template>
+

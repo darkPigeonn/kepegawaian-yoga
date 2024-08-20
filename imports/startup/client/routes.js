@@ -576,3 +576,11 @@ FlowRouter.route("/ppdb/:schoolId", {
     this.render("App_body", "pagePpdbSchool");
   },
 });
+
+
+// FlowRouter.route("/account/resetpw",{
+//   name : 'resetPw',
+//   action() {
+//     this.render("App_body", "resetPw");
+//   },
+// })

@@ -354,5 +354,26 @@ Meteor.methods({
     console.log(password);
 
     return Accounts.setPassword(thisUser._id, password)
+  },
+
+  async 'update-bulk-password'(items){
+    const thisUser = Meteor.users.findOne({_id : this.userId})
+    if(!thisUser){
+      throw new Meteor.Error("No Access")
+    }
+
+    for (let index = 0; index < items.length; index++) {
+      const element = items[index];
+
+     const thisGuy =await Meteor.users.findOne({username : element.username.toLowerCase()})
+     console.log(thisGuy);
+
+     if(thisGuy){
+        console.log('this user',thisGuy.username);
+        Accounts.setPassword(thisGuy._id, element.password);
+        console.log('sukses',thisGuy.username);
+
+      }
+    }
   }
 });

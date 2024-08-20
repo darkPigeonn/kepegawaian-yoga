@@ -58,21 +58,13 @@ Meteor.methods({
 
     return { registranDahboard, vaDashboard };
   },
-  "ppdb-school-getAll"(pageNum, perPage) {
+  "get-psActive"() {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
 
-    const skip = (pageNum - 1) * perPage;
-
-    return {
-      registrans: Registrans.find(
-        {},
-        { limit: perPage, skip, sort: { createdAt: -1 } }
-      ).fetch(),
-      totalRegistrans: Registrans.find().count(),
-    };
+    return PeriodePpdb.findOne({ status: true });
   },
   "ppdb-school-getAll-bySchool"(pageNum, perPage, schoolId) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -1476,6 +1468,50 @@ Meteor.methods({
             total: {
               $sum: 1,
             },
+            unpaidForm: {
+              $sum: {
+                $cond: {
+                  if: {
+                    $eq: ["$status", 10],
+                  },
+                  then: 1,
+                  else: 0,
+                },
+              },
+            },
+            paidForm: {
+              $sum: {
+                $cond: {
+                  if: {
+                    $and: [
+                      {
+                        $gt: ["$status", 10],
+                      },
+                      {
+                        $lt: ["$status", 60],
+                      },
+                    ],
+                  },
+                  then: 1,
+                  else: 0,
+                },
+              },
+            },
+            paidPangkal: {
+              $sum: {
+                $cond: {
+                  if: {
+                    $and: [
+                      {
+                        $gte: ["$status", 60],
+                      },
+                    ],
+                  },
+                  then: 1,
+                  else: 0,
+                },
+              },
+            },
           },
       },
       {
@@ -1508,6 +1544,9 @@ Meteor.methods({
             _id: 1,
             schoolName: 1,
             total: 1,
+            unpaidForm: 1,
+            paidForm: 1,
+            paidPangkal: 1,
             unitId: "$school.unitId",
             unitName: "$school.unitName",
           },
@@ -1531,7 +1570,7 @@ Meteor.methods({
             },
           },
       },
-    ];
+    ]
     return Registrans.aggregate(pipeline);
   },
 });

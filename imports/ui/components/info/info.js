@@ -30,3 +30,23 @@ Template.info.events({
     });
   },
 });
+
+Template.psActive.onCreated(function () {
+  const self = this;
+  self.psActive = new ReactiveVar();
+
+  Meteor.call('get-psActive', function(error, result){
+    if(error){
+      console.log(error);
+    }else{
+      console.log(result);
+
+      self.psActive.set(result);
+    }
+  })
+});
+Template.psActive.helpers({
+  item(){
+    return Template.instance().psActive.get();
+  },
+});

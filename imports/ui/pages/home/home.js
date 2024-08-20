@@ -10,7 +10,7 @@ import {
   EmployeeStatus,
 } from "../../../api/employee/employee.js";
 import { dataListInput } from "../../../api/user/user.js";
-
+import Papa from "papaparse";
 Template.App_home.onCreated(function () {
   isLoading(true);
   const self = this;
@@ -79,6 +79,7 @@ Template.home_admin.onCreated(function () {
   })
 });
 Template.home_admin.helpers({
+
   dashboardData() {
     return Template.instance().dashboardData.get();
   },
@@ -105,6 +106,7 @@ Template.home_admin_school.onCreated(function () {
     });
     isLoading(false);
   }, 1000);
+
   Meteor.call("ppdb-school-getAll", (error, result) => {
     if (error) {
       console.error("Error while fetching students:", error);
@@ -128,6 +130,7 @@ Template.home_admin_school.onCreated(function () {
   isLoading(false);
 });
 Template.home_admin_school.helpers({
+
   items() {
     return Template.instance().items.get();
   },
@@ -156,3 +159,61 @@ Template.home_admin_school.helpers({
     return new Date();
   },
 });
+
+
+Template.resetPw.onCreated(function () {
+  isLoading(true);
+  const self = this;
+
+  self.items  = new ReactiveVar()
+});
+Template.resetPw.helpers({
+  items(){
+    return Template.instance().items.get()
+  }
+})
+Template.resetPw.events({
+  'click .btn-reset-pw'(){
+    $('#input-csv').val()
+  },
+  'change #input-csv'(e,t){
+    Papa.parse(e.target.files[0], {
+      header: true,
+      dynamicTyping: false,
+      complete(results, file) {
+          const tempArray = [];
+
+          for (let index = 0; index < results.data.length; index++) {
+              const element = results.data[index];
+              const checkObject = isEmptyData(element);
+              if (checkObject != 0) {
+                  element.status = 1
+              }
+              console.log(element);
+
+
+              const dataPush = {
+                  'username' : element.username,
+                  'password' : element.PASSWORD,
+
+              }
+              tempArray.push(dataPush);
+          }
+         t.items.set(tempArray)
+      }
+
+  });
+  },
+  'click .btn-reset-pw'(e,t){
+    e.preventDefault();
+
+    const items = t.items.get();
+    Meteor.call('update-bulk-password', items, function(error, result){
+      if(error){
+        alert('gagal reset password');
+      }else{
+        alert('sukses reset password');
+      }
+    })
+  }
+})
