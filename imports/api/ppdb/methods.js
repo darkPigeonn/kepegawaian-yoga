@@ -572,11 +572,21 @@ Meteor.methods({
     list.forEach((element) => {
       const thisSchool = Schools.findOne({ _id: element });
       //get config ppdb
+
       const configPpdb = Gelombangs.findOne({
-        status: true,
-        schoolId: element,
-        periodeId: thisPeriod._id,
+        _id: thisGelombang._id,
       });
+
+      if (codeTag != "08") {
+        const totalFee =
+          configPpdb.feeSpp ??
+          0 + configPpdb.feeEvent ??
+          0 + configPpdb.feeDonation ??
+          0 + configPpdb.feeUtility ??
+          0;
+        configPpdb.feeForm = totalFee;
+      }
+
       if (!configPpdb) {
         throw new Meteor.Error(
           404,
