@@ -1,16 +1,19 @@
 <template name="App_body">
-  <!-- {{> preloader}} -->
-  {{#if currentUser}}
-  <section>
-
-    {{> navbar}}
-    <div class="container-fluid" style="height: 100%;">
-      {{> yield}}
-    </div>
-  </section>
+  {{#if isLoading}}
+  <p>Loading...</p>
+{{else}}
+  {{#if isLoggedIn}}
+    <section>
+      {{> navbar}}
+      <div class="container-fluid" style="height: 100%;">
+        {{> yield}}
+      </div>
+    </section>
   {{else}}
-  {{> login_page}}
+    {{> login_page}}
   {{/if}}
+{{/if}}
+
 </template>
 
 <template name="login_page">

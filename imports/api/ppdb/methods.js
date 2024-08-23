@@ -964,24 +964,42 @@ Meteor.methods({
 
     const thisSchool = thisUser.schoolId;
 
-    const deactivated = await Gelombangs.update(
-      {
-        status: true,
-        schoolId: thisSchool,
-        periodeId: thisPeriod._id,
-      },
-      {
-        $set: {
-          status: false,
-        },
-      },
-      {
-        multi: true,
-      }
-    );
-    console.log(deactivated);
+    // const deactivated = await Gelombangs.update(
+    //   {
+    //     status: true,
+    //     schoolId: thisSchool,
+    //     periodeId: thisPeriod._id,
+    //   },
+    //   {
+    //     $set: {
+    //       status: false,
+    //     },
+    //   },
+    //   {
+    //     multi: true,
+    //   }
+    // );
+    // console.log(deactivated);
     return Gelombangs.update({ _id: id }, { $set: { status } });
   },
+  async 'delete-gelombang-school'(id){
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if (!Roles.userIsInRole(thisUser, ["adminPpdbSchool", "superadmin"])) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const getGelombang = await Gelombangs.findOne({ _id: id });
+    if (!getGelombang) {
+      throw new Meteor.Error(404, "No Data");
+    }
+    //remove gelombang dibuat soft delete dengan cara merubah id school nya
+    const schoolId = getGelombang.schoolId+'-remove';
+
+    return Gelombangs.update({ _id: id },{$set : {schoolId}});
+  },
+
   async "aktivated-periode"(id, status) {
     check(id, String);
     const thisUser = Meteor.users.findOne({ _id: this.userId });

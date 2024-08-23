@@ -426,7 +426,7 @@ Template.gelombangPage.events({
 
     const activated = {
       title: "Konfirmasi Pengaktifan Gelombang",
-      text: "Apakah anda yakin mengaktifkan gelombang ini? \n Gelombang yang aktif akan beralih ke Gelombang ini",
+      text: "Apakah anda yakin mengaktifkan gelombang ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Aktifkan",
@@ -434,7 +434,7 @@ Template.gelombangPage.events({
     };
     const deactivated = {
       title: "Konfirmasi Penonaktifkan Gelombang",
-      text: "Apakah anda yakin menonaktifkan gelombang ini? \n Jika ya maka tidak ada gelombang yang aktif",
+      text: "Apakah anda yakin menonaktifkan gelombang ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Non Aktifkan",
@@ -480,6 +480,36 @@ Template.gelombangPage.events({
       $("#inputUangKegiatan").val("");
       $("#inputUangAlat").val("");
     }, 500);
+  },
+  "click #btn-remove"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = $(e.target).attr("milik");
+    Swal.fire({
+      title: "Konfirmasi Hapus",
+      text: "Apakah anda yakin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("delete-gelombang-school", id, function (error, result) {
+          if (result) {
+            successAlert("Data Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Hapus Data Gagal!");
+            exitLoading();
+          }
+        });
+      } else {
+        exitLoading();
+      }
+    })
   },
 });
 

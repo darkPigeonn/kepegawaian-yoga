@@ -83,3 +83,14 @@ Template.forgotPassword.events({
     }
   }
 });
+
+Template.App_body.helpers({
+  isLoading() {
+    // Mengembalikan true jika aplikasi sedang memuat status login pengguna
+    return Meteor.loggingIn();
+  },
+  isLoggedIn() {
+    // Mengembalikan true jika pengguna saat ini sudah login
+    return !!Meteor.userId();
+  }
+})
