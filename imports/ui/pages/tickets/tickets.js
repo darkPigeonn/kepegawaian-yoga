@@ -247,7 +247,7 @@ Template.createTicket.events({
                 Swal.close();
                 Swal.fire({
                   title: "Berhasil",
-                  text: "Data berhasil dibuat",
+                  text: "Tiket berhasil dibuat",
                   showConfirmButton: true,
                   allowOutsideClick: true,
                 });
@@ -258,7 +258,7 @@ Template.createTicket.events({
                 Swal.close();
                 Swal.fire({
                   title: "Gagal",
-                  text: error.reason,
+                  text: "Tiket gagal dibuat",
                   showConfirmButton: true,
                   allowOutsideClick: true,
                 });

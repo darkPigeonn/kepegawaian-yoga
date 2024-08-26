@@ -61,25 +61,19 @@ Meteor.methods({
         const relatedUser = Meteor.users.findOne({
             _id: thisUser,
         });
-        try {
-            const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
-            data._id = new Mongo.ObjectID() //create _id with objectID
-            data.partner = relatedEmployee.partnerCode;
-            data.message = [];
-            data.timeline = [{
-                message: "Ticket Dibuat",
-                createdAt: new Date()
-            }];
-            data.status = "Dibuka";
-            data.createdAt = new Date();
-            data.createdBy = relatedEmployee._id;
-            data.createdByName = relatedEmployee.full_name;
-
-            return Tickets.insert(data);
-        } catch (error) {
-            throw new Meteor.Error(412, error)
-        }
-        
+        const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+        data._id = new Mongo.ObjectID() //create _id with objectID
+        data.partner = relatedEmployee.partnerCode ?? "imavi";
+        data.message = [];
+        data.timeline = [{
+            message: "Ticket Dibuat",
+            createdAt: new Date()
+        }];
+        data.status = "Dibuka";
+        data.createdAt = new Date();
+        data.createdBy = relatedEmployee._id;
+        data.createdByName = relatedEmployee.full_name;
+        return Tickets.insert(data);
     },
 
     "tickets.editTicket"(id, data, timeline){
