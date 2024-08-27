@@ -11,7 +11,7 @@ import Papa from "papaparse";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import XLSX from "xlsx";
 import moment from "moment";
-
+import datatables from "datatables.net";
 Template.pagePpdb.onCreated(function () {
   const self = this;
   startPreloader();
@@ -407,6 +407,63 @@ Template.paymentPage.events({
         }
       }
     });
+  },
+  "click #btn-rekap-form-download"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Download rekap form PPDB",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("rekap-payment-download", 0, function (error, result) {
+          if (error) {
+
+            failAlert("Gagal", error);
+            exitPreloader();
+          } else {
+            successAlert("Berhasil");
+            const fileNameExcel = "Dafta VA.xlsx";
+            successAlert("Berhasil");
+            exitPreloader();
+            return XLSX.writeFile(result, fileNameExcel);
+            exitPreloader();
+          }
+        });
+      }
+    })
+  },
+  "click #btn-rekap-income-download"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Download rekap form PPDB",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("rekap-payment-download", 1, function (error, result) {
+          if (error) {
+            console.log(error);
+
+            failAlert("Gagal", error);
+            exitPreloader();
+          } else {
+            successAlert("Berhasil");
+            exitPreloader();
+          }
+        });
+      }
+    })
   },
 });
 
@@ -1184,3 +1241,36 @@ Template.pagePpdbSchool.events({
     );
   },
 });
+
+
+Template.paymentPageListSchool.onCreated(function () {
+  const self = this;
+  startPreloader();
+  self.listRegistrans = new ReactiveVar();
+  this.autorun(() => {
+    Meteor.call("get-payment-list-school", (error, result) => {
+      if (error) {
+        console.error("Error while fetching students:", error);
+        exitPreloader();
+      } else {
+        self.listRegistrans.set(result);
+        if (result && result.length > 0) {
+          // Hanya inisialisasi DataTables jika belum diinisialisasi sebelumnya
+          setTimeout(() => {
+            $('#mytable').DataTable({
+              "pageLength": 50,
+              ordering: false,
+            });
+
+          }, 500);
+        }
+        exitPreloader();
+      }
+    });
+  });
+});
+Template.paymentPageListSchool.helpers({
+  listRegistrans() {
+    return Template.instance().listRegistrans.get();
+  }
+})

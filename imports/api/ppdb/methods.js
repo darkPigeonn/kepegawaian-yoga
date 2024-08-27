@@ -8,6 +8,7 @@ import {
   Registrans,
   RegistransDummy,
   RegistransFinal,
+  Transactions,
   VirtualAccounts,
   VirtualAccountsConfig,
 } from "./ppdb";
@@ -16,6 +17,7 @@ import { Schools, Units } from "../yoga/schools/schools";
 import XLSX from "xlsx";
 import { Notifications } from "../notification/notification";
 import { formatRupiah } from "../../startup/server";
+import { AppProfiles, AppUsers } from "../collections-profiles";
 
 Meteor.methods({
   "registran.getAll"() {
@@ -320,6 +322,7 @@ Meteor.methods({
           (thisConfig.feeDonation ?? 0) +
           (thisConfig.feeUtilty ?? 0);
         //get config va units
+        // ALERT INI PERLU DIRUBAH KARENA VA SEMUA YANG GENEARTE ADMIN
         const thisVaConfig = await VirtualAccountsConfig.findOne({
           unitId: thisUnit._id,
         });
@@ -1239,6 +1242,137 @@ Meteor.methods({
     );
   },
 
+  async "rekap-payment-download"(code){
+    const thisUser  = Meteor.users.findOne({_id : this.userId})
+    if(!thisUser){
+      throw new Meteor.Error(404, "No Access")
+    }
+    const periodeStudi = await PeriodePpdb.findOne({status : true})
+
+    if(!periodeStudi){
+      throw new Meteor.Error(404, "No Periode Ppdb")
+    }
+
+
+    let getRegistrans = await Registrans.find({
+      periodeStudi: periodeStudi._id,
+    }, {
+      sort : {
+        createdAt : 1
+      },
+      // fields: {
+      //   _id: 1,
+      //   createdByName: 1,
+      //   fullName: 1,
+      //   destinationClass: 1,
+      //   gelombang: 1,
+      //   noVA: 1,
+      // }
+    }).fetch();
+
+    let dataModel = []
+
+    for (let index = 0; index < getRegistrans.length; index++) {
+      const element = getRegistrans[index];
+
+      //get appuser
+      const idUser = new Mongo.ObjectID(element.createdBy)
+      const appUser = await AppProfiles.findOne({_id : idUser})
+
+      //find perwakilan
+      const perwakilan = Units.findOne({_id : element.unitId})
+      // code = 0 (formulir) / 1 (pembayaran)
+
+      // data form 0
+      let tempData = {
+        'Nama' : element.fullName,
+        'No Form' : element.registrationNumber,
+        'Email Pengguna' : appUser?.email,
+        'NIK Siswa' : element.nik,
+        'No Hp Pengguna' : appUser?.phoneNumber,
+        'Perwakilan' : perwakilan.name,
+        'Sekolah Tujuan' : element.schoolName,
+        'Kelas Tujuan' : element.destinationClass,
+        'Periode Pendaftaran' : element.gelombang,
+        // 'Jenis Pembayaran' : e, //dari virtual account
+        // 'Nilai Pembayaran' : e, //dari virtual account
+        // 'Pembayaran Masuk' : e, //dari virtual account
+        // //buat status 60 - code 1
+        // 'SPP Bulan Juli' : e, //dari virtual account,
+        // 'Uang Kegiatan' : e, //dari virtual account
+        // 'Nilai Uang Sumbangan' :e, //dari virtual account
+        // 'Metode Bayar' : element.paymentMethod,
+        // 'Status Angsuran ke-' : e, //dari virtual account
+        // 'Status Bayar' : e, //dari virtual account
+        // //end status 60 - code 1
+        // 'Status Lunas' : e, //dari virtual account
+        // 'No VA' : e, //dari virtual account
+        // //code 1
+        // 'Tanggap SPOTC' : e, //dari virtual account
+        // //code 1 end
+        // 'Tanggal Pembayaran' : e, //dari virtual account
+        // 'Dilunasi Oleh' : e, //dari virtual account
+        // 'Tanggal diterima' : e, //dari virtual account
+      }
+      //uang formulir
+      if(code === 0 && element.status < 60) {
+        //find va untuk student ini yang category 08
+        const idInitial = new Mongo.ObjectID(element.initialPaymentId)
+        const initialPayment = InitialPayment.findOne({_id : idInitial})
+
+        const noVa = initialPayment.va;
+        const detailVa = VirtualAccounts.findOne({virtualAccountNumber : noVa})
+
+        const dataExtend = {
+          'Jenis Pembayaran' : 'Uang Pendaftaran',
+          'Nilai Pembayaran' : detailVa? formatRupiah(detailVa.amount.toString()) : "0",
+          'Pembayaran Masuk' : detailVa?.status == 60 ? formatRupiah(detailVa.amount.toString()) :0,
+          'Status' : detailVa?.status == 60 ? 'Lunas' : 'Belum Lunas',
+          'No Va' : noVa,
+          'Tanggal Pembayaran' :  detailVa?.status == 60 ? detailVa.updatedAt : '-',
+          'Dilunasi Oleh' : 'Va Offline',
+        }
+
+        const newModel = {...tempData, ...dataExtend}
+        dataModel.push(newModel)
+      }else{
+        //uang masuk
+        //Perlu dibedakan kontant dan cicil
+
+        //1. Yang cicilan
+        if(element.paymentMethod == 'Cicil'){
+          const getCicilan = CreditPayment.find({studentId : element._id.toHexString()}).fetch()
+          console.log(getCicilan);
+        }
+
+        const dataExtend = {
+          'Jenis Pembayaran' : 'Biaya PPDB',
+
+        }
+
+      }
+
+
+    }
+    console.log(dataModel);
+
+    let wb = XLSX.utils.book_new();
+    const xlName = "Export Rekap PPDB ";
+
+    wb.Props = {
+      Title: xlName,
+      Subject: "Data Rekap",
+      Author: thisUser.fullname,
+      CreatedDate: new Date(),
+    };
+    wb.SheetNames.push("Data Rekap");
+    let ws = XLSX.utils.json_to_sheet(dataModel);
+    wb.Sheets["Data Rekap"] = ws;
+
+    return wb;
+
+  },
+
   //payme
 
   async "konfirmasi-payment-upload"(items) {
@@ -1280,6 +1414,13 @@ Meteor.methods({
         });
 
         if (registran) {
+          let dataPayments = {
+            amount : item.amount,
+            virtualAccountNumber : item.va,
+            paidAt : new Date(item.date),
+            createdAt : new Date(),
+            createdBy : thisUser._id
+          }
           if (registran.status < 20) {
             //ini untuk formulir
             //3. check initialPayment
@@ -1298,16 +1439,31 @@ Meteor.methods({
                   updatedAt: new Date(),
                   updatedBy: thisUser._id,
                   paymentStatus: true,
+                  status : 60,
                   note: item.note,
                 },
               }
             );
+            dataPayments.category = '08';
+          }else{
+            dataPayments.category = '90';
           }
           let status = 20;
           //cek va nya
           if (registran.status > 20) {
             status = 60;
           }
+          //4. Make Transaksi
+          const idTransaksi = Transactions.insert(
+            {
+              amount : item.amount,
+              type : 'debit',
+              timestamp : new Date(item.date),
+              createdAt : new Date(),
+              createdBy : thisUser._id
+            }
+          )
+          dataPayments.idTransaksi = idTransaksi
           //5. update form
           Registrans.update(
             {
@@ -1321,6 +1477,9 @@ Meteor.methods({
                 note: item.note,
                 status,
               },
+              $addToSet : {
+                'payments' : dataPayments
+              }
             }
           );
           //6. update va
@@ -1332,6 +1491,7 @@ Meteor.methods({
                 updatedAt: new Date(),
                 updatedBy: thisUser._id,
                 note: item.note,
+                idTransaksi
               },
             }
           );
@@ -1432,9 +1592,9 @@ Meteor.methods({
         };
       });
     }
-    console.log(newModel);
     let wb = XLSX.utils.book_new();
     const xlName = "Export VA " + thisSchool.name + " " + thisUnit.name;
+    console.log(newModel);
 
     wb.Props = {
       Title: xlName,
@@ -1718,6 +1878,50 @@ Meteor.methods({
     ];
     return Registrans.aggregate(pipeline);
   },
+
+
+  async "get-payment-list-school"(){
+    const thisUser = Meteor.users.findOne({_id : this.userId})
+    if(!thisUser) {
+      throw new Meteor.Error(404, "No Access")
+    }
+
+    const periodeStudi = PeriodePpdb.findOne({status : true})
+    let getRegistrans = await Registrans.find({
+      periodeStudi: periodeStudi._id,
+      schoolId: thisUser.schoolId,
+    }, {
+      sort : {
+        createdAt : 1
+      },
+      fields: {
+        _id: 1,
+        createdByName: 1,
+        fullName: 1,
+        destinationClass: 1,
+        gelombang: 1,
+        noVA: 1,
+      }
+    }).fetch();
+
+    if (getRegistrans.length > 0) {
+      const returnData = await Promise.all(getRegistrans.map(async item => {
+        let va = await VirtualAccounts.findOne({ virtualAccountNumber: item.noVA });
+
+        return {
+          ...item,
+          vaId: va?._id,
+          categoryPayment: va?.category,
+          amount: va?.amount,
+          status: va?.status ?? 0,
+          paidDate: va?.updatedAt ?? '-'
+        };
+      }));
+      return returnData;
+    }
+
+  }
+
 });
 
 function generateUniqueVirtualAccount() {

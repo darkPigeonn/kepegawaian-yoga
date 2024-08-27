@@ -367,11 +367,18 @@
 
 <!-- PAYMENT -->
 <template name="paymentPage">
+  {{#if isInRole 'adminPpdbSchool'}}
+  {{> paymentPageListSchool}}
+  {{else}}
   <div class="container my-2">
     <div class="page-title my-2">
       <h3>Konfirmasi Pembayaran</h3>
     </div>
     <div class="page-content">
+      <div class="button-group my-2  d-flex justify-content-end gap-2">
+        <button class="btn btn-primary" id="btn-rekap-form-download">Unduh Rekap Pembayaran Formulir</button>
+        <button class="btn btn-warning" id="btn-rekap-income-download">Unduh Rekap Pembayaran Uang Masuk</button>
+      </div>
       <div class="section-action d-flex justify-content-between">
         <input type="file" accept=".xlsx" id="upload-csv" />
         <a href="https://static.imavi.org/yayoga/format_konfirmasi_va.xlsx">Unduh Format Konfirmasi VA XLSX</a>
@@ -434,7 +441,55 @@
 
     </div>
   </div>
+  {{/if}}
 </template>
+
+
+<template name="paymentPageListSchool">
+  <div class="my-2">
+    <div class="page-title my-4">
+      <h3>Pembayaran PPDB</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action">
+        <table class="table table-border" id="mytable">
+          <thead>
+            <th>No</th>
+            <th>Nama Orang Tua</th>
+            <th>Nama Siswa</th>
+            <th>Kelas Tujuan</th>
+            <th>Periode Pendafataran</th>
+            <th>Jenis Pembayaran</th>
+            <th>Nilai Pembayaran</th>
+            <th>Pembayaran Masuk</th>
+            <th>Status</th>
+            <th>No VA</th>
+            <th>Tanggal Pembayaran</th>∂
+          </thead>
+
+          <tbody>
+            {{#each listRegistrans}}
+            <tr>
+              <td>{{nomorUrut @index}}</td>
+              <td>{{createdByName}}</td>
+              <td>{{fullName}}</td>
+              <td>{{destinationClass}}</td>
+              <td>{{gelombang}}</td>
+              <td>{{categoryVa categoryPayment}}</td>
+              <td>{{formatRp amount}}</td>
+              <td>{{#if equals status 60}} {{formatRp amount}} {{else}} -{{/if}}</td>
+              <td>{{status}}</td>
+              <td>{{noVA}}</td>
+              <td>{{#if equals paidDate '-'}}-{{else}}{{formatHRDate paidDate}}{{/if}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
 <template name="paymentFinalPage">
   <div class="container my-2">
     <div class="page-title my-4">

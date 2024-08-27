@@ -11,8 +11,9 @@ export const Interviews = new Mongo.Collection("interviews");
 export const Gelombangs = new Mongo.Collection("configPpdbSchools");
 // export const Gelombangs = new Mongo.Collection("gelombangs");
 export const PaymentsConfig = new Mongo.Collection("paymentsConfig");
-export const InitialPayment = new Mongo.Collection("initialPayments");
+export const InitialPayment = new Mongo.Collection("initialpayments");
 export const CreditPayment = new Mongo.Collection("creditPayments");
+export const Transactions = new Mongo.Collection("transactions");
 export const RegistransDummy = [
   {
     fullName: "Ahmad Fauzi",
