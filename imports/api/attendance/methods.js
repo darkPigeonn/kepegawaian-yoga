@@ -662,30 +662,36 @@ Meteor.methods({
         if(!thisUser) {
             throw new Meteor.Error(404, "Anda tidak memiliki akses");
         }
-
+        
         const employee = Employee.find({
-            outlets : thisUser.outlets
+            outlets : {$in: thisUser.outlets}
         }).fetch();
-
-        console.log(employee);
+        
+        const employeeIds = employee.map(emp => emp._id);
 
         const thisStartMonth = moment().utcOffset("+07:00").startOf("month");
         const thisEndMonth = moment().utcOffset("+07:00").endOf("month");
 
-        const thisStartLastMonth = moment().utcOffset("+07:00").subtract(1, "month").startOf("month");
-        const thisEndLastMonth = moment().utcOffset("+07:00").subtract(1, "month").endOf("month");
+        // Yang di get bulan sebelumnya dari sekarang
+        // const thisStartLastMonth = moment().utcOffset("+07:00").subtract(1, "month").startOf("month");
+        // const thisEndLastMonth = moment().utcOffset("+07:00").subtract(1, "month").endOf("month");
+
+        // Yang di get bulan sekarang
+        const thisStartLastMonth = moment().utcOffset("+07:00").startOf("month");
+        const thisEndLastMonth = moment().utcOffset("+07:00").endOf("month");
+        
 
         const permits =  Permits.find({
             createdAt: {
                 $gte: new Date(thisStartLastMonth),
                 $lte: new Date(thisEndLastMonth),
             },
-            createdBy: {
-                $in: employee
+            creatorId: {
+                $in: employeeIds
             }
-        }).fetch();
+        }, {sort: {createdAt: -1}}).fetch();
 
-        console.log(permits);
+        return permits
     },
     async "getPermit.byMonth"(month) {
         const thisUser = Meteor.users.findOne({_id: this.userId});
@@ -694,7 +700,7 @@ Meteor.methods({
         }
 
         const employee = Employee.find({
-            outlets : thisUser.outlets
+            outlets : {$in: thisUser.outlets}
         }).fetch();
 
 
@@ -739,9 +745,9 @@ Meteor.methods({
             _id: idObject
         }, {
             $set: {
-                status: 60,
-                updatedAt : new Date(),
-                updatedBy : thisUser._id
+                status: 20,
+                confirmAt : new Date(),
+                confirmBy : thisUser._id
             }
         })
     },
@@ -758,10 +764,10 @@ Meteor.methods({
             _id: idObject
         }, {
             $set: {
-                status: 90,
-                updatedAt : new Date(),
-                updatedBy : thisUser._id,
-                reason
+                status: 99,
+                confirmAt : new Date(),
+                confirmBy : thisUser._id,
+                declineReason: reason
             }
         })
     },

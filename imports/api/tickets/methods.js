@@ -35,7 +35,7 @@ Meteor.methods({
         const relatedUser = Meteor.users.findOne({
             _id: thisUser,
         });
-        if(relatedUser.roles[0] == "admin"){
+        if(relatedUser.roles[0] == "admin" || relatedUser.roles[0] == "chief"){
             const data = Tickets.find({partner: relatedUser.partners[0]}).fetch()
             return data
         }

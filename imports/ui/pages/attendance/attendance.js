@@ -1050,8 +1050,8 @@ Template.listPermits.events({
     const id = $(e.target).attr("milik");
 
     Swal.fire({
-      title: "Konfirmasi Reject",
-      text: "Apakah anda yakin ingin menolak permit ini?",
+      title: "Konfirmasi Approve",
+      text: "Apakah anda yakin ingin menerima ijin ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
@@ -1078,7 +1078,7 @@ Template.listPermits.events({
 
     Swal.fire({
       title: "Konfirmasi Reject",
-      text: "Apakah anda yakin ingin menolak permit ini?",
+      text: "Apakah anda yakin ingin menolak ijin ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",

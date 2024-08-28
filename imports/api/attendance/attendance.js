@@ -35,6 +35,6 @@ export const ConfigAttendanceUser = new Mongo.Collection(
 
 export const statusPermits = [
   { code: 10, label: "Menunggu Persetujuan" },
-  { code: 60, label: "Diterima" },
-  { code: 90, label: "Ditolak" },
+  { code: 20, label: "Diterima" },
+  { code: 99, label: "Ditolak" },
 ];

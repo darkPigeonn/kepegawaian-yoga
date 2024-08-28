@@ -1,7 +1,7 @@
 
 <template name="list_document">
     <div class="container">
-        {{#if equals jabatanLogin "admin"}}
+        {{#if isInRole "admin, chief"}}
         <!-- {{jabatanLogin.roles.}} -->
         <div class="d-flex justify-content-end mb-2">
             <a href="/documents/create" class="btn btn-primary">Tambah</a>
