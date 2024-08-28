@@ -366,7 +366,7 @@ Template.gelombangPage.events({
     const feeDonation = convert2number($("#inputUangSumbangan").val());
     const classTemp = $("#inputClass").val();
     const feeEvent = convert2number($("#inputUangKegiatan").val());
-    const feeUtilty = convert2number($("#inputUangAlat").val());
+    const feeUtility = convert2number($("#inputUangAlat").val());
     const periodePpdb = $("#selectedPeriod").val();
 
     const classInput = classTemp.split("-");
@@ -385,7 +385,7 @@ Template.gelombangPage.events({
       feeForm,
       feeSpp,
       feeEvent,
-      feeUtilty,
+      feeUtility,
       feeDonation,
       classInput,
       periodePpdb,
@@ -414,7 +414,7 @@ Template.gelombangPage.events({
     $("#inputUangSpp").val(formatRupiah(this.feeSpp.toString()));
     $("#inputUangSumbangan").val(formatRupiah(this.feeDonation.toString()));
     $("#inputUangKegiatan").val(formatRupiah(this.feeEvent.toString()));
-    $("#inputUangAlat").val(formatRupiah(this.feeUtilty.toString()));
+    $("#inputUangAlat").val(formatRupiah(this.feeUtility.toString()));
 
     t.isEdit.set(true);
     $("#addModalGelombang").modal("show");

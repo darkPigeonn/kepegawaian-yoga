@@ -1250,7 +1250,8 @@ Template.paymentPageListSchool.onCreated(function () {
   this.autorun(() => {
     Meteor.call("get-payment-list-school", (error, result) => {
       if (error) {
-        console.error("Error while fetching students:", error);
+        console.log(error);
+
         exitPreloader();
       } else {
         self.listRegistrans.set(result);

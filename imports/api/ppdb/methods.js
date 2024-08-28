@@ -225,7 +225,7 @@ Meteor.methods({
       thisConfig.feeSpp +
       thisConfig.feeDonation +
       thisConfig.feeEvent +
-      thisConfig.feeUtilty;
+      thisConfig.feeUtility;
     thisRegistrans.config = thisConfig;
     //get cicilan
     const credits = await CreditPayment.find({ studentId: id }).fetch();
@@ -320,7 +320,7 @@ Meteor.methods({
           (thisConfig.feeSpp ?? 0) +
           (thisConfig.feeEvent ?? 0) +
           (thisConfig.feeDonation ?? 0) +
-          (thisConfig.feeUtilty ?? 0);
+          (thisConfig.feeUtility ?? 0);
         //get config va units
         // ALERT INI PERLU DIRUBAH KARENA VA SEMUA YANG GENEARTE ADMIN
         const thisVaConfig = await VirtualAccountsConfig.findOne({
@@ -355,6 +355,8 @@ Meteor.methods({
           unitName: thisUnit.name,
           schoolName: thisRegistran.schoolName,
           schoolId: thisRegistran.schoolId,
+          configId : thisRegistran.configId,
+          configName : thisRegistran.gelombang,
           codePeriode: thisConfig.code,
           periodeId: thisConfig._id,
           countNumber: thisRegistran.registrationNumber.slice(-3),
@@ -364,7 +366,7 @@ Meteor.methods({
           feeSpp: thisConfig.feeSpp,
           feeEvent: thisConfig.feeEvent,
           feeDonation: thisConfig.feeDonation,
-          feeUtilty: thisConfig.feeUtilty,
+          feeUtility: thisConfig.feeUtility,
           virtualAccountNumber: newVa,
         };
         const paymentDetail = {
@@ -372,7 +374,7 @@ Meteor.methods({
           feeSpp: thisConfig.feeSpp ?? 0,
           feeEvent: thisConfig.feeEvent ?? 0,
           feeDonation: thisConfig.feeDonation ?? 0,
-          feeUtility: thisConfig.feeUtilty ?? 0,
+          feeUtility: thisConfig.feeUtility ?? 0,
         };
         VirtualAccounts.insert(vaModel);
         Registrans.update(
@@ -797,7 +799,7 @@ Meteor.methods({
     feeForm,
     feeSpp,
     feeEvent,
-    feeUtilty,
+    feeUtility,
     feeDonation,
     classInput,
     periodePpdb
@@ -846,7 +848,7 @@ Meteor.methods({
       feeForm,
       feeSpp,
       feeEvent,
-      feeUtilty,
+      feeUtility,
       feeDonation,
       class: classInput,
       periodeId: checkPeriodePpdb._id,
@@ -862,7 +864,7 @@ Meteor.methods({
     feeForm,
     feeSpp,
     feeEvent,
-    feeUtilty,
+    feeUtility,
     feeDonation,
     classInput,
     periodePpdb,
@@ -894,7 +896,7 @@ Meteor.methods({
       feeForm,
       feeSpp,
       feeEvent,
-      feeUtilty,
+      feeUtility,
       feeDonation,
       class: classInput,
       periodeId: checkPeriodePpdb._id,
@@ -1178,7 +1180,7 @@ Meteor.methods({
       (thisCredit.feeSpp ? thisCredit.feeSpp : 0) +
       (thisCredit.feeEvent ? thisCredit.feeEvent : 0) +
       (thisCredit.feeDonation ? thisCredit.feeDonation : 0) +
-      (thisCredit.feeUtilty ? thisCredit.feeUtilty : 0);
+      (thisCredit.feeUtility ? thisCredit.feeUtility : 0);
 
     //get config va units
     const thisVaConfig = await VirtualAccountsConfig.findOne({
@@ -1222,7 +1224,7 @@ Meteor.methods({
       feeSpp: thisCredit.feeSpp,
       feeEvent: thisCredit.feeEvent,
       feeDonation: thisCredit.feeDonation,
-      feeUtilty: thisCredit.feeUtilty,
+      feeUtility: thisCredit.feeUtility,
       virtualAccountNumber: newVa,
       creditId: thisCredit._id,
     };
@@ -1231,7 +1233,7 @@ Meteor.methods({
       feeSpp: thisCredit.feeSpp,
       feeEvent: thisCredit.feeEvent,
       feeDonation: thisCredit.feeDonation,
-      feeUtility: thisCredit.feeUtilty,
+      feeUtility: thisCredit.feeUtility,
       indexPayment: 1,
     };
 
@@ -1588,7 +1590,7 @@ Meteor.methods({
           SPP: item.feeSpp ?? 0,
           SUMBANGAN: item.feeDonation ?? 0,
           KEGIATAN: item.feeEvent ?? 0,
-          ALAT: item.feeUtilty ?? 0,
+          ALAT: item.feeUtility ?? 0,
         };
       });
     }
@@ -1901,23 +1903,33 @@ Meteor.methods({
         destinationClass: 1,
         gelombang: 1,
         noVA: 1,
+        payments : 1
       }
     }).fetch();
 
+    let newData =[]
     if (getRegistrans.length > 0) {
       const returnData = await Promise.all(getRegistrans.map(async item => {
-        let va = await VirtualAccounts.findOne({ virtualAccountNumber: item.noVA });
+        const payments = item.payments
+        for (let index = 0; index < payments.length; index++) {
+          const element = payments[index];
 
-        return {
-          ...item,
-          vaId: va?._id,
-          categoryPayment: va?.category,
-          amount: va?.amount,
-          status: va?.status ?? 0,
-          paidDate: va?.updatedAt ?? '-'
-        };
+          let va = await VirtualAccounts.findOne({ virtualAccountNumber: element.virtualAccountNumber });
+
+          const tempData =  {
+            ...item,
+            vaId: element.virtualAccountNumber,
+            categoryPayment: element.category,
+            amount: element.amount,
+            status: va?.status ?? 0,
+            paidDate: va?.updatedAt ?? '-'
+          };
+
+          newData.push(tempData)
+        }
+
       }));
-      return returnData;
+      return newData;
     }
 
   }

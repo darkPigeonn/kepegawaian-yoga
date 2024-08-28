@@ -478,7 +478,7 @@
               <td>{{categoryVa categoryPayment}}</td>
               <td>{{formatRp amount}}</td>
               <td>{{#if equals status 60}} {{formatRp amount}} {{else}} -{{/if}}</td>
-              <td>{{status}}</td>
+              <td>{{paymentStatus status}}</td>
               <td>{{noVA}}</td>
               <td>{{#if equals paidDate '-'}}-{{else}}{{formatHRDate paidDate}}{{/if}}</td>
             </tr>
@@ -1047,7 +1047,7 @@
                   <td colspan="2">{{formatRp registran.config.feeSpp}}</td>
                   <td colspan="2">{{formatRp registran.config.feeDonation}}</td>
                   <td colspan="2">{{formatRp registran.config.feeEvent}}</td>
-                  <td colspan="2">{{formatRp registran.config.feeUtilty}}</td>
+                  <td colspan="2">{{formatRp registran.config.feeUtility}}</td>
                 </tr>
                 <tr class="amount">
                   <td>

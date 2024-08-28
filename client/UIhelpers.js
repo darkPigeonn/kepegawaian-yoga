@@ -382,6 +382,23 @@ Template.registerHelper("getLabelNationality", function (data) {
   return data.includes("indo") ? "Indonesia" : data;
 });
 
+Template.registerHelper("paymentStatus", function (data) {
+  let status = "";
+  switch (data) {
+    case 0:
+      status = "Belum dibayar";
+      break;
+    case 10:
+      status = "Dibayar";
+      break;
+    case 60:
+      status = "Lunas";
+      break;
+    default:
+      status = "Belum Bayar";
+  }
+  return status;
+});
 function convertTanggal(tanggal) {
   // Mengonversi bulan dari teks ke angka
   const bulanMapping = {

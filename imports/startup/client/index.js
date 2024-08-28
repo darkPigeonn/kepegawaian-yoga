@@ -351,7 +351,6 @@ export const formatRupiah = function (angka, prefix) {
   }
 
   rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-  console.log(rupiah);
   return rupiah;
 };
 
