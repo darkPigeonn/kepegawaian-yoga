@@ -524,7 +524,7 @@ Template.employee_create.events({
         showCancelButton: true,
         confirmButtonText: "Iya",
         cancelButtonText: "Tidak",
-        text: "Gambar gagal diupload, apakah anda ingin melanjutkan unggah data pegawai",
+        text: "Gambar tidak ada atau gagal diunggah, apakah anda ingin melanjutkan unggah data pegawai",
       }).then((result) => {
         if(result.isConfirmed) {
           data.linkGambar = "";
