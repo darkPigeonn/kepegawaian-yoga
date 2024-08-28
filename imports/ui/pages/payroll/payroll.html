@@ -185,6 +185,46 @@
                 </p>
                 <hr>
                 <p><strong>Dibuat Pada Tanggal:</strong> {{formatHRDate createdAt}}</p>
+                {{#if isInRole "admin, chief"}}
+                    {{#if equals dataSalarie.status 60}}
+                        {{#if dataSalarie.links}}
+                            <p><strong>Daftar Lembur</strong></p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Bukti Transfer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each i in dataSalarie.links}}
+                                        <tr>
+                                            <td>
+                                                {{setTableNumber @index}}
+                                            </td>
+                                            <td>
+                                                <a href="{{i.link}}" download style="display: inline-flex; align-items: center; text-decoration: none;">
+                                                    <i class="fas fa-download fa-fw" style="font-size: 1.2em; margin-right: 5px;"></i> 
+                                                    Download
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {{/if}}
+                        <form class="upload-form">
+                            <div class="upload-section">
+                                {{> inputMultipleFilesBuktiTransfer label="Pilih File Butki Transfer Slip Gaji" id="buktiTransfer" files=buktiTransfer buttonLabel="Upload"}}
+                                <div class="form-actions">
+                                    <button class="btn btn-primary" id="btn-save">Simpan</button>
+                                </div>
+                            </div>
+                        </form>
+                    {{/if}}
+                {{/if}}
             </div>
             {{#if equals dataSalarie.isRequesting true}}
                 <h3> Anda sudah meminta pengajuan permintaaan {{dataSalarie.isRequestingType}} slip gaji ini</h3>
@@ -594,4 +634,38 @@
             </tbody>
         </table>
     </div>
+</template>
+
+<template name="inputMultipleFilesBuktiTransfer">
+	<div class="form-group">
+	  <p><strong>{{label}}</strong></p>
+	  <div class="input-file-wrapper">
+		<input type="file" id="{{id}}" class="{{id}} mt-3 hide hidden d-none" name="filename"
+		  accept=".jpg, .png" multiple>
+		<label class="btn btn-primary"
+		  for="{{ id }}">{{#if buttonLabel }}{{ buttonLabel}}{{else}}{{ label }}{{/if}}</label>
+	  </div>
+	  <div class="d-flex flex-row">
+		{{#each file in files}}
+            {{#if equals file.type 'image/png'}}
+                <div class="uploaded-image mr-2">
+                <img src="{{file.src}}">
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{else}}
+                <div class="uploaded-image mr-2">
+                <a download id="{{id}}-{{@index}}" href="{{file.src}}" target="_blank">
+                    <i class="fa fa-file"></i>
+                    <p class="file-name">{{file.file.name}}</p>
+                </a>
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{/if}}
+		{{/each}}
+	  </div>
+	</div>
 </template>

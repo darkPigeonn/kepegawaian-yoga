@@ -88,7 +88,7 @@ Meteor.methods({
     "employee.remove"(id){
       check(id, String);
       const tglHapus = new Date();
-      return Employee.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
+      return Employee.update(id, {$set: {statusDelete: 1, status: 90, deleteTime : tglHapus}});
     },
     "employee.filterByNama"(data){
       check(data, String);
@@ -190,7 +190,7 @@ Meteor.methods({
         golongan,
         partnerCode,
         linkGambar,
-        status: 10, //10: Aktif, 20: Keluar, 30: pindah departemen
+        status: 10, //10: Aktif, 90: Keluar, 30: pindah departemen
         statusDelete: 0, //0: tidak soft delete, 1: soft deleted
         createdAt: new Date(),
         createdBy: createdBy,
@@ -288,7 +288,7 @@ Meteor.methods({
             partnerCode,
             linkGambar: "-",
             // outlets: "imavi",
-            status: 10, //10: Aktif, 20: Keluar, 30: pindah departemen
+            status: 10, //10: Aktif, 90: Keluar, 30: pindah departemen
             statusDelete: 0, //0: tidak soft delete, 1: soft deleted
             createdAt: new Date(),
             createdBy: createdBy,

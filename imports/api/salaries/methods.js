@@ -438,4 +438,8 @@ Meteor.methods({
             }
         });
     },
+    async "payroll.uploadBuktiTransfer"(data, id) {
+        let {links} = data;
+        return Salaries.update({_id: id}, {$set: {links}})
+    }
 })

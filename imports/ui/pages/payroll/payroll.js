@@ -139,6 +139,7 @@ Template.detailPayroll.onCreated(function() {
     self.dataSalarie = new ReactiveVar();
     self.fillReason = new ReactiveVar(false);
     self.request = new ReactiveVar();
+    self.buktiTransfer = new ReactiveVar([]);
     const id = FlowRouter.getParam("_id");
     Meteor.call("payroll.getDetail", id, function (error, result) {
         if (result) {
@@ -159,10 +160,96 @@ Template.detailPayroll.helpers({
     },
     request() {
         return Template.instance().request.get();
+    },
+    buktiTransfer() {
+        return Template.instance().buktiTransfer.get();
     }
 }) 
 
 Template.detailPayroll.events({
+    "change #buktiTransfer": function (e, t) {
+      const buktiTransfer = t.buktiTransfer.get();
+      const files = $("#buktiTransfer").prop("files");
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        if (file) {
+          const reader = new FileReader();
+          const body = {
+            file: file,
+          };
+          reader.addEventListener("load", function () {
+            body.src = this.result;
+            if (file.type != ".jpg" || file.type != ".png") {
+              $(`#buktiTransfer-${buktiTransfer.length - 1}`).attr(
+                "href",
+                this.result
+              );
+            }
+          });
+          reader.readAsDataURL(file);
+          buktiTransfer.push(body);
+          t.buktiTransfer.set(buktiTransfer);
+        }
+      }
+    },
+    "click .remove-buktiTransfer": function (e, t) {
+      e.preventDefault();
+      const index = $(e.target).attr("milik");
+      const buktiTransfer = t.buktiTransfer.get();
+      buktiTransfer.splice(parseInt(index), 1);
+      t.buktiTransfer.set(buktiTransfer);
+    },
+    async "click #btn-save"(e, t) {
+        e.preventDefault();
+        const id = FlowRouter.getParam("_id");
+        let data = {};
+        Swal.fire({
+          title: "Konfirmasi",
+          text: "Apakah anda yakin ingin mengunggah slip gaji",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Iya",
+          cancelButtonText: "Tidak",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const files = t.buktiTransfer.get();
+                const thisForm = {};
+                thisForm[files] = [];
+                if (files.length > 0) {
+                    for (let index = 0; index < files.length; index++) {
+                        const fileName = files[index].file.name;
+                        const uploadData = {
+                        fileName: "kepegawaian/payroll/" + fileName,
+                        type: "image/png",
+                        Body: files[index].file
+                        }
+                        const linkUpload = await uploadFiles(uploadData);
+                        thisForm[files].push(
+                        {
+                            name: files[index].file.name,
+                            link: linkUpload
+                        });
+                    }
+                    data.links = thisForm[files]
+                }
+            }
+    
+            Meteor.call("payroll.uploadBuktiTransfer", data, id, function (error, result) {
+                if(result) {
+                    Swal.close();
+                    successAlert();
+                    location.reload();
+                    history.back();
+                }
+                else {
+                    Swal.close();
+                    console.log(error);
+                    failAlert(error);
+                }
+            })
+        });
+        
+    },
     "click #btn-publish"(e, t) {
         Swal.fire({
             title: "Warning",
