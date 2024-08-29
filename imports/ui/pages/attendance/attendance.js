@@ -200,6 +200,7 @@ Template.rekapAttendancePage.events({
         Meteor.call("staffsAttendance.rekap", totalLibur, template.startDate.get(), template.endDate.get(),function (error, result) {
             if (result) {
                 template.dataRekap.set(result);
+                console.log(template.dataRekap.get());
             //   DataTable(window, $);
             //     setTimeout(() => {
             //       $("#table-rekap").dataTable();

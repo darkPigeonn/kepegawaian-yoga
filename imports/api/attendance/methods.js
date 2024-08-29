@@ -282,7 +282,7 @@ Meteor.methods({
     }
 
     },
-    "staffsAttendance.rekap"(totalDayOf, startDate, endDate) {
+    "staffsAttendance.rekap"(totalDayOf, startDate2, endDate2) {
         //Get outlets berdasarkan admin
         const thisUser = Meteor.users.findOne({
           "_id" : this.userId
@@ -290,9 +290,8 @@ Meteor.methods({
 
         // console.log(thisUser);
 
-        startDate = moment(startDate);
-        endDate = moment(endDate).endOf("day");
-        console.log(startDate, endDate);
+        const startDate = moment(startDate2);
+        const endDate = moment(endDate2).endOf("day");
 
         const totalDay = moment().weekdayCalc(startDate, endDate, [1, 2, 3, 4, 5,6]);
 
@@ -328,7 +327,7 @@ Meteor.methods({
                 _id: x.profileId,
                 partnerCode: outlet
               })
-              console.log(employeeProfile);
+            //   console.log(employeeProfile);
               if (employeeProfile) {
                 if(employeeProfile.full_name){
                     dataUser.userId = x.profileId;
@@ -362,8 +361,8 @@ Meteor.methods({
                             dataUser.totalLate = late.length;
                         }
                         dataUser.totalPresensi = dataStaffsAttendance.length;
-                        const startOfMonth = startDate.startOf('month').toDate();
-                        const endOfMonth = startDate.endOf('month').toDate();
+                        const startOfMonth = moment(startDate).startOf('month').toDate();
+                        const endOfMonth = moment(startDate).endOf('month').toDate();
                         const permitLembur = Permits.find(
                             {
                                 creatorId: x.profileId, 
