@@ -343,7 +343,7 @@ Template.registerHelper("categoryVa", function (data) {
     label = "Va Pembayaran Lunas";
   }
   if (data == "99") {
-    label = "Va Pembayaran Cicil";
+    label = "Va Pembayaran Angsuran";
   }
   return label;
 });

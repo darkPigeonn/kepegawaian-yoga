@@ -1344,7 +1344,7 @@ Meteor.methods({
         //1. Yang cicilan
         if(element.paymentMethod == 'Cicil'){
           const getCicilan = CreditPayment.find({studentId : element._id.toHexString()}).fetch()
-          console.log(getCicilan);
+
         }
 
         const dataExtend = {
