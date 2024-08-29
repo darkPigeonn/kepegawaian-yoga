@@ -33,8 +33,10 @@ isInRoles = function(roles) {
         _id: userId,
     });
 
+
     const userRoles = relatedUser.roles || [];
-    
+
+
     if (!Array.isArray(roles)) {
       const rolesArray = roles.split(',').map(role => role.trim());
       const cleanRolesArray = rolesArray.map(role => {
@@ -43,11 +45,11 @@ isInRoles = function(roles) {
         }
         return role;
       });
-  
-      return cleanRolesArray.some(role => userRoles.includes(role));
+
+      return cleanRolesArray.some(role => userRoles.some(e => e._id.includes(role)));
     }
     else{
-      const checkRole =  userRoles.includes(roles[0]);
+      const checkRole =  userRoles.some(e => e._id.includes(roles));
       return checkRole;
     }
 }

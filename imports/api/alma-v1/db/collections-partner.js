@@ -56,13 +56,13 @@ Meteor.methods({
             return dataReturn;
         }
     },
-    
+
     async 'partner-mutation'(user, newPartner) {
         check(user, Object);
         check(newPartner, String);
         //pastikan data partner ada
         const thisPartner = Partner.findOne({ "code": newPartner });
-    
+
         if (!thisPartner) {
             throw new Meteor.Error(403, "Partner Tidak Ditemukan")
         }

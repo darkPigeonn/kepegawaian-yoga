@@ -13,6 +13,7 @@ import "../../ui/pages/document/document.js";
 import "../../ui/pages/user/user.js";
 import "../../ui/pages/evaluations/evaluation.js";
 import "../../ui/pages/proposal/proposal.js";
+import "../../ui/pages/employees/employees.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -435,3 +436,12 @@ FlowRouter.route("/proposal/print/:_id", {
     this.render("App_body", "printProposal")
   }
 });
+
+
+// Employee
+FlowRouter.route("/employees/list",{
+  name : "employeesList",
+  action() {
+    this.render("App_body", "employees")
+  }
+})

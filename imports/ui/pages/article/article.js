@@ -142,7 +142,7 @@ Template.listArticle.events({
           .removeClass("text-white")
           .addClass("text-orange");
         $("#" + milik).val(true);
-      } 
+      }
       else {
         $("#" + milik).removeAttr("status");
         $("#" + milik).removeAttr("value");
@@ -170,13 +170,13 @@ Template.listArticle.events({
   },
   'click #openModalBtn'(e, t) {
     const listData = t.articles.get();
-    
+
     const slug = $(e.target).data("milik")
     const thisData = _.find(listData, function (x) {
       return x.slug == slug;
     })
     // console.log(thisData);
-    
+
 
     const modal = document.getElementById('myModal');
     const canvas = document.getElementById("canvas");
@@ -204,7 +204,7 @@ Template.listArticle.events({
 
     htmlToImage
       .toBlob(document.getElementById("boarding-pass"), {
-       
+
       })
       .then(function (dataUrl) {
         saveAs(dataUrl, filename);
@@ -239,7 +239,7 @@ Template.formArticle.onCreated(function () {
   const userId = Meteor.userId();
 
   self.documentFiles = new ReactiveVar([]);
-  
+
   // console.log(userId);
 
   Meteor.call("getAllOutlets", function (err, res) {
@@ -260,6 +260,7 @@ Template.formArticle.onCreated(function () {
         if (err) {
           failAlert(err);
         } else {
+
           partners.forEach((partner) => {
             res.partners.forEach((userPartner) => {
               if (userPartner === partner.code) {
@@ -267,6 +268,7 @@ Template.formArticle.onCreated(function () {
               }
             });
           });
+
           self.partners.set(pushedPartners);
           if (pushedPartners.length === 1){
             self.selectedPartner.set(pushedPartners[0])
@@ -503,7 +505,7 @@ Template.formArticle.events({
               if (outlets.length < 1) {
                 outlets.push(outletCode);
               }
-  
+
               if (outlets.length > 0) {
                 if (author.length == 0) {
                   author = Meteor.user().fullname;
@@ -530,7 +532,7 @@ Template.formArticle.events({
                   postRoute = "updateArticle";
                   data.id = FlowRouter.current().params._id;
                 }
-  
+
                 if (logo) {
                   const uploadData = {
                     type: 'articles',
@@ -539,7 +541,7 @@ Template.formArticle.events({
                   const fileLink = await uploadFiles(uploadData)
                   data.imageLink = fileLink
                 }
-                
+
                 Meteor.call(postRoute, data, async function (err, res) {
                   if (err) {
                     failAlert(err);
@@ -556,7 +558,7 @@ Template.formArticle.events({
         else {
           failAlert("Partner harus diisi!")
         }
-       
+
       }
     });
   },

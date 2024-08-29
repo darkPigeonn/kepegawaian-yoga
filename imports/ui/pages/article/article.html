@@ -1,10 +1,10 @@
 <template name="listArticle">
     {{#if isInRoles 'cmsArticleList' }}
         <div class="container page page-matkul-page my-3">
-            <label style="color: blue; margin: 0;"> 
-                <a href="/articles/list"> 
+            <label style="color: blue; margin: 0;">
+                <a href="/articles/list">
                     Artikel
-                </a> 
+                </a>
                 /
             </label>
             <div class="desktop-div">
@@ -19,13 +19,13 @@
                                     <i class="fa fa-plus"></i><span>Buat Artikel</span>
                                 </a>
                             {{/if}}
+                            {{#if isInRoles 'superadmin'}}
                             <div class="dropdown">
                                 <button class="btn btn-warning dropdown-toggle" type="button" id="adminMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-gears"></i>
                                     Admin Menu
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="adminMenu">
-                                    {{#if isInRoles 'superadmin'}}
                                         <button class="dropdown-item" id="repairDate">
                                             <i class="fa fa-wrench"></i> Repair Tanggal
                                         </button>
@@ -35,9 +35,9 @@
                                         <button class="dropdown-item" id="migrateHostName">
                                             <i class="fa fa-exchange"></i> Migrasi Hostname
                                         </button>
-                                    {{/if}}
                                 </div>
                             </div>
+                            {{/if}}
                         </div>
                     </section>
                 </div>
@@ -91,8 +91,8 @@
                             <tr>
                                 <th width="25%">Judul</th>
                                 <th width="20%">Pembuat</th>
-                                <th width="10%">Publish</th>
-                                <th width="10%">Outlets</th>
+                                <th width="10%">Publikasi</th>
+                                <th width="10%">Web Site</th>
                                 <th width="25%">Action</th>
                             </tr>
                         </thead>
@@ -126,13 +126,13 @@
                                             {{#if isInRoles 'cmsArticleEdit'}}
                                                 <a class="btn btn-primary btn-sm btn-edit"
                                                     href="/articles/edit/{{toMeteorId i._id}}">
-                                                    <i class="fa fa-edit" milik="{{toMeteorId i._id}}"></i> 
+                                                    <i class="fa fa-edit" milik="{{toMeteorId i._id}}"></i>
                                                 </a>
                                             {{/if}}
-    
+
                                             {{#if isInRoles 'cmsArticleDelete'}}
                                                 <button class="btn btn-danger btn-sm delete-article" id="{{toMeteorId i._id}}">
-                                                    <i class="fa fa-trash delete-article" id="{{toMeteorId i._id}}"></i> 
+                                                    <i class="fa fa-trash delete-article" id="{{toMeteorId i._id}}"></i>
                                                 </button>
                                             {{/if}}
                                         {{/if}}
@@ -228,20 +228,20 @@
 
         }
     </style>
-    
+
 </template>
 
 <template name="createArticle">
     {{#if isInRoles 'cmsArticleCreate, superadmin, admin' }}
         <div class="container mt-3">
-            <label style="color: blue; margin: 0;"> 
-                <a href="/articles/list" class="text-secondary"> 
+            <label style="color: blue; margin: 0;">
+                <a href="/articles/list" class="text-secondary">
                     Artikel
-                </a> 
+                </a>
                 /
-                <a href="/articles/create"> 
+                <a href="/articles/create">
                     Tambah
-                </a> 
+                </a>
             </label>
             <div class="title-page mt-3">
                 <h3>Tambah Artikel</h3>
@@ -257,15 +257,15 @@
 <template name="editArticle">
     {{#if isInRoles 'cmsArticleEdit' }}
         <div class="container page">
-            <label style="color: blue; margin: 0;"> 
-                <a href="/articles/list" class="text-secondary"> 
+            <label style="color: blue; margin: 0;">
+                <a href="/articles/list" class="text-secondary">
                     Artikel
-                </a> 
+                </a>
                 /
                 <!-- Belum diganti url nya -->
-                <a href="/articles/edit/{{_id}}"> 
+                <a href="/articles/edit/{{_id}}">
                     Ubah
-                </a> 
+                </a>
             </label>
             <div class="title-page mt-3">
                 <h3>Ubah Artikel</h3>
@@ -300,7 +300,7 @@
                 <input type="text" id="excerpt" class="form-control">
             </div>
         </div>
-        {{#if greaterThan partners.length 1 }}
+        {{#if greaterThan partners.length 0 }}
             <div class="form-group">
                 <label class="fw-bold">Pilih Partner</label>
                 <select name="select-partner" id="select-partner" class="select2 form-control select-evaluator">
@@ -401,8 +401,8 @@
       </div>
       <input class="hidden input-file input-{{ name }}File" name="{{ name }}File" id="{{ name }}File" type="file">
       <div class="uploaded-image mt-2">
-        <a id="{{ name }}Link" class="" target="_blank" rel="noreferrer">
-          <img id="{{ name }}Image" alt="{{ imageFile.name }}" class="thumbnail">
+        <a id="{{ name }}Link" class="" target="_blank" rel="noreferrer" >
+          <img id="{{ name }}Image" alt="{{ imageFile.name }}" class="thumbnail" style="max-width: 250px;">
         </a>
       </div>
     </div>
