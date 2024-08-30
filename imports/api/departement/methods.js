@@ -84,8 +84,9 @@ Meteor.methods({
           $set: {
             departmentId: id,
             department_unit: name,
-          }
-        })
+          },
+        }
+      )
       }
     }
     return updateDepartement;
@@ -97,5 +98,12 @@ Meteor.methods({
     });
     partnerCode = adminPartner.partners[0];
     return Employee.find({status: 10, statusDelete: 0, partnerCode: partnerCode }, {sort: {createdAt: -1}}).fetch();
+  },
+  "departemen.delete"(id) {
+    const hapus = Employee.update(
+      { departmentId: id }, // Kriteria pencarian berdasarkan departmentId
+      { $unset: { department_unit: "", departmentId: "" } }, {multi: true} // Unset field department_unit dan departmentId
+    );
+    return Departement.remove({_id: id})
   }
 });

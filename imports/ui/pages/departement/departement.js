@@ -40,6 +40,45 @@ Template.departement_page.helpers({
     }
 });
 
+Template.departement_page.events({
+  
+  "click #btn-delete"(e, t) {
+    const id = e.target.getAttribute('milik');
+    Swal.fire({
+      title: "Konfirmasi Delete",
+      text: "Apakah anda yakin melakukan delete departemen ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal"
+    }).then((result) => {
+      if(result.isConfirmed){
+        Meteor.call("departemen.delete", id, function(error, result) {
+          if (result) {
+            // alert("Sukses");
+            Swal.fire({
+              title: "Berhasil",
+              text: "Departemen berhasil dihapus",
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            location.reload()
+          } else {
+            // alert("Insert departement error");
+            Swal.fire({
+              title: "Gagal",
+              text: error.reason,
+              showConfirmButton: true,
+              allowOutsideClick: true,
+            });
+            console.log(error);
+          }
+        })
+      }
+    })
+    }
+})
+
 Template.departement_create.events({
     "click #btn_save_departement"(e, t) {
         e.preventDefault();
