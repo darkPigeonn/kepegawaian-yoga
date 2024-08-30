@@ -124,7 +124,7 @@ Meteor.methods({
             dataEmployee = Employee.find({partnerCode, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
         }
         else {
-            dataEmployee = Employee.find({partnerCode, department_unit: department, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+            dataEmployee = Employee.find({partnerCode, departmentId: department, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
         }
         const currentMonth = new Date().getMonth() + 1;
         const currentYear = new Date().getFullYear();
@@ -222,7 +222,7 @@ Meteor.methods({
         const dataDepartments = Departement.find({partnerName: partnerCode}).fetch();
         for (let index = 0; index < dataDepartments.length; index++) {
             const element = dataDepartments[index];
-            dataEmployee = Employee.find({partnerCode, department_unit: element.name, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+            dataEmployee = Employee.find({partnerCode, departmentId: element._id, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
             const currentMonth = new Date().getMonth() + 1;
             const currentYear = new Date().getFullYear();
             let dataSalarie;
@@ -239,6 +239,7 @@ Meteor.methods({
                 }
             }
             const dataAkhir = {
+                departmentId: element._id,
                 departmentName: element.name,
                 approxPengeluaran: estimasiPengeluaran
             }

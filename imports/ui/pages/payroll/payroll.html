@@ -21,8 +21,8 @@
                             {{formatRp approxPengeluaran}}
                         </td>
                         <td>
-                            <button id="payrollByDepartment" milik="{{ departmentName }}" class="btn btn-primary btn-sm">
-                            <i class="fa fa-eye" id="payrollByDepartment" milik="{{ departmentName }}"></i></button>
+                            <button id="payrollByDepartment" milik="{{ departmentName }}" departmentId="{{ departmentId }}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-eye" id="payrollByDepartment" milik="{{ departmentName }}" departmentId="{{ departmentId }}"></i></button>
                         </td>
                     </tr>
                     {{/each}}
@@ -34,6 +34,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5><p><strong>Estimasi Pengeluaran Departemen {{namaDepartemen}} : {{formatRp estimasiPengeluaran}}</strong></p></h5>
+
                 </div>
             </div>
             <div class="form-inline mt-3 d-flex align-items-center">

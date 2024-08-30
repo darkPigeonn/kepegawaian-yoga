@@ -48,7 +48,8 @@ Template.listPayroll.events({
     "click #payrollByDepartment"(e, t) {
         e.preventDefault();
         const param = $(e.target).attr('milik');
-        Meteor.call("payroll.getAll", param, function (error, result) {
+        const departmentId = $(e.target).attr('departmentId')
+        Meteor.call("payroll.getAll", departmentId, function (error, result) {
             if (result) {
                 t.dataSalaries.set(result.dataEmployee)
                 t.estimasiPengeluaran.set(result.estimasiPengeluaran);
