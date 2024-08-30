@@ -103,6 +103,7 @@ Template.departement_edit.onCreated(function () {
     self.departement = new ReactiveVar();
     const id = FlowRouter.getParam("_id");
     self.dataEmployee = new ReactiveVar();
+    self.listEmployee = new ReactiveVar();
     // console.log(id);
 
     Meteor.call("departement.getBy", id, function (error, result) {
@@ -116,12 +117,19 @@ Template.departement_edit.onCreated(function () {
     Meteor.call("departement.getEmployee", function (error, result) {
       if(result) {
         self.dataEmployee.set(result);
-        console.log(self.dataEmployee.get());
       }
       else {
         console.log(error);
       }
     })
+    // Meteor.call("employee.getAll", function (error, result) {
+    //   if(result) {
+    //     self.listEmployee.set(result);
+    //     console.log(self.listEmployee.get());
+        
+    //   }
+    // })
+    startSelect2();
 });
 
 Template.departement_edit.helpers({
@@ -130,6 +138,9 @@ Template.departement_edit.helpers({
     },
     dataEmployee(){
       return Template.instance().dataEmployee.get();
+    }, 
+    listEmployee() {
+      return Template.instance().listEmployee.get();
     }
 });
 
@@ -141,6 +152,7 @@ Template.departement_edit.events({
         const description = $("#input_description").val();
         const leader = $("#input_headDepartment").val();
         const id = FlowRouter.getParam("_id");  
+        const members = $("#input_member").val();
 
         if(!name || !description) {
           Swal.fire({
@@ -153,10 +165,13 @@ Template.departement_edit.events({
         }
         // console.log(name, description);
         const data = {
-            name,
-            description,
-            leader
+          name,
+          description,
+          leader
         };
+        if(members.length > 0) {
+          data.members = members;
+        }
 
         // console.log(data);
     

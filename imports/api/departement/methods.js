@@ -72,11 +72,22 @@ Meteor.methods({
     }
 
     const getDepartementName = Departement.findOne({_id: id});
-    const updateDepartementEmployee = Employee.update({department_unit: getDepartementName.name}, {$set: {department_unit: name}}, {multi: true});
+    const updateDepartementEmployee = Employee.update({department_unit: getDepartementName.name, statusDelete: 0}, {$set: {department_unit: name, departmentId: id}}, {multi: true});
     const updateDepartement = Departement.update(
       { _id: id },
       { $set: {name: name, description: description, headDepartment: headDepartment}, $push: {timeline: timeline}}
     );
+    if(data.members.length > 0 || data.members != undefined) {
+      for (let index = 0; index < data.members.length; index++) {
+        const element = data.members[index];
+        const updateEmployee = Employee.update({_id: element}, {
+          $set: {
+            departmentId: id,
+            department_unit: name,
+          }
+        })
+      }
+    }
     return updateDepartement;
   },
   "departement.getEmployee"(){
@@ -84,6 +95,7 @@ Meteor.methods({
     const adminPartner = Meteor.users.findOne({
       _id: thisUser,
     });
-    return Employee.find({partnerCode: adminPartner.partners[0]}).fetch();
+    partnerCode = adminPartner.partners[0];
+    return Employee.find({status: 10, statusDelete: 0, partnerCode: partnerCode }, {sort: {createdAt: -1}}).fetch();
   }
 });

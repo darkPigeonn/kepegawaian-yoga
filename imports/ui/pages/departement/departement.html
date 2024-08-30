@@ -67,6 +67,13 @@
                 {{/each}}
             </select>
             <br>
+            <label>Anggota Departemen</label>
+            <select id="input_member" class="form-control select2" multiple>
+                {{#each dataEmployee}}
+                    <option value="{{_id}}">{{full_name}} / {{email_address}}</option>
+                {{/each}}
+            </select>
+            <br><br>
             <button class="btn btn-primary" style="width: 10vw;" type="button" id="btn_save_departement">Simpan</button>
         </div>
     </form>
