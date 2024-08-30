@@ -1582,7 +1582,7 @@ Meteor.methods({
     if (tag == "08") {
       newModel = thisVa.map((item) => {
         return {
-          "KODE VA": item.virtualAccountNumber,
+          "KODE VA": item.virtualAccountNumber.substring(5),
           "NAMA SISWA": "Formulir",
           Formulir: item.amount,
         };
@@ -1590,7 +1590,7 @@ Meteor.methods({
     } else {
       newModel = thisVa.map((item) => {
         return {
-          "KODE VA": item.virtualAccountNumber,
+          "KODE VA": item.virtualAccountNumber.substring(5),
           "NAMA SISWA": "Formulir",
           SPP: item.feeSpp ?? 0,
           SUMBANGAN: item.feeDonation ?? 0,
