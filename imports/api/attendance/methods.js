@@ -325,7 +325,8 @@ Meteor.methods({
             if (x._id) {
               const employeeProfile = Employee.findOne({
                 _id: x.profileId,
-                partnerCode: outlet
+                partnerCode: outlet,
+                statusDelete: 0
               })
             //   console.log(employeeProfile);
               if (employeeProfile) {
@@ -429,12 +430,11 @@ Meteor.methods({
 
             }
           });
-
           const dataNew = {
             activeDayWorking: activeWorkingDays,
             dayOf: totalDayOf,
-            month: moment(startDate).month() + 1,
-            year: moment(startDate).year(),
+            month: moment(startDate2).month() + 1,
+            year: moment(startDate2).year(),
             outlets: outlet,
             details: dataReturn,
           };

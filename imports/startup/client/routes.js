@@ -492,7 +492,7 @@ FlowRouter.route("/payroll/edit/:_id", {
   action() {
     this.render("App_body", "editPayroll")
   }
-})
+});
 
 // korespondensi
 FlowRouter.route("/korespondensi/", {

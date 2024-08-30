@@ -13,12 +13,15 @@ import { HTTP } from 'meteor/http';
 Template.listPayroll.onCreated(function() {
     const self = this;
     self.dataSalaries = new ReactiveVar();
-    Meteor.call("payroll.getAll", function (error, result) {
+    self.viewMode = new ReactiveVar(1);
+    self.departements = new ReactiveVar();
+    self.estimasiPengeluaran = new ReactiveVar(0);
+    self.namaDepartemen = new ReactiveVar();
+    Meteor.call("payroll.getDepartments", function (error, result) {
         if (result) {
-            self.dataSalaries.set(result)
-        }
-        else {
-            console.log(error);
+          self.departements.set(result);
+        } else {
+          console.log(error);
         }
     });
 });
@@ -27,9 +30,40 @@ Template.listPayroll.helpers({
     dataSalaries() {
         return Template.instance().dataSalaries.get();
     },
+    estimasiPengeluaran() {
+        return Template.instance().estimasiPengeluaran.get();
+    },
+    viewMode() {
+        return Template.instance().viewMode.get();
+    },
+    departements() {
+        return Template.instance().departements.get();
+    },
+    namaDepartemen() {
+        return Template.instance().namaDepartemen.get();
+    }
 })
 
 Template.listPayroll.events({
+    "click #payrollByDepartment"(e, t) {
+        e.preventDefault();
+        const param = $(e.target).attr('milik');
+        Meteor.call("payroll.getAll", param, function (error, result) {
+            if (result) {
+                t.dataSalaries.set(result.dataEmployee)
+                t.estimasiPengeluaran.set(result.estimasiPengeluaran);
+                t.viewMode.set(2);
+                t.namaDepartemen.set(param);
+            }
+            else {
+                console.log(error);
+            }
+        });
+    },
+    "click #btn-back"(e, t) {
+        e.preventDefault();
+        t.viewMode.set(1);
+    },
     "click #btn-filter"(e, t) {
         const monthYearValue = $("#filterMonthYear").val(); // Dapatkan nilai dari input monthYear
         let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun

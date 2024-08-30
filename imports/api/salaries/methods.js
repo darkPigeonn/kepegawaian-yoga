@@ -1,5 +1,6 @@
 import { Salaries } from "./salaries";
 import { SalariesActionRequests } from "./salaries";
+import { Departement } from "../departement/departement";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
@@ -112,22 +113,39 @@ Meteor.methods({
         }
         return Salaries.insert(dataSave);
     },
-    async "payroll.getAll"() {
+    async "payroll.getAll"(department) {
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
         _id: thisUser,
         });
         const partnerCode = adminPartner.partners[0];
-        const dataEmployee = Employee.find({partnerCode}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        let dataEmployee;
+        if(department == null) {
+            dataEmployee = Employee.find({partnerCode, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        }
+        else {
+            dataEmployee = Employee.find({partnerCode, department_unit: department, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        }
         const currentMonth = new Date().getMonth() + 1;
         const currentYear = new Date().getFullYear();
         let data;
+        let estimasiPengeluaran = 0;
         for (let index = 0; index < dataEmployee.length; index++) {
             const element = dataEmployee[index];
             data = Salaries.findOne({employeeId: element._id, month: currentMonth, year: currentYear});
             dataEmployee[index].salaries = data;
+            if(dataEmployee[index].salaries != undefined) {
+                let totalSalary = dataEmployee[index].salaries.totalSalary
+                if(!isNaN(totalSalary) || totalSalary != undefined) {
+                    estimasiPengeluaran = estimasiPengeluaran + totalSalary
+                }
+            }
         }
-        return dataEmployee
+        let dataReturn = {
+            estimasiPengeluaran,
+            dataEmployee
+        }
+        return dataReturn
     },
     async "payroll.getFilter"(month, year){
         const thisUser = Meteor.userId();
@@ -135,7 +153,7 @@ Meteor.methods({
         _id: thisUser,
         });
         const partnerCode = adminPartner.partners[0];
-        const dataEmployee = Employee.find({partnerCode}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        const dataEmployee = Employee.find({partnerCode, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
         let data;
         for (let index = 0; index < dataEmployee.length; index++) {
             const element = dataEmployee[index];
@@ -190,6 +208,43 @@ Meteor.methods({
         dataSalaries.detailRekap = result
         // console.log(dataSalaries);
         return dataSalaries
+    },
+
+    async "payroll.getDepartments"() {
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+        _id: thisUser,
+        });
+        partnerCode = adminPartner.partners[0];
+        let dataEmployee;
+        let dataReturn = [];
+        const dataDepartments = Departement.find({partnerName: partnerCode}).fetch();
+        for (let index = 0; index < dataDepartments.length; index++) {
+            const element = dataDepartments[index];
+            dataEmployee = Employee.find({partnerCode, department_unit: element.name, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+            const currentMonth = new Date().getMonth() + 1;
+            const currentYear = new Date().getFullYear();
+            let dataSalarie;
+            let estimasiPengeluaran = 0;
+            for (let index = 0; index < dataEmployee.length; index++) {
+                const element = dataEmployee[index];
+                dataSalarie = Salaries.findOne({employeeId: element._id, month: currentMonth, year: currentYear});
+                dataEmployee[index].salaries = dataSalarie;
+                if(dataEmployee[index].salaries != undefined) {
+                    let totalSalary = dataEmployee[index].salaries.totalSalary
+                    if(!isNaN(totalSalary) || totalSalary != undefined) {
+                        estimasiPengeluaran = estimasiPengeluaran + totalSalary
+                    }
+                }
+            }
+            const dataAkhir = {
+                departmentName: element.name,
+                approxPengeluaran: estimasiPengeluaran
+            }
+            dataReturn.push(dataAkhir)
+        }
+        return dataReturn
     },
 
     "payroll.publish"(id) {

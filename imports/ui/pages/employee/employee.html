@@ -758,7 +758,7 @@
                         <label>Departemen Unit</label>
                         <select id="input_departementUnit" class="form-control">
                             {{#each departements}}
-                            <option value={{name}}>{{name}}</option>
+                            <option value={{_id}}>{{name}}</option>
                             {{/each}}
                         </select>
                     </div>
@@ -794,7 +794,11 @@
                         <input type="text" id="input_accountNumberBank" class="form-control" />
                     </div>
                     <div class="form-group mb-2">
-                        <input type="checkbox" id="checkNamaAccount" name="checklist-item">
+                        {{#if equals changeBankAccountName true}}
+                            <input checked type="checkbox" id="checkNamaAccount" name="checklist-item">
+                        {{else}}
+                            <input type="checkbox" id="checkNamaAccount" name="checklist-item">
+                        {{/if}}
                         <label for="checklist-item">Nama pemilik nomor rekening tidak sama dengan nama lengkap pegawai</label>
                     </div>
                     {{#if equals changeBankAccountName true}}
@@ -2316,7 +2320,7 @@
                 <label>Nama Departemen Baru</label>
                 <select id="input_departemen" class="form-control">
                     {{#each departements}}
-                    <option value={{name}}>{{name}}</option>
+                    <option value={{_id}}>{{name}}</option>
                     {{/each}}
                 </select>
             </div>

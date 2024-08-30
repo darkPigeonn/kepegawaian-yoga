@@ -3,6 +3,7 @@ import { check } from "meteor/check";
 import moment from "moment";
 import { Meteor } from 'meteor/meteor';
 import  generatePassword  from 'generate-password';
+import { Departement } from "../departement/departement";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -159,6 +160,12 @@ Meteor.methods({
       partnerCode = adminPartner.partners[0];
       createdBy = adminPartner.fullname;
 
+      const dataDepartment = Departement.findOne({_id: department_unit});
+      let name;
+      if(dataDepartment) {
+        name = dataDepartment.name
+      }
+
       const dataSave = {
         full_name,
         identification_number,
@@ -169,7 +176,8 @@ Meteor.methods({
         phone_number,
         email_address,
         job_position,
-        department_unit,
+        department_unit: name,
+        departmentId: department_unit,
         start_date,
         employment_status,
         base_salary,
@@ -343,7 +351,6 @@ Meteor.methods({
         phone_number,
         email_address,
         job_position,
-        department_unit,
         start_date,
         employment_status,
         base_salary,
@@ -403,7 +410,6 @@ Meteor.methods({
       phone_number,
       email_address,
       job_position,
-      department_unit,
       start_date,
       employment_status,
       base_salary,
@@ -434,12 +440,18 @@ Meteor.methods({
   "employee.mutasiInsert" (id, departement_unit) {
     check(id, String);
     check(departement_unit, String);
-    const name = departement_unit;
+    const departmentId = departement_unit;
+    const dataDepartment = Departement.findOne({_id: departmentId});
+    let name;
+    if(dataDepartment) {
+      name = dataDepartment.name
+    }
+    
     const timestamp = new Date();
 
     return Employee.update(
       { _id: id },
-      { $set: {department_unit: name}, $push: {historyMutasi: {name: name, timestamp: timestamp}}}
+      { $set: {department_unit: name, departmentId}, $push: {historyMutasi: {name: name, timestamp: timestamp}}}
     );
   },
 
