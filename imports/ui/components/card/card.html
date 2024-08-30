@@ -29,3 +29,89 @@
     </div>
   </section>
 </template>
+
+
+<template name="cardTimeline">
+  <div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
+              {{#each timeline}}
+              <div class="timeline-step">
+                  <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="And here's some amazing content. It's very engaging. Right?" data-original-title="2003">
+                      <div class="inner-circle"></div>
+                      <p class="h6 mt-3 mb-1">{{formatHRDateShort createdAt}}</p>
+                      <p class="h6 text-muted mb-0 mb-lg-0">{{labelTimeline actionId}}</p>
+                      <p class="h6 text-muted mb-0 mb-lg-0">{{createdByName}}</p>
+                  </div>
+              </div>
+              {{/each}}
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <style scoped>
+    body{margin-top:20px;}
+.timeline-steps {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap
+}
+
+.timeline-steps .timeline-step {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 1rem
+}
+
+@media (min-width:768px) {
+    .timeline-steps .timeline-step:not(:last-child):after {
+        content: "";
+        display: block;
+        border-top: .25rem dotted #3b82f6;
+        width: 3.46rem;
+        position: absolute;
+        left: 7.5rem;
+        top: .3125rem
+    }
+    .timeline-steps .timeline-step:not(:first-child):before {
+        content: "";
+        display: block;
+        border-top: .25rem dotted #3b82f6;
+        width: 3.8125rem;
+        position: absolute;
+        right: 7.5rem;
+        top: .3125rem
+    }
+}
+
+.timeline-steps .timeline-content {
+    width: 10rem;
+    text-align: center
+}
+
+.timeline-steps .timeline-content .inner-circle {
+    border-radius: 1.5rem;
+    height: 1rem;
+    width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3b82f6
+}
+
+.timeline-steps .timeline-content .inner-circle:before {
+    content: "";
+    background-color: #3b82f6;
+    display: inline-block;
+    height: 3rem;
+    width: 3rem;
+    min-width: 3rem;
+    border-radius: 6.25rem;
+    opacity: .5
+}
+  </style>
+</template>

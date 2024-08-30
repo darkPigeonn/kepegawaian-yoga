@@ -7,7 +7,7 @@ Template.registerHelper("formatRp", function (context, options) {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-    }).format(context);
+    }).format(context).replace("Rp", "Rp ");
   else {
     return "Rp. 0";
   }
@@ -47,7 +47,7 @@ Template.registerHelper("formatHRDate2", function (context, options) {
 
 Template.registerHelper("formatHRDateShort", function (context, options) {
   if (context) moment.locale("id");
-  return moment(context).format("DD MMM YYYY");
+  return moment(context).format("DD MMM YYYY HH:mm");
 });
 
 Template.registerHelper("formatTime", function (context, options) {
@@ -211,6 +211,9 @@ Template.registerHelper("statusCredit", function (data) {
 });
 Template.registerHelper("greaterThan", function (a, b) {
   return a > b;
+});
+Template.registerHelper("greaterThanEquals", function (a, b) {
+  return a >= b;
 });
 Template.registerHelper("lessThan", function (a, b) {
   return a < b;

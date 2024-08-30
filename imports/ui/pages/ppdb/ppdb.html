@@ -650,7 +650,11 @@
               {{/if}}
             </table>
 
-
+            {{#if equals registran.status 48}}
+            <div class="d-flex justify-content-end">
+              <a href="/ppdb/reduction/{{toMeteorId registran._id}}" class="btn btn-primary">Buat Keringanan</a>
+            </div>
+            {{/if}}
           </div>
         </div>
       </div>
@@ -1151,3 +1155,161 @@
     </div>
   </div>
 </template>
+
+
+
+
+<!-- REDUCTION FEE -->
+ <template name="reductionPage">
+  <div class="container mt-5">
+    <h3>Keringanan Biaya</h3>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb">Daftar PPDB</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb/details/{{toMeteorId reductionRegistran._id}}">{{reductionRegistran.fullName}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Konfigurasi Keringanan Biaya</li>
+      </ol>
+    </nav>
+    <div class="page-content">
+      <h4>Daftar Keringanan Biaya</h4>
+      {{#if reductionRegistran.isReduction}}
+      {{> cardTimeline timeline=reductionRegistran.reductions.timelines}}
+      {{/if}}
+      <div class="section-data">
+        <h4>Detail Pendaftar</h4>
+        <div class="row">
+          <div class="col-6">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td>Nama</td>
+                  <td>:</td>
+                  <td>{{reductionRegistran.fullName}}</td>
+                </tr>
+                <tr>
+                  <td>Gelombang | T.A</td>
+                  <td>:</td>
+                  <td>{{reductionRegistran.gelombang}} | {{reductionRegistran.schoolYear}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-6">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td>Uang SPP</td>
+                  <td>:</td>
+                  <td>{{formatRp reductionRegistran.feeSpp}}</td>
+                </tr>
+                <tr>
+                  <td>Uang Sumbangan</td>
+                  <td>:</td>
+                  <td>{{formatRp reductionRegistran.feeDonation}}</td>
+                </tr>
+                <tr>
+                  <td>Uang Kegiatan</td>
+                  <td>:</td>
+                  <td>{{formatRp reductionRegistran.feeEvent}}</td>
+                </tr>
+                <tr>
+                  <td>Uang Alat & Bahan</td>
+                  <td>:</td>
+                  <td>{{formatRp reductionRegistran.feeUtility}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <i>
+              Catatan : Nominal di atas adalah nominal sesuai konfigurasi Gelombang
+            </i>
+          </p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end button-group my-2">
+        <button class="btn btn-primary viewMode active mx-2"  milik="0">Daftar Keringanan</button>
+        {{#if reductionRegistran.isReduction}}
+        <button class="btn btn-secondary" id="btn-reduction-off"  milik="1" type="button" disabled>+ Buat Keringanan</button>
+        {{else}}
+        <button class="btn btn-primary viewMode"  milik="1">+ Buat Keringanan</button>
+        {{/if}}
+      </div>
+
+      {{#if equals viewMode '0'}}
+      <table class="table table-border">
+        <thead>
+          <th>Item</th>
+          <th>Nominal</th>
+          <th>Nominal Keringanan</th>
+          <th>Nominal Akhir</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SPP</td>
+            <td>{{formatRp reductionRegistran.feeSpp}}</td>
+            <td>{{formatRp reductionRegistran.reductions.feeSpp}}</td>
+            <td>{{formatRp reductionRegistran.reductions.reduce.feeSpp}}</td>
+          </tr>
+          <tr>
+            <td>Sumbangan</td>
+            <td>{{formatRp reductionRegistran.feeDonation}}</td>
+            <td>{{formatRp reductionRegistran.reductions.feeDonation}}</td>
+            <td>{{formatRp reductionRegistran.reductions.reduce.feeDonation}}</td>
+          </tr>
+          <tr>
+            <td>Kegiatan</td>
+            <td>{{formatRp reductionRegistran.feeEvent}}</td>
+            <td>{{formatRp reductionRegistran.reductions.feeEvent}}</td>
+            <td>{{formatRp reductionRegistran.reductions.reduce.feeEvent}}</td>
+          </tr>
+          <tr>
+            <td>Alat & Bahan</td>
+            <td>{{formatRp reductionRegistran.feeUtility}}</td>
+            <td>{{formatRp reductionRegistran.reductions.feeUtility}}</td>
+            <td>{{formatRp reductionRegistran.reductions.reduce.feeUtility}}</td>
+          </tr>
+        </tbody>
+      </table>
+      {{#if greaterThanEquals reductionRegistran.reductions.status 10}}
+      <button class="btn btn-primary btn-block" id="btn-send">Ajukan ke Perwakilan</button>
+      {{#if equals reductionRegistran.reductions.status 10}}
+      <button class="btn btn-warning btn-block" id="btn-edit">Ubah</button>
+      {{/if}}
+      {{/if}}
+      {{/if}}
+
+      {{#if equals viewMode '1'}}
+      {{> formReduction}}
+      {{/if}}
+    </div>
+  </div>
+ </template>
+
+ <template name="formReduction">
+  <div class="container">
+    <form id="formInputReduction">
+      <div class="form-group">
+        <label>Uang SPP</label>
+        <input type="text" class="form-control inputNominal" required value="0" id="spp" />
+      </div>
+      <div class="form-group">
+        <label>Uang Sumbangan</label>
+        <input type="text" class="form-control inputNominal" required value="0" id="donation" />
+      </div>
+      <div class="form-group">
+        <label>Uang Kegiatan</label>
+        <input type="text" class="form-control inputNominal" required value="0" id="event" />
+      </div>
+      <div class="form-group">
+        <label>Uang Alat</label>
+        <input type="text" class="form-control inputNominal" required value="0" id="utility" />
+      </div>
+      <button class="btn btn-primary btn-block" required id="btn-save-reduction" type="submit">Simpan</button>
+    </form>
+  </div>
+
+
+
+ </template>

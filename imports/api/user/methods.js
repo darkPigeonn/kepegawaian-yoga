@@ -328,12 +328,19 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Access");
     }
 
-    const thisSchool = Schools.findOne({ _id: thisUser.schoolId });
-    if (thisSchool) {
-      thisUser.schoolName = thisSchool.name;
-    } else {
-      thisUser.schoolName = "Sekolah";
+    if(thisUser.schoolId) {
+      const thisSchool = Schools.findOne({ _id: thisUser.schoolId });
+      if (thisSchool) {
+        thisUser.schoolName = thisSchool.name;
+        const access =await getAccess(thisUser);
+        thisUser = {...thisUser, ...access}
+      } else {
+        thisUser.schoolName = "Sekolah";
+      }
+
     }
+    console.log(thisUser);
+
     return thisUser;
   },
 

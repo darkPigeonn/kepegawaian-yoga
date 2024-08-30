@@ -5,6 +5,7 @@ import {
   Interviews,
   PaymentsConfig,
   PeriodePpdb,
+  Reductions,
   Registrans,
   RegistransDummy,
   RegistransFinal,
@@ -802,7 +803,8 @@ Meteor.methods({
     feeUtility,
     feeDonation,
     classInput,
-    periodePpdb
+    periodePpdb,
+    isCooperation
   ) {
     check(name, String);
     check(code, String);
@@ -854,6 +856,7 @@ Meteor.methods({
       periodeId: checkPeriodePpdb._id,
       periodeYear: checkPeriodePpdb.year,
       createdBy: thisUser._id,
+      isCooperation
     };
 
     return Gelombangs.insert(newData);
@@ -868,6 +871,7 @@ Meteor.methods({
     feeDonation,
     classInput,
     periodePpdb,
+    isCooperation,
     id
   ) {
     check(name, String);
@@ -903,6 +907,7 @@ Meteor.methods({
       periodeYear: checkPeriodePpdb.year,
       updatedBy: thisUser._id,
       updatedAt: thisUser._id,
+      isCooperation
     };
 
     return Gelombangs.update({ _id: id }, { $set: newData });
@@ -1932,9 +1937,141 @@ Meteor.methods({
       return newData;
     }
 
-  }
+  },
 
+
+  // START Reduction
+  async "get-reduction-list"(registranId) {
+    const thisUser = Meteor.users.findOne({_id : this.userId})
+    if(!thisUser) {
+      throw new Meteor.Error(404, "No Access")
+    }
+    let newData = {}
+    const objectId = new Meteor.Collection.ObjectID(registranId);
+    const thisRegistran = Registrans.findOne({ _id: objectId },{
+      fields : {
+        _id : 1,
+        fullName:1,
+        configId : 1,
+        gelombang : 1,
+        schoolYear : 1,
+      }
+    });
+
+    if(!thisRegistran) {
+      throw new Meteor.Error(404, "Data Registran Tidak Ditemukan")
+    }
+    newData = thisRegistran
+    const getConfig = Gelombangs.findOne({ _id: thisRegistran.configId });
+    delete getConfig._id
+    if(!getConfig) {
+      throw new Meteor.Error(404, "Data Gelombang Tidak Ditemukan")
+    }
+    newData = {...newData, ...getConfig}
+
+
+    const reductions = Reductions.findOne({studentId : thisRegistran._id.toHexString(), configId : thisRegistran.configId})
+    if(!reductions) {
+      newData = {...newData, isReduction : false}
+    }else{
+      newData = {...newData, reductions : reductions, isReduction : true}
+    }
+    return newData;
+  },
+  async "set-reduction"(id,configId, feeSpp, feeDonation, feeEvent, feeUtility) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const thisRegistran = Registrans.findOne({ _id: id });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data Registran Tidak Ada");
+    }
+    const thisConfig = Gelombangs.findOne({ _id: configId });
+    if (!thisConfig) {
+      throw new Meteor.Error(404, "Data Gelombang Tidak Ada");
+    }
+    // compare fee thisConfig with fee from params
+    const reduceSpp =  thisConfig.feeSpp - feeSpp ;
+    const reduceDonation =  thisConfig.feeDonation - feeDonation ;
+    const reduceEvent = thisConfig.feeEvent - feeEvent ;
+    const reduceUtility =  thisConfig.feeUtility - feeUtility ;
+    const reduceTotal = reduceSpp + reduceDonation + reduceEvent + reduceUtility;
+
+    console.log(reduceSpp, reduceDonation, reduceEvent, reduceUtility);
+
+    const tempData = {
+      studentId: id.toHexString(),
+      studentName : thisRegistran.fullName,
+      configId: configId,
+      configName : thisConfig.gelombang,
+      periodeYear : thisRegistran.schoolYear,
+      periodeId : thisConfig.periodeId,
+      feeSpp: feeSpp,
+      feeDonation: feeDonation,
+      feeEvent: feeEvent,
+      feeUtility: feeUtility,
+      reduce : {
+        feeSpp: reduceSpp,
+        feeDonation: reduceDonation,
+        feeEvent: reduceEvent,
+        feeUtility: reduceUtility
+      },
+      feeTotal: reduceTotal,
+      createdAt : new Date(),
+      createdBy : thisUser._id,
+      status : 10,
+      timelines : [{
+        createdAt : new Date(),
+        createdBy : thisUser._id,
+        createdByName : thisUser.fullname,
+        message : "Reduction Created",
+        actionId : 10
+      }]
+    }
+    const insertReduction = Reductions.insert(tempData);
+    return Registrans.update({ _id: id }, { $set: { isReduction : true, reduction : {reductionId : insertReduction, createdAt : new Date(), createdBy : thisUser._id}}  });
+  },
+  async "send-reduction"(id) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    const thisRegistran = Registrans.findOne({ _id: id });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data Registran Tidak Ada");
+    }
+    const getReduction = Reductions.findOne({studentId : id.toHexString(), configId : thisRegistran.configId});
+    if (!getReduction) {
+      throw new Meteor.Error(404, "Data Reduksi Tidak Ada");
+    }
+    const timeline = {
+      createdAt : new Date(),
+      createdBy : thisUser._id,
+      createdByName : thisUser.fullname,
+      message : "Reduction Send",
+      actionId : 11
+    }
+
+    //get user pwk
+    const school = Schools.findOne({ _id: thisRegistran.schoolId });
+    const userPwk = Meteor.users.findOne({ _id: school.unitId });
+    if(userPwk){
+      const tempNotif = {
+        senderId: thisUser._id,
+        receiverId: userPwk._id,
+        message: `Pengajuan keringanan dana  untuk  ${thisRegistran.fullName} dari sekolah ${school.name} masuk ke proses verifikasi`,
+        createdAt: new Date(),
+        createdBy: thisUser._id,
+        timestamp: new Date(),
+      };
+      Notifications.insert(tempNotif);
+    }
+
+    return Reductions.update({ _id: getReduction._id },{ $set : {status : 11, updatedAt : new Date(), updatedBy : thisUser._id}, $addToSet: { timelines : timeline } }, );
+  }
 });
+
 
 function generateUniqueVirtualAccount() {
   let virtualAccountNumber;

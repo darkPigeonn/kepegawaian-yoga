@@ -14,6 +14,7 @@ export const PaymentsConfig = new Mongo.Collection("paymentsConfig");
 export const InitialPayment = new Mongo.Collection("initialpayments");
 export const CreditPayment = new Mongo.Collection("creditPayments");
 export const Transactions = new Mongo.Collection("transactions");
+export const Reductions = new Mongo.Collection("reductions");
 export const RegistransDummy = [
   {
     fullName: "Ahmad Fauzi",

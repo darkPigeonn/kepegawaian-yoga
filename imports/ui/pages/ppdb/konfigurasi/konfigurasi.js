@@ -8,6 +8,8 @@ import {
   startSelect2,
 } from "../../../../startup/client";
 import Swal from "sweetalert2";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.js";
 Template.konfigurasi.events({
   "click .tab-item"(event) {
     event.preventDefault();
@@ -328,6 +330,7 @@ Template.gelombangPage.onCreated(function () {
   self.items = new ReactiveVar();
   self.isEdit = new ReactiveVar(false);
   self.selectedItem = new ReactiveVar();
+  self.label= new ReactiveVar('Tambah Gelombang');
   startPreloader();
 
   Meteor.call("getAll-gelombang-school", function (error, result) {
@@ -344,6 +347,9 @@ Template.gelombangPage.helpers({
   },
   showEdit() {
     return Template.instance().showEdit.get();
+  },
+  label() {
+    return Template.instance().label.get();
   },
   isActiveGel() {
     const listGelombang = Template.instance().items.get();
@@ -368,7 +374,7 @@ Template.gelombangPage.events({
     const feeEvent = convert2number($("#inputUangKegiatan").val());
     const feeUtility = convert2number($("#inputUangAlat").val());
     const periodePpdb = $("#selectedPeriod").val();
-
+    const isCooperation = $("#isCooperation").is(":checked");
     const classInput = classTemp.split("-");
 
     const isEdit = t.isEdit.get();
@@ -389,6 +395,7 @@ Template.gelombangPage.events({
       feeDonation,
       classInput,
       periodePpdb,
+      isCooperation,
       id,
       function (error, result) {
         if (error) {
@@ -402,10 +409,12 @@ Template.gelombangPage.events({
     );
   },
   "click #btn-update"(e, t) {
-    e.preventDefault();
     const id = $(e.target).attr("milik");
     const item = this;
     t.selectedItem.set(this);
+    $("#isCooperation").prop('checked', false);
+
+
     $("#selectedPeriod").val(this.periodeId);
     $("#inputNameGelombang").val(this.name);
     $("#inputCode").val(this.code);
@@ -415,8 +424,10 @@ Template.gelombangPage.events({
     $("#inputUangSumbangan").val(formatRupiah(this.feeDonation.toString()));
     $("#inputUangKegiatan").val(formatRupiah(this.feeEvent.toString()));
     $("#inputUangAlat").val(formatRupiah(this.feeUtility.toString()));
+    $("#isCooperation").prop('checked', this.isCooperation);
 
     t.isEdit.set(true);
+    t.label.set('Ubah Gelombang');
     $("#addModalGelombang").modal("show");
   },
   "change #toggleSwitch"(e, t) {
@@ -469,6 +480,7 @@ Template.gelombangPage.events({
     });
   },
   "click #btn-add"(e, t) {
+    t.label.set('Tambah Gelombang');
     setTimeout(() => {
       $("#selectedPeriod").val("");
       $("#inputNameGelombang").val("");

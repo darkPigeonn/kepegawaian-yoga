@@ -584,3 +584,10 @@ FlowRouter.route("/ppdb/:schoolId", {
 //     this.render("App_body", "resetPw");
 //   },
 // })
+
+FlowRouter.route("/ppdb/reduction/:_id", {
+  name : "reductionPage",
+  action() {
+    this.render("App_body", "reductionPage");
+  }
+})

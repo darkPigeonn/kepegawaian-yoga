@@ -51,6 +51,16 @@
       <label for="inputUangAlat">Uang Alat (Khusus TK)</label>
       <input type="text" class="form-control inputNominal" id="inputUangAlat" placeholder="Contoh : 10000000" required>
     </div>
+    {{#if access.isCooperation}}
+    <div class="form-group col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="isCooperation">
+        <label class="form-check-label" for="isCooperation">
+          Gelombang Untuk Anak Karyawan Yohannes Gabriel
+        </label>
+      </div>
+    </div>
+    {{/if}}
   </div>
 
 </template>

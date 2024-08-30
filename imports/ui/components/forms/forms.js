@@ -24,7 +24,7 @@ Template.formAddPaymentSchool.events({
 Template.formAddGelombang.onCreated(function () {
   const self = this;
   self.listPeriode = new ReactiveVar();
-
+  self.access = new ReactiveVar()
   Meteor.call("periode-ppdb-getAll", function (error, result) {
     if (error) {
       console.log("fetch error:", error);
@@ -33,10 +33,18 @@ Template.formAddGelombang.onCreated(function () {
       self.listPeriode.set(result);
     }
   });
+  Meteor.call("get-thisUser", function(error, result) {
+    if (error) {
+      console.log(error);
+    } else {
+      self.access.set(result);
+    }
+  }
+
+  )
 });
 Template.formAddGelombang.onRendered(function () {
   const self = this;
-  console.log(this.data);
   if (this.data) {
     $("#selectedPeriod").val();
   }
@@ -45,6 +53,9 @@ Template.formAddGelombang.helpers({
   listPeriode() {
     return Template.instance().listPeriode.get();
   },
+  access(){
+    return Template.instance().access.get();
+  }
 });
 Template.formAddGelombang.events({
   "keyup .inputNominal"(e, t) {

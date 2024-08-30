@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import "./fixtures.js";
 import "./register-api.js";
+import { Schools } from '../../api/yoga/schools/schools.js';
 
 isEmptyData = function (data) {
     let dataReturn = 0;
@@ -43,3 +44,23 @@ isEmptyData = function (data) {
     console.log(rupiah);
     return rupiah;
   };
+
+
+  getAccess = async function(thisUser) {
+    let accessList = {}
+    if(thisUser.schoolId) {
+      const thisSchool = await Schools.findOne({ _id: thisUser.schoolId });
+      if (thisSchool) {
+        if(thisSchool.unitCode != '02') {
+          accessList.isCooperation = true
+        }else{
+          accessList.isCooperation = false
+        }
+
+      }
+
+    }
+
+    return accessList
+
+  }

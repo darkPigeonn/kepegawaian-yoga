@@ -1,6 +1,8 @@
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import { Fancybox } from "@fancyapps/ui";
 import "./modals.html";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.js";
 Template.fancyBox.onRendered(function () {
   Fancybox.bind("[data-fancybox]", {
     // Custom options for FancyBox

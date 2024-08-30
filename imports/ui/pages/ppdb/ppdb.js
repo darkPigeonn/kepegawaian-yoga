@@ -1275,3 +1275,179 @@ Template.paymentPageListSchool.helpers({
     return Template.instance().listRegistrans.get();
   }
 })
+
+
+// Start Reduction
+Template.reductionPage.onCreated(function () {
+  const self = this;
+  startPreloader();
+  self.viewMode = new ReactiveVar("0");
+  self.reductionRegistran = new ReactiveVar();
+  const thisRegistran = FlowRouter.current().params._id;
+  this.autorun(() => {
+    Meteor.call("get-reduction-list", thisRegistran, (error, result) => {
+      if (error) {
+        console.log(error);
+        exitPreloader();
+      } else {
+        console.log(result);
+
+
+        self.reductionRegistran.set(result);
+        exitPreloader();
+
+      }
+    });
+  });
+})
+Template.reductionPage.helpers({
+  reductionRegistran() {
+    return Template.instance().reductionRegistran.get()
+  },
+  viewMode() {
+    return Template.instance().viewMode.get();
+  }
+})
+Template.reductionPage.events({
+  "click #btn-reduction-off"(e, t) {
+    e.preventDefault()
+    infoAlert("Anda sudah membuat keringanan data untuk siswa ini")
+  },
+  "keyup .inputNominal"(e, t) {
+    e.preventDefault();
+    e.target.value = formatRupiah(e.target.value, "Rp. ");
+  },
+  "submit #formInputReduction"(e, t) {
+    e.preventDefault();
+
+    const feeSpp = convert2number($('#spp').val());
+    const feeDonation = convert2number($('#donation').val());
+    const feeEvent = convert2number($('#event').val());
+    const feeUtility = convert2number($('#utility').val());
+
+    console.log(feeSpp, feeDonation, feeEvent, feeUtility);
+
+
+    const thisRegistran = t.reductionRegistran.get();
+
+    //count reduction fee
+    const reduceTotal = feeSpp + feeDonation + feeEvent + feeUtility;
+    const reduceSpp = thisRegistran.feeSpp - feeSpp;
+    const reduceDonation = thisRegistran.feeDonation - feeDonation;
+    const reduceEvent = thisRegistran.feeEvent - feeEvent;
+    const reduceUtility = thisRegistran.feeUtility - feeUtility;
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      icon: "warning",
+       width: '800px',
+      html : `
+      <table class="table table-border" style="font-size : 15px">
+        <thead>
+          <th>Item</th>
+          <th>Nominal</th>
+          <th>Nominal Keringanan</th>
+          <th>Nominal Akhir</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SPP</td>
+            <td>${formatRupiah(thisRegistran.feeSpp.toString())}</td>
+            <td>${formatRupiah(feeSpp.toString())}</td>
+            <td>${formatRupiah(reduceSpp.toString())}</td>
+          </tr>
+          <tr>
+            <td>Donasi</td>
+            <td>${formatRupiah(thisRegistran.feeDonation.toString())}</td>
+            <td>${formatRupiah(feeDonation.toString())}</td>
+            <td>${formatRupiah(reduceDonation.toString())}</td>
+          </tr>
+          <tr>
+            <td>Event</td>
+            <td>${formatRupiah(thisRegistran.feeEvent.toString())}</td>
+            <td>${formatRupiah(feeEvent.toString())}</td>
+            <td>${formatRupiah(reduceEvent.toString())}</td>
+          </tr>
+          <tr>
+            <td>Utility</td>
+            <td>${formatRupiah(thisRegistran.feeUtility.toString())}</td>
+            <td>${formatRupiah(feeUtility.toString())}</td>
+            <td>${formatRupiah(reduceUtility.toString())}</td>
+          </tr>
+        </tbody>
+      </table>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("set-reduction", thisRegistran._id,thisRegistran.configId, feeSpp, feeDonation, feeEvent, feeUtility,  function (error, result) {
+          if (result) {
+            if (result.code) {
+              infoAlert(result.message);
+              setTimeout(() => {
+                exitPreloader();
+              }, 2500);
+            } else {
+              successAlert("Berhasil");
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            }
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    })
+
+  },
+  "click #btn-send"(e,t){
+    e.preventDefault()
+
+    Swal.fire({
+      title: "Konfirmasi Pengajuan",
+      text: "Apakah anda yakin ingin mengajukan keringanan data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("send-reduction", t.reductionRegistran.get()._id, function (error, result) {
+          if (result) {
+            if (result.code) {
+              infoAlert(result.message);
+              setTimeout(() => {
+                exitPreloader();
+              }, 2500);
+            } else {
+              successAlert("Berhasil");
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            }
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    })
+  },
+  "click .viewMode"(e, t) {
+    e.preventDefault()
+
+    t.viewMode.set(t.viewMode.get() === "0" ? "1" : "0")
+    // i want move class active to this button
+    // and remove class active to other button
+    $(e.currentTarget).addClass("active").siblings().removeClass("active")
+
+  }
+})

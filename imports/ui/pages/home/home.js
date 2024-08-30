@@ -2,6 +2,7 @@ import "./home.html";
 import "../../components/hello/hello.js";
 import "../../components/info/info.js";
 import "../../components/chart/chart.js";
+import "../../components/notifications/notifications.js";
 import DataTable from "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import moment from "moment";

@@ -7,7 +7,8 @@ import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
 import moment from "moment/moment.js";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import SlimSelect from "slim-select";
-
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.js";
 isEmptyData = function (data) {
   let dataReturn = 0;
   Object.keys(data).forEach(function (key) {

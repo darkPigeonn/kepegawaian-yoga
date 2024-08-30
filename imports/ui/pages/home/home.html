@@ -54,6 +54,7 @@
 
   <div class="container">
     <!-- summary pegawai , perwakilan, sekolah -->
+    {{> cardNotifications}}
     {{#if isInRole 'superadmin, adminPpdbYayasan, adminPpdbPerwakilan'}}
     {{> home_admin}}
     {{else}}
@@ -61,6 +62,7 @@
     {{/if}}
   </div>
 </template>
+
 <template name="home_admin">
   <div class="page ">
     <div class="container-fluid mt-5 page-content">
