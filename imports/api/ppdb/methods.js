@@ -102,7 +102,7 @@ Meteor.methods({
         skip,
         sort: { createdAt: -1 },
       }).fetch(),
-      totalRegistrans: Registrans.find().count(),
+      totalRegistrans: Registrans.find(filter).count(),
     };
   },
   "ppdb-school-getAll-bySchool"(pageNum, perPage, schoolId) {
@@ -128,27 +128,30 @@ Meteor.methods({
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
-
+    let filter = {};
+    if (Roles.userIsInRole(thisUser, ["adminPpdbPerwakilan"])) {
+      filter.unitId = thisUser.unitId;
+    }
+    if (Roles.userIsInRole(thisUser, ["adminPpdbSchool"])) {
+      filter.schoolId = thisUser.schoolId;
+    }
     const skip = (pageNum - 1) * perPage;
     if (status == "all") {
       return {
         registrans: Registrans.find(
-          {},
+          filter,
           { limit: perPage, skip, sort: { createdAt: -1 } }
         ).fetch(),
-        totalRegistrans: Registrans.find().count(),
+        totalRegistrans: Registrans.find(filter).count(),
       };
     }
+    filter.status = parseInt(status);
     return {
       registrans: Registrans.find(
-        {
-          status: parseInt(status),
-        },
+        filter,
         { limit: perPage, skip, sort: { createdAt: -1 } }
       ).fetch(),
-      totalRegistrans: Registrans.find({
-        status: parseInt(status),
-      }).count(),
+      totalRegistrans: Registrans.find(filter).count(),
     };
   },
   async "ppdb-registran-detail"(id) {
@@ -522,7 +525,7 @@ Meteor.methods({
   },
 
   // virtual account
-  async "va-generate-va"(unitId, list, codePeriode, selectedTag) {
+  async "va-generate-va"(unitId, list, codePeriode, selectedTag,inputAmount) {
     check(unitId, String);
     check(list, Array);
 
@@ -601,7 +604,7 @@ Meteor.methods({
       }
 
       let startIndex = 1;
-      let maxIndex = 100;
+      let maxIndex = parseInt(inputAmount);
 
       //last entry data va sekolah
       const checkVaSchool = VirtualAccounts.findOne(
@@ -912,7 +915,7 @@ Meteor.methods({
 
     return Gelombangs.update({ _id: id }, { $set: newData });
   },
-  async "getAll-gelombang-school"() {
+  async "getAll-gelombang-school"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -1008,6 +1011,40 @@ Meteor.methods({
     const schoolId = getGelombang.schoolId + "-remove";
 
     return Gelombangs.update({ _id: id }, { $set: { schoolId } });
+  },
+  async "updateGelombang-student"(idStudent, idGelombang){
+    check(idStudent, String);
+    check(idGelombang, String)
+
+    const objecId = new Meteor.Collection.ObjectID(idStudent);
+    const thisGelombang = await Gelombangs.findOne({_id: idGelombang})
+    const thisRegistran = await Registrans.findOne({ _id: objecId });
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data siswa tidak ditemukan");
+    }
+    //ini kalau masih ditahap uang formulir tidak banyak perubahan
+    //tapi kalau sudah masuk setelah mengisi detail dari diri banyak perubahan yang harus dilakukan
+    //di va , biaya spp, biaya donasi, biaya utility
+    //karena setiap gelombang memiliki biaya yang berbeda
+
+    return Registrans.update({_id : objecId},{$set : {
+      gelombang : thisGelombang.name,
+      configId : thisGelombang._id,
+      period : thisGelombang.periodeId,
+    }, $addToSet : {
+      logs : {
+        createdAt : new Date(),
+        createdBy : this.userId,
+        action : "update gelombang",
+        oldData : {
+          gelombang : thisRegistran.gelombang,
+          configId : thisRegistran.configId,
+          period : thisRegistran.period
+        }
+      }
+    }})
+
+
   },
 
   async "aktivated-periode"(id, status) {

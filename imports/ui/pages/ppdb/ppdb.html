@@ -21,7 +21,7 @@
       </div>
       <div>
         <h3>
-          Total CSB : {{totalStudents}}
+          Total PPDB : {{totalStudents}}
         </h3>
       </div>
       <table class="table table-group-divider">
@@ -106,7 +106,7 @@
       </div>
       <div>
         <h3>
-          Total CSB : {{totalStudents}}
+          Total PPDB : {{totalStudents}}
         </h3>
       </div>
       <table class="table table-group-divider">
@@ -274,7 +274,7 @@
       </div>
       <div class="form-group" id="section-school-select">
         <label>Pilih Sekolah</label>
-        <select class="form-control select2 " id="select-school" multiple disabled>
+        <select class="form-control select2 " id="select-school" disabled>
           <option value="0">-- Silahkan Pilih Sekolah --</option>
           {{#each listSchools}}
           <option value="{{_id}}">{{name}} - {{city}}</option>
@@ -300,6 +300,11 @@
           <option value="spp">Uang Sekolah Full (90)</option>
           <option value="sppCicil">Uang Sekolah Angsur (99)</option>
         </select>
+      </div>
+
+      <div class="form-group">
+        <label>Jumlah Va</label>
+        <input id="input-amount" type="number" class="form-control" min="1" required />
       </div>
       <button class="btn btn-primary btn-block" id="btn-generate" disabled>Generate</button>
     </div>
@@ -594,8 +599,12 @@
               </tr>
               <tr>
                 <th>Gelombang</th>
-                <td>{{registran.gelombang}}</td>
-              </tr>
+                <td>{{registran.gelombang}}
+                  {{#if equals reqistran.status 10}}
+                  | <button id="btn-update-gelombang" class="btn btn-warning">Ubah Gelombang</button>
+                  {{/if}}
+                </td>
+                </tr>
               <tr>
                 <th>Tahun Ajaran</th>
                 <td>{{registran.periodName}}</td>
@@ -658,6 +667,29 @@
           </div>
         </div>
       </div>
+
+      {{#if formGelombang}}
+      <div class="card" id="formGelombang">
+        <div class="card-header">
+          <h3>Form Gelombang</h3>
+        </div>
+        <div class="card-body">
+          <form id="setGelombangForm">
+            <div class="form-group">
+              <label for="inputGelombang">Gelombang | Gelombang Sebelumnya : {{registran.gelombang}}</label>
+              <select id="selectedGelombang" class="form-control">
+                <option value="0">Silahkan Pilih Gelombang</option>
+                {{#each listGelombang}}
+                <option value="{{_id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Simpan</button>
+          </form>
+        </div>
+      </div>
+      {{/if}}
+
       {{#if formInterview}}
       <div class="card" id="formInterview">
         <div class="card-header">

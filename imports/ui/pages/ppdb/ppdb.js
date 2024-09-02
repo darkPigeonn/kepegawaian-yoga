@@ -277,9 +277,10 @@ Template.pageGenerateVa.events({
     e.preventDefault();
     startPreloader();
     const selectedPerwakilans = $("#select-perwakilan").val();
-    const selectedSchools = $("#select-school").val();
+    const selectedSchools = [$("#select-school").val()];
     const inputKodePeriode = $("#selectedPeriode").val();
     const selectedTag = $("#select-tag").val();
+    const inputAmount = $("#input-amount").val();
     if (!selectedTag || selectedTag == "0" || selectedTag == "null") {
       failAlert("Silahkan pilih tag");
       exitPreloader();
@@ -291,6 +292,7 @@ Template.pageGenerateVa.events({
       selectedSchools,
       inputKodePeriode,
       selectedTag,
+      inputAmount,
       function (error, result) {
         if (error) {
           swalInfo(error.reason);
@@ -473,6 +475,8 @@ Template.detailRegistran.onCreated(function () {
   self.detailFinal = new ReactiveVar();
   self.photoStudent = new ReactiveVar("-");
   self.formInterview = new ReactiveVar(false);
+  self.formGelombang = new ReactiveVar(false);
+  self.listGelombang = new ReactiveVar();
   const id = FlowRouter.current().params._id;
   Meteor.call("ppdb-registran-detail", id, function (error, result) {
     if (error) {
@@ -492,10 +496,23 @@ Template.detailRegistran.onCreated(function () {
       exitPreloader();
     }
   });
+  Meteor.call("getAll-gelombang-school", id, function (error, result) {
+    if(error){
+
+    }else{
+      self.listGelombang.set(result);
+    }
+  })
 });
 Template.detailRegistran.helpers({
+  formGelombang(){
+    return Template.instance().formGelombang.get();
+  },
   formInterview() {
     return Template.instance().formInterview.get();
+  },
+  listGelombang(){
+    return Template.instance().listGelombang.get()
   },
   registran() {
     return Template.instance().detail.get();
@@ -692,6 +709,51 @@ Template.detailRegistran.events({
       }
     });
   },
+  "click #btn-update-gelombang"(e,t){
+    e.preventDefault()
+    e.preventDefault();
+    t.formGelombang.set(!t.formGelombang.get());
+    setTimeout(() => {
+      document
+        .getElementById("formGelombang")
+        .scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "submit #setGelombangForm"(e,t){
+    e.preventDefault()
+
+    const idGelombang = $("#selectedGelombang").val();
+    if(idGelombang == "0"){
+      return swalInfo("Pilih gelombang terlebih dahulu");
+    }
+
+    const id = FlowRouter.current().params._id;
+
+    Swal.fire({
+      title: "Konfirmasi Perubahan",
+      text: "Apakah anda yakin merubah gelombang calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader()
+        Meteor.call("updateGelombang-student", id, idGelombang, function (error, result) {
+          if(error){
+            console.log(error);
+            swalInfo(error.reason)
+            exitPreloader()
+          }else{
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          }
+        })
+      }
+    })
+  }
 });
 Template.cicilanRegistran.onCreated(function () {
   const self = this;
@@ -896,7 +958,7 @@ Template.cicilanRegistran.events({
 
     Swal.fire({
       title: "Konfirmasi Pengkuncian",
-      text: "Penguncian ini akan membuka pembayaran cicilan untuk CSB & Tidak bisa dibuka kembali, apakah anda yakin?",
+      text: "Penguncian ini akan membuka pembayaran cicilan untuk PPDB & Tidak bisa dibuka kembali, apakah anda yakin?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
