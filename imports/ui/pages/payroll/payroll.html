@@ -2,6 +2,14 @@
     <div class="page">
         <h1>Payroll</h1>
         {{#if equals viewMode 1}}
+            <div class="form-inline mt-3 d-flex align-items-center">
+                <label for="filterMonthYear" class="mr-2">Filter Bulan dan Tahun</label>
+                <input type="month" id="filterMonthYearDepartment" class="form-control mr-2">
+                <button class="btn btn-primary mr-2" id="btn-filter-department">Filter</button>
+                <button class="btn btn-warning" id="resetFilterDepartment">
+                    <i class="fa fa-refresh"></i>
+                </button>
+            </div>
             <div class="d-lg-block table-responsive">
                 <table class="table">
                 <thead>

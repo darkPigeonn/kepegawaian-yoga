@@ -113,7 +113,8 @@ Meteor.methods({
         }
         return Salaries.insert(dataSave);
     },
-    async "payroll.getAll"(department) {
+    async "payroll.getAll"(department, month, year) {
+        console.log(month,year);
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
         _id: thisUser,
@@ -126,8 +127,17 @@ Meteor.methods({
         else {
             dataEmployee = Employee.find({partnerCode, departmentId: department, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
         }
-        const currentMonth = new Date().getMonth() + 1;
-        const currentYear = new Date().getFullYear();
+        let currentMonth;
+        let currentYear;
+        if(month != undefined || !isNaN(month) || month != null
+        || year != undefined || !isNaN(year) || year != null) {
+            currentMonth = month;
+            currentYear = year;
+        }
+        else {
+            currentMonth = new Date().getMonth() + 1;
+            currentYear = new Date().getFullYear();
+        }
         let data;
         let estimasiPengeluaran = 0;
         for (let index = 0; index < dataEmployee.length; index++) {
@@ -154,13 +164,26 @@ Meteor.methods({
         });
         const partnerCode = adminPartner.partners[0];
         const dataEmployee = Employee.find({partnerCode, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
+        const currentMonth = month;
+        const currentYear = year;
         let data;
+        let estimasiPengeluaran = 0;
         for (let index = 0; index < dataEmployee.length; index++) {
             const element = dataEmployee[index];
-            data = Salaries.findOne({employeeId: element._id, month: month, year: year});
+            data = Salaries.findOne({employeeId: element._id, month: currentMonth, year: currentYear});
             dataEmployee[index].salaries = data;
+            if(dataEmployee[index].salaries != undefined) {
+                let totalSalary = dataEmployee[index].salaries.totalSalary
+                if(!isNaN(totalSalary) || totalSalary != undefined) {
+                    estimasiPengeluaran = estimasiPengeluaran + totalSalary
+                }
+            }
         }
-        return dataEmployee
+        let dataReturn = {
+            estimasiPengeluaran,
+            dataEmployee
+        }
+        return dataReturn
     },
     async "payroll.getDetail"(id) {
         check(id, String);
@@ -210,7 +233,7 @@ Meteor.methods({
         return dataSalaries
     },
 
-    async "payroll.getDepartments"() {
+    async "payroll.getDepartments"(month, year) {
         let partnerCode;
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
@@ -223,8 +246,20 @@ Meteor.methods({
         for (let index = 0; index < dataDepartments.length; index++) {
             const element = dataDepartments[index];
             dataEmployee = Employee.find({partnerCode, departmentId: element._id, statusDelete: 0}, { projection: { _id: 1, full_name: 1, partnerCode: 1, job_position: 1 } }).fetch();
-            const currentMonth = new Date().getMonth() + 1;
-            const currentYear = new Date().getFullYear();
+            let currentMonth;
+            let currentYear;
+            if(month != undefined) {
+                currentMonth = month
+            }
+            else {
+                currentMonth = new Date().getMonth() + 1;
+            }
+            if(year != undefined) {
+                currentYear = year
+            }
+            else {
+                currentYear = new Date().getFullYear();
+            }
             let dataSalarie;
             let estimasiPengeluaran = 0;
             for (let index = 0; index < dataEmployee.length; index++) {

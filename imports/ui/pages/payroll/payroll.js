@@ -17,6 +17,8 @@ Template.listPayroll.onCreated(function() {
     self.departements = new ReactiveVar();
     self.estimasiPengeluaran = new ReactiveVar(0);
     self.namaDepartemen = new ReactiveVar();
+    self.monthPayroll = new ReactiveVar();
+    self.yearPayroll = new ReactiveVar();
     Meteor.call("payroll.getDepartments", function (error, result) {
         if (result) {
           self.departements.set(result);
@@ -41,6 +43,12 @@ Template.listPayroll.helpers({
     },
     namaDepartemen() {
         return Template.instance().namaDepartemen.get();
+    },
+    monthPayroll() {
+        return Template.instance().monthPayroll.get();
+    },
+    yearPayroll() {
+        return Template.instance().yearPayroll.get();
     }
 })
 
@@ -49,7 +57,9 @@ Template.listPayroll.events({
         e.preventDefault();
         const param = $(e.target).attr('milik');
         const departmentId = $(e.target).attr('departmentId')
-        Meteor.call("payroll.getAll", departmentId, function (error, result) {
+        const month = t.monthPayroll.get();
+        const year = t.yearPayroll.get();
+        Meteor.call("payroll.getAll", departmentId, month, year, function (error, result) {
             if (result) {
                 t.dataSalaries.set(result.dataEmployee)
                 t.estimasiPengeluaran.set(result.estimasiPengeluaran);
@@ -68,11 +78,23 @@ Template.listPayroll.events({
     "click #btn-filter"(e, t) {
         const monthYearValue = $("#filterMonthYear").val(); // Dapatkan nilai dari input monthYear
         let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
-        month = parseInt(month);
-        year = parseInt(year);
+        console.log(monthYearValue);
+        if(monthYearValue == "") {
+            console.log("masuk sini");
+            
+            month = t.monthPayroll.get();
+            year = t.yearPayroll.get();
+        }
+        else {
+            month = parseInt(month);
+            year = parseInt(year);
+        }
+
         Meteor.call("payroll.getFilter", month, year, function (error, result) {
             if (result) {
-                t.dataSalaries.set(result)
+                t.dataSalaries.set(result.dataEmployee)
+                t.estimasiPengeluaran.set(result.estimasiPengeluaran);
+                t.viewMode.set(2);
             }
             else {
                 console.log(error);
@@ -166,7 +188,38 @@ Template.listPayroll.events({
                 })
             }
         })
-    }
+    },
+    "click #btn-filter-department"(e, t) {
+        const monthYearValue = $("#filterMonthYearDepartment").val(); // Dapatkan nilai dari input monthYear
+        let [year, month] = monthYearValue.split('-'); // Pisahkan bulan dan tahun
+        month = parseInt(month);
+        year = parseInt(year);
+        Meteor.call("payroll.getDepartments", month, year, function (error, result) {
+            if (result) {
+              t.departements.set(result);
+              t.monthPayroll.set(month); // Months are zero-indexed in JavaScript
+              t.yearPayroll.set(year);
+              successAlert(`Berhasil mencari data di bulan ${month} tahun ${year}`)
+            } else {
+              console.log(error);
+              failAlert(error);
+            }
+        });
+    },
+    "click #resetFilterDepartment"(e, t) {
+        e.preventDefault();
+        document.getElementById('filterMonthYearDepartment').value = '';
+        Meteor.call("payroll.getAll", function (error, result) {
+            if (result) {
+                t.departements.set(result);
+                successAlert("Sukses")
+            }
+            else {
+                console.log(error);
+                failAlert(error);
+            }
+        });
+    },
 })
 
 Template.detailPayroll.onCreated(function() {
