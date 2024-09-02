@@ -1160,14 +1160,15 @@
 
 
 <!-- REDUCTION FEE -->
- <template name="reductionPage">
+<template name="reductionPage">
   <div class="container mt-5">
     <h3>Keringanan Biaya</h3>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Beranda</a></li>
         <li class="breadcrumb-item"><a href="/ppdb">Daftar PPDB</a></li>
-        <li class="breadcrumb-item"><a href="/ppdb/details/{{toMeteorId reductionRegistran._id}}">{{reductionRegistran.fullName}}</a></li>
+        <li class="breadcrumb-item"><a
+            href="/ppdb/details/{{toMeteorId reductionRegistran._id}}">{{reductionRegistran.fullName}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">Konfigurasi Keringanan Biaya</li>
       </ol>
     </nav>
@@ -1229,11 +1230,12 @@
         </div>
       </div>
       <div class="d-flex justify-content-end button-group my-2">
-        <button class="btn btn-primary viewMode active mx-2"  milik="0">Daftar Keringanan</button>
+        <button class="btn btn-primary viewMode active mx-2" milik="0">Daftar Keringanan</button>
         {{#if reductionRegistran.isReduction}}
-        <button class="btn btn-secondary" id="btn-reduction-off"  milik="1" type="button" disabled>+ Buat Keringanan</button>
+        <button class="btn btn-secondary" id="btn-reduction-off" milik="1" type="button" disabled>+ Buat
+          Keringanan</button>
         {{else}}
-        <button class="btn btn-primary viewMode"  milik="1">+ Buat Keringanan</button>
+        <button class="btn btn-primary viewMode" milik="1">+ Buat Keringanan</button>
         {{/if}}
       </div>
 
@@ -1285,9 +1287,9 @@
       {{/if}}
     </div>
   </div>
- </template>
+</template>
 
- <template name="formReduction">
+<template name="formReduction">
   <div class="container">
     <form id="formInputReduction">
       <div class="form-group">
@@ -1312,4 +1314,19 @@
 
 
 
- </template>
+</template>
+
+<template name="unggahVa">
+  <div>
+    <h3>Unggah Va</h3>
+    <select id="selected-school" class="select2">
+      <option>Pilih Sekolah</option>
+      {{#each schools}}
+      <option value="{{_id}}-{{unitId}}">{{name}} - {{unitName}}</option>
+      {{/each}}
+    </select>
+    <input type="file" id="upload-csv" />
+    <button id="btn-save">Simpan</button>
+
+  </div>
+</template>

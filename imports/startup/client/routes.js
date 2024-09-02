@@ -577,7 +577,6 @@ FlowRouter.route("/ppdb/:schoolId", {
   },
 });
 
-
 // FlowRouter.route("/account/resetpw",{
 //   name : 'resetPw',
 //   action() {
@@ -586,8 +585,15 @@ FlowRouter.route("/ppdb/:schoolId", {
 // })
 
 FlowRouter.route("/ppdb/reduction/:_id", {
-  name : "reductionPage",
+  name: "reductionPage",
   action() {
     this.render("App_body", "reductionPage");
-  }
-})
+  },
+});
+
+FlowRouter.route("/ppdb/va/unggah", {
+  name: "unggahVa",
+  action() {
+    this.render("App_body", "unggahVa");
+  },
+});

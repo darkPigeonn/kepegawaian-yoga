@@ -423,7 +423,6 @@ Template.paymentPage.events({
       if (result.isConfirmed) {
         Meteor.call("rekap-payment-download", 0, function (error, result) {
           if (error) {
-
             failAlert("Gagal", error);
             exitPreloader();
           } else {
@@ -436,7 +435,7 @@ Template.paymentPage.events({
           }
         });
       }
-    })
+    });
   },
   "click #btn-rekap-income-download"(e, t) {
     e.preventDefault();
@@ -463,7 +462,7 @@ Template.paymentPage.events({
           }
         });
       }
-    })
+    });
   },
 });
 
@@ -1242,7 +1241,6 @@ Template.pagePpdbSchool.events({
   },
 });
 
-
 Template.paymentPageListSchool.onCreated(function () {
   const self = this;
   startPreloader();
@@ -1258,11 +1256,10 @@ Template.paymentPageListSchool.onCreated(function () {
         if (result && result.length > 0) {
           // Hanya inisialisasi DataTables jika belum diinisialisasi sebelumnya
           setTimeout(() => {
-            $('#mytable').DataTable({
-              "pageLength": 50,
+            $("#mytable").DataTable({
+              pageLength: 50,
               ordering: false,
             });
-
           }, 500);
         }
         exitPreloader();
@@ -1273,9 +1270,8 @@ Template.paymentPageListSchool.onCreated(function () {
 Template.paymentPageListSchool.helpers({
   listRegistrans() {
     return Template.instance().listRegistrans.get();
-  }
-})
-
+  },
+});
 
 // Start Reduction
 Template.reductionPage.onCreated(function () {
@@ -1292,26 +1288,24 @@ Template.reductionPage.onCreated(function () {
       } else {
         console.log(result);
 
-
         self.reductionRegistran.set(result);
         exitPreloader();
-
       }
     });
   });
-})
+});
 Template.reductionPage.helpers({
   reductionRegistran() {
-    return Template.instance().reductionRegistran.get()
+    return Template.instance().reductionRegistran.get();
   },
   viewMode() {
     return Template.instance().viewMode.get();
-  }
-})
+  },
+});
 Template.reductionPage.events({
   "click #btn-reduction-off"(e, t) {
-    e.preventDefault()
-    infoAlert("Anda sudah membuat keringanan data untuk siswa ini")
+    e.preventDefault();
+    infoAlert("Anda sudah membuat keringanan data untuk siswa ini");
   },
   "keyup .inputNominal"(e, t) {
     e.preventDefault();
@@ -1320,13 +1314,12 @@ Template.reductionPage.events({
   "submit #formInputReduction"(e, t) {
     e.preventDefault();
 
-    const feeSpp = convert2number($('#spp').val());
-    const feeDonation = convert2number($('#donation').val());
-    const feeEvent = convert2number($('#event').val());
-    const feeUtility = convert2number($('#utility').val());
+    const feeSpp = convert2number($("#spp").val());
+    const feeDonation = convert2number($("#donation").val());
+    const feeEvent = convert2number($("#event").val());
+    const feeUtility = convert2number($("#utility").val());
 
     console.log(feeSpp, feeDonation, feeEvent, feeUtility);
-
 
     const thisRegistran = t.reductionRegistran.get();
 
@@ -1340,8 +1333,8 @@ Template.reductionPage.events({
     Swal.fire({
       title: "Konfirmasi Penerimaan",
       icon: "warning",
-       width: '800px',
-      html : `
+      width: "800px",
+      html: `
       <table class="table table-border" style="font-size : 15px">
         <thead>
           <th>Item</th>
@@ -1383,31 +1376,39 @@ Template.reductionPage.events({
     }).then((result) => {
       if (result.isConfirmed) {
         startPreloader();
-        Meteor.call("set-reduction", thisRegistran._id,thisRegistran.configId, feeSpp, feeDonation, feeEvent, feeUtility,  function (error, result) {
-          if (result) {
-            if (result.code) {
-              infoAlert(result.message);
-              setTimeout(() => {
-                exitPreloader();
-              }, 2500);
+        Meteor.call(
+          "set-reduction",
+          thisRegistran._id,
+          thisRegistran.configId,
+          feeSpp,
+          feeDonation,
+          feeEvent,
+          feeUtility,
+          function (error, result) {
+            if (result) {
+              if (result.code) {
+                infoAlert(result.message);
+                setTimeout(() => {
+                  exitPreloader();
+                }, 2500);
+              } else {
+                successAlert("Berhasil");
+                setTimeout(function () {
+                  location.reload();
+                }, 200);
+              }
             } else {
-              successAlert("Berhasil");
-              setTimeout(function () {
-                location.reload();
-              }, 200);
+              console.log(error);
+              failAlert("Gagal!");
+              exitPreloader();
             }
-          } else {
-            console.log(error);
-            failAlert("Gagal!");
-            exitPreloader();
           }
-        });
+        );
       }
-    })
-
+    });
   },
-  "click #btn-send"(e,t){
-    e.preventDefault()
+  "click #btn-send"(e, t) {
+    e.preventDefault();
 
     Swal.fire({
       title: "Konfirmasi Pengajuan",
@@ -1419,35 +1420,183 @@ Template.reductionPage.events({
     }).then((result) => {
       if (result.isConfirmed) {
         startPreloader();
-        Meteor.call("send-reduction", t.reductionRegistran.get()._id, function (error, result) {
-          if (result) {
-            if (result.code) {
-              infoAlert(result.message);
-              setTimeout(() => {
-                exitPreloader();
-              }, 2500);
+        Meteor.call(
+          "send-reduction",
+          t.reductionRegistran.get()._id,
+          function (error, result) {
+            if (result) {
+              if (result.code) {
+                infoAlert(result.message);
+                setTimeout(() => {
+                  exitPreloader();
+                }, 2500);
+              } else {
+                successAlert("Berhasil");
+                setTimeout(function () {
+                  location.reload();
+                }, 200);
+              }
             } else {
-              successAlert("Berhasil");
-              setTimeout(function () {
-                location.reload();
-              }, 200);
+              console.log(error);
+              failAlert("Gagal!");
+              exitPreloader();
             }
+          }
+        );
+      }
+    });
+  },
+  "click .viewMode"(e, t) {
+    e.preventDefault();
+
+    t.viewMode.set(t.viewMode.get() === "0" ? "1" : "0");
+    // i want move class active to this button
+    // and remove class active to other button
+    $(e.currentTarget).addClass("active").siblings().removeClass("active");
+  },
+});
+
+Template.unggahVa.onCreated(function () {
+  const self = this;
+
+  self.items = new ReactiveVar();
+  self.schools = new ReactiveVar();
+  self.listFail = new ReactiveVar();
+
+  Meteor.call("schools.getAllForm", function (error, result) {
+    if (error) {
+    } else {
+      self.schools.set(result);
+      startSelect2();
+    }
+  });
+});
+Template.unggahVa.helpers({
+  schools() {
+    return Template.instance().schools.get();
+  },
+  listFail() {
+    return Template.instance().listFail.get();
+  },
+  listPaymentVa() {
+    return Template.instance().items.get();
+  },
+});
+Template.unggahVa.events({
+  "change #upload-csv"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const file = e.target.files[0];
+    //pakai yoga dulu ya
+    const reader = new FileReader();
+    let dataJson = [];
+
+    reader.onload = function (e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array", cellDates: true });
+      const sheetName = workbook.SheetNames[0]; // Ambil nama sheet pertama
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      for (let index = 1; index < jsonData.length; index++) {
+        const element = jsonData[index];
+
+        if (element.length > 0) {
+          const newData = {
+            va: element[0].toString(),
+            name: element[1],
+            amount: element[2],
+          };
+          dataJson.push(newData);
+        }
+      }
+      console.log(dataJson);
+
+      t.items.set(dataJson);
+    };
+    reader.readAsArrayBuffer(file);
+
+    exitPreloader();
+  },
+  "click #btn-save"(e, t) {
+    e.preventDefault();
+    startPreloader();
+
+    const items = t.items.get();
+    const idSchool = $("#selected-school").val();
+
+    Meteor.call("unggah-va", idSchool, items, function (error, result) {
+      if (error) {
+        failAlert("Gagal");
+        exitPreloader();
+      } else {
+        successAlert("Berhasil");
+        exitPreloader();
+        console.log(result);
+        if (result.status == 200) {
+          setTimeout(() => {
+            location.reload();
+          }, 500);
+        } else {
+          t.listFail.set(result.items);
+        }
+      }
+    });
+  },
+  "click #btn-rekap-form-download"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Download rekap form PPDB",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("rekap-payment-download", 0, function (error, result) {
+          if (error) {
+            failAlert("Gagal", error);
+            exitPreloader();
           } else {
-            console.log(error);
-            failAlert("Gagal!");
+            successAlert("Berhasil");
+            const fileNameExcel = "Dafta VA.xlsx";
+            successAlert("Berhasil");
+            exitPreloader();
+            return XLSX.writeFile(result, fileNameExcel);
             exitPreloader();
           }
         });
       }
-    })
+    });
   },
-  "click .viewMode"(e, t) {
-    e.preventDefault()
+  "click #btn-rekap-income-download"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Download rekap form PPDB",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Meteor.call("rekap-payment-download", 1, function (error, result) {
+          if (error) {
+            console.log(error);
 
-    t.viewMode.set(t.viewMode.get() === "0" ? "1" : "0")
-    // i want move class active to this button
-    // and remove class active to other button
-    $(e.currentTarget).addClass("active").siblings().removeClass("active")
-
-  }
-})
+            failAlert("Gagal", error);
+            exitPreloader();
+          } else {
+            successAlert("Berhasil");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+});

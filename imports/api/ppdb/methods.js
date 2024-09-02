@@ -356,8 +356,8 @@ Meteor.methods({
           unitName: thisUnit.name,
           schoolName: thisRegistran.schoolName,
           schoolId: thisRegistran.schoolId,
-          configId : thisRegistran.configId,
-          configName : thisRegistran.gelombang,
+          configId: thisRegistran.configId,
+          configName: thisRegistran.gelombang,
           codePeriode: thisConfig.code,
           periodeId: thisConfig._id,
           countNumber: thisRegistran.registrationNumber.slice(-3),
@@ -856,7 +856,7 @@ Meteor.methods({
       periodeId: checkPeriodePpdb._id,
       periodeYear: checkPeriodePpdb.year,
       createdBy: thisUser._id,
-      isCooperation
+      isCooperation,
     };
 
     return Gelombangs.insert(newData);
@@ -907,7 +907,7 @@ Meteor.methods({
       periodeYear: checkPeriodePpdb.year,
       updatedBy: thisUser._id,
       updatedAt: thisUser._id,
-      isCooperation
+      isCooperation,
     };
 
     return Gelombangs.update({ _id: id }, { $set: newData });
@@ -992,7 +992,7 @@ Meteor.methods({
     // console.log(deactivated);
     return Gelombangs.update({ _id: id }, { $set: { status } });
   },
-  async 'delete-gelombang-school'(id){
+  async "delete-gelombang-school"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -1005,9 +1005,9 @@ Meteor.methods({
       throw new Meteor.Error(404, "No Data");
     }
     //remove gelombang dibuat soft delete dengan cara merubah id school nya
-    const schoolId = getGelombang.schoolId+'-remove';
+    const schoolId = getGelombang.schoolId + "-remove";
 
-    return Gelombangs.update({ _id: id },{$set : {schoolId}});
+    return Gelombangs.update({ _id: id }, { $set: { schoolId } });
   },
 
   async "aktivated-periode"(id, status) {
@@ -1249,58 +1249,60 @@ Meteor.methods({
     );
   },
 
-  async "rekap-payment-download"(code){
-    const thisUser  = Meteor.users.findOne({_id : this.userId})
-    if(!thisUser){
-      throw new Meteor.Error(404, "No Access")
+  async "rekap-payment-download"(code) {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
     }
-    const periodeStudi = await PeriodePpdb.findOne({status : true})
+    const periodeStudi = await PeriodePpdb.findOne({ status: true });
 
-    if(!periodeStudi){
-      throw new Meteor.Error(404, "No Periode Ppdb")
+    if (!periodeStudi) {
+      throw new Meteor.Error(404, "No Periode Ppdb");
     }
 
-
-    let getRegistrans = await Registrans.find({
-      periodeStudi: periodeStudi._id,
-    }, {
-      sort : {
-        createdAt : 1
+    let getRegistrans = await Registrans.find(
+      {
+        periodeStudi: periodeStudi._id,
       },
-      // fields: {
-      //   _id: 1,
-      //   createdByName: 1,
-      //   fullName: 1,
-      //   destinationClass: 1,
-      //   gelombang: 1,
-      //   noVA: 1,
-      // }
-    }).fetch();
+      {
+        sort: {
+          createdAt: 1,
+        },
+        // fields: {
+        //   _id: 1,
+        //   createdByName: 1,
+        //   fullName: 1,
+        //   destinationClass: 1,
+        //   gelombang: 1,
+        //   noVA: 1,
+        // }
+      }
+    ).fetch();
 
-    let dataModel = []
+    let dataModel = [];
 
     for (let index = 0; index < getRegistrans.length; index++) {
       const element = getRegistrans[index];
 
       //get appuser
-      const idUser = new Mongo.ObjectID(element.createdBy)
-      const appUser = await AppProfiles.findOne({_id : idUser})
+      const idUser = new Mongo.ObjectID(element.createdBy);
+      const appUser = await AppProfiles.findOne({ _id: idUser });
 
       //find perwakilan
-      const perwakilan = Units.findOne({_id : element.unitId})
+      const perwakilan = Units.findOne({ _id: element.unitId });
       // code = 0 (formulir) / 1 (pembayaran)
 
       // data form 0
       let tempData = {
-        'Nama' : element.fullName,
-        'No Form' : element.registrationNumber,
-        'Email Pengguna' : appUser?.email,
-        'NIK Siswa' : element.nik,
-        'No Hp Pengguna' : appUser?.phoneNumber,
-        'Perwakilan' : perwakilan.name,
-        'Sekolah Tujuan' : element.schoolName,
-        'Kelas Tujuan' : element.destinationClass,
-        'Periode Pendaftaran' : element.gelombang,
+        Nama: element.fullName,
+        "No Form": element.registrationNumber,
+        "Email Pengguna": appUser?.email,
+        "NIK Siswa": element.nik,
+        "No Hp Pengguna": appUser?.phoneNumber,
+        Perwakilan: perwakilan.name,
+        "Sekolah Tujuan": element.schoolName,
+        "Kelas Tujuan": element.destinationClass,
+        "Periode Pendaftaran": element.gelombang,
         // 'Jenis Pembayaran' : e, //dari virtual account
         // 'Nilai Pembayaran' : e, //dari virtual account
         // 'Pembayaran Masuk' : e, //dari virtual account
@@ -1320,46 +1322,51 @@ Meteor.methods({
         // 'Tanggal Pembayaran' : e, //dari virtual account
         // 'Dilunasi Oleh' : e, //dari virtual account
         // 'Tanggal diterima' : e, //dari virtual account
-      }
+      };
       //uang formulir
-      if(code === 0 && element.status < 60) {
+      if (code === 0 && element.status < 60) {
         //find va untuk student ini yang category 08
-        const idInitial = new Mongo.ObjectID(element.initialPaymentId)
-        const initialPayment = InitialPayment.findOne({_id : idInitial})
+        const idInitial = new Mongo.ObjectID(element.initialPaymentId);
+        const initialPayment = InitialPayment.findOne({ _id: idInitial });
 
         const noVa = initialPayment.va;
-        const detailVa = VirtualAccounts.findOne({virtualAccountNumber : noVa})
+        const detailVa = VirtualAccounts.findOne({
+          virtualAccountNumber: noVa,
+        });
 
         const dataExtend = {
-          'Jenis Pembayaran' : 'Uang Pendaftaran',
-          'Nilai Pembayaran' : detailVa? formatRupiah(detailVa.amount.toString()) : "0",
-          'Pembayaran Masuk' : detailVa?.status == 60 ? formatRupiah(detailVa.amount.toString()) :0,
-          'Status' : detailVa?.status == 60 ? 'Lunas' : 'Belum Lunas',
-          'No Va' : noVa,
-          'Tanggal Pembayaran' :  detailVa?.status == 60 ? detailVa.updatedAt : '-',
-          'Dilunasi Oleh' : 'Va Offline',
-        }
+          "Jenis Pembayaran": "Uang Pendaftaran",
+          "Nilai Pembayaran": detailVa
+            ? formatRupiah(detailVa.amount.toString())
+            : "0",
+          "Pembayaran Masuk":
+            detailVa?.status == 60
+              ? formatRupiah(detailVa.amount.toString())
+              : 0,
+          Status: detailVa?.status == 60 ? "Lunas" : "Belum Lunas",
+          "No Va": noVa,
+          "Tanggal Pembayaran":
+            detailVa?.status == 60 ? detailVa.updatedAt : "-",
+          "Dilunasi Oleh": "Va Offline",
+        };
 
-        const newModel = {...tempData, ...dataExtend}
-        dataModel.push(newModel)
-      }else{
+        const newModel = { ...tempData, ...dataExtend };
+        dataModel.push(newModel);
+      } else {
         //uang masuk
         //Perlu dibedakan kontant dan cicil
 
         //1. Yang cicilan
-        if(element.paymentMethod == 'Cicil'){
-          const getCicilan = CreditPayment.find({studentId : element._id.toHexString()}).fetch()
-
+        if (element.paymentMethod == "Cicil") {
+          const getCicilan = CreditPayment.find({
+            studentId: element._id.toHexString(),
+          }).fetch();
         }
 
         const dataExtend = {
-          'Jenis Pembayaran' : 'Biaya PPDB',
-
-        }
-
+          "Jenis Pembayaran": "Biaya PPDB",
+        };
       }
-
-
     }
     console.log(dataModel);
 
@@ -1377,7 +1384,6 @@ Meteor.methods({
     wb.Sheets["Data Rekap"] = ws;
 
     return wb;
-
   },
 
   //payme
@@ -1422,12 +1428,12 @@ Meteor.methods({
 
         if (registran) {
           let dataPayments = {
-            amount : item.amount,
-            virtualAccountNumber : item.va,
-            paidAt : new Date(item.date),
-            createdAt : new Date(),
-            createdBy : thisUser._id
-          }
+            amount: item.amount,
+            virtualAccountNumber: item.va,
+            paidAt: new Date(item.date),
+            createdAt: new Date(),
+            createdBy: thisUser._id,
+          };
           if (registran.status < 20) {
             //ini untuk formulir
             //3. check initialPayment
@@ -1446,14 +1452,14 @@ Meteor.methods({
                   updatedAt: new Date(),
                   updatedBy: thisUser._id,
                   paymentStatus: true,
-                  status : 60,
+                  status: 60,
                   note: item.note,
                 },
               }
             );
-            dataPayments.category = '08';
-          }else{
-            dataPayments.category = '90';
+            dataPayments.category = "08";
+          } else {
+            dataPayments.category = "90";
           }
           let status = 20;
           //cek va nya
@@ -1461,16 +1467,14 @@ Meteor.methods({
             status = 60;
           }
           //4. Make Transaksi
-          const idTransaksi = Transactions.insert(
-            {
-              amount : item.amount,
-              type : 'debit',
-              timestamp : new Date(item.date),
-              createdAt : new Date(),
-              createdBy : thisUser._id
-            }
-          )
-          dataPayments.idTransaksi = idTransaksi
+          const idTransaksi = Transactions.insert({
+            amount: item.amount,
+            type: "debit",
+            timestamp: new Date(item.date),
+            createdAt: new Date(),
+            createdBy: thisUser._id,
+          });
+          dataPayments.idTransaksi = idTransaksi;
           //5. update form
           Registrans.update(
             {
@@ -1484,9 +1488,9 @@ Meteor.methods({
                 note: item.note,
                 status,
               },
-              $addToSet : {
-                'payments' : dataPayments
-              }
+              $addToSet: {
+                payments: dataPayments,
+              },
             }
           );
           //6. update va
@@ -1498,7 +1502,7 @@ Meteor.methods({
                 updatedAt: new Date(),
                 updatedBy: thisUser._id,
                 note: item.note,
-                idTransaksi
+                idTransaksi,
               },
             }
           );
@@ -1540,6 +1544,50 @@ Meteor.methods({
         status: 200,
       };
     }
+  },
+  async "unggah-va"(schoolId, data) {
+    console.log(schoolId);
+
+    const unitId = schoolId.split("-")[1];
+    const schoolId2 = schoolId.split("-")[0];
+    const thisUnit = Units.findOne({ _id: unitId });
+    const thisSchool = Schools.findOne({ _id: schoolId2 });
+    const config = VirtualAccountsConfig.findOne({ unitId });
+    console.log(config);
+
+    for (let index = 0; index < data.length; index++) {
+      const element = data[index];
+      const newVa = config.code + element.va;
+
+      const tempData = {
+        unitId: thisUnit._id,
+        unitName: thisUnit.name,
+        schoolName: thisSchool.name,
+        schoolId: thisSchool.id,
+        configId: "formulir",
+        configName: "Promosi",
+        codePeriode: "formulir",
+        periodeId: "HfMszDwqCmN433ZLp",
+        periodeYear: "2025/2026",
+        countNumber: newVa.slice(-7, -4),
+        amount: element.amount,
+        status: 10,
+        category: "08",
+        createdAt: {
+          $date: "2024-09-01T01:07:26.594Z",
+        },
+        createdBy: "ycwg5S7oQxpBnN6Hd",
+        virtualAccountNumber: newVa,
+        activatedAt: {
+          $date: "2024-09-01T01:07:53.360Z",
+        },
+        activatedBy: "ycwg5S7oQxpBnN6Hd",
+        note: "unggahan",
+      };
+      VirtualAccounts.insert(tempData);
+    }
+
+    //ini formulir
   },
   //export
   async "export-va"(unitId, schoolId, tag) {
@@ -1886,99 +1934,114 @@ Meteor.methods({
     return Registrans.aggregate(pipeline);
   },
 
-
-  async "get-payment-list-school"(){
-    const thisUser = Meteor.users.findOne({_id : this.userId})
-    if(!thisUser) {
-      throw new Meteor.Error(404, "No Access")
+  async "get-payment-list-school"() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
     }
 
-    const periodeStudi = PeriodePpdb.findOne({status : true})
-    let getRegistrans = await Registrans.find({
-      periodeStudi: periodeStudi._id,
-      schoolId: thisUser.schoolId,
-    }, {
-      sort : {
-        createdAt : 1
+    const periodeStudi = PeriodePpdb.findOne({ status: true });
+    let getRegistrans = await Registrans.find(
+      {
+        periodeStudi: periodeStudi._id,
+        schoolId: thisUser.schoolId,
       },
-      fields: {
-        _id: 1,
-        createdByName: 1,
-        fullName: 1,
-        destinationClass: 1,
-        gelombang: 1,
-        noVA: 1,
-        payments : 1
+      {
+        sort: {
+          createdAt: 1,
+        },
+        fields: {
+          _id: 1,
+          createdByName: 1,
+          fullName: 1,
+          destinationClass: 1,
+          gelombang: 1,
+          noVA: 1,
+          payments: 1,
+        },
       }
-    }).fetch();
+    ).fetch();
 
-    let newData =[]
+    let newData = [];
     if (getRegistrans.length > 0) {
-      const returnData = await Promise.all(getRegistrans.map(async item => {
-        const payments = item.payments
-        for (let index = 0; index < payments.length; index++) {
-          const element = payments[index];
+      const returnData = await Promise.all(
+        getRegistrans.map(async (item) => {
+          const payments = item.payments;
+          for (let index = 0; index < payments.length; index++) {
+            const element = payments[index];
 
-          let va = await VirtualAccounts.findOne({ virtualAccountNumber: element.virtualAccountNumber });
+            let va = await VirtualAccounts.findOne({
+              virtualAccountNumber: element.virtualAccountNumber,
+            });
 
-          const tempData =  {
-            ...item,
-            vaId: element.virtualAccountNumber,
-            categoryPayment: element.category,
-            amount: element.amount,
-            status: va?.status ?? 0,
-            paidDate: va?.updatedAt ?? '-'
-          };
+            const tempData = {
+              ...item,
+              vaId: element.virtualAccountNumber,
+              categoryPayment: element.category,
+              amount: element.amount,
+              status: va?.status ?? 0,
+              paidDate: va?.updatedAt ?? "-",
+            };
 
-          newData.push(tempData)
-        }
-
-      }));
+            newData.push(tempData);
+          }
+        })
+      );
       return newData;
     }
-
   },
-
 
   // START Reduction
   async "get-reduction-list"(registranId) {
-    const thisUser = Meteor.users.findOne({_id : this.userId})
-    if(!thisUser) {
-      throw new Meteor.Error(404, "No Access")
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if (!thisUser) {
+      throw new Meteor.Error(404, "No Access");
     }
-    let newData = {}
+    let newData = {};
     const objectId = new Meteor.Collection.ObjectID(registranId);
-    const thisRegistran = Registrans.findOne({ _id: objectId },{
-      fields : {
-        _id : 1,
-        fullName:1,
-        configId : 1,
-        gelombang : 1,
-        schoolYear : 1,
+    const thisRegistran = Registrans.findOne(
+      { _id: objectId },
+      {
+        fields: {
+          _id: 1,
+          fullName: 1,
+          configId: 1,
+          gelombang: 1,
+          schoolYear: 1,
+        },
       }
-    });
+    );
 
-    if(!thisRegistran) {
-      throw new Meteor.Error(404, "Data Registran Tidak Ditemukan")
+    if (!thisRegistran) {
+      throw new Meteor.Error(404, "Data Registran Tidak Ditemukan");
     }
-    newData = thisRegistran
+    newData = thisRegistran;
     const getConfig = Gelombangs.findOne({ _id: thisRegistran.configId });
-    delete getConfig._id
-    if(!getConfig) {
-      throw new Meteor.Error(404, "Data Gelombang Tidak Ditemukan")
+    delete getConfig._id;
+    if (!getConfig) {
+      throw new Meteor.Error(404, "Data Gelombang Tidak Ditemukan");
     }
-    newData = {...newData, ...getConfig}
+    newData = { ...newData, ...getConfig };
 
-
-    const reductions = Reductions.findOne({studentId : thisRegistran._id.toHexString(), configId : thisRegistran.configId})
-    if(!reductions) {
-      newData = {...newData, isReduction : false}
-    }else{
-      newData = {...newData, reductions : reductions, isReduction : true}
+    const reductions = Reductions.findOne({
+      studentId: thisRegistran._id.toHexString(),
+      configId: thisRegistran.configId,
+    });
+    if (!reductions) {
+      newData = { ...newData, isReduction: false };
+    } else {
+      newData = { ...newData, reductions: reductions, isReduction: true };
     }
     return newData;
   },
-  async "set-reduction"(id,configId, feeSpp, feeDonation, feeEvent, feeUtility) {
+  async "set-reduction"(
+    id,
+    configId,
+    feeSpp,
+    feeDonation,
+    feeEvent,
+    feeUtility
+  ) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
@@ -1992,45 +2055,60 @@ Meteor.methods({
       throw new Meteor.Error(404, "Data Gelombang Tidak Ada");
     }
     // compare fee thisConfig with fee from params
-    const reduceSpp =  thisConfig.feeSpp - feeSpp ;
-    const reduceDonation =  thisConfig.feeDonation - feeDonation ;
-    const reduceEvent = thisConfig.feeEvent - feeEvent ;
-    const reduceUtility =  thisConfig.feeUtility - feeUtility ;
-    const reduceTotal = reduceSpp + reduceDonation + reduceEvent + reduceUtility;
+    const reduceSpp = thisConfig.feeSpp - feeSpp;
+    const reduceDonation = thisConfig.feeDonation - feeDonation;
+    const reduceEvent = thisConfig.feeEvent - feeEvent;
+    const reduceUtility = thisConfig.feeUtility - feeUtility;
+    const reduceTotal =
+      reduceSpp + reduceDonation + reduceEvent + reduceUtility;
 
     console.log(reduceSpp, reduceDonation, reduceEvent, reduceUtility);
 
     const tempData = {
       studentId: id.toHexString(),
-      studentName : thisRegistran.fullName,
+      studentName: thisRegistran.fullName,
       configId: configId,
-      configName : thisConfig.gelombang,
-      periodeYear : thisRegistran.schoolYear,
-      periodeId : thisConfig.periodeId,
+      configName: thisConfig.gelombang,
+      periodeYear: thisRegistran.schoolYear,
+      periodeId: thisConfig.periodeId,
       feeSpp: feeSpp,
       feeDonation: feeDonation,
       feeEvent: feeEvent,
       feeUtility: feeUtility,
-      reduce : {
+      reduce: {
         feeSpp: reduceSpp,
         feeDonation: reduceDonation,
         feeEvent: reduceEvent,
-        feeUtility: reduceUtility
+        feeUtility: reduceUtility,
       },
       feeTotal: reduceTotal,
-      createdAt : new Date(),
-      createdBy : thisUser._id,
-      status : 10,
-      timelines : [{
-        createdAt : new Date(),
-        createdBy : thisUser._id,
-        createdByName : thisUser.fullname,
-        message : "Reduction Created",
-        actionId : 10
-      }]
-    }
+      createdAt: new Date(),
+      createdBy: thisUser._id,
+      status: 10,
+      timelines: [
+        {
+          createdAt: new Date(),
+          createdBy: thisUser._id,
+          createdByName: thisUser.fullname,
+          message: "Reduction Created",
+          actionId: 10,
+        },
+      ],
+    };
     const insertReduction = Reductions.insert(tempData);
-    return Registrans.update({ _id: id }, { $set: { isReduction : true, reduction : {reductionId : insertReduction, createdAt : new Date(), createdBy : thisUser._id}}  });
+    return Registrans.update(
+      { _id: id },
+      {
+        $set: {
+          isReduction: true,
+          reduction: {
+            reductionId: insertReduction,
+            createdAt: new Date(),
+            createdBy: thisUser._id,
+          },
+        },
+      }
+    );
   },
   async "send-reduction"(id) {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
@@ -2041,22 +2119,25 @@ Meteor.methods({
     if (!thisRegistran) {
       throw new Meteor.Error(404, "Data Registran Tidak Ada");
     }
-    const getReduction = Reductions.findOne({studentId : id.toHexString(), configId : thisRegistran.configId});
+    const getReduction = Reductions.findOne({
+      studentId: id.toHexString(),
+      configId: thisRegistran.configId,
+    });
     if (!getReduction) {
       throw new Meteor.Error(404, "Data Reduksi Tidak Ada");
     }
     const timeline = {
-      createdAt : new Date(),
-      createdBy : thisUser._id,
-      createdByName : thisUser.fullname,
-      message : "Reduction Send",
-      actionId : 11
-    }
+      createdAt: new Date(),
+      createdBy: thisUser._id,
+      createdByName: thisUser.fullname,
+      message: "Reduction Send",
+      actionId: 11,
+    };
 
     //get user pwk
     const school = Schools.findOne({ _id: thisRegistran.schoolId });
     const userPwk = Meteor.users.findOne({ _id: school.unitId });
-    if(userPwk){
+    if (userPwk) {
       const tempNotif = {
         senderId: thisUser._id,
         receiverId: userPwk._id,
@@ -2068,10 +2149,15 @@ Meteor.methods({
       Notifications.insert(tempNotif);
     }
 
-    return Reductions.update({ _id: getReduction._id },{ $set : {status : 11, updatedAt : new Date(), updatedBy : thisUser._id}, $addToSet: { timelines : timeline } }, );
-  }
+    return Reductions.update(
+      { _id: getReduction._id },
+      {
+        $set: { status: 11, updatedAt: new Date(), updatedBy: thisUser._id },
+        $addToSet: { timelines: timeline },
+      }
+    );
+  },
 });
-
 
 function generateUniqueVirtualAccount() {
   let virtualAccountNumber;
