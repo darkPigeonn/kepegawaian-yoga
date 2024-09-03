@@ -273,7 +273,7 @@ Meteor.methods({
         //Masukkan data pembuat ke members nya juga
         updatedMembers.push({
             id: adminPartner.profileId,
-            name: adminPartner.fullName,
+            name: adminPartner.fullName ?? adminPartner.fullname,
             email: adminPartner.username,
         })
 
@@ -337,18 +337,27 @@ Meteor.methods({
         };
         
         const insertNotif = Notifications.insert(newDataSave);
+        const body = {
+            id_task: idTask,
+            // token, dari luar
+            senderId: adminPartner._id,
+            // receiverId, dari luar
+            type: "task",
+            id_task: idTask
+        }
         for (let index = 0; index < dataNotif.length; index++) {
             const element = dataNotif[index];
-            const dataUser = AppUsers.findOne({email: element.member_email });
+            const dataUser = AppUsers.findOne({profileId: element.member_id });
             if(!dataUser){
                 dataNotif.splice(index, 1);
             }
             else {
-                newDataSave.token = []
-                newDataSave.token.push(dataUser.token_fcm)
-                newDataSave.title = "Tugas Baru Menanti Anda!"
-                newDataSave.description = "Anda memiliki tugas baru yang ditugaskan"
-                console.log(newDataSave.token, newDataSave.title, newDataSave.description);
+                body.token = []
+                body.receiverId = [];
+                body.token.push(dataUser.token_fcm)
+                body.receiverId.push(dataUser.profileId)
+                body.title = "Tugas Baru Menanti Anda!"
+                body.description = "Anda memiliki tugas baru yang ditugaskan"
             }
         }
         let runNotif = true;
@@ -360,7 +369,7 @@ Meteor.methods({
         }
         else {
             let postURL =
-            process.env.USE_LOCAL === "true"
+            Meteor.settings.USE_LOCAL === "true"
             ? "http://localhost:3005/imavi/"
             : "https://api.imavi.org/imavi/";
             try {
@@ -370,7 +379,7 @@ Meteor.methods({
                     Secret: Meteor.settings.APP_SECRETMOBILE_IMAVI,
                     partner: "cim"
                     },
-                    data: newDataSave,
+                    data: body,
                 });
                 // console.log(response);
                 return insertNotif
