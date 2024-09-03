@@ -429,13 +429,15 @@ Template.paymentPage.events({
             exitPreloader();
           } else {
             successAlert("Berhasil");
-            const fileNameExcel = "Dafta VA.xlsx";
+            const fileNameExcel = "Dafta Rekap Pembayaran.xlsx";
             successAlert("Berhasil");
             exitPreloader();
             return XLSX.writeFile(result, fileNameExcel);
             exitPreloader();
           }
         });
+      }else{
+        exitPreloader();
       }
     });
   },
@@ -460,9 +462,14 @@ Template.paymentPage.events({
             exitPreloader();
           } else {
             successAlert("Berhasil");
+            const fileNameExcel = "Dafta Rekap Uang Masuk.xlsx";
+            successAlert("Berhasil");
             exitPreloader();
+            return XLSX.writeFile(result, fileNameExcel);
           }
         });
+      }else{
+        exitPreloader();
       }
     });
   },
@@ -770,7 +777,6 @@ Template.cicilanRegistran.onCreated(function () {
       console.log("Error fetch data");
       exitPreloader();
     } else {
-      console.log(result);
       self.detail.set(result);
 
       if (result.finalForm) {
@@ -876,7 +882,7 @@ Template.cicilanRegistran.events({
     }
     console.log(remainings);
     if (remainings.feeTotal == 0) {
-      infoAlert("Total Cicilan sudah terpenuhi");
+      infoAlert("Total Angsuran sudah terpenuhi");
 
       return false;
     }
@@ -933,25 +939,25 @@ Template.cicilanRegistran.events({
 
     if (remainings.feeSpp > 0) {
       infoAlert(
-        "Total Cicilan SPP masih belum sesuai, silahkan cek total cicilan SPP"
+        "Total Angsuran SPP masih belum sesuai, silahkan cek total cicilan SPP"
       );
       return false;
     }
     if (remainings.feeDonation > 0) {
       infoAlert(
-        "Total Cicilan Sumbangan masih belum sesuai, silahkan cek total cicilan sumbangan"
+        "Total Angsuran Sumbangan masih belum sesuai, silahkan cek total cicilan sumbangan"
       );
       return false;
     }
     if (remainings.feeEvent > 0) {
       infoAlert(
-        "Total Cicilan Kegiatan masih belum sesuai, silahkan cek total cicilan kegiatan"
+        "Total Angsuran Kegiatan masih belum sesuai, silahkan cek total cicilan kegiatan"
       );
       return false;
     }
     if (remainings.feeUtility > 0) {
       infoAlert(
-        "Total Cicilan Alat masih belum sesuai, silahkan cek total cicilan alat"
+        "Total Angsuran Alat masih belum sesuai, silahkan cek total cicilan alat"
       );
       return false;
     }
@@ -1340,6 +1346,8 @@ Template.reductionPage.onCreated(function () {
   const self = this;
   startPreloader();
   self.viewMode = new ReactiveVar("0");
+  self.access =  new ReactiveVar()
+  self.formEdit = new ReactiveVar(false)
   self.reductionRegistran = new ReactiveVar();
   const thisRegistran = FlowRouter.current().params._id;
   this.autorun(() => {
@@ -1354,9 +1362,25 @@ Template.reductionPage.onCreated(function () {
         exitPreloader();
       }
     });
+    Meteor.call("get-access-reduction", thisRegistran, (error, result) => {
+      if (error) {
+        exitPreloader();
+      } else {
+        self.access.set(result);
+        exitPreloader();
+      }
+    })
+
   });
 });
 Template.reductionPage.helpers({
+
+  access() {
+    return Template.instance().access.get()
+  },
+  formEdit(){
+    return Template.instance().formEdit.get()
+  },
   reductionRegistran() {
     return Template.instance().reductionRegistran.get();
   },
@@ -1380,6 +1404,7 @@ Template.reductionPage.events({
     const feeDonation = convert2number($("#donation").val());
     const feeEvent = convert2number($("#event").val());
     const feeUtility = convert2number($("#utility").val());
+    const golongan = $("#select-golongan-ortu").val();
 
     console.log(feeSpp, feeDonation, feeEvent, feeUtility);
 
@@ -1392,6 +1417,10 @@ Template.reductionPage.events({
     const reduceEvent = thisRegistran.feeEvent - feeEvent;
     const reduceUtility = thisRegistran.feeUtility - feeUtility;
 
+    let postRoute = 'set-reduction';
+    if(t.formEdit.get()){
+      postRoute = 'update-reduction';
+    }
     Swal.fire({
       title: "Konfirmasi Penerimaan",
       icon: "warning",
@@ -1439,13 +1468,15 @@ Template.reductionPage.events({
       if (result.isConfirmed) {
         startPreloader();
         Meteor.call(
-          "set-reduction",
+          postRoute,
           thisRegistran._id,
           thisRegistran.configId,
           feeSpp,
           feeDonation,
           feeEvent,
           feeUtility,
+          golongan,
+          t.reductionRegistran.get().reductions ? t.reductionRegistran.get().reductions._id : '-',
           function (error, result) {
             if (result) {
               if (result.code) {
@@ -1474,7 +1505,7 @@ Template.reductionPage.events({
 
     Swal.fire({
       title: "Konfirmasi Pengajuan",
-      text: "Apakah anda yakin ingin mengajukan keringanan data ini?",
+      text: "Apakah anda yakin ingin mengajukan keringanan ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
@@ -1516,6 +1547,45 @@ Template.reductionPage.events({
     // and remove class active to other button
     $(e.currentTarget).addClass("active").siblings().removeClass("active");
   },
+  "click #btn-edit"(e, t) {
+    e.preventDefault();
+    t.formEdit.set(!t.formEdit.get());
+    t.viewMode.set("1")
+    setTimeout(() => {
+      document
+        .getElementById("formInputReduction")
+        .scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "click #btn-cancel"(e, t) {},
+  "click #btn-approve"(e,t){
+    e.preventDefault();
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima keringanan ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-approve-reduction", t.reductionRegistran.get()._id, function (error, result) {
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    })
+  }
 });
 
 Template.unggahVa.onCreated(function () {
@@ -1662,3 +1732,64 @@ Template.unggahVa.events({
     });
   },
 });
+
+
+Template.formReduction.onCreated(function(){
+  const self = this;
+  self.categoriGolongan = new ReactiveVar()
+
+  self.autorun(() => {
+    Meteor.call("get-categori-golongan", function (error, result) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(result);
+
+        self.categoriGolongan.set(result);
+      }
+    });
+  });
+})
+Template.formReduction.onRendered(function(){
+  const thisData = this.data.reductionRegistran
+  console.log(thisData.reductions);
+  if(this.data.isEdit){
+    $("#spp").val(formatRupiah(thisData.reductions.feeSpp.toString()));
+    $("#donation").val(formatRupiah(thisData.reductions.feeDonation.toString()));
+    $("#event").val(formatRupiah(thisData.reductions.feeEvent.toString()));
+    $("#utility").val(formatRupiah(thisData.reductions.feeUtility.toString()));
+  }
+})
+Template.formReduction.helpers({
+  categoriGolongan(){
+    return Template.instance().categoriGolongan.get();
+  }
+})
+
+Template.formReduction.events({
+  'click #btn-proses'(e,t){
+    e.preventDefault()
+    const selectedGolongan  = $("#select-golongan-ortu").val();
+
+    if(selectedGolongan == "0"){
+      return swalInfo("Silahkan Pilih Golongan Orang Tua");
+    }
+    const thisRegistran = this.reductionRegistran;
+
+    const golongas = t.categoriGolongan.get();
+    const golongan = golongas.find(x => x.code == selectedGolongan);
+    const prosentase = golongan.prosentase;
+
+    const feeSpp = thisRegistran.feeSpp - (thisRegistran.feeSpp * (prosentase / 100));
+    const feeDonation = thisRegistran.feeDonation - (thisRegistran.feeDonation * (prosentase / 100));
+    const feeEvent = thisRegistran.feeEvent - (thisRegistran.feeEvent * (prosentase / 100));
+    const feeUtility = thisRegistran.feeUtility - (thisRegistran.feeUtility * (prosentase / 100));
+
+    $("#spp").val(formatRupiah (feeSpp.toString()));
+    $("#donation").val(formatRupiah (feeDonation.toString()));
+    $("#event").val(formatRupiah (feeEvent.toString()));
+    $("#utility").val(formatRupiah (feeUtility.toString()));
+
+    successAlert("Berhasil")
+  }
+})

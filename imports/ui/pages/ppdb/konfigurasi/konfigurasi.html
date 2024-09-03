@@ -332,7 +332,7 @@
 
                 </span>
               </label>
-              <button class="btn btn-info" id="btn-update" milik="{{_id}}">Ubah</button>
+              <button class="btn btn-info btn-update" id="btn-update" milik="{{_id}}">Ubah</button>
               <button class="btn btn-danger" id="btn-remove" milik="{{_id}}">Hapus</button>
             </td>
           </tr>
@@ -381,5 +381,45 @@
 
     </div>
 
+  </div>
+</template>
+
+
+<!-- Keringanan Biaya -->
+<template name="keringananbiaya">
+
+  <div class="container">
+    <div class="page-title">
+      <h3>Keringanan Biaya</h3>
+    </div>
+    <div class="page-content">
+      <div class="section-action">
+      </div>
+      <table class="table table-group-divider mt-5">
+        <thead>
+          <th>Nomor</th>
+          <th>Nama</th>
+          <th>Status</th>
+          <th>Tanggal Pembuatan</th>
+          <th>Tanggal Pengajuan</th>
+          <th>Aksi</th>
+        </thead>
+        <tbody>
+          {{#each listKeringanan}}
+          <tr>
+            <td>{{nomorUrut @index}}</td>
+            <td>{{fullName}}</td>
+            <td>{{reductionStatus status}}</td>
+            <td>{{formatHRDate createdAt}}</td>
+            <td>{{formatHRDate updatedAt}}</td>
+            <td>
+              <a href="/ppdb/reduction/{{toMeteorId _id}}" class="btn btn-info">Detail</a>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+    </div>
   </div>
 </template>

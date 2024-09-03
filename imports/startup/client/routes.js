@@ -559,7 +559,7 @@ FlowRouter.route("/ppdb/details/:_id", {
   },
 });
 FlowRouter.route("/ppdb/details/:_id/setCicil", {
-  name: "Cicilan Registrans",
+  name: "Angsuran Registrans",
   action() {
     this.render("App_body", "cicilanRegistran");
   },
@@ -597,3 +597,10 @@ FlowRouter.route("/ppdb/va/unggah", {
     this.render("App_body", "unggahVa");
   },
 });
+
+FlowRouter.route("/keringananbiaya", {
+  name : 'keringananbiaya',
+  action() {
+    this.render("App_body", "keringananbiaya");
+  }
+})

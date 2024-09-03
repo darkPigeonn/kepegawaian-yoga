@@ -625,9 +625,14 @@
 
                 {{else}}
                 {{#if betweenEquals registran.status 48 50}}
-                <td><a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">
-                    {{#if greaterThan registran.status 48}}Lihat Konfigurasi Angsuran{{else}} Buat Konfigurasi Angsuran
-                    {{/if}}</a></td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <a href="/ppdb/reduction/{{toMeteorId registran._id}}" class="btn btn-primary">{{#if registran.reduction.approved}}Lihat Keringanan{{else}} Buat Keringanan{{/if}}</a>
+                    <a href="/ppdb/details/{{toMeteorId registran._id}}/setCicil" class="btn btn-warning">
+                      {{#if greaterThan registran.status 48}}Lihat Konfigurasi Angsuran{{else}} Buat Konfigurasi Angsuran
+                      {{/if}}</a>
+                  </div>
+                  </td>
                 {{/if}}
                 {{/if}}
                 {{/if}}
@@ -661,7 +666,7 @@
 
             {{#if equals registran.status 48}}
             <div class="d-flex justify-content-end">
-              <a href="/ppdb/reduction/{{toMeteorId registran._id}}" class="btn btn-primary">Buat Keringanan</a>
+
             </div>
             {{/if}}
           </div>
@@ -1261,6 +1266,7 @@
           </p>
         </div>
       </div>
+      {{#if isInRole 'adminPpdbSchool'}}
       <div class="d-flex justify-content-end button-group my-2">
         <button class="btn btn-primary viewMode active mx-2" milik="0">Daftar Keringanan</button>
         {{#if reductionRegistran.isReduction}}
@@ -1270,6 +1276,7 @@
         <button class="btn btn-primary viewMode" milik="1">+ Buat Keringanan</button>
         {{/if}}
       </div>
+      {{/if}}
 
       {{#if equals viewMode '0'}}
       <table class="table table-border">
@@ -1306,6 +1313,7 @@
           </tr>
         </tbody>
       </table>
+      {{#if isInRole 'adminPpdbSchool'}}
       {{#if greaterThanEquals reductionRegistran.reductions.status 10}}
       <button class="btn btn-primary btn-block" id="btn-send">Ajukan ke Perwakilan</button>
       {{#if equals reductionRegistran.reductions.status 10}}
@@ -1313,9 +1321,16 @@
       {{/if}}
       {{/if}}
       {{/if}}
+      {{/if}}
 
+      {{#if isInRole 'superadmin, adminPpdbYayasan,adminPpdbPerwakilan'}}
+      {{#if lessThan reductionRegistran.reductions.status 60}}
+      <button class="btn btn-primary btn-block" id="btn-approve">Terima</button>
+      <button class="btn btn-danger btn-block" id="btn-reject">Tolak</button>
+      {{/if}}
+      {{/if}}
       {{#if equals viewMode '1'}}
-      {{> formReduction}}
+      {{> formReduction access=access reductionRegistran=reductionRegistran isEdit=formEdit}}
       {{/if}}
     </div>
   </div>
@@ -1324,6 +1339,18 @@
 <template name="formReduction">
   <div class="container">
     <form id="formInputReduction">
+      {{#if access.isKerjasamaPeriod}}
+      <div class="form-group">
+        <label>Pilih Golongan Orang Tua</label>
+        <select class="form-control" id="select-golongan-ortu">
+          <option value="0">-- Silahkan Pilih Golongan Orang Tua --</option>
+          {{#each categoriGolongan}}
+          <option value="{{code}}">{{label}} - {{prosentase}}%</option>
+          {{/each}}
+        </select>
+      </div>
+      <button class="btn btn-primary btn-block mb-4" id="btn-proses">Proses</button>
+      {{/if}}
       <div class="form-group">
         <label>Uang SPP</label>
         <input type="text" class="form-control inputNominal" required value="0" id="spp" />

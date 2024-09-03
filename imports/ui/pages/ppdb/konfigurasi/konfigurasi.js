@@ -408,7 +408,7 @@ Template.gelombangPage.events({
       }
     );
   },
-  "click #btn-update"(e, t) {
+  "click .btn-update"(e, t) {
     const id = $(e.target).attr("milik");
     const item = this;
     t.selectedItem.set(this);
@@ -577,3 +577,24 @@ Template.paymentConfigSchool.events({
     );
   },
 });
+
+
+Template.keringananbiaya.onCreated(function () {
+  const self= this;
+
+  self.items = new ReactiveVar();
+  Meteor.call("getAll-reductions", function (error, result) {
+    if (error) {
+      console.log("fetch failed : ", error);
+    } else {
+      console.log(result);
+
+      self.items.set(result);
+    }
+  })
+})
+Template.keringananbiaya.helpers({
+  listKeringanan() {
+    return Template.instance().items.get();
+  },
+})

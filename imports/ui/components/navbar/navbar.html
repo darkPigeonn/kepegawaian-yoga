@@ -47,6 +47,11 @@
           <li class="nav-item">
             <a class="nav-link" href="/ppdb/konfigurasi">Konfigurasi</a>
           </li>
+          {{#if isInRole 'superadmin, adminPpdbPerwakilan'}}
+          <li class="nav-item">
+            <a class="nav-link" href="/ppdb/keringananbiaya">Keringanan Biaya</a>
+          </li>
+          {{/if}}
           {{#if isInRole 'superadmin, adminPpdbYayasan'}}
           <li class="nav-item">
             <a class="nav-link" href="/ppdb/va">Virtual Account</a>

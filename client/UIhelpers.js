@@ -402,6 +402,29 @@ Template.registerHelper("paymentStatus", function (data) {
   }
   return status;
 });
+Template.registerHelper("reductionStatus", function (data) {
+  let status = "";
+  switch (data) {
+    case 0:
+      status = "Tidak ada tindakan";
+      break;
+    case 10:
+      status = "Terbuat belum diajukan";
+      break;
+    case 11:
+      status = "Diajukan ke Perwakilan";
+      break;
+    case 60:
+      status = "Disetujui";
+      break;
+    case 90:
+      status = "Ditolak";
+      break;
+    default:
+      status = "Tidak ada tindakan";
+  }
+  return status;
+});
 function convertTanggal(tanggal) {
   // Mengonversi bulan dari teks ke angka
   const bulanMapping = {

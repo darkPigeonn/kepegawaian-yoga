@@ -67,6 +67,8 @@ export const RegistransDummy = [
   },
 ];
 
+export const CategoryGolongans = new Mongo.Collection("categoryGolongangs")
+
 //observed
 Meteor.startup(function () {
   Registrans.find().observeChanges({
