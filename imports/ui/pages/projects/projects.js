@@ -108,6 +108,7 @@ Template.projects_create.onCreated(function () {
     const self = this;
     self.employee = new ReactiveVar();
     self.viewMode = new ReactiveVar("1");
+    self.objective = new ReactiveVar([]);
     Meteor.call("employee.getAll", function (error, result) {
       if (result) {
         self.employee.set(result);
@@ -140,6 +141,9 @@ Template.projects_create.helpers({
     viewMode() {
         return Template.instance().viewMode.get();
     },
+    objective() {
+        return Template.instance().objective.get();
+    }
 });
 
 Template.projects_create.events({
@@ -153,6 +157,7 @@ Template.projects_create.events({
         let tanggal_selesai = $("#tanggal_selesai").val();
         const status = $("#select-status").val();
         const members = $("#select-member").val();
+        const objective = t.objective.get();
 
         const employee = t.employee.get();
         const notifType = 'project';
@@ -173,7 +178,7 @@ Template.projects_create.events({
             });
             
             const data = {
-                nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages
+                nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective
             }
         
             Meteor.call('projects.insert', data, function (error, result) {
@@ -209,6 +214,70 @@ Template.projects_create.events({
         }
 
     },
+    "click #btn_tambah_objektif"(e, t) {
+        e.preventDefault();
+    
+        const finalData = t.objective.get()
+        const objektifProyek = $("#objektif_proyek").val();
+        
+        const object = {
+            id: generateRandomString(7),
+            name: objektifProyek,
+            milestone: []
+        }
+        finalData.push(object);
+        t.objective.set(finalData);
+    },
+    "click #btn_save_milestone"(e, t) {
+        e.preventDefault();
+        let dataObjective = t.objective.get();
+        const milestoneInput = $("#milestone_proyek").val()
+        const objectiveChoosen = $("#choose_objective").val()
+        const deadlineMilestone = $("#milestone_deadline").val();
+        for (const element of dataObjective) {
+            if(element.id == objectiveChoosen) {
+                element.milestone =  element.milestone;
+                const data = {
+                    idMilestone : generateRandomString(7),
+                    name : milestoneInput,
+                    deadline : deadlineMilestone
+                }
+                element.milestone.push(data);
+            }
+        }
+        t.objective.set(dataObjective)
+    },
+    "click .btn_delete_objective"(e, t) {
+        e.preventDefault();
+        let id = $(e.target).attr("milikObjective")
+        let dataObjective = t.objective.get();
+        dataObjective = dataObjective.filter(obj => obj.id !== id);
+        t.objective.set(dataObjective);
+    },
+    "click .btn_delete_milestone"(e, t) {
+        e.preventDefault();
+        let idMilestone = $(e.target).attr("milikMilestone");
+        let idObjective = $(e.target).attr("milikObjective");
+        console.log(idMilestone, idObjective);
+
+        // Ambil data dari ReactiveVar atau data lainnya
+        let dataObjective = t.objective.get();
+
+        // Filter data untuk menghapus milestone yang sesuai dengan idMilestone dan idObjective
+        dataObjective = dataObjective.map(obj => {
+            if (obj.id === idObjective) {
+                return {
+                    ...obj,
+                    milestone: obj.milestone.filter(m => m.idMilestone !== idMilestone)
+                };
+            }
+            return obj;
+        });
+        
+        // Set dataObjective yang telah diperbarui
+        t.objective.set(dataObjective);
+    }
+
 });
 
 Template.projects_edit.onCreated(function () {
@@ -216,6 +285,9 @@ Template.projects_edit.onCreated(function () {
     self.employee = new ReactiveVar();
     self.viewMode = new ReactiveVar("1");
     self.projects = new ReactiveVar();
+    self.objective = new ReactiveVar([]);
+    self.deleteObjective = new ReactiveVar([]);
+    self.deleteMilestone = new ReactiveVar([]);
     
     const id = FlowRouter.getParam("_id");
     
@@ -231,7 +303,23 @@ Template.projects_edit.onCreated(function () {
         if (result) {
             // console.log(result);
             self.projects.set(result);
-            // startSelect2();
+            console.log(self.projects.get());
+            const dataProjects = self.projects.get();
+            const dataObjective = dataProjects.objective;
+            for (let index = 0; index < dataObjective.length; index++) {
+                const element = dataObjective[index];
+                element.id = element._id
+                element.isInserted = true;
+                for (let j = 0; j < element.milestone.length; j++) {
+                    const element1 = element.milestone[j];
+                    console.log(element1);
+                    element1.isInserted = true;
+                    element1.idMilestone = element1._id
+                }
+            }
+            self.objective.set(dataObjective)
+            
+
         } else {
             console.log(error);
         }
@@ -269,6 +357,16 @@ Template.projects_edit.helpers({
         const projectMembers = members ? members.map(x => x.id) : [];
         return projectMembers.includes(employeeId);
     },
+    objective() {
+        return Template.instance().objective.get();
+    },
+    
+    deleteObjective() {
+        return Template.instance().deleteObjective.get();
+    },
+    deleteMilestone() {
+        return Template.instance().deleteMilestone.get()
+    }
 });
 
 Template.projects_edit.events({
@@ -281,6 +379,10 @@ Template.projects_edit.events({
         let tanggal_selesai = $("#tanggal_selesai").val();
         const status = $("#select-status").val();
         const members = $("#select-member").val();
+        const objective = t.objective.get();
+        const deleteObjective = t.deleteObjective.get()
+        const deleteMilestone = t.deleteMilestone.get();
+        
 
         const employee = t.employee.get();
         const notifType = 'project';
@@ -292,7 +394,6 @@ Template.projects_edit.events({
         
         if (deskripsi) {            
             if (tanggal_selesai > tanggal_mulai) {
-                console.log("masuk");
                 const updatedMembers = members.map((x) => {
                     const thisMember = employee.find((y) => y._id == x);
         
@@ -304,10 +405,11 @@ Template.projects_edit.events({
                 });
                 
                 const data = {
-                    nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages
+                    nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective
                 }
-    
-                Meteor.call('projects.update', id, data, function (error, result) {
+                
+                console.log(deleteObjective, deleteMilestone);
+                Meteor.call('projects.update', id, data, deleteObjective, deleteMilestone, function (error, result) {
                     if(result){
                         Swal.fire({
                             title: "Berhasil",
@@ -349,6 +451,78 @@ Template.projects_edit.events({
         }
 
     },
+    "click #btn_tambah_objektif"(e, t) {
+        e.preventDefault();
+    
+        const finalData = t.objective.get()
+        const objektifProyek = $("#objektif_proyek").val();
+        
+        const object = {
+            id: generateRandomString(7),
+            description: objektifProyek,
+            milestone: []
+        }
+        finalData.push(object);
+        t.objective.set(finalData);
+    },
+    "click #btn_save_milestone"(e, t) {
+        e.preventDefault();
+        let dataObjective = t.objective.get();
+        const milestoneInput = $("#milestone_proyek").val()
+        const objectiveChoosen = $("#choose_objective").val()
+        const deadlineMilestone = $("#milestone_deadline").val();
+        for (const element of dataObjective) {
+            if(element.id == objectiveChoosen) {
+                element.milestone =  element.milestone;
+                const data = {
+                    idMilestone : generateRandomString(7),
+                    description : milestoneInput,
+                    deadline : deadlineMilestone
+                }
+                
+                element.milestone.push(data);
+            }
+        }
+        t.objective.set(dataObjective)
+        // console.log(t.objective.get());
+    },
+    "click .btn_delete_objective"(e, t) {
+        e.preventDefault();
+        let id = $(e.target).attr("milikObjective")
+        let dataObjective = t.objective.get();
+        dataObjective = dataObjective.filter(obj => obj.id !== id);
+        let setDelete = t.deleteObjective.get();
+        setDelete.push(id)
+        t.objective.set(dataObjective);
+        t.deleteObjective.set(setDelete);
+    },
+    "click .btn_delete_milestone"(e, t) {
+        e.preventDefault();
+        let idMilestone = $(e.target).attr("milikMilestone");
+        let idObjective = $(e.target).attr("milikObjective");
+        // console.log(idMilestone, idObjective);
+        
+        let setDelete = t.deleteMilestone.get();
+        // Ambil data dari ReactiveVar atau data lainnya
+        let dataObjective = t.objective.get();
+
+        // Filter data untuk menghapus milestone yang sesuai dengan idMilestone dan idObjective
+        dataObjective = dataObjective.map(obj => {
+            if (obj.id === idObjective) {
+                return {
+                    ...obj,
+                    milestone: obj.milestone.filter(m => m.idMilestone !== idMilestone)
+                };
+            }
+            setDelete.push(idMilestone)
+            t.deleteMilestone.set(setDelete);
+            return obj;
+        });
+        // console.log(dataObjective);
+        
+        // Set dataObjective yang telah diperbarui
+        t.objective.set(dataObjective);
+    }
 });
 
 
@@ -576,3 +750,15 @@ Template.projects_members.events({
 //       $(".select2").select2();
 //     }, 300);
 // };
+
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}

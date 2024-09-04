@@ -1,4 +1,4 @@
-import { Projects } from "./projects";
+import { Projects, Objective, Milestone } from "./projects";
 import { Notifications } from "../notification/notification";
 import { Employee } from "../employee/employee";
 import { check } from "meteor/check";
@@ -69,7 +69,20 @@ Meteor.methods({
     },
     "projects.getThisProject"(id){
       check(id, String);
-      return Projects.findOne({_id: id});
+      let projects = Projects.findOne({_id: id});
+      let objective = Objective.find({projectId: id}, {projection: {
+        _id: 1,
+        description: 1
+      }}).fetch()
+      projects.objective = objective
+      console.log(projects.objective);
+      for (let index = 0; index < projects.objective.length; index++) {
+        const element = projects.objective[index];
+        const dataMilestone = Milestone.find({objectiveId: element._id}, {_id: 1, description: 1}).fetch()
+        element.milestone = dataMilestone
+      }
+      
+      return projects
     },
     "projects.getAllEmployeeThisProject"(idProject){
       const thisProject = Projects.findOne({ _id: idProject });
@@ -99,7 +112,7 @@ Meteor.methods({
       return Employee.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
     "projects.insert"(data) {
-      let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages} = data
+      let {nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective} = data
       check(nama_project, String);
       check(deskripsi, String);
       check(status, String);
@@ -136,6 +149,29 @@ Meteor.methods({
 
       const idProject = Projects.insert(dataSave); 
 
+      for (let index = 0; index < objective.length; index++) {
+        const element = objective[index];
+        const dataInsertObj = {
+          description: element.name,
+          projectId: idProject,
+          createdAt: new Date(),
+          createdBy: thisUser
+        }
+        const insertObjective = Objective.insert(dataInsertObj)
+        for (let j = 0; j < element.milestone.length; j++) {
+          const element1 = element.milestone[j];
+          console.log(element1);
+          const dataInsertMilestone = {
+            description: element1.name,
+            deadline: new Date(element1.deadline),
+            projectId: idProject,
+            objectiveId: insertObjective,
+            createdAt: new Date(),
+            createdBy: thisUser
+          }
+          const insertMilestone = Milestone.insert(dataInsertMilestone)
+        }
+      }
       // Notification
       const dataNotif = updatedMembers.map(x => {
           let notif = {
@@ -163,8 +199,8 @@ Meteor.methods({
 
       return Notifications.insert(newDataSave);
     },
-    "projects.update"(id, data) {
-      let { nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages } = data
+    "projects.update"(id, data, deleteObjective, deleteMilestone) {
+      let { nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective } = data
       check(nama_project, String);
       check(deskripsi, String);
       check(status, String);
@@ -216,6 +252,78 @@ Meteor.methods({
       };
       
       const updateNotif = Notifications.insert(newDataSave);
+
+      for (let index = 0; index < objective.length; index++) {
+        const element = objective[index];
+        // Bila objective belum pernah diinsert
+        // masukkan data objective
+        if(element.isInserted == undefined) {
+          const dataInsertObj = {
+            description: element.description,
+            projectId: id,
+            createdAt: new Date(),
+            createdBy: thisUser
+          }
+          const insertObjective = Objective.insert(dataInsertObj)
+          for (let j = 0; j < element.milestone.length; j++) {
+            const element1 = element.milestone[j];
+            const dataInsertMilestone = {
+              description: element1.description,
+              deadline: new Date(element1.deadline),
+              projectId: id,
+              objectiveId: insertObjective,
+              createdAt: new Date(),
+              createdBy: thisUser
+            }
+            const insertMilestone = Milestone.insert(dataInsertMilestone)
+          }
+        }
+        // data objective sudah ada
+        // data capaian tidak ada / baru maka
+        else if(element.isInserted != undefined) {
+          for (let j = 0; j < element.milestone.length; j++) {
+            const element1 = element.milestone[j];
+            if(element1.isInserted == undefined || element1.isInserted == false) {
+              const dataInsertMilestone = {
+                description: element1.description,
+                deadline: new Date(element1.deadline),
+                projectId: id,
+                objectiveId: element._id,
+                createdAt: new Date(),
+                createdBy: thisUser
+              }
+              const insertMilestone = Milestone.insert(dataInsertMilestone)
+            }
+          }
+        }
+      }
+
+      if(deleteMilestone.length > 0) {
+        for (let index = 0; index < deleteMilestone.length; index++) {
+          const element = deleteMilestone[index];
+          const cekData = Milestone.findOne({_id: element})
+          if(cekData) {
+            const deleteData = Milestone.remove({_id: element})
+          }
+        }
+      }
+
+      if(deleteObjective.length > 0) {
+        for (let index = 0; index < deleteObjective.length; index++) {
+          const element = deleteObjective[index];
+          const cekData = Objective.findOne({_id: element})
+          if(cekData) {
+            const deleteData = Objective.remove({_id: element})
+            const ambilDataMilestone = Milestone.find({objectiveId: element}).fetch()
+            if(ambilDataMilestone.length > 0) {
+              for (let index = 0; index < ambilDataMilestone.length; index++) {
+                const element1 = ambilDataMilestone[index];
+                const deleteMilestone = Milestone.remove({_id: element1})
+              }
+            }
+          }
+        }
+      }
 
       return Projects.update(
         { _id: id },

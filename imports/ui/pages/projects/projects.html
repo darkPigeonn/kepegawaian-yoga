@@ -554,6 +554,64 @@
                         {{/each}}
                     </select>
                 </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Objektif Proyek</label>
+                    <input type="text" id="objektif_proyek" class="form-control" required/>
+                    <br>
+                    <button class="btn btn-primary" id="btn_tambah_objektif">Tambah Objektif</button>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Pilih Objektif Proyek Untuk Dibuat Target Capaian</label>
+                    <select id="choose_objective" class="form-select">
+                        {{#each objective}}
+                            <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <br>
+                    <label class="fw-bold">Input Target Capaian</label>
+                    <input type="text" id="milestone_proyek" class="form-control" required/>
+                    <br>
+                    <label class="fw-bold">Estimasi Tanggal Pencapaian Target</label>
+                    <input type="date" id="milestone_deadline" class="form-control">
+                    <br>
+                    <button class="btn btn-primary" id="btn_save_milestone">Simpan Target Capaian</button>
+                </div>
+                <div>
+                    <h2>Daftar Objektif dan Target Capaian</h2>
+                    {{#each objective}}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h3 class="mb-0">{{nomorUrut @index}}. {{name}}</h3>
+                            <button class="btn btn-danger btn_delete_objective" milikObjective={{id}}>
+                                <i class="fas fa-trash-can btn_delete_objective" milikObjective={{id}}></i>
+                            </button>
+                        </div>
+
+                        <table class="table table-striped mb-4">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Target Capaian</th>
+                                    <th>Tanggal Target</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each milestone}}
+                                    <tr>
+                                        <td>{{nomorUrut @index}}</td>
+                                        <td>{{name}}</td>
+                                        <td>{{formatHRDate deadline}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn_delete_milestone" milikMilestone={{idMilestone}} milikObjective={{../id}}>
+                                                <i class="fas fa-trash-can btn_delete_milestone" milikMilestone={{idMilestone}} milikObjective={{../id}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    {{/each}}
+                </div>
                 <div class="d-grid gap-2 my-3">
                     <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
                 </div>
@@ -623,6 +681,64 @@
                             {{/if}}
                         {{/each}}
                     </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Objektif Proyek</label>
+                    <input type="text" id="objektif_proyek" class="form-control" required/>
+                    <br>
+                    <button class="btn btn-primary" id="btn_tambah_objektif">Tambah Objektif</button>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Pilih Objektif Proyek Untuk Dibuat Target Capaian</label>
+                    <select id="choose_objective" class="form-select">
+                        {{#each objective}}
+                            <option value="{{id}}">{{description}}</option>
+                        {{/each}}
+                    </select>
+                    <br>
+                    <label class="fw-bold">Input Target Capaian</label>
+                    <input type="text" id="milestone_proyek" class="form-control" required/>
+                    <br>
+                    <label class="fw-bold">Estimasi Tanggal Pencapaian Target</label>
+                    <input type="date" id="milestone_deadline" class="form-control">
+                    <br>
+                    <button class="btn btn-primary" id="btn_save_milestone">Simpan Target Capaian</button>
+                </div>
+                <div>
+                    <h2>Daftar Objektif dan Target Capaian</h2>
+                    {{#each objective}}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h3 class="mb-0">{{nomorUrut @index}}. {{description}}</h3>
+                            <button class="btn btn-danger btn_delete_objective" milikObjective={{id}}>
+                                <i class="fas fa-trash-can btn_delete_objective" milikObjective={{id}}></i>
+                            </button>
+                        </div>
+
+                        <table class="table table-striped mb-4">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Target Capaian</th>
+                                    <th>Tanggal Target</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each milestone}}
+                                    <tr>
+                                        <td>{{nomorUrut @index}}</td>
+                                        <td>{{description}}</td>
+                                        <td>{{formatHRDate deadline}}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn_delete_milestone" milikMilestone={{idMilestone}} milikObjective={{../id}}>
+                                                <i class="fas fa-trash-can btn_delete_milestone" milikMilestone={{idMilestone}} milikObjective={{../id}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    {{/each}}
                 </div>
                 <div class="d-grid gap-2 my-3">
                     <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
