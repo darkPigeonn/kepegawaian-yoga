@@ -1716,7 +1716,10 @@ Meteor.methods({
           return {
             "KODE VA": item.virtualAccountNumber.substring(5),
             "NAMA SISWA": thisRegistran.fullName,
-            Nominal : item.amount
+            SPP: item.feeSpp ?? 0,
+            SUMBANGAN: item.feeDonation ?? 0,
+            KEGIATAN: item.feeEvent ?? 0,
+            ALAT: item.feeUtility ?? 0,
           };
         });
       }
