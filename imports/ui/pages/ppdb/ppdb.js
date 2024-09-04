@@ -1133,21 +1133,21 @@ Template.pageVa.events({
     const schoolId = $("#select-school").val();
     const tag = $("#select-tag").val();
 
-    if (!unitId || unitId === "0") {
-      swalinfo("Silahkan Pilih Perwakilan");
-      exitPreloader();
-      return false;
-    }
-    if (!schoolId || schoolId === "0") {
-      swalinfo("Silahkan Pilih Sekolah");
-      exitPreloader();
-      return false;
-    }
-    if (!tag || tag === "0") {
-      swalinfo("Silahkan Pilih Tag");
-      exitPreloader();
-      return false;
-    }
+    // if (!unitId || unitId === "0") {
+    //   swalinfo("Silahkan Pilih Perwakilan");
+    //   exitPreloader();
+    //   return false;
+    // }
+    // if (!schoolId || schoolId === "0") {
+    //   swalinfo("Silahkan Pilih Sekolah");
+    //   exitPreloader();
+    //   return false;
+    // }
+    // if (!tag || tag === "0") {
+    //   swalinfo("Silahkan Pilih Tag");
+    //   exitPreloader();
+    //   return false;
+    // }
 
     Meteor.call("export-va", unitId, schoolId, tag, function (error, result) {
       if (error) {

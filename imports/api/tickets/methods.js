@@ -92,7 +92,7 @@ Meteor.methods({
         let fileName = [];
         for (const data of dataTiket) {
           for (const link of data.images) {
-            fileName.push(link.name)
+        fileName.push(link.name)
           }
         }
         return fileName;

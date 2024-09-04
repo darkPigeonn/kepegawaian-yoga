@@ -384,6 +384,9 @@ Meteor.methods({
           feeDonation: thisConfig.feeDonation,
           feeUtility: thisConfig.feeUtility,
           virtualAccountNumber: newVa,
+          studentId : thisRegistran._id.toString(),
+          createdAt : new Date(),
+          createdBy : thisUser._id
         };
         const paymentDetail = {
           amount: total,
@@ -1281,6 +1284,9 @@ Meteor.methods({
       feeUtility: thisCredit.feeUtility,
       virtualAccountNumber: newVa,
       creditId: thisCredit._id,
+      studentId : thisRegistran._id.toString(),
+      createdAt : new Date(),
+      createdBy : thisUser._id
     };
     const paymentDetail = {
       amount: total,
@@ -1618,7 +1624,6 @@ Meteor.methods({
     }
   },
   async "unggah-va"(schoolId, data) {
-    console.log(schoolId);
 
     const unitId = schoolId.split("-")[1];
     const schoolId2 = schoolId.split("-")[0];
@@ -1665,19 +1670,11 @@ Meteor.methods({
     check(tag, String);
 
     const thisUser = Meteor.users.findOne({ _id: this.userId });
+
     if (!thisUser) {
       throw new Meteor.Error(404, "No Access");
     }
     if (!Roles.userIsInRole(thisUser, ["adminPpdbYayasan", "superadmin"])) {
-      throw new Meteor.Error(404, "No Access");
-    }
-    const thisSchool = await Schools.findOne({ _id: schoolId });
-    if (!thisSchool) {
-      throw new Meteor.Error(404, "No School Founded");
-    }
-    //get unit
-    const thisUnit = await Units.findOne({ _id: unitId });
-    if (!thisUnit) {
       throw new Meteor.Error(404, "No Access");
     }
     if (tag === "formulir") {
@@ -1689,13 +1686,72 @@ Meteor.methods({
     if (tag == "sppCicil") {
       tag = "99";
     }
+    //get unit
+    const thisUnit = await Units.findOne({ _id: unitId });
+    if (!thisUnit) {
+      throw new Meteor.Error(404, "No Access");
+    }
+    if(schoolId == "0"){
+      const thisVa = await VirtualAccounts.find({
+        category: tag,
+        status : 20,
+        unitId
+      }).fetch();
+
+      let newModel = {};
+
+      if (tag == "08") {
+        newModel = thisVa.map((item) => {
+          return {
+            "KODE VA": item.virtualAccountNumber.substring(5),
+            "NAMA SISWA": "Formulir",
+            Formulir: item.amount,
+          };
+        });
+      } else {
+        newModel = thisVa.map((item) => {
+          const thisRegistran = Registrans.findOne({
+            noVA : item.virtualAccountNumber
+          })
+          return {
+            "KODE VA": item.virtualAccountNumber.substring(5),
+            "NAMA SISWA": thisRegistran.fullName,
+            Nominal : item.amount
+          };
+        });
+      }
+      console.log(newModel);
+
+
+
+      let wb = XLSX.utils.book_new();
+      const xlName = "Export VA ";
+
+      wb.Props = {
+        Title: xlName,
+        Subject: "Data VA",
+        Author: thisUser.fullname,
+        CreatedDate: new Date(),
+      };
+      wb.SheetNames.push("Daftar VA");
+      let ws = XLSX.utils.json_to_sheet(newModel);
+      wb.Sheets["Daftar VA"] = ws;
+
+      return wb;
+    }
+    const thisSchool = await Schools.findOne({ _id: schoolId });
+    if (!thisSchool) {
+      throw new Meteor.Error(404, "No School Founded");
+    }
+
+
     const thisVa = await VirtualAccounts.find({
       schoolId,
       unitId,
       category: tag,
     }).fetch();
     let newModel = {};
-    console.log(tag);
+
     if (tag == "08") {
       newModel = thisVa.map((item) => {
         return {
@@ -1718,7 +1774,6 @@ Meteor.methods({
     }
     let wb = XLSX.utils.book_new();
     const xlName = "Export VA " + thisSchool.name + " " + thisUnit.name;
-    console.log(newModel);
 
     wb.Props = {
       Title: xlName,
