@@ -25,3 +25,19 @@ isEmptyData = function (data) {
     console.log(thisUser);
     return thisUser.partnerCode
   }
+
+sendNotifications = function(data){
+  const newDataSave = {
+    id_project: idProject,
+    data: dataNotif,
+    assign_for: notifType,
+    senderId: adminPartner._id,
+    receiverId: "system",
+    message: messages,
+    categoryId: 10,
+    categoryName: "Informasi",
+    timestamp: new Date(),
+    createdAt: new Date(),
+    createdBy: adminPartner._id
+  };
+}

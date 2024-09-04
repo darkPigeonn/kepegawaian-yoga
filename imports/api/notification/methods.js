@@ -13,7 +13,7 @@ Meteor.methods({
     "notification.insert"(data) {
         check(data, Array);
 
-        const dataSave = { 
+        const dataSave = {
             data,
             createdAt: new Date(),
         };
