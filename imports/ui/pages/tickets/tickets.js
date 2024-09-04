@@ -9,7 +9,6 @@ import XLSX from "xlsx";
 import Papa, { parse } from 'papaparse';
 import { filter, functions, result, template } from "underscore";
 import { HTTP } from 'meteor/http';
-
 Template.listTicket.onCreated(function (){
     const self = this;
     self.dataTicket = new ReactiveVar();
@@ -149,7 +148,7 @@ Template.createTicket.events({
     };
     reader.addEventListener("load", function () {
       body.src = this.result;
-      if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" || 
+      if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" ||
               file.type != ".png" || file.type != ".jpg" || file.type != ".jpeg") {
       $(`#buktiTiket-${buktiTiket.length - 1}`).attr(
         "href",
@@ -389,7 +388,7 @@ Template.editTicket.events({
     };
     reader.addEventListener("load", function () {
       body.src = this.result;
-      if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" || 
+      if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc" ||
               file.type != ".png" || file.type != ".jpg" || file.type != ".jpeg") {
       $(`#buktiTiket-${buktiTiket.length - 1}`).attr(
         "href",
@@ -651,7 +650,7 @@ function checkDuplicateFileName(fileName, allFileNames) {
 function generateRandomString(length) {
 	const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	let randomString = "";
-  
+
 	for (let i = 0; i < length; i++) {
 	  const randomIndex = Math.floor(Math.random() * charset.length);
 	  randomString += charset.charAt(randomIndex);

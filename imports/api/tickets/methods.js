@@ -40,10 +40,18 @@ Meteor.methods({
             return data
         }
         const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
-        const data = Tickets.find({partner: relatedEmployee.partnerCode, $or: [
+        const data = Tickets.find(
+            {
+                partner: relatedEmployee.partnerCode, $or: [
             { createdBy: relatedEmployee._id }, // Jika pengguna saat ini adalah pembuat tiket
             { 'workers._id': relatedEmployee._id } // Jika pengguna saat ini adalah salah satu pekerja di tiket
-          ]}).fetch()
+          ]
+        },{
+            sort: {
+                createdAt: -1,
+                status : 1
+            }
+        }).fetch()
         const dataPlus = data.map(element => {
             element.isOwned = element.createdBy === relatedEmployee._id ? 1 : 0;
             return element;

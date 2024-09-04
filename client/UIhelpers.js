@@ -223,7 +223,25 @@ Template.registerHelper("statusPermit", function(status) {
   return dataPermit ? dataPermit.label : '-';
 
 })
+Template.registerHelper ("isImageLink",  function(url) {
+  // Daftar ekstensi file gambar yang umum digunakan
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
 
+  // Membuat URL object untuk memudahkan parsing
+  try {
+    const parsedUrl = new URL(url);
+    const path = parsedUrl.pathname;
+
+    // Mendapatkan ekstensi file dari URL
+    const extension = path.split('.').pop().toLowerCase();
+
+    // Memeriksa apakah ekstensi file ada dalam daftar imageExtensions
+    return imageExtensions.includes(extension);
+  } catch (error) {
+    // Jika URL tidak valid, return false
+    return false;
+  }
+})
 // startSelect2 = function () {
 //   setTimeout(() => {
 //     $(".select2").select2();
