@@ -5,7 +5,7 @@
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
                         <a href="/tasks">
-                            Tugas Umum
+                            Tugas
                         </a> 
                         /
                     </label>
@@ -63,7 +63,7 @@
                                                 </p>
                                             </div>
                                             <div class="col d-flex justify-content-end align-middle gap-1">
-                                                <div class="status">
+                                                <div class="priority">
                                                     {{#if equals task.priority "high"}}
                                                         <span class="rounded-4 px-2 py-1" style="font-size: 10pt; color: #f2709c;background-color: #fde2e4;">
                                                             {{capitalizeWord task.priority}}
@@ -99,6 +99,11 @@
                                                     <b>Dalam {{daysDifference task.deadline}} hari</b> / {{formatHRDateShort task.deadline}}
                                                 </span>
                                             </div>
+                                            <div class="time">
+                                                <span class="rounded-3 px-2 py-1" style="font-size: 11pt; color: #6cc2ff;background-color: #d1edff; max-width: fit-content;">
+                                                    <b>{{task.status}}</b>
+                                                </span>
+                                            </div>
                                         </div>
                                         <a href="/tasks/detail/{{task._id}}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
@@ -121,7 +126,7 @@
                 <div class="contentAtas">
                     <label style="color: blue; margin: 0;"> 
                         <a href="/tasks">
-                            Tugas Umum
+                            Tugas
                         </a> 
                         /
                     </label>
@@ -615,7 +620,7 @@
         <label style="color: blue; margin: 0;" class="d-flex gap-1"> 
             {{#if isUmumProject tasks.project_type}}
                 <a href="/tasks" class="text-secondary"> 
-                    Tugas Umum
+                    Tugas
                 </a> 
                 /
             {{else}}
@@ -672,6 +677,18 @@
                             <b class="fw-bold" style="color: #6adc6a;">Low</b>
                         </div>
                     </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Status Tugas</label>
+                    <select id="input_status" class="form-select">
+                        {{#each status}}
+                            {{#if equals tasks.status id}}
+                            <option value="{{id}}" selected>{{label}}</option>
+                            {{else}}
+                            <option value="{{id}}">{{label}}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
                 </div>
                 <div class="form-group mb-3">
                     <label class="fw-bold">Member Tugas</label>
@@ -869,7 +886,7 @@
             <label style="color: blue; margin: 0;" class="d-flex gap-1"> 
                 {{#if equals tasks.project_type "umum"}}
                     <a href="/tasks" class="text-secondary">
-                        Tugas Umum
+                        Tugas
                     </a> 
                     /
                 {{else}}
@@ -929,6 +946,10 @@
                 </div>
                 <div class="col col-sm-9 col-lg-9">
                     <table class="mt-2">
+                        <tr>
+                            <td class="fw-bold" style="padding:0 15px 20px 15px">Status</td>
+                            <td style="padding:0 15px 20px 70px"><b>{{tasks.status}}</b></td>
+                        </tr>
                         <tr>
                             <td class="fw-bold" style="padding:0 15px 20px 15px;">Tingkat Prioritas</td>
                             <td style="padding:0 15px 20px 70px;">

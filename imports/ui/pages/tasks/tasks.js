@@ -240,6 +240,7 @@ Template.tasks_edit.onCreated(function () {
     const self = this;
     self.employee = new ReactiveVar();
     self.tasks = new ReactiveVar();
+    self.status = new ReactiveVar();
 
     const idTasks = FlowRouter.getParam("_id");
 
@@ -261,6 +262,15 @@ Template.tasks_edit.onCreated(function () {
             console.log(error);
         }
     });
+
+    Meteor.call("tasks.getStatus", function (error, result) {
+        if(result) {
+            self.status.set(result)
+        }
+        else {
+            console.log(error);
+        }
+    })
 
     self[`template-field-deskripsi`] = new ReactiveVar();
     setTimeout(() => {
@@ -293,6 +303,9 @@ Template.tasks_edit.helpers({
     },
     isUmumProject(projectType) {
         return projectType === "umum";
+    },
+    status(){
+        return Template.instance().status.get();
     }
 });
 
@@ -305,6 +318,7 @@ Template.tasks_edit.events({
         let deadline = $("#deadline").val();
         const priority = $('input[name=select-priority]:checked').val();
         const members = $("#select-member").val();
+        const status = $("#input_status").val();
 
         const employee = t.employee.get();
         const notifType = 'tasks';
@@ -325,7 +339,7 @@ Template.tasks_edit.events({
         });
         
         const data = {
-            nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
+            nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, status
         }
     
         if (deskripsi && priority) {  

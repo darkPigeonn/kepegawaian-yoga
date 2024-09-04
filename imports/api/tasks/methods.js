@@ -1,4 +1,4 @@
-import { Tasks, Events } from "./tasks";
+import { Tasks, Events, Status } from "./tasks";
 import { Projects } from "../projects/projects";
 import { Employee } from "../employee/employee";
 import { Notifications } from "../notification/notification";
@@ -70,6 +70,12 @@ Meteor.methods({
         if(relatedUser.roles[0] == "admin"){
             const findTasks = Tasks.find({partner: relatedUser.partners[0]}).fetch();
 
+            for (let index = 0; index < findTasks.length; index++) {
+                const element = findTasks[index];
+                const dataStatus = Status.findOne({id: element.status})
+                element.status = dataStatus.label
+            }
+
             const priorityOrder = { high: 0, mid: 1, low: 2 };
             findTasks.sort((a, b) => {
                 const priorityA = priorityOrder[a.priority];
@@ -91,6 +97,17 @@ Meteor.methods({
                     id: dataEmployee._id
                 }
             }}).fetch();
+
+            for (let index = 0; index < findTasks.length; index++) {
+                const element = findTasks[index];
+                const dataStatus = Status.findOne({id: element.status})
+                if(dataStatus) {
+                    element.status = dataStatus.label
+                }
+                else {
+                    element.status = "Belum Dimulai"
+                }
+            }
 
             const priorityOrder = { high: 0, mid: 1, low: 2 };
             findTasks.sort((a, b) => {
@@ -117,6 +134,13 @@ Meteor.methods({
             const getProject = Projects.findOne({_id: getTask.id_project});
             getTask.nama_project = getProject.nama_project;
             getTask.project_members = getProject.members;
+            const getStatus = Status.findOne({id: getTask.status});
+            if(getStatus) {
+                getTask.status = getStatus.label
+            }
+            else {
+                getTask.status = "Belum Dikerjakan"
+            }
             
             const updatedMembers = getTask.project_members.map((x) => {
                 const listMember = Employee.find({_id: x.id}).fetch();
@@ -149,6 +173,13 @@ Meteor.methods({
             });
 
             getTask.project_members = updatedMembers;
+            const getStatus = Status.findOne({id: getTask.status});
+            if(getStatus) {
+                getTask.status = getStatus.label
+            }
+            else {
+                getTask.status = "Belum Dikerjakan"
+            }
         }
 
         return getTask;
@@ -269,7 +300,7 @@ Meteor.methods({
             _id: thisUser,
         });
         
-        createdBy = adminPartner.fullname;
+        createdBy = adminPartner.fullname ?? adminPartner.fullName;
         //Masukkan data pembuat ke members nya juga
         updatedMembers.push({
             id: adminPartner.profileId,
@@ -289,8 +320,18 @@ Meteor.methods({
                 members: updatedMembers,
                 id_leader: thisUser,
                 partner: adminPartner.partners[0],
+                status: 0,
                 createdAt: new Date(),
-                createdBy: createdBy
+                createdBy: createdBy,
+                timeline: [
+                    {
+                        event: "created",
+                        operator: thisUser,
+                        operatorName: createdBy,
+                        timestamp: new Date()
+
+                    }
+                ]
             };
         }
         else{
@@ -304,8 +345,18 @@ Meteor.methods({
                 members: updatedMembers,
                 id_leader: thisUser,
                 partner: adminPartner.partners[0],
+                status: 0,
                 createdAt: new Date(),
-                createdBy: createdBy
+                createdBy: createdBy,
+                timeline: [
+                    {
+                        event: "created",
+                        operator: thisUser,
+                        operatorName: createdBy,
+                        timestamp: new Date()
+
+                    }
+                ]
             };
         }
         
@@ -345,6 +396,9 @@ Meteor.methods({
             type: "task",
             id_task: idTask
         }
+        
+        body.token = []
+        body.receiverId = [];
         for (let index = 0; index < dataNotif.length; index++) {
             const element = dataNotif[index];
             const dataUser = AppUsers.findOne({profileId: element.member_id });
@@ -352,10 +406,10 @@ Meteor.methods({
                 dataNotif.splice(index, 1);
             }
             else {
-                body.token = []
-                body.receiverId = [];
-                body.token.push(dataUser.token_fcm)
-                body.receiverId.push(dataUser.profileId)
+                if(dataUser.token_fcm) {
+                    body.token.push(dataUser.token_fcm)
+                    body.receiverId.push(dataUser.profileId)
+                }
                 body.title = "Tugas Baru Menanti Anda!"
                 body.description = "Anda memiliki tugas baru yang ditugaskan"
             }
@@ -391,7 +445,7 @@ Meteor.methods({
         }
     },
     "tasks.update"(id, data) {
-        let { nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages } = data
+        let { nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, status } = data
         check(nama_tasks, String);
         check(deskripsi, String);
         check(priority, String);
@@ -404,16 +458,23 @@ Meteor.methods({
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
-        updatedBy = adminPartner.fullname;
-        
+        updatedBy = adminPartner.fullname ?? adminPartner.fullName;
+        status = parseInt(status)
+        const timeline =
+        {
+            event: "edited",
+            operator: thisUser,
+            operatorName: updatedBy,
+            timestamp: new Date()
+
+        }
         const dataSave = { 
             nama_task: nama_tasks,
             deskripsi,
             deadline,
             priority,
-            members: updatedMembers,
-            updatedAt: new Date(),
-            updatedBy: updatedBy
+            status,
+            members: updatedMembers
         };
         
         // Notification
@@ -445,8 +506,11 @@ Meteor.methods({
 
         return Tasks.update(
             { _id: id },
-            { $set: dataSave }
+            { $set: dataSave, $push: {timeline: timeline} }
         );
     },
+    "tasks.getStatus"() {
+        return Status.find({type: "task"}).fetch();
+    }
 
 })
