@@ -78,7 +78,8 @@ Template.home_employee.onCreated(function () {
   const self = this;
 
   self.employee = new ReactiveVar();
-  self.dashboard = new ReactiveVar()
+  self.dashboard = new ReactiveVar();
+  self.loading = new ReactiveVar(true);
   Meteor.call("employee.getThisEmployee", function (error, result) {
     if(error){
       console.log(error);
@@ -90,9 +91,8 @@ Template.home_employee.onCreated(function () {
     if(error){
       console.log(error);
     }else{
-      console.log(result);
-
       self.dashboard.set(result)
+      self.loading.set(false)
     }
   })
 })
@@ -102,5 +102,8 @@ Template.home_employee.helpers({
   },
   dashboard(){
     return Template.instance().dashboard.get()
+  },
+  isLoading(){
+    return Template.instance().loading.get()
   }
 })

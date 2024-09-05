@@ -69,7 +69,7 @@ Template.App_body.onDestroyed(() => {
   });
 });
 Template.App_body.helpers({
-  loading() {
+  isLoading() {
     return Template.instance().loading.get();
   },
   currentUser() {
