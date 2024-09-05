@@ -73,7 +73,9 @@ Meteor.methods({
       let projects = Projects.findOne({_id: id});
       let objective = Objective.find({projectId: id}, {projection: {
         _id: 1,
-        description: 1
+        description: 1,
+        isCompleted: 1,
+        isCompletedAt: 1
       }}).fetch()
       projects.objective = objective
       // console.log(projects.objective);
@@ -131,12 +133,10 @@ Meteor.methods({
       check(notifType, String);
       check(messages, String);
 
-      let createdBy;
       const thisUser = Meteor.userId();
       const adminPartner = Meteor.users.findOne({
         _id: thisUser,
       });
-      createdBy = adminPartner.fullname;
 
       //Masukkan data pembuat ke members nya juga
       updatedMembers.push({
@@ -155,7 +155,8 @@ Meteor.methods({
         id_leader: thisUser,
         partner: adminPartner.partners[0],
         createdAt: new Date(),
-        createdBy: createdBy
+        createdBy: thisUser,
+        createdByName: adminPartner.fullname
       };
 
       const idProject = Projects.insert(dataSave); 
@@ -341,4 +342,29 @@ Meteor.methods({
         { $set: dataSave }
       );
     },
+    "projects.milestoneAchived"(id) {
+      check(id, String)
+      const dataMilestone = Milestone.findOne({_id: id})
+      const date = new Date()
+      const update = Milestone.update({_id: id}, {$set: {isAchived: true, isAchivedAt: date}})
+      const listMilestone = Milestone.find({objectiveId: dataMilestone.objectiveId}).fetch()
+      let cekObjFinished = true;
+      
+      // Loop melalui semua milestone
+      for (let index = 0; index < listMilestone.length; index++) {
+        const element = listMilestone[index];
+        
+        // Jika ada milestone yang isAchived == false, set cekObjFinished menjadi false
+        if (!element.isAchived) {
+          cekObjFinished = false;
+          break; // Keluar dari loop karena kita sudah menemukan satu yang belum tercapai
+        }
+      }
+      
+      // Lakukan sesuatu dengan hasil cekObjFinished
+      if (cekObjFinished) {
+        Objective.update({_id: dataMilestone.objectiveId}, { $set: { isCompleted: true, isCompletedAt: date } });
+      }
+      return update;
+    }
 })

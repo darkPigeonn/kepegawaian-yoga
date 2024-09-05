@@ -10,16 +10,16 @@ import Papa, { parse } from 'papaparse';
 import { each, filter, result } from "underscore";
 import { HTTP } from 'meteor/http';
 
-Template.projects_page.onCreated(function (){
+Template.projects_page.onCreated(function () {
     const self = this;
-    
+
     self.projects = new ReactiveVar();
     self.filter = new ReactiveVar({
-      type: '',
-      data: ''
+        type: '',
+        data: ''
     })
     self.filterMode = new ReactiveVar("1");
-    
+
     Meteor.call("projects.getAll", function (error, result) {
         if (result) {
             self.projects.set(result);
@@ -31,29 +31,29 @@ Template.projects_page.onCreated(function (){
 
 Template.projects_page.helpers({
     projects() {
-      const t = Template.instance()
-      const projects = t.projects.get();
-      const filter = t.filter.get()
+        const t = Template.instance()
+        const projects = t.projects.get();
+        const filter = t.filter.get()
 
-        if(projects){
-            const result =  projects.filter((x) => {
+        if (projects) {
+            const result = projects.filter((x) => {
                 const query = filter.data.toString().toLowerCase();
-                
-                if(filter.type == 'nama_project'){
+
+                if (filter.type == 'nama_project') {
                     return x.nama_project.toString().toLowerCase().includes(query);
                 }
-                if(filter.type == 'status'){
+                if (filter.type == 'status') {
                     return x.status.toString().toLowerCase().includes(query);
                 }
-                if(filter.type == 'tanggal_mulai'){
+                if (filter.type == 'tanggal_mulai') {
                     const thisStartDate = x.tanggal_mulai;
                     return moment(thisStartDate).format('DD').includes(query);
                 }
-                if(filter.type == 'tanggal_selesai'){
+                if (filter.type == 'tanggal_selesai') {
                     const thisStartDate = x.tanggal_selesai;
                     return moment(thisStartDate).format('DD').includes(query);
                 }
-                if(filter.type == 'jumlah_member'){
+                if (filter.type == 'jumlah_member') {
                     const jumlahMember = x.members.length;
                     return jumlahMember >= query;
                 }
@@ -62,7 +62,7 @@ Template.projects_page.helpers({
             });
             return result
         }
-        else{
+        else {
             return []
         }
     },
@@ -72,9 +72,9 @@ Template.projects_page.helpers({
 });
 
 Template.projects_page.events({
-    "input .filter"(e, t){
+    "input .filter"(e, t) {
         e.preventDefault();
-        
+
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -82,9 +82,9 @@ Template.projects_page.events({
             data
         })
     },
-    "change .filter"(e, t){
+    "change .filter"(e, t) {
         // e.preventDefault();
-        
+
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -92,12 +92,12 @@ Template.projects_page.events({
             data
         })
     },
-    "click .btn-filter"(e, t){
+    "click .btn-filter"(e, t) {
         let filterMode = t.filterMode.get();
         if (filterMode == 1) {
             t.filterMode.set("2");
         }
-        else if(filterMode == 2){
+        else if (filterMode == 2) {
             t.filterMode.set("1");
         }
     }
@@ -110,19 +110,19 @@ Template.projects_create.onCreated(function () {
     self.viewMode = new ReactiveVar("1");
     self.objective = new ReactiveVar([]);
     Meteor.call("employee.getAll", function (error, result) {
-      if (result) {
-        self.employee.set(result);
-        // startSelect2();
-      } else {
-        console.log(error);
-      }
+        if (result) {
+            self.employee.set(result);
+            // startSelect2();
+        } else {
+            console.log(error);
+        }
     });
 
     self[`template-field-deskripsi`] = new ReactiveVar();
     setTimeout(() => {
-        initEditor(self, 
+        initEditor(self,
             {
-                editorEl: `editor-deskripsi`, 
+                editorEl: `editor-deskripsi`,
                 toolbarEl: `toolbar-container-deskripsi`,
                 templateField: `template-field-deskripsi`,
             })
@@ -133,7 +133,7 @@ Template.projects_create.onCreated(function () {
 Template.projects_create.onRendered(function () {
     startSelect2();
 });
-  
+
 Template.projects_create.helpers({
     employee() {
         return Template.instance().employee.get();
@@ -147,9 +147,9 @@ Template.projects_create.helpers({
 });
 
 Template.projects_create.events({
-    "click #btn_save"(e, t){
+    "click #btn_save"(e, t) {
         e.preventDefault();
-    
+
         const nama_project = $("#nama_project").val();
         // const deskripsi = $("#deskripsi_project").val();
         const deskripsi = t[`template-field-deskripsi`].get().getData();
@@ -162,38 +162,38 @@ Template.projects_create.events({
         const employee = t.employee.get();
         const notifType = 'project';
         const messages = "Kamu telah di-daftarkan pada project baru, silahkan check web kepegawaian";
-        
+
         tanggal_mulai = new Date(tanggal_mulai);
         tanggal_selesai = new Date(tanggal_selesai);
-        
+
         if (tanggal_selesai > tanggal_mulai) {
             const updatedMembers = members.map((x) => {
                 const thisMember = employee.find((y) => y._id == x);
-                
+
                 return {
-                  id: thisMember._id,
-                  name: thisMember.full_name,
-                  email: thisMember.email_address,
+                    id: thisMember._id,
+                    name: thisMember.full_name,
+                    email: thisMember.email_address,
                 }
             });
-            
+
             const data = {
                 nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective
             }
-        
+
             Meteor.call('projects.insert', data, function (error, result) {
-                if(result){
+                if (result) {
                     Swal.fire({
                         title: "Berhasil",
                         text: "Berhasil Menambahkan Project",
                         showConfirmButton: true,
                         allowOutsideClick: true,
                     }).then((result) => {
-                        if(result.isConfirmed){
+                        if (result.isConfirmed) {
                             history.back();
                         }
                     });
-                }else{
+                } else {
                     Swal.fire({
                         title: "Gagal",
                         text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
@@ -202,9 +202,9 @@ Template.projects_create.events({
                     });
                     // console.log(error);
                 }
-            });      
+            });
         }
-        else{
+        else {
             Swal.fire({
                 title: "Gagal",
                 text: "Tanggal selesai harus lebih besar daripada tanggal mulai",
@@ -216,10 +216,10 @@ Template.projects_create.events({
     },
     "click #btn_tambah_objektif"(e, t) {
         e.preventDefault();
-    
+
         const finalData = t.objective.get()
         const objektifProyek = $("#objektif_proyek").val();
-        
+
         const object = {
             id: generateRandomString(7),
             name: objektifProyek,
@@ -235,12 +235,12 @@ Template.projects_create.events({
         const objectiveChoosen = $("#choose_objective").val()
         const deadlineMilestone = $("#milestone_deadline").val();
         for (const element of dataObjective) {
-            if(element.id == objectiveChoosen) {
-                element.milestone =  element.milestone;
+            if (element.id == objectiveChoosen) {
+                element.milestone = element.milestone;
                 const data = {
-                    idMilestone : generateRandomString(7),
-                    name : milestoneInput,
-                    deadline : deadlineMilestone
+                    idMilestone: generateRandomString(7),
+                    name: milestoneInput,
+                    deadline: deadlineMilestone
                 }
                 element.milestone.push(data);
             }
@@ -273,7 +273,7 @@ Template.projects_create.events({
             }
             return obj;
         });
-        
+
         // Set dataObjective yang telah diperbarui
         t.objective.set(dataObjective);
     }
@@ -288,9 +288,9 @@ Template.projects_edit.onCreated(function () {
     self.objective = new ReactiveVar([]);
     self.deleteObjective = new ReactiveVar([]);
     self.deleteMilestone = new ReactiveVar([]);
-    
+
     const id = FlowRouter.getParam("_id");
-    
+
     Meteor.call("employee.getAllEmployee", function (error, result) {
         if (result) {
             self.employee.set(result);
@@ -318,7 +318,7 @@ Template.projects_edit.onCreated(function () {
                 }
             }
             self.objective.set(dataObjective)
-            
+
 
         } else {
             console.log(error);
@@ -327,21 +327,21 @@ Template.projects_edit.onCreated(function () {
 
     self[`template-field-deskripsi`] = new ReactiveVar();
     setTimeout(() => {
-        initEditor(self, 
+        initEditor(self,
             {
-                editorEl: `editor-deskripsi`, 
+                editorEl: `editor-deskripsi`,
                 toolbarEl: `toolbar-container-deskripsi`,
                 templateField: `template-field-deskripsi`,
                 content: self.projects.get().deskripsi
             })
     }, 300);
-    
+
 });
 
 Template.projects_edit.onRendered(function () {
     startSelect2();
 });
-  
+
 Template.projects_edit.helpers({
     employee() {
         return Template.instance().employee.get();
@@ -360,7 +360,7 @@ Template.projects_edit.helpers({
     objective() {
         return Template.instance().objective.get();
     },
-    
+
     deleteObjective() {
         return Template.instance().deleteObjective.get();
     },
@@ -370,9 +370,9 @@ Template.projects_edit.helpers({
 });
 
 Template.projects_edit.events({
-    "click #btn_save"(e, t){
+    "click #btn_save"(e, t) {
         e.preventDefault();
-    
+
         const nama_project = $("#nama_project").val();
         const deskripsi = t[`template-field-deskripsi`].get().getData();
         let tanggal_mulai = $("#tanggal_mulai").val();
@@ -382,46 +382,46 @@ Template.projects_edit.events({
         const objective = t.objective.get();
         const deleteObjective = t.deleteObjective.get()
         const deleteMilestone = t.deleteMilestone.get();
-        
+
 
         const employee = t.employee.get();
         const notifType = 'project';
         const messages = "Kamu telah di-daftarkan pada project baru, silahkan check web kepegawaian";
         const id = FlowRouter.getParam("_id");
-        
+
         tanggal_mulai = new Date(tanggal_mulai);
         tanggal_selesai = new Date(tanggal_selesai);
-        
-        if (deskripsi) {            
+
+        if (deskripsi) {
             if (tanggal_selesai > tanggal_mulai) {
                 const updatedMembers = members.map((x) => {
                     const thisMember = employee.find((y) => y._id == x);
-        
+
                     return {
-                      id: thisMember._id,
-                      name: thisMember.full_name,
-                      email: thisMember.email_address
+                        id: thisMember._id,
+                        name: thisMember.full_name,
+                        email: thisMember.email_address
                     }
                 });
-                
+
                 const data = {
                     nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective
                 }
-                
+
                 console.log(deleteObjective, deleteMilestone);
                 Meteor.call('projects.update', id, data, deleteObjective, deleteMilestone, function (error, result) {
-                    if(result){
+                    if (result) {
                         Swal.fire({
                             title: "Berhasil",
                             text: "Berhasil Update Project",
                             showConfirmButton: true,
                             allowOutsideClick: true,
                         }).then((result) => {
-                            if(result.isConfirmed){
+                            if (result.isConfirmed) {
                                 history.back();
                             }
                         });
-                    }else{
+                    } else {
                         Swal.fire({
                             title: "Gagal",
                             text: "Data gagal dimasukkan, cek kembali data yang dimasukkan sesuai dengan format yang seharusnya",
@@ -430,9 +430,9 @@ Template.projects_edit.events({
                         });
                         // console.log(error);
                     }
-                });      
+                });
             }
-            else{
+            else {
                 Swal.fire({
                     title: "Gagal",
                     text: "Tanggal selesai harus lebih besar daripada tanggal mulai",
@@ -441,7 +441,7 @@ Template.projects_edit.events({
                 });
             }
         }
-        else{
+        else {
             Swal.fire({
                 title: "Gagal",
                 text: "Data gagal dimasukkan, pastikan semua data telah terisi",
@@ -453,10 +453,10 @@ Template.projects_edit.events({
     },
     "click #btn_tambah_objektif"(e, t) {
         e.preventDefault();
-    
+
         const finalData = t.objective.get()
         const objektifProyek = $("#objektif_proyek").val();
-        
+
         const object = {
             id: generateRandomString(7),
             description: objektifProyek,
@@ -472,14 +472,14 @@ Template.projects_edit.events({
         const objectiveChoosen = $("#choose_objective").val()
         const deadlineMilestone = $("#milestone_deadline").val();
         for (const element of dataObjective) {
-            if(element.id == objectiveChoosen) {
-                element.milestone =  element.milestone;
+            if (element.id == objectiveChoosen) {
+                element.milestone = element.milestone;
                 const data = {
-                    idMilestone : generateRandomString(7),
-                    description : milestoneInput,
-                    deadline : deadlineMilestone
+                    idMilestone: generateRandomString(7),
+                    description: milestoneInput,
+                    deadline: deadlineMilestone
                 }
-                
+
                 element.milestone.push(data);
             }
         }
@@ -501,7 +501,7 @@ Template.projects_edit.events({
         let idMilestone = $(e.target).attr("milikMilestone");
         let idObjective = $(e.target).attr("milikObjective");
         // console.log(idMilestone, idObjective);
-        
+
         let setDelete = t.deleteMilestone.get();
         // Ambil data dari ReactiveVar atau data lainnya
         let dataObjective = t.objective.get();
@@ -519,30 +519,30 @@ Template.projects_edit.events({
             return obj;
         });
         // console.log(dataObjective);
-        
+
         // Set dataObjective yang telah diperbarui
         t.objective.set(dataObjective);
     }
 });
 
 
-Template.projects_detail.onCreated(function (){
+Template.projects_detail.onCreated(function () {
     const self = this;
-    
+
     self.projects = new ReactiveVar();
     self.tasks = new ReactiveVar();
     self.filter = new ReactiveVar({
-      type: '',
-      data: ''
+        type: '',
+        data: ''
     })
     self.filterMode = new ReactiveVar("1");
 
     const id = FlowRouter.getParam("_id");
-    
+
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
             self.projects.set(result);
-            
+
         } else {
             console.log(error);
         }
@@ -556,7 +556,7 @@ Template.projects_detail.onCreated(function (){
             console.log(error);
         }
     });
-    
+
 });
 
 Template.projects_detail.helpers({
@@ -574,17 +574,17 @@ Template.projects_detail.helpers({
         const tasks = t.tasks.get();
         const filter = t.filter.get()
 
-        if(tasks){
-            const result =  tasks.filter((x) => {
+        if (tasks) {
+            const result = tasks.filter((x) => {
                 const query = filter.data.toString().toLowerCase();
-                
-                if(filter.type == 'nama_task'){
+
+                if (filter.type == 'nama_task') {
                     return x.nama_task.toString().toLowerCase().includes(query);
                 }
-                if(filter.type == 'priority'){
+                if (filter.type == 'priority') {
                     return x.priority.toString().toLowerCase().includes(query);
                 }
-                if(filter.type == 'deadline'){
+                if (filter.type == 'deadline') {
                     // By Tanggal
                     // const deadline = x.deadline;
                     // return moment(deadline).format('DD').includes(query);
@@ -600,7 +600,7 @@ Template.projects_detail.helpers({
 
             return result
         }
-        else{
+        else {
             return []
         }
     },
@@ -610,9 +610,9 @@ Template.projects_detail.helpers({
 });
 
 Template.projects_detail.events({
-    "input .filter"(e, t){
+    "input .filter"(e, t) {
         e.preventDefault();
-        
+
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -620,7 +620,7 @@ Template.projects_detail.events({
             data
         })
     },
-    "change .filter"(e, t){        
+    "change .filter"(e, t) {
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -628,30 +628,30 @@ Template.projects_detail.events({
             data
         })
     },
-    "click .btn-filter"(e, t){
+    "click .btn-filter"(e, t) {
         let filterMode = t.filterMode.get();
         if (filterMode == 1) {
             t.filterMode.set("2");
         }
-        else if(filterMode == 2){
+        else if (filterMode == 2) {
             t.filterMode.set("1");
         }
     }
 });
 
-Template.projects_members.onCreated(function (){
+Template.projects_members.onCreated(function () {
     const self = this;
-    
+
     self.projects = new ReactiveVar();
     self.employees = new ReactiveVar();
     self.filter = new ReactiveVar({
-      type: '',
-      data: ''
+        type: '',
+        data: ''
     })
     self.filterMode = new ReactiveVar("1");
 
     const id = FlowRouter.getParam("_id");
-    
+
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
             self.projects.set(result);
@@ -659,7 +659,7 @@ Template.projects_members.onCreated(function (){
             console.log(error);
         }
     });
-    
+
     Meteor.call("projects.getAllEmployeeThisProject", id, function (error, result) {
         if (result) {
             self.employees.set(result);
@@ -680,35 +680,35 @@ Template.projects_members.helpers({
         const t = Template.instance()
         const employee = t.employees.get();
         const filter = t.filter.get()
-        
-        if(employee){
-          const result =  employee.members.flat().filter((x) => {
-            const query = filter.data.toString().toLowerCase();
-            
-            if(filter.type == 'job_position'){
-              return x.job_position.toString().toLowerCase().includes(query);
-            }
-            if(filter.type == 'start_date'){
-              const thisStartDate = x.start_date
-              return moment(thisStartDate).format('YYYY').includes(query);
-            }
-            if(filter.type == 'masa_jabatan'){
-              const thisStartDate = x.start_date;
-              const diff = moment().diff(thisStartDate, 'year');
-              return diff.toString().includes(query);
-            }
-            if(filter.type == 'department_unit'){
-              return x.department_unit.toString().toLowerCase().includes(query);
-            }
-            if(filter.type == 'full_name'){
-              return x.name.toString().toLowerCase().includes(query);
-            }
-            return true
-          })
-          return result
+
+        if (employee) {
+            const result = employee.members.flat().filter((x) => {
+                const query = filter.data.toString().toLowerCase();
+
+                if (filter.type == 'job_position') {
+                    return x.job_position.toString().toLowerCase().includes(query);
+                }
+                if (filter.type == 'start_date') {
+                    const thisStartDate = x.start_date
+                    return moment(thisStartDate).format('YYYY').includes(query);
+                }
+                if (filter.type == 'masa_jabatan') {
+                    const thisStartDate = x.start_date;
+                    const diff = moment().diff(thisStartDate, 'year');
+                    return diff.toString().includes(query);
+                }
+                if (filter.type == 'department_unit') {
+                    return x.department_unit.toString().toLowerCase().includes(query);
+                }
+                if (filter.type == 'full_name') {
+                    return x.name.toString().toLowerCase().includes(query);
+                }
+                return true
+            })
+            return result
         }
-        else{
-          return []
+        else {
+            return []
         }
     },
     filterMode() {
@@ -717,9 +717,9 @@ Template.projects_members.helpers({
 });
 
 Template.projects_members.events({
-    "input .filter"(e, t){
+    "input .filter"(e, t) {
         e.preventDefault();
-        
+
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -727,7 +727,7 @@ Template.projects_members.events({
             data
         })
     },
-    "change .filter"(e, t){
+    "change .filter"(e, t) {
         const type = $("#input_type").val();
         const data = $('#input_data').val();
         t.filter.set({
@@ -735,26 +735,30 @@ Template.projects_members.events({
             data
         })
     },
-    "click .btn-filter"(e, t){
+    "click .btn-filter"(e, t) {
         let filterMode = t.filterMode.get();
         if (filterMode == 1) {
             t.filterMode.set("2");
         }
-        else if(filterMode == 2){
+        else if (filterMode == 2) {
             t.filterMode.set("1");
         }
     }
 });
 
-Template.projects_objective.onCreated(function () {  
+Template.projects_objective.onCreated(function () {
     const self = this;
     self.projects = new ReactiveVar();
+    self.isClickFinish = new ReactiveVar(false);
     const id = FlowRouter.getParam("_id");
-    
+    const thisUser = Meteor.user();
+
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
             self.projects.set(result);
-            console.log(self.projects.get());
+            if (thisUser._id == result.createdBy) {
+                self.isClickFinish.set(true);
+            }
         } else {
             console.log(error);
         }
@@ -764,6 +768,52 @@ Template.projects_objective.onCreated(function () {
 Template.projects_objective.helpers({
     projects() {
         return Template.instance().projects.get();
+    },
+    isClickFinish() {
+        return Template.instance().isClickFinish.get();
+    },
+    isFinish(code) {
+        return code ? 'disabled' : '';
+    }
+})
+
+Template.projects_objective.events({
+    "click #btn-done"(e, t) {
+        e.preventDefault();
+        const id = $(e.target).attr('milik');
+        console.log(id);
+        Swal.fire({
+            title: "Konfirmasi Target Capaian Selesai",
+            text: "Apakah anda yakin melakukan penyelesaian target capaian ini?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya",
+            cancelButtonText: "Tidak"
+        }).then((result) => {
+            if(result.isConfirmed) {
+                Meteor.call("projects.milestoneAchived", id, function (error, result) {
+                    if (result) {
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: "Data berhasil diubah",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        });
+                        location.reload()
+    
+                    }
+                    else {
+                        console.log(error);
+                        Swal.fire({
+                            title: "Gagal",
+                            text: "Silahkan coba lagi atau hubungi administrator",
+                            showConfirmButton: true,
+                            allowOutsideClick: true,
+                        });
+                    }
+                })
+            }
+        })
     }
 })
 
