@@ -56,7 +56,7 @@ Template.App_body.onRendered(function () { // Mengubah arrow function ke regular
   if (!sessionToken) {
     Meteor.logout(() => {
       self.loading.set(false);
-      Router.go("/login");
+      FlowRouter.go("/login");
     });
   } else {
     resetInactivityTimer();
@@ -100,7 +100,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          FlowRouter.go("home");
+          FlowRouter.go("/");
         }
       });
     } else {
