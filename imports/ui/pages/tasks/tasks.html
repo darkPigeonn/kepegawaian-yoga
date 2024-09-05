@@ -561,6 +561,31 @@
                     <label class="fw-bold">Nama Tugas</label>
                     <input type="text" id="nama_task" class="form-control" required/>
                 </div>
+                {{#if isUmumProject projectId}}
+                    
+                {{else}}
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Pilih Objektif</label>
+                        <select id="choose_objective" class="form-select">
+                            <option value="0">Pilih Objektif</option>
+                            {{#each projects.objective}}
+                                <option value="{{_id}}">{{description}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    {{#if equals chooseMilestone true}}
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Pilih Target Capaian</label>
+                            <select id="choose_milestone" class="form-select">
+                                <option value="0">Pilih Target Capaian</option>
+                                {{#each milestone}}
+                                    <option value="{{_id}}">{{description}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                {{/if}}
                 <div class="form-group mb-3">
                     <label class="fw-bold">Deskripsi</label>
                     <div id="toolbar-container-deskripsi"></div>
@@ -651,6 +676,39 @@
                     <label class="fw-bold">Nama Tugas</label>
                     <input type="text" id="nama_task" class="form-control" value="{{tasks.nama_task}}" required/>
                 </div>
+                {{#if isUmumProject tasks.id_project}}
+                    
+                {{else}}
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Pilih Objektif</label>
+                        <select id="choose_objective" class="form-select">
+                            <option value="0">Pilih Objektif</option>
+                            {{#each projects.objective}}
+                                {{#if equals tasks.idObjective _id}}
+                                    <option value="{{_id}}" selected>{{description}}</option>
+                                {{else}}
+                                    <option value="{{_id}}">{{description}}</option>
+                                {{/if}}
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    {{#if equals chooseMilestone true}}
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Pilih Target Capaian</label>
+                            <select id="choose_milestone" class="form-select">
+                                <option value="0">Pilih Target Capaian</option>
+                                {{#each milestone}}
+                                    {{#if equals tasks.idMilestone _id}}
+                                        <option value="{{_id}}" selected>{{description}}</option>
+                                    {{else}}
+                                        <option value="{{_id}}">{{description}}</option>
+                                    {{/if}}
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                {{/if}}
                 <div class="form-group mb-3">
                     <label class="fw-bold">Deskripsi</label>
                     <div id="toolbar-container-deskripsi"></div>

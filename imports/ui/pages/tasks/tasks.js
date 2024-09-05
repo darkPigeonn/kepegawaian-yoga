@@ -104,6 +104,9 @@ Template.tasks_create.onCreated(function () {
     self.projectEmployee = new ReactiveVar();
     self.employee = new ReactiveVar();
     self.projectId = new ReactiveVar(FlowRouter.getParam("_id"));
+    self.projects = new ReactiveVar();
+    self.chooseMilestone = new ReactiveVar(false);
+    self.milestone = new ReactiveVar();
 
     const idProject = FlowRouter.getParam("_id");
 
@@ -115,6 +118,15 @@ Template.tasks_create.onCreated(function () {
                 console.log(error);
             }
         });
+        Meteor.call("projects.getThisProject", idProject, function (error, result) {
+            if(result) {
+                self.projects.set(result)
+                console.log(self.projects.get());
+            }
+            else {
+                console.log(error);
+            }
+        })
     }
 
     Meteor.call("employee.getAll", function (error, result) {
@@ -154,6 +166,15 @@ Template.tasks_create.helpers({
     },
     isUmumProject(projectId) {
         return projectId === "umum";
+    },
+    projects() {
+        return Template.instance().projects.get();
+    },
+    chooseMilestone() {
+        return Template.instance().chooseMilestone.get();
+    },
+    milestone() {
+        return Template.instance().milestone.get();
     }
 });
 
@@ -187,6 +208,10 @@ Template.tasks_create.events({
         
         const data = {
             idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages
+        }
+        if(idProject != "umum") {
+            data.idObjective = $("#choose_objective").val();
+            data.idMilestone = $("#choose_milestone").val();
         }
         
         if (deskripsi && priority) {       
@@ -234,6 +259,16 @@ Template.tasks_create.events({
             // console.log(error);
         }
     },
+    "change #choose_objective"(e, t) {
+        t.chooseMilestone.set(true);
+        const idObjective = $("#choose_objective").val();
+        const projectData = t.projects.get();
+        const foundObjective = projectData.objective.find(obj => obj._id === idObjective);
+
+        if (foundObjective) {
+            t.milestone.set(foundObjective.milestone);
+        }
+    }
 });
 
 Template.tasks_edit.onCreated(function () {
@@ -241,6 +276,10 @@ Template.tasks_edit.onCreated(function () {
     self.employee = new ReactiveVar();
     self.tasks = new ReactiveVar();
     self.status = new ReactiveVar();
+    self.projects = new ReactiveVar();
+    self.chooseMilestone = new ReactiveVar(true);
+    self.milestone = new ReactiveVar();
+    self.idProject = new ReactiveVar();
 
     const idTasks = FlowRouter.getParam("_id");
 
@@ -249,6 +288,23 @@ Template.tasks_edit.onCreated(function () {
         const flaten = result.project_members.flat();
         result.project_members = flaten;
         self.tasks.set(result);
+        if(result.id_project != "umum") {
+            self.idProject.set(result.id_project)
+            Meteor.call("projects.getThisProject", result.id_project, function (error1, result1) {
+                if(result1) {
+                    self.projects.set(result1);
+                    const idObjective = result.idObjective
+                    const projectData = result1;
+                    const foundObjective = projectData.objective.find(obj => obj._id === idObjective);
+                    if (foundObjective) {
+                        self.milestone.set(foundObjective.milestone);
+                    }
+                }
+                else {
+                    console.log(error1);
+                }
+            })
+        }
       } else {
         console.log(error);
       }
@@ -306,6 +362,18 @@ Template.tasks_edit.helpers({
     },
     status(){
         return Template.instance().status.get();
+    },
+    projects() {
+        return Template.instance().projects.get();
+    },
+    chooseMilestone() {
+        return Template.instance().chooseMilestone.get();
+    },
+    milestone() {
+        return Template.instance().milestone.get();
+    },
+    idProject() {
+        return Template.instance().idProject.get();
     }
 });
 
@@ -324,6 +392,7 @@ Template.tasks_edit.events({
         const notifType = 'tasks';
         const messages = "Kamu telah di-daftarkan pada task baru, silahkan check web kepegawaian";
         const idTasks = FlowRouter.getParam("_id");
+        const idProject = t.idProject.get();
         
         const dateNow = new Date();
         deadline = new Date(deadline);
@@ -340,6 +409,11 @@ Template.tasks_edit.events({
         
         const data = {
             nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, status
+        }
+        
+        if(idProject != "umum") {
+            data.idObjective = $("#choose_objective").val();
+            data.idMilestone = $("#choose_milestone").val();
         }
     
         if (deskripsi && priority) {  
@@ -387,6 +461,16 @@ Template.tasks_edit.events({
             // console.log(error);
         }
     },
+    "change #choose_objective"(e, t) {
+        t.chooseMilestone.set(true);
+        const idObjective = $("#choose_objective").val();
+        const projectData = t.projects.get();
+        const foundObjective = projectData.objective.find(obj => obj._id === idObjective);
+
+        if (foundObjective) {
+            t.milestone.set(foundObjective.milestone);
+        }
+    }
 });
 
 

@@ -285,7 +285,7 @@ Meteor.methods({
         return Tasks.update(id, {$set: {statusDelete: 1, deleteTime : tglHapus}});
     },
     async "tasks.insert"(data) {
-        let { idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages } = data
+        let { idProject, nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, idObjective, idMilestone } = data
         check(idProject, String);
         check(nama_tasks, String);
         check(deskripsi, String);
@@ -319,6 +319,8 @@ Meteor.methods({
                 priority,
                 members: updatedMembers,
                 id_leader: thisUser,
+                idObjective,
+                idMilestone,
                 partner: adminPartner.partners[0],
                 status: 0,
                 createdAt: new Date(),
@@ -445,7 +447,7 @@ Meteor.methods({
         }
     },
     "tasks.update"(id, data) {
-        let { nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, status } = data
+        let { nama_tasks, deskripsi, deadline, priority, updatedMembers, notifType, messages, status, idObjective, idMilestone } = data
         check(nama_tasks, String);
         check(deskripsi, String);
         check(priority, String);
@@ -476,6 +478,12 @@ Meteor.methods({
             status,
             members: updatedMembers
         };
+        if(idObjective != undefined) {
+            dataSave.idObjective = idObjective
+        }
+        if(idMilestone != undefined) {
+            dataSave.idMilestone = idMilestone
+        }
         
         // Notification
         const dataNotif = updatedMembers.map(x => {
