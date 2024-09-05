@@ -285,11 +285,23 @@ FlowRouter.route("/configurasi/list/", {
     this.render("App_body", "configurasiList");
   },
 });
+FlowRouter.route("/configurasi/cuti/create", {
+  name: "configugrasiCutiCreate",
+  action() {
+    this.render("App_body", "configugrasiCutiCreate");
+  },
+});
 
 FlowRouter.route("/configurasi/details/:_id", {
   name: "configurasiDetails",
   action() {
     this.render("App_body", "configurasiDetails");
+  },
+});
+FlowRouter.route("/configurasi/cuti/", {
+  name: "configurasiCuti",
+  action() {
+    this.render("App_body", "configurasiCuti");
   },
 });
 

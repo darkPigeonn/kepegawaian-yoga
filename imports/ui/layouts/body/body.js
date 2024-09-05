@@ -47,15 +47,15 @@ Template.App_body.onCreated(function () {
   });
 });
 
-
-Template.App_body.onRendered(() => {
-
+Template.App_body.onRendered(function () { // Mengubah arrow function ke regular function
+  const self = this;
 
   setupInactivityMonitor();
   // Check if session token exists
   const sessionToken = sessionStorage.getItem("sessionToken");
   if (!sessionToken) {
     Meteor.logout(() => {
+      self.loading.set(false);
       Router.go("/login");
     });
   } else {

@@ -757,6 +757,7 @@
                             <div class="btn-group">
                                 <button class="btn btn-warning" milik="0" id="btn-view-configuration">Jadwal</button>
                                 <button class="btn btn-warning" milik="1" id="btn-view-configuration">Shift</button>
+                                <a href="/configurasi/cuti" class="btn btn-warning" id="btn-view-configuration">Konfigurasi Cuti</a>
                             </div>
                         </section>
 
@@ -1262,6 +1263,95 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</template>
+
+
+<template name="configurasiCuti">
+    <div class="container">
+        <div class="page-title">
+            <h3>Daftar Cuti</h3>
+        </div>
+        <section class="section-shoulder float-right my-2">
+            <div>
+                <a href="/configurasi/cuti/create" class="btn btn-primary">+ Buat Konfigurasi Cuti</a>
+            </div>
+        </section>
+        <div class="page-content">
+            <table class="table table-bordered dataTable2" id="mytable">
+                <thead>
+                    <th>No</th>
+                    <th>Label</th>
+                    <th>Kategori Karyawan</th>
+                    <th>Periode</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </thead>
+                <tbody>
+                    {{#each list}}
+                    <tr>
+                        <td>
+                            {{nomorUrut @index}}
+                        </td>
+                        <td>
+                            {{label}}
+                        </td>
+                        <td>
+                            {{category}}
+                        </td>
+                        <td>
+                            {{formatHRDate startDate}} - {{formatHRDate endDate}}
+                        </td>
+                        <td>
+                            {{status}}
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-aksi" milik="{{_id}}">Edit</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="configugrasiCutiCreate">
+    <div class="container">
+        <div class="page-title">
+            <h3>Daftar Cuti</h3>
+        </div>
+        <div class="page-content">
+            <div class="d-flex justify-content-end">
+                <a href="/configurasi/cuti" >Kembali</a>
+            </div>
+            <div class="form-group">
+                <label for="inputLabel">Label</label>
+                <input type="text" class="form-control" id="inputLabel" placeholder="Label">
+            </div>
+            <div class="form-group">
+                <label for="inputCategory">Kategori Karyawan</label>
+                <select class="form-control" id="inputCategory">
+                    <option value="1">Karyawan Kontrak</option>
+                    <option value="2">Karyawan Tetap</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputStartDate">Periode</label>
+                <div class="d-flex justify-content-between gap-3">
+                    <input type="month" class="form-control" id="inputStartDate">
+                    <input type="month" class="form-control" id="inputEndDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputStatus">Status</label>
+                <select class="form-control" id="inputStatus">
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                </select>
+            </div>
+            <button class="btn btn-primary btn-block">Simpan</button>
         </div>
     </div>
 </template>
