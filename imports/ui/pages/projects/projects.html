@@ -1538,12 +1538,12 @@
 
 <template name="projects_objective">
     <div class="container">
-        <h1 class="mb-4">Project Objectives</h1>
+        <h1 class="mb-4">Objektif Proyek</h1>
 
         <!-- Project Info -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3 class="card-title">Project: {{projects.nama_project}}</h3>
+                <h3 class="card-title">Proyek: {{projects.nama_project}}</h3>
             </div>
             <div class="card-body">
                 <p><strong>Deskripsi:</strong> {{{projects.deskripsi}}}</p>
@@ -1558,11 +1558,11 @@
              {{#each projects.objective}}
                 <div class="card mb-3">
                     <div class="card-header">
-                        <h4>Objective: {{description}}</h4>
+                        <h4>Objektif: {{description}}</h4>
                     </div>
                     <div class="card-body">
                         <!-- Milestone -->
-                        <h5>Milestone</h5>
+                        <h5>Target Capaian</h5>
                         <ul class="list-group">
                             {{#each milestone}}
                                 <li class="list-group-item">
