@@ -722,6 +722,27 @@
       <!-- ini kalau sudah ngisi form lengkap  -->
       {{#if registran.initialPaymentStatus}}
       <div class="card">
+        <div class="card-header">Data Asal Sekolah</div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <tr>
+              <td>Sekolah</td>
+              <td>{{registran.alumni}}</td>
+            </tr>
+            <tr>
+              <td>Alamat</td>
+              <td>{{registran.pastSchoolAddress}}</td>
+            </tr>
+            <tr>
+              <td>Tanggal & nomor STTB</td>
+              <td>{{registran.sttb}}</td>
+            </tr>
+
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
         <div class="card-header">
           Data Orang Tua
         </div>
