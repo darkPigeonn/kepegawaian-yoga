@@ -745,6 +745,27 @@ Template.projects_members.events({
     }
 });
 
+Template.projects_objective.onCreated(function () {  
+    const self = this;
+    self.projects = new ReactiveVar();
+    const id = FlowRouter.getParam("_id");
+    
+    Meteor.call("projects.getThisProject", id, function (error, result) {
+        if (result) {
+            self.projects.set(result);
+            console.log(self.projects.get());
+        } else {
+            console.log(error);
+        }
+    });
+})
+
+Template.projects_objective.helpers({
+    projects() {
+        return Template.instance().projects.get();
+    }
+})
+
 // startSelect2 = function () {
 //     setTimeout(() => {
 //       $(".select2").select2();

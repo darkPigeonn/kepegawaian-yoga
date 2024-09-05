@@ -197,6 +197,12 @@ FlowRouter.route("/projects/detail/:_id/members", {
     this.render("App_body", "projects_members");
   },
 });
+FlowRouter.route("/projects/detail/:_id/objective", {
+  name: "projectObjective",
+  action() {
+    this.render("App_body", "projects_objective");
+  }
+})
 
 // Tasks
 FlowRouter.route("/tasks", {

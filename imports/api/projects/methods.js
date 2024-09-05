@@ -328,6 +328,6 @@ Meteor.methods({
       return Projects.update(
         { _id: id },
         { $set: dataSave }
-      );;
+      );
     },
 })

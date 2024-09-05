@@ -881,6 +881,7 @@
                             </button>
     
                             <div class="my-auto">
+                                <a href="/projects/detail/{{projects._id}}/objective" class="btn btn-primary">Cek Objektif dan Target Capaian</a>
                                 <a href="/tasks/create/{{projects._id}}" class="btn btn-primary">+ Tambah Tugas</a>
                             </div>
                         </div>
@@ -1079,6 +1080,7 @@
                             </button>
     
                             <div class="my-auto">
+                                <a href="/projects/detail/{{projects._id}}/objective" class="btn btn-primary">Cek Objektif dan Target Capaian</a>
                                 <a href="/tasks/create/{{projects._id}}" class="btn btn-sm btn-primary">+ Tambah Tugas</a>
                             </div>
                         </div>
@@ -1531,5 +1533,48 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</template>
+
+<template name="projects_objective">
+    <div class="container">
+        <h1 class="mb-4">Project Objectives</h1>
+
+        <!-- Project Info -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">Project: {{projects.nama_project}}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Deskripsi:</strong> {{{projects.deskripsi}}}</p>
+                <p><strong>Tanggal Mulai:</strong> {{formatHRDate projects.tanggal_mulai}}</p>
+                <p><strong>Status:</strong> {{projects.status}}</p>
+            </div>
+        </div>
+
+        <!-- Objectives Section -->
+        <div>
+            <!-- Objective 1 -->
+             {{#each projects.objective}}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h4>Objective: {{description}}</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Milestone -->
+                        <h5>Milestone</h5>
+                        <ul class="list-group">
+                            {{#each milestone}}
+                                <li class="list-group-item">
+                                    <strong>Deskripsi:</strong> {{description}} <br>
+                                    <strong>Deadline:</strong> {{formatHRDate deadline}} <br>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+             {{/each}}
+        </div>
+
     </div>
 </template>
