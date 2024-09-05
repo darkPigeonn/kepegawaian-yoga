@@ -1568,6 +1568,39 @@
                                 <li class="list-group-item">
                                     <strong>Deskripsi:</strong> {{description}} <br>
                                     <strong>Deadline:</strong> {{formatHRDate deadline}} <br>
+                                    <strong>Daftar Tugas</strong>
+                                    {{#if tasks}}
+                                        <table class="table table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">No</th>
+                                                    <th scope="col">Nama Tugas</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Deadline</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each tasks}}
+                                                    <tr>   
+                                                        <td>
+                                                            {{nomorUrut @index}}
+                                                        </td>
+                                                        <td>
+                                                            {{nama_task}}
+                                                        </td>
+                                                        <td>
+                                                            {{status}}
+                                                        </td>
+                                                        <td>
+                                                            {{formatHRDate deadline}}
+                                                        </td>
+                                                    </tr>
+                                                {{/each}}
+                                            </tbody>
+                                        </table>
+                                    {{else}}
+                                        Belum ada Tugas
+                                    {{/if}}
                                 </li>
                             {{/each}}
                         </ul>

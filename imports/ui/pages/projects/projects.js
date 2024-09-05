@@ -542,6 +542,7 @@ Template.projects_detail.onCreated(function (){
     Meteor.call("projects.getThisProject", id, function (error, result) {
         if (result) {
             self.projects.set(result);
+            
         } else {
             console.log(error);
         }

@@ -3,6 +3,7 @@ import { Notifications } from "../notification/notification";
 import { Employee } from "../employee/employee";
 import { check } from "meteor/check";
 import moment from "moment";
+import { Status, Tasks } from "../tasks/tasks";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -75,13 +76,23 @@ Meteor.methods({
         description: 1
       }}).fetch()
       projects.objective = objective
-      console.log(projects.objective);
+      // console.log(projects.objective);
       for (let index = 0; index < projects.objective.length; index++) {
         const element = projects.objective[index];
         const dataMilestone = Milestone.find({objectiveId: element._id}, {_id: 1, description: 1}).fetch()
         element.milestone = dataMilestone
+        for (let j = 0; j < dataMilestone.length; j++) {
+          const element1 = dataMilestone[j];
+          const dataTugas = Tasks.find({idMilestone: element1._id}).fetch()
+          for (let k = 0; k < dataTugas.length; k++) {
+            const element2 = dataTugas[k];
+            const dataStatus = Status.findOne({id: element2.status})
+            element2.status = dataStatus.label
+          }
+          element1.tasks = dataTugas
+        }
       }
-      
+
       return projects
     },
     "projects.getAllEmployeeThisProject"(idProject){
