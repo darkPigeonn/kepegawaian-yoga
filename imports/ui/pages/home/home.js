@@ -35,7 +35,7 @@ Template.App_home.onCreated(function () {
       console.log(error);
     }
   });
-  Meteor.call("employee.getDataLogin", userId, function (error, result) {  
+  Meteor.call("employee.getDataLogin", userId, function (error, result) {
     if (result) {
     const dataRole = result[0];
     console.log(dataRole);
@@ -49,7 +49,7 @@ Template.App_home.onCreated(function () {
     let table = new DataTable('#example', {
       responsive: true
     });
-    
+
   }, 3000);
 });
 Template.App_home.helpers({
@@ -73,3 +73,34 @@ Template.App_home.helpers({
     return Template.instance().jabatanLogin.get();
   },
 });
+
+Template.home_employee.onCreated(function () {
+  const self = this;
+
+  self.employee = new ReactiveVar();
+  self.dashboard = new ReactiveVar()
+  Meteor.call("employee.getThisEmployee", function (error, result) {
+    if(error){
+      console.log(error);
+    }else{
+      self.employee.set(result)
+    }
+  })
+  Meteor.call("employee.getThisDashboard", function (error, result) {
+    if(error){
+      console.log(error);
+    }else{
+      console.log(result);
+
+      self.dashboard.set(result)
+    }
+  })
+})
+Template.home_employee.helpers({
+  employee() {
+    return Template.instance().employee.get();
+  },
+  dashboard(){
+    return Template.instance().dashboard.get()
+  }
+})

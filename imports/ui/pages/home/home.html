@@ -133,7 +133,92 @@
       </div>
     </div>
   {{else}}
-    <h3>Selamat Datang</h3>
+   {{> home_employee}}
   {{/if}}
 
+</template>
+
+
+<template name="home_employee">
+  <div class="container-fluid employees-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="employees-title">Hallo, {{employee.full_name}}</p>
+        </div>
+        <div class="col-md-6 text-md-right">
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="img-fluid2">
+            <img src="{{employee.linkGambar}}">
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Nama</span>
+                  <span class="card-text">{{employee.full_name}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Jabatan</span>
+                  <span class="card-text">{{employee.job_position}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Centrum</span>
+                  <span class="card-text">{{employee.department_unit}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Status Karyawan</span>
+                  <span class="card-text">{{employee.employment_status}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 col-lg-12 mt-5">
+          <div class="row">
+            <div class="col-4">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Projek Aktif</span>
+                  <span class="card-text">{{dashboard.projects}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Tugas Aktif</span>
+                  <span class="card-text">{{dashboard.tasks}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="card-custom">
+                <div class="card-custom-body">
+                  <span>Tiket Aktif</span>
+                  <span class="card-text">{{dashboard.tickets}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

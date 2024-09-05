@@ -41,3 +41,11 @@ sendNotifications = function(data){
     createdBy: adminPartner._id
   };
 }
+Meteor.publish('userData', function () {
+  // Publikasikan data pengguna saat ini
+  if (this.userId) {
+    return Meteor.users.find({ _id: this.userId });
+  } else {
+    return this.ready(); // Jika tidak ada userId, kirimkan data kosong
+  }
+});

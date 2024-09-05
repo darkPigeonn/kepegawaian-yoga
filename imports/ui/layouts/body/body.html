@@ -1,13 +1,20 @@
 <template name="App_body">
-  {{#if currentUser}}
-  <section>
-    {{> navbar}}
-    <div class="container-fluid" style="height: 100%;">
-      {{> yield}}
+
+  {{#if loading}}
+    <div class="loading">
+      <p>Loading...</p>
     </div>
-  </section>
   {{else}}
-  {{> login_page}}
+    {{#if currentUser}}
+      <section>
+        {{> navbar}}
+        <div class="container-fluid" style="height: 100%;">
+          {{> yield}}
+        </div>
+      </section>
+    {{else}}
+      {{> login_page}}
+    {{/if}}
   {{/if}}
 </template>
 

@@ -3,7 +3,7 @@ import "../../components/navbar/navbar.js";
 import { Meteor } from "meteor/meteor";
 import Swal from "sweetalert2";
 import { Random } from "meteor/random";
-
+import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 const INACTIVITY_TIMEOUT = 10000; // 5 minutes in milliseconds
 
 let inactivityTimer;
@@ -31,8 +31,26 @@ const setupInactivityMonitor = () => {
   // });
   // resetInactivityTimer(); // Initialize the timer
 };
+Template.App_body.onCreated(function () {
+  // Create a reactive variable to track loading state
+  this.loading = new ReactiveVar(true);
+
+  // Track changes to Meteor.user()
+  this.autorun(() => {
+    const user = Meteor.user();
+    if (user) {
+      // Set currentUser if necessary
+      this.currentUser = user;
+      // Set loading to false once user is loaded
+      this.loading.set(false);
+    }
+  });
+});
+
 
 Template.App_body.onRendered(() => {
+
+
   setupInactivityMonitor();
   // Check if session token exists
   const sessionToken = sessionStorage.getItem("sessionToken");
@@ -49,6 +67,15 @@ Template.App_body.onDestroyed(() => {
   activityEvents.forEach((event) => {
     window.removeEventListener(event, resetInactivityTimer);
   });
+});
+Template.App_body.helpers({
+  loading() {
+    return Template.instance().loading.get();
+  },
+  currentUser() {
+    return Meteor.user()
+  }
+
 });
 
 // Clear session on logout
@@ -73,7 +100,7 @@ Template.login_page.events({
         if (error) {
           alert(error);
         } else {
-          Router.go("home");
+          FlowRouter.go("home");
         }
       });
     } else {

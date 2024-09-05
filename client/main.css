@@ -24,3 +24,33 @@
   border-bottom: 1px #c6c6c6 solid;
 }
 
+.img-dashboard {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* Opsional */
+}
+
+.card-text{
+  font-size: 16px;
+  font-weight: bold;
+}
+.card-custom{
+  background-color: white;
+  margin: 5px 0;
+}
+.card-custom-body{
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+}
+.img-fluid2 {
+  display: flex; /* Menggunakan flexbox untuk layout */
+  width: 100%; /* Mengisi lebar kolom */
+  height: 100%; /* Mengisi tinggi kolom */
+}
+
+.img-fluid2 img {
+  width: 100%; /* Pastikan gambar tidak melampaui lebar container */
+  max-height: 300px; /* Menjaga rasio aspek gambar */
+  object-fit: cover; /* Mengatur properti object-fit */
+}

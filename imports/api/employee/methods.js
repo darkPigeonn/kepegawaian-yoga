@@ -70,7 +70,7 @@ Meteor.methods({
       } else {
         return []
       }
-     
+
       // console.log(data);
       // return data;
     },
@@ -375,7 +375,126 @@ Meteor.methods({
       { _id: id },
       { $set: dataSave }
     );
-  },
+    },
+    "employee.getThisEmployee"() {
+      const thisUser = Meteor.users.findOne({
+        _id: Meteor.userId(),
+      })
+      if(!thisUser){
+        throw new Meteor.Error("not-authorized");
+      }
+      const employee = Employee.findOne({_id: thisUser.profileId});
+
+      return employee
+    },
+    "employee.getThisDashboard"() {
+      const thisUser = Meteor.users.findOne({
+        _id: Meteor.userId(),
+      })
+      if(!thisUser){
+        throw new Meteor.Error("not-authorized");
+      }
+      const pipeline = [
+        {
+          $match : {
+            _id : thisUser.profileId
+          }
+        },
+        {
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: 1,
+              full_name: 1,
+            },
+        },
+        {
+          $lookup:
+            /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+             */
+            {
+              from: "tickets",
+              localField: "_id",
+              foreignField: "workers._id",
+              pipeline: [
+                {
+                  $match: {
+                    status: "Dibuka",
+                  },
+                },
+              ],
+              as: "tickets",
+            },
+        },
+        {
+          $lookup:
+            /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+             */
+            {
+              from: "projects",
+              localField: "_id",
+              foreignField: "members.id",
+              as: "projects",
+            },
+        },
+        {
+          $lookup:
+            /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+             */
+            {
+              from: "tasks",
+              localField: "_id",
+              foreignField: "members.id",
+              as: "tasks",
+            },
+        },
+        {
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: 1,
+              full_name: 1,
+              tickets: {
+                $size: "$tickets",
+              },
+              projects: {
+                $size: "$projects",
+              },
+              tasks: {
+                $size: "$tasks",
+              },
+            },
+        },
+      ]
+      const employee = Employee.aggregate(pipeline);
+
+      return employee[0]
+    },
+
 
   "employee.updateWithPicture"(id, data) {
     let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,accountNumberBank,accountNumberName,partnerCode,linkGambar,golongan } = data
@@ -446,7 +565,7 @@ Meteor.methods({
     if(dataDepartment) {
       name = dataDepartment.name
     }
-    
+
     const timestamp = new Date();
 
     return Employee.update(
