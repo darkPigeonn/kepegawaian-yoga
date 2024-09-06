@@ -1578,8 +1578,6 @@ Template.employeeSearch.onCreated(function (error, result) {
 
   Meteor.call("registran.getAll", function (error, result) {
     if (result) {
-      console.log(result);
-
       self.listEmployee.set(result);
     }
   });
@@ -1593,12 +1591,14 @@ Template.employeeSearch.events({
   "keyup #input-name"(e, t) {
     const value = e.target.value;
     if (value.length < 4) {
+      t.listEmployeeSearch.set();
       return false;
     }
     const master = t.listEmployee.get();
     const searchEmployee = master.filter((item) => {
       return item.fullName.toLowerCase().includes(value.toLowerCase());
     });
+
 
     if (searchEmployee.length > 0) {
       t.listEmployeeSearch.set(searchEmployee);

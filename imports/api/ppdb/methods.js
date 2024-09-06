@@ -23,7 +23,29 @@ import { AppProfiles, AppUsers } from "../collections-profiles";
 
 Meteor.methods({
   "registran.getAll"() {
-    return Registrans.find({}, { sort: { createdAt: 1 } }).fetch();
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    if(!thisUser){
+      throw new Meteor.Error(404, "No Access");
+    }
+    let filter ={};
+
+    if (
+      Roles.userIsInRole(thisUser, [
+        "adminPpdbPerwakilan",
+      ])
+    ) {
+      filter.unitId = thisUser.unitId;
+    }
+
+    if (
+      Roles.userIsInRole(thisUser, [
+        "adminPpdbSchool",
+      ])
+    ) {
+      filter.schoolId = thisUser.schoolId;
+    }
+
+    return Registrans.find(filter, { sort: { createdAt: 1 } }).fetch();
   },
   getDashboardData() {
     const thisUser = Meteor.users.findOne({ _id: this.userId });
