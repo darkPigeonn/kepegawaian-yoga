@@ -52,7 +52,9 @@ Meteor.methods({
       const adminPartner = Meteor.users.findOne({
         _id: thisUser,
       });
-      partnerCode = adminPartner.partners[0];
+      if(adminPartner.partners){
+        partnerCode = adminPartner.partners[0];
+      }
       return Employee.find({status: 10, statusDelete: 0, partnerCode: partnerCode }, {sort: {createdAt: -1}}).fetch();
       // console.log(data);
       // return data;
@@ -114,17 +116,26 @@ Meteor.methods({
       });
       const startDate = moment().startOf('month').toDate();
       const endDate = moment().endOf('month').toDate();
+
+      let partnerCode;
+      if(relatedUser.partners){
+        partnerCode = relatedUser.partners[0];
+      }
       return Employee.find({start_date: {
         $gte: startDate,
         $lte: endDate
-      }, partnerCode: relatedUser.partners[0]}).fetch();
+      }, partnerCode: partnerCode}).fetch();
     },
     "employee.getEmployeeKeluar" () {
       const thisUser = Meteor.userId();
       const relatedUser = Meteor.users.findOne({
           _id: thisUser,
       });
-      return Employee.find({statusDelete: 1, partnerCode: relatedUser.partners[0]}).fetch();
+      let partnerCode;
+      if(relatedUser.partners){
+        partnerCode = relatedUser.partners[0];
+      }
+      return Employee.find({statusDelete: 1, partnerCode : partnerCode}).fetch();
     },
     async "employee.insert"(data) {
       let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,accountNumberBank,accountNumberName,linkGambar,golongan } = data
@@ -394,6 +405,8 @@ Meteor.methods({
       if(!thisUser){
         throw new Meteor.Error("not-authorized");
       }
+      console.log(thisUser);
+
       const pipeline = [
         {
           $match : {
@@ -491,6 +504,8 @@ Meteor.methods({
         },
       ]
       const employee = Employee.aggregate(pipeline);
+      console.log("employee");
+      console.log(employee);
 
       return employee[0]
     },
