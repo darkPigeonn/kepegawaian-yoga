@@ -760,6 +760,44 @@ Template.detailRegistran.events({
         })
       }
     })
+  },
+  "click #btn-get-spo"(e,t){
+    e.preventDefault();
+
+    const thisRegistran = t.detail.get();
+
+    if(thisRegistran.educationCostSpoLink){
+      window.open(thisRegistran.educationCostSpoLink, "_blank");
+    }
+    startPreloader()
+    Swal.fire({
+      title: "Mohon Menunggu",
+      text: "Sedang memproses data",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      }
+    })
+    Meteor.call('get-spo', thisRegistran._id, (error, result) => {
+      if(error){
+        console.log(error);
+        exitPreloader();
+      }else{
+        setTimeout(() => {
+          exitPreloader();
+          window.open(result.link, "_blank");
+        }, 4000);
+      }
+    })
   }
 });
 Template.cicilanRegistran.onCreated(function () {

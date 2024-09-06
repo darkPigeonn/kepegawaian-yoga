@@ -20,6 +20,7 @@ import XLSX from "xlsx";
 import { Notifications } from "../notification/notification";
 import { formatRupiah } from "../../startup/server";
 import { AppProfiles, AppUsers } from "../collections-profiles";
+import { template } from "underscore";
 
 Meteor.methods({
   "registran.getAll"() {
@@ -2505,6 +2506,42 @@ Meteor.methods({
     }
     return CategoryGolongans.find().fetch();
   },
+
+
+  'get-spo'(id){
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+
+    if(!thisUser){
+      throw new Meteor.Error(404, "No Access");
+    }
+
+
+    const thisRegistran = Registrans.findOne({ _id: id });
+    console.log( thisRegistran._id.toHexString());
+    if(!thisRegistran){
+      throw new Meteor.Error(404, "Data siswa tidak ditemukan");
+    }
+    console.log(Meteor.settings.APP_ID);
+
+    try {
+      response = HTTP.call("POST", `https://api.imavi.org/yayoga/schools/unduhSpo?template=educationCostSpo&registerId=${thisRegistran._id.toHexString()}`, {
+        headers: {
+          Id: Meteor.settings.APP_ID,
+          Secret: Meteor.settings.APP_SECRET,
+          "Content-Type": "application/json",
+        },
+        data: {
+
+        }
+      });
+      return response.data;
+    } catch (e) {
+      console.log(e);
+      throw new Meteor.Error(412, "Ubah password aplikasi gagal");
+    }
+
+
+  }
 
 
 
