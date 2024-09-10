@@ -330,7 +330,7 @@ Meteor.methods({
             if(ambilDataMilestone.length > 0) {
               for (let index = 0; index < ambilDataMilestone.length; index++) {
                 const element1 = ambilDataMilestone[index];
-                const deleteMilestone = Milestone.remove({_id: element1})
+                const deleteMilestone = Milestone.remove({_id: element1._id})
               }
             }
           }
