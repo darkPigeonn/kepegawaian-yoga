@@ -152,10 +152,10 @@ Meteor.methods({
         tanggal_selesai,
         status,
         members: updatedMembers,
-        id_leader: thisUser,
+        id_leader: adminPartner.profileId,
         partner: adminPartner.partners[0],
         createdAt: new Date(),
-        createdBy: thisUser,
+        createdBy: adminPartner.profileId,
         createdByName: adminPartner.fullname
       };
 
