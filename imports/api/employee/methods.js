@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import  generatePassword  from 'generate-password';
 import { Departement } from "../departement/departement";
 // import { ObjectId } from 'mongodb';
+import { AppProfiles, AppUsers } from "../collections-profiles.js";
 
 Meteor.methods({
     "employee.createApp"(dataSend, idEmployee){
@@ -80,9 +81,16 @@ Meteor.methods({
     "employee.getAllEmployee"(){
       return Employee.find({status: 10, statusDelete: 0}, {sort: {createdAt: -1}}).fetch();
     },
-    "employee.getBy"(id){
+    async "employee.getBy"(id){
       check(id, String);
-      return Employee.findOne({ _id: id });
+      let thisEmployee = await Employee.findOne({ _id: id });
+
+      const appUsers = AppUsers.findOne({profileId: thisEmployee._id});
+      const users = Meteor.users.findOne({profileId: thisEmployee._id});
+
+      thisEmployee.mobileAccount = appUsers?appUsers.username: "-";
+      thisEmployee.webAccount = users?users.username: "-";
+      return thisEmployee;
     },
     "employee.getByDepartement"(namaDepartement){
       const data = Employee.find({departement_unit: namaDepartement})
@@ -504,8 +512,7 @@ Meteor.methods({
         },
       ]
       const employee = Employee.aggregate(pipeline);
-      console.log("employee");
-      console.log(employee);
+
 
       return employee[0]
     },
@@ -673,6 +680,17 @@ Meteor.methods({
       //console.log(e);
       throw new Meteor.Error(412, "Ubah password aplikasi gagal")
     }
+  },
+  "employee.sendInfo"(id){
+    check(id, String);
+    const thisUser = Meteor.users.findOne({_id : thisUser._id});
+
+    if(!thisUser){
+      throw new Meteor.Error(412, "Data User tidak ditemukan")
+    }
+
+    const subject = 'Informasi Akun IMAVI';
+    const message = `<p>Informasi Akun IMAVI</p>. Silahkaan`
   }
 
   // "employee.getMutasi"(id){

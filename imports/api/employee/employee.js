@@ -1,6 +1,7 @@
 import { Mongo } from "meteor/mongo";
 
 export const Employee = new Mongo.Collection("employees");
+
 export const educationCategory = [
   { code: 10, label: "SD" },
   { code: 20, label: "SMP" },

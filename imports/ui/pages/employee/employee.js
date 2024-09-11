@@ -665,20 +665,18 @@ Template.employee_create.events({
 
     Meteor.call("employee.getBy", id, function (error, result) {
       if (result) {
-        // console.log(result);
+        console.log(result);
         self.employee.set(result);
       } else {
         console.log(error);
       }
     });
   });
-
   Template.employee_detail.helpers({
     employee() {
       return Template.instance().employee.get();
     },
   });
-
   Template.employee_detail.events({
     "click #btn-tambah-akun"(e,t){
       e.preventDefault();
@@ -809,6 +807,18 @@ Template.employee_create.events({
         }
       })
     },
+    "click #btn-send-info"(e,t){
+      e.preventDefault();
+      const id = FlowRouter.getParam("_id");
+      Meteor.call("employee.sendInfo", id, function(error, result){
+        if(result){
+          location.reload();
+        }
+        else{
+          console.log(error);
+        }
+      })
+    }
   });
 
   Template.employee_detail_academicJob.onCreated( function () {
