@@ -1,13 +1,70 @@
 <template name="listTicket">
     <div class="container">
-        <div class="mt-5">
-            <div class="d-flex justify-content-end mb-2">
-                <a href="/tickets/create" class="btn btn-primary">+ Tambah</a>
+        <!-- Filter Section -->
+        <div class="input-group mb-3 d-flex justify-content-center">
+            <div class="form-group">
+                <label for="statusSelect">Status</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-tasks"></i></span>
+                    </div>
+                    <select class="form-control" id="statusSelect">
+                        <option value="">Pilih Status</option>
+                        {{#if equals searchData.status "Dibuka"}}
+                            <option value="Dibuka" selected>Dibuka</option>
+                        {{else}}
+                            <option value="Dibuka">Dibuka</option>
+                        {{/if}}
+                        {{#if equals searchData.status "Sedang Berjalan"}}
+                            <option value="Sedang Berjalan" selected>Sedang Berjalan</option>
+                        {{else}}
+                            <option value="Sedang Berjalan">Sedang Berjalan</option>
+                        {{/if}}
+                        {{#if equals searchData.status "Ditunda"}}
+                            <option value="Ditunda" selected>Ditunda</option>
+                        {{else}}
+                            <option value="Ditunda">Ditunda</option>
+                        {{/if}}
+                        {{#if equals searchData.status "Ditunda"}}
+                            <option value="Selesai" selected>Selesai</option>
+                        {{else}}
+                            <option value="Selesai">Selesai</option>
+                        {{/if}}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group ml-3">
+                <label for="nameOfPerihal">Judul</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-book"></i></span>
+                    </div>
+                    <input type="text" class="form-control" id="nameOfJudul" placeholder="Judul" value="{{#if searchData.title}}{{searchData.title}}{{/if}}">
+                </div>
+            </div>
+
+            <!-- Search and Refresh Buttons -->
+            <div class="form-group ml-3 align-self-end">
+                <button class="btn btn-primary" type="button" id="btn_search">
+                    <i class="fas fa-search" id="btn_search"></i> Cari
+                </button>
+                <button class="btn btn-secondary ml-2" type="button" id="btn_refresh">
+                    <i class="fas fa-sync-alt" id="btn_refresh"></i> Reset
+                </button>
             </div>
         </div>
-        <div class="d-lg-block table-responsive">
-            <table class="table">
-                <thead>
+
+        <!-- Add Button Section -->
+        <div class="mt-5">
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/tickets/create" class="btn btn-primary btn-lg shadow-sm">+ Tambah</a>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-dark">
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Judul</th>
@@ -21,39 +78,38 @@
                 <tbody>
                     {{#each dataTicket}}
                         <tr>
-                            <td> {{nomorUrut @index}}</td>
-                            <td> {{capitalizeWord title}} </td>
-                            <td> {{capitalizeWord priority}} </td>
-                            <td> {{capitalizeWord status}} </td>
-                            <td> {{capitalizeWord createdByName}} </td>
-                            <td> {{formatHRDate createdAt}}</td>
+                            <td>{{nomorUrut @index}}</td>
+                            <td>{{capitalizeWord title}}</td>
+                            <td>{{capitalizeWord priority}}</td>
+                            <td>{{capitalizeWord status}}</td>
+                            <td>{{capitalizeWord createdByName}}</td>
+                            <td>{{formatHRDate createdAt}}</td>
                             <td>
                                 {{#if equals isOwned 1}}
                                     {{#if equals status "Selesai"}}
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
-                                            <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
+                                            <button class="btn btn-secondary btn-sm">Detail</button>
                                         </a>
                                     {{else}}
                                         <a href="/tickets/edit/{{toMeteorId _id}}">
-                                            <button class="btn btn-primary" type="button" id="btn_edit">Edit</button>
+                                            <button class="btn btn-primary btn-sm">Edit</button>
                                         </a>
                                         <a href="/tickets/detail/{{toMeteorId _id}}">
-                                            <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
+                                            <button class="btn btn-secondary btn-sm">Detail</button>
                                         </a>
                                         <a href="/tickets/message/{{toMeteorId _id}}">
-                                            <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
+                                            <button class="btn btn-warning btn-sm">Pesan</button>
                                         </a>
-                                        <button class="btn btn-danger" type="button" id="btn_delete" milik="{{toMeteorId _id}}">Hapus</button>
+                                        <button class="btn btn-danger btn-sm" milik="{{toMeteorId _id}}">Hapus</button>
                                     {{/if}}
                                 {{else}}
                                     <a href="/tickets/detail/{{toMeteorId _id}}">
-                                        <button class="btn btn-secondary" type="button" id="btn_details">Detail</button>
+                                        <button class="btn btn-secondary btn-sm">Detail</button>
                                     </a>
                                     <a href="/tickets/message/{{toMeteorId _id}}">
-                                        <button class="btn btn-warning" type="button" id="btn_message">Pesan</button>
+                                        <button class="btn btn-warning btn-sm">Pesan</button>
                                     </a>
                                 {{/if}}
-
                             </td>
                         </tr>
                     {{/each}}
@@ -61,7 +117,15 @@
             </table>
         </div>
     </div>
+    <div class="d-flex my-3 flex-wrap justify-content-center">
+        {{#each i in thePage}}
+            <button class="btn {{#if equals page i}} btn-success {{else}} btn-primary {{/if}} pagination-pls mr-2" value="{{i}}">{{i}}</button>
+        {{/each}}
+    </div>
 </template>
+
+
+
 
 <template name="createTicket">
     <div class="container">

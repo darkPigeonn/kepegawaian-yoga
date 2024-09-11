@@ -311,3 +311,87 @@ class MyUploadAdapter {
     }
   }
 }
+
+getQueryParam = function () {
+  if ('URLSearchParams' in window) {
+    let searchParams = new URLSearchParams(window.location.search)
+    if(searchParams){
+      function convertURLSearchParamsToObject(params) {
+        const obj = {};
+        for (const [key, value] of params) {
+          if (!obj[key]) {
+            obj[key] = value;
+          } else {
+            if (!Array.isArray(obj[key])) {
+              obj[key] = [obj[key]];
+            }
+            obj[key].push(value);
+          }
+        }
+        return obj;
+      }
+      const paramsObject = convertURLSearchParamsToObject(searchParams)
+      for (const key in paramsObject) {
+        if (key.includes('-date')) {
+          const dateKey = key.replace('-date', ''); // Remove '-date' from the key
+          paramsObject[dateKey] = moment(paramsObject[key]).toDate();
+          delete paramsObject[key]; // Remove the old key containing '-date'
+        }
+      }
+      return paramsObject
+    }
+  }
+}
+
+setQueryParam = function (obj, enforce = true) {
+  if (typeof obj === 'object') {
+    // Get current query parameters
+    let searchParams = new URLSearchParams(window.location.search);
+    let params = {};
+
+    // Convert searchParams to an object
+    for (const [key, value] of searchParams.entries()) {
+      params[key] = value;
+    }
+
+    // Filter out undefined values from obj and merge with current params
+    for (const key in obj) {
+      if (obj[key] !== undefined && obj[key].toString().length !== 0) {
+        params[key] = obj[key];
+      }
+      else if(obj[key] !== undefined && obj[key].toString().length == 0){
+        delete params[key]
+      }
+      else if(typeof(obj[key]) == 'undefined'){
+        delete params[key]
+      }
+    }
+
+    // Clear searchParams and set it with the merged params
+    searchParams = new URLSearchParams();
+    for (const key in params) {
+      const val = params[key];
+      if (val instanceof Date) {
+        searchParams.set(key + '-date', moment(val).toISOString());
+      } else {
+        searchParams.set(key, val);
+      }
+    }
+
+    // Construct the new URL with updated query parameters
+    let newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+    if (enforce) {
+      history.pushState(null, '', newRelativePathQuery);
+    }
+    return '?' + searchParams.toString();
+  } else {
+    failAlert('error setting query parameter');
+  }
+};
+
+clearQueryParam = function (enforce = true) {
+  let newRelativePathQuery = window.location.pathname
+  if (enforce) {
+    history.pushState(null, '', newRelativePathQuery);
+  }
+};

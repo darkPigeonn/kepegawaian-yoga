@@ -7,6 +7,7 @@ import { Notifications } from "../notification/notification";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import { check } from "meteor/check";
 import moment from "moment";
+const pagination = 20;
 
 Meteor.methods({
     "tickets.getPekerja"(){
@@ -58,6 +59,36 @@ Meteor.methods({
         });
         return dataPlus;
     },
+
+    "tickets.getData"(query) {
+    let data = {};
+    if (query.title) {
+      data.title = { $regex: new RegExp(query.title, 'i') }; // 'i' untuk case-insensitive
+    }
+    if (query.status) {
+      data.status = query.status
+    }
+    data.partner = "imavi"
+    let page = 1
+    if (query.page) {
+      page = parseInt(query.page)
+    }
+    const count = Tickets.find(data).count();
+    const thePage = Array.from({
+      length: count % pagination === 0 ? Math.floor(count / pagination) : Math.floor(count / pagination) + 1
+    }, (v, i) => i + 1);
+    const filteredItems = Tickets.find(data, {
+      limit: pagination,
+      skip: pagination * (page - 1),
+      sort: {
+        createdAt: -1
+      }
+    }).fetch();
+    return {
+      data: filteredItems,
+      page: thePage
+    };
+  },
 
     "tickets.getById"(id){
         const objectId = new Meteor.Collection.ObjectID(id);

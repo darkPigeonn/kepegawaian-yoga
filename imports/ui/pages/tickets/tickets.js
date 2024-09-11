@@ -12,20 +12,64 @@ import { HTTP } from 'meteor/http';
 Template.listTicket.onCreated(function (){
     const self = this;
     self.dataTicket = new ReactiveVar();
-    Meteor.call("tickets.getAll", function (error, result) {
-      if (result) {
-        console.log(result);
-        self.dataTicket.set(result);
-      } else {
-        console.log(error);
+    self.searchData = new ReactiveVar();
+    self.thePage = new ReactiveVar([])
+    self.page = new ReactiveVar(1)
+
+    Swal.showLoading()
+    setTimeout(() => {
+      const qp = getQueryParam()
+      for (const key in qp) {
+        // self[key].set(qp[key])
+        const elemLength = $(`#${key}`).length
+  
+        if (elemLength) {
+          $(`#${key}`).val(qp[key]).trigger('change');
+        }
+        else {
+          setTimeout(() => {
+            $(`#${key}`).val(qp[key]).trigger('change');
+          }, 200);
+        }
       }
-    });
+      self.searchData.set(qp);
+      const params = getQueryParam()
+      if (params.page) {
+        self.page.set(params.page)
+      }
+      Meteor.call("tickets.getData", qp, function (error, result) {
+        if (result) {
+          self.dataTicket.set(result.data);
+          self.thePage.set(result.page);
+        } else {
+          console.log(error);
+        }
+      })
+      Swal.close()
+    }, 1000);
+    // Meteor.call("tickets.getAll", function (error, result) {
+    //   if (result) {
+    //     console.log(result);
+    //     self.dataTicket.set(result);
+    //   } else {
+    //     console.log(error);
+    //   }
+    // });
 })
 
 Template.listTicket.helpers({
   dataTicket(){
     return Template.instance().dataTicket.get();
   },
+  thePage(){
+    return Template.instance().thePage.get();
+  },
+  page(){
+    return Template.instance().page.get();
+  },
+  searchData(){
+    return Template.instance().searchData.get();
+  }
 })
 
 Template.listTicket.events({
@@ -57,7 +101,130 @@ Template.listTicket.events({
         });
       }
     })
-  }
+  },
+  "click #btn_search"(e, t) {
+    e.preventDefault();
+    let status = $("#statusSelect").val();
+    let title = $("#nameOfJudul").val();
+    console.log(title);
+    
+    // title = title.trim()
+    const data = {
+      status,
+      title,
+      page: 1
+    }
+    setQueryParam(data);
+    Swal.showLoading();
+    setTimeout(() => {
+      const qp = getQueryParam()
+      for (const key in qp) {
+        // self[key].set(qp[key])
+        const elemLength = $(`#${key}`).length
+
+        if (elemLength) {
+          $(`#${key}`).val(qp[key]).trigger('change');
+        }
+        else {
+          setTimeout(() => {
+            $(`#${key}`).val(qp[key]).trigger('change');
+          }, 200);
+        }
+      }
+      t.searchData.set(qp);
+
+      Meteor.call("tickets.getData", qp, function (error, result) {
+        if (result) {
+          t.dataTicket.set(result.data);
+          t.thePage.set(result.page);
+          t.page.set(qp.page ?? 1);
+          Swal.close();
+        } else {
+          console.log(error);
+          Swal.close();
+        }
+      })
+    }, 1000);
+
+    // Template.instance().listItems.set(filteredItems);
+  },
+  'click .pagination-pls'(e, t) {
+    const val = e.target.value
+    Swal.showLoading();
+    setQueryParam({ page: val })
+    setTimeout(() => {
+      const qp = getQueryParam()
+      for (const key in qp) {
+        // self[key].set(qp[key])
+        const elemLength = $(`#${key}`).length
+
+        if (elemLength) {
+          $(`#${key}`).val(qp[key]).trigger('change');
+        }
+        else {
+          setTimeout(() => {
+            $(`#${key}`).val(qp[key]).trigger('change');
+          }, 200);
+        }
+      }
+      t.searchData.set(qp);
+      const params = getQueryParam()
+      if (params.page) {
+        t.page.set(params.page)
+      }
+      Meteor.call("tickets.getData", qp, function (error, result) {
+        if (result) {
+          t.dataTicket.set(result.data);
+          t.thePage.set(result.page)
+          t.page.set(qp.page)
+          Swal.close()
+        } else {
+          console.log(error);
+          Swal.close()
+        }
+      })
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }, 1000);
+  },
+  "click #btn_refresh"(e, t) {
+    e.preventDefault();
+    Swal.showLoading()
+    document.getElementById('nameOfJudul').value = '';
+    document.getElementById('statusSelect').value = '';
+    clearQueryParam()
+    setQueryParam({ page: 1 })
+    setTimeout(() => {
+      const qp = getQueryParam()
+      for (const key in qp) {
+        // self[key].set(qp[key])
+        const elemLength = $(`#${key}`).length
+
+        if (elemLength) {
+          $(`#${key}`).val(qp[key]).trigger('change');
+        }
+        else {
+          setTimeout(() => {
+            $(`#${key}`).val(qp[key]).trigger('change');
+          }, 200);
+        }
+      }
+      t.searchData.set(qp);
+
+      Meteor.call("tickets.getData", qp, function (error, result) {
+        if (result) {
+          t.dataTicket.set(result.data);
+          t.thePage.set(result.page)
+          t.page.set(qp.page ?? 1)
+          Swal.close();
+        } else {
+          console.log(error);
+          Swal.close();
+        }
+      })
+    }, 1000);
+
+    // Template.instance().listItems.set(filteredItems);
+  },
 })
 
 Template.createTicket.onCreated(function (){
