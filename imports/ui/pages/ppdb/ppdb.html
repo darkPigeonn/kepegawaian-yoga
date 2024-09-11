@@ -557,6 +557,11 @@
         <li class="breadcrumb-item active" aria-current="page">{{registran.fullName}}</li>
       </ol>
     </nav>
+    <section class="section-action">
+      <div class="d-flex justify-content-end">
+        <a href="/ppdb/detail/{{toMeteorId registran._id}}/payment" class="btn btn-primary">Pembayaran</a>
+      </div>
+    </section>
     <div class="page-content">
       <div class="card">
 
@@ -1219,7 +1224,84 @@
   </div>
 </template>
 
+<template name="paymentPageStudent">
+  <div class="container mt-5">
+    <div class="page-title">
+      <h3>Detail Pendaftar</h3>
+    </div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb">Daftar PPDB</a></li>
+        <li class="breadcrumb-item"><a href="/ppdb/details/{{toMeteorId registran._id}}">{{registran.fullName}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pembayaran</li>
+      </ol>
+    </nav>
 
+    <div class="page-content">
+      <h3>Uang Formulir</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Total yang dibayar :</p>
+          <h3>{{formatRp proofFormulir.amount}}</h3>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <p>Status</p>
+            <p>{{getStatusPayment proofFormulir}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>Terbuat</p>
+            <p>{{formatHRDate proofFormulir.createdAt}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>No VA</p>
+            <p>{{proofFormulir.virtualAccountNumber}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>Bukti Pembayaran</p>
+            {{#if proofFormulir.link}}
+            <div style="width: 250px;">
+              {{> fancyBox url=proofFormulir.link class='img-thumbnail'}}
+            </div>
+            {{else}}
+            <p>-</p>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      <h3>Uang Pangkal</h3>
+      <div class="card">
+        <div class="card-body">
+          <p>Total yang dibayar :</p>
+          <h3>{{formatRp proofFinal.amount}}</h3>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <p>Status</p>
+            <p>{{getStatusPayment proofFinal}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>Terbuat</p>
+            <p>{{formatHRDate proofFinal.createdAt}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>No VA</p>
+            <p>{{proofFinal.virtualAccountNumber}}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p>Bukti Pembayaran</p>
+            {{#if proofFinal.link}}
+            <div style="width: 250px;">
+              {{> fancyBox url=proofFinal.link class='img-thumbnail'}}
+            </div>
+            {{else}}
+            <p>-</p>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 <!-- REDUCTION FEE -->

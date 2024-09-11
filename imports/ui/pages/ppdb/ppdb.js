@@ -800,6 +800,7 @@ Template.detailRegistran.events({
     })
   }
 });
+
 Template.cicilanRegistran.onCreated(function () {
   const self = this;
   startPreloader();
@@ -1082,6 +1083,350 @@ Template.cicilanRegistran.events({
       }
     });
   },
+});
+
+Template.paymentPageStudent.onCreated(function () {
+  const self = this;
+  startPreloader();
+  self.detail = new ReactiveVar();
+  self.detailFinal = new ReactiveVar();
+  self.photoStudent = new ReactiveVar("-");
+  self.formInterview = new ReactiveVar(false);
+  self.formGelombang = new ReactiveVar(false);
+  self.listGelombang = new ReactiveVar();
+  const id = FlowRouter.current().params._id;
+  Meteor.call("ppdb-registran-detail", id, function (error, result) {
+    if (error) {
+      console.log("Error fetch data");
+      exitPreloader();
+    } else {
+      self.detail.set(result);
+
+      if (result.finalForm) {
+        self.detailFinal.set(result.finalForm);
+      }
+      if (result.links) {
+        const thisPhoto = result.links.find((item) => item.code === "pasFoto");
+
+        self.photoStudent.set(thisPhoto);
+      }
+      exitPreloader();
+    }
+  });
+  Meteor.call("getAll-gelombang-school", id, function (error, result) {
+    if(error){
+
+    }else{
+      self.listGelombang.set(result);
+    }
+  })
+});
+Template.paymentPageStudent.helpers({
+  formGelombang(){
+    return Template.instance().formGelombang.get();
+  },
+  formInterview() {
+    return Template.instance().formInterview.get();
+  },
+  listGelombang(){
+    return Template.instance().listGelombang.get()
+  },
+  registran() {
+    return Template.instance().detail.get();
+  },
+  registranFinal() {
+    return Template.instance().detailFinal.get();
+  },
+  photoStudent() {
+    return Template.instance().photoStudent.get();
+  },
+  proofFormulir(){
+    if(Template.instance().detail.get()) {
+      const thisRegistran = Template.instance().detail.get();
+
+      const proofFormulir = thisRegistran.payments.find(item=> item.category == "08")
+
+      return proofFormulir
+    }
+  },
+  proofFinal(){
+    if(Template.instance().detail.get()) {
+      const thisRegistran = Template.instance().detail.get();
+
+      const proofFormulir = thisRegistran.payments.find(item=> item.category != "08")
+
+      return proofFormulir
+    }
+  }
+});
+Template.paymentPageStudent.events({
+  "click .btn-create-schedule"(e, t) {
+    e.preventDefault();
+    t.formInterview.set(!t.formInterview.get());
+    setTimeout(() => {
+      document
+        .getElementById("formInterview")
+        .scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "click .btn-view-spo"(e, t) {
+    e.preventDefault();
+
+    setTimeout(() => {
+      document.getElementById("viewSpo").scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "click .btn-verified-spo"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima spo ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-accepted-spo", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+  "click .btn-accepted"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menerima calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Terima",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-accepted-student", id, function (error, result) {
+          // console.log(result, error);
+          if (result) {
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+  "submit #setScheduleForm"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const date = $("#inputDate").val();
+    const time = $("#inputTime").val();
+    const note = $("#inputNote").val();
+
+    const thisData = t.detail.get();
+
+    Meteor.call(
+      "interviews.insert",
+      thisData._id,
+      date,
+      time,
+      note,
+      function (error, result) {
+        if (error) {
+          failAlert(error.reason);
+          exitPreloader();
+        } else {
+          successAlert("Berhasil");
+          location.reload();
+        }
+      }
+    );
+  },
+  "click .btn-interview-done"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = FlowRouter.current().params._id;
+    Swal.fire({
+      title: "Konfirmasi Wawancara Selesai",
+      text: "Apakah wawancara sudah selesai?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Meteor.call("ppdb-interview-done", id, function (error, result) {
+          if (result) {
+            if (result.code) {
+              infoAlert(result.message);
+              setTimeout(() => {
+                exitPreloader();
+              }, 2500);
+            } else {
+              successAlert("Berhasil");
+              setTimeout(function () {
+                location.reload();
+              }, 200);
+            }
+          } else {
+            console.log(error);
+            failAlert("Gagal!");
+            exitPreloader();
+          }
+        });
+      }
+    });
+  },
+  "click .btn-rejected"(e, t) {
+    e.preventDefault();
+    startPreloader();
+    const id = e.target.getAttribute("milik");
+
+    Swal.fire({
+      title: "Konfirmasi Penerimaan",
+      text: "Apakah anda yakin menolak calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader();
+        Swal.fire({
+          title: "Tuliskan alasan penolakkan",
+          input: "text",
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          preConfirm: (reason) => {
+            Meteor.call(
+              "ppdb-rejected-student",
+              id,
+              reason,
+              function (error, result) {
+                // console.log(result, error);
+                if (result) {
+                  successAlert("Berhasil");
+                  setTimeout(function () {
+                    location.reload();
+                  }, 200);
+                } else {
+                  console.log(error);
+                  failAlert("Gagal!");
+                  exitPreloader();
+                }
+              }
+            );
+          },
+        });
+      }
+    });
+  },
+  "click #btn-update-gelombang"(e,t){
+    e.preventDefault()
+    e.preventDefault();
+    t.formGelombang.set(!t.formGelombang.get());
+    setTimeout(() => {
+      document
+        .getElementById("formGelombang")
+        .scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  },
+  "submit #setGelombangForm"(e,t){
+    e.preventDefault()
+
+    const idGelombang = $("#selectedGelombang").val();
+    if(idGelombang == "0"){
+      return swalInfo("Pilih gelombang terlebih dahulu");
+    }
+
+    const id = FlowRouter.current().params._id;
+
+    Swal.fire({
+      title: "Konfirmasi Perubahan",
+      text: "Apakah anda yakin merubah gelombang calon siswa ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startPreloader()
+        Meteor.call("updateGelombang-student", id, idGelombang, function (error, result) {
+          if(error){
+            console.log(error);
+            swalInfo(error.reason)
+            exitPreloader()
+          }else{
+            successAlert("Berhasil");
+            setTimeout(function () {
+              location.reload();
+            }, 200);
+          }
+        })
+      }
+    })
+  },
+  "click #btn-get-spo"(e,t){
+    e.preventDefault();
+
+    const thisRegistran = t.detail.get();
+
+    if(thisRegistran.educationCostSpoLink){
+      window.open(thisRegistran.educationCostSpoLink, "_blank");
+    }
+    startPreloader()
+    Swal.fire({
+      title: "Mohon Menunggu",
+      text: "Sedang memproses data",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      }
+    })
+    Meteor.call('get-spo', thisRegistran._id, (error, result) => {
+      if(error){
+        console.log(error);
+        exitPreloader();
+      }else{
+        setTimeout(() => {
+          exitPreloader();
+          window.open(result.link, "_blank");
+        }, 4000);
+      }
+    })
+  }
 });
 
 Template.pageVa.onCreated(function () {

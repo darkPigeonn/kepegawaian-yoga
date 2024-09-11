@@ -35,8 +35,12 @@ Template.registerHelper(
 );
 
 Template.registerHelper("formatHRDate", function (context, options) {
-  if (context) moment.locale("id");
-  return moment(context).format("DD MMMM YYYY");
+  if(context){
+    if (context) moment.locale("id");
+    return moment(context).format("DD MMMM YYYY");
+  }else{
+    return '-'
+  }
 });
 Template.registerHelper("formatHRDate2", function (context, options) {
   if (!context) return "-";
@@ -425,6 +429,18 @@ Template.registerHelper("reductionStatus", function (data) {
   }
   return status;
 });
+Template.registerHelper("getStatusPayment", function (data) {
+  if(!data){
+    return '-'
+  }
+  if(data) {
+    if(data.status == 10) {
+      return 'Menunggu Konfirmasi'
+    }else {
+      return 'Sudah Konfirmasi'
+    }
+  }
+})
 function convertTanggal(tanggal) {
   // Mengonversi bulan dari teks ke angka
   const bulanMapping = {

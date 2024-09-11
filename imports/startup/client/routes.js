@@ -604,3 +604,10 @@ FlowRouter.route("/keringananbiaya", {
     this.render("App_body", "keringananbiaya");
   }
 })
+
+FlowRouter.route("/ppdb/detail/:_id/payment", {
+  name: "paymentPageStudent",
+  action() {
+    this.render("App_body", "paymentPageStudent");
+  },
+})
