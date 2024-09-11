@@ -37,20 +37,26 @@
                 <thead>
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">User</th>
+                        <th scope="col">Tipe</th>
                         <th scope="col">Waktu</th>
                         <th scope="col">Jam</th>
                         <th scope="col">Pesan</th>
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each item in notification}}
                         <tr>
                             <td> {{nomorUrut @index}}</td>
-                            <td> Sistem </td>
+                            <td> {{item.categoryName}} </td>
                             <td> {{formatHRDate item.createdAt}} </td>
                             <td> {{formatTime item.createdAt}} </td>
                             <td> {{item.message}} </td>
+                            <td>
+                                <a href={{item.actionLink}} class="btn btn-info">
+                                  <i class="fas fa-info-circle"></i>
+                                </a>
+                              </td>
                         </tr>
                     {{/each}}
                 </tbody>

@@ -185,31 +185,31 @@ Meteor.methods({
         }
       }
       // Notification
-      const dataNotif = updatedMembers.map(x => {
-          let notif = {
-              member_id: x.id,
-              member_name: x.name,
-              member_email: x.email,
-          }
+      const dataNotif = updatedMembers
+      .map(x => ({
+          member_id: x.id,
+          member_name: x.name,
+          member_email: x.email,
+      }))
+      .filter(notif => notif.member_id !== adminPartner.profileId);
+      
+      for (let index = 0; index < dataNotif.length; index++) {
+        const element = dataNotif[index];
+        const newDataSave = { 
+          timestamp: new Date(),
+          senderId: adminPartner.profileId,
+          receiverId: element.member_id,
+          message: `Anda di assign ke dalam proyek ${nama_project}`,
+          categoryId: 10,
+          categoryName: "Project",
+          createdAt: new Date(),
+          createdBy: adminPartner.profileId,
+          actionLink: `/projects/detail/${idProject}`
+        };
+        Notifications.insert(newDataSave);
+      }
 
-          return notif;
-      });
-
-      const newDataSave = { 
-        id_project: idProject,
-        data: dataNotif,
-        assign_for: notifType,
-        senderId: adminPartner._id,
-        receiverId: "system",
-        message: messages,
-        categoryId: 10,
-        categoryName: "Informasi",
-        timestamp: new Date(),
-        createdAt: new Date(),
-        createdBy: adminPartner._id
-      };
-
-      return Notifications.insert(newDataSave);
+      return idProject
     },
     "projects.update"(id, data, deleteObjective, deleteMilestone) {
       let { nama_project, deskripsi, tanggal_mulai, tanggal_selesai, status, updatedMembers, notifType, messages, objective } = data
@@ -247,7 +247,7 @@ Meteor.methods({
         }
 
         return notif;
-    });
+      });
 
       const newDataSave = { 
         id_project: id,

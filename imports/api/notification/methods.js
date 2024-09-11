@@ -7,8 +7,15 @@ import moment from "moment";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
-    "notification.getAll"(email){
-        return Notifications.find({'data.member_email': email},{sort: {createdAt: -1}}).fetch();
+    "notification.getAll"(){
+        const thisUser = Meteor.userId();
+        const users = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        const data = Notifications.find({receiverId: users.profileId},{sort: {
+            createdAt: -1
+        }}).fetch()
+        return data;
     },
     "notification.insert"(data) {
         check(data, Array);

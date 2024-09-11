@@ -288,6 +288,8 @@ Template.tasks_edit.onCreated(function () {
         const flaten = result.project_members.flat();
         result.project_members = flaten;
         self.tasks.set(result);
+        console.log(self.tasks.get());
+        
         if(result.id_project != "umum") {
             self.idProject.set(result.id_project)
             Meteor.call("projects.getThisProject", result.id_project, function (error1, result1) {
@@ -322,6 +324,8 @@ Template.tasks_edit.onCreated(function () {
     Meteor.call("tasks.getStatus", function (error, result) {
         if(result) {
             self.status.set(result)
+            console.log(self.status.get());
+            
         }
         else {
             console.log(error);

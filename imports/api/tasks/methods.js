@@ -129,8 +129,9 @@ Meteor.methods({
     "tasks.getThisTask"(id){
         check(id, String);
         const getTask = Tasks.findOne({_id: id});
-
-        if (getTask.project_type != "umum") {
+        console.log(getTask);
+        
+        if (getTask.id_project != "umum") {
             const getProject = Projects.findOne({_id: getTask.id_project});
             getTask.nama_project = getProject.nama_project;
             getTask.project_members = getProject.members;
@@ -365,31 +366,29 @@ Meteor.methods({
         const idTask = Tasks.insert(dataSave);
 
         // Notification
-        const dataNotif = updatedMembers.map(x => {
-            let notif = {
-                member_id: x.id,
-                member_name: x.name,
-                member_email: x.email,
-            }
+        const dataNotif = updatedMembers
+        .map(x => ({
+            member_id: x.id,
+            member_name: x.name,
+            member_email: x.email,
+        }))
+        .filter(notif => notif.member_id !== adminPartner.profileId);
 
-            return notif;
-        });
-
-        const newDataSave = { 
-            id_task: idTask,
-            data: dataNotif,
-            assign_for: notifType,
-            senderId: adminPartner._id,
-            receiverId: "system",
-            message: messages,
-            categoryId: 10,
-            categoryName: "Informasi",
-            timestamp: new Date(),
-            createdAt: new Date(),
-            createdBy: adminPartner._id
-        };
-        
-        const insertNotif = Notifications.insert(newDataSave);
+        for (let index = 0; index < dataNotif.length; index++) {
+            const element = dataNotif[index];
+            const newDataSave = { 
+              timestamp: new Date(),
+              senderId: adminPartner.profileId,
+              receiverId: element.member_id,
+              message: `Anda di assign ke dalam tugas ${nama_tasks}`,
+              categoryId: 20,
+              categoryName: "Task",
+              createdAt: new Date(),
+              createdBy: adminPartner.profileId,
+              actionLink: `/tasks/detail/${idTask}`
+            };
+            Notifications.insert(newDataSave);
+        }
         const body = {
             id_task: idTask,
             // token, dari luar
@@ -438,10 +437,10 @@ Meteor.methods({
                     data: body,
                 });
                 // console.log(response);
-                return insertNotif
+                return idTask
             } catch (e) {
                 console.log(e);
-                return insertNotif
+                return idTask
                 // throw new Meteor.Error(412, "Kirim Notifikasi ke Aplikasi Gagal")
             }
         }
@@ -484,38 +483,38 @@ Meteor.methods({
         if(idMilestone != undefined) {
             dataSave.idMilestone = idMilestone
         }
-        
-        // Notification
-        const dataNotif = updatedMembers.map(x => {
-            let notif = {
-                member_id: x.id,
-                member_name: x.name,
-                member_email: x.email,
-            }
 
-            return notif;
-        });
-
-        const newDataSave = { 
-            id_task: id,
-            data: dataNotif,
-            assign_for: notifType,
-            senderId: adminPartner._id,
-            receiverId: "system",
-            message: messages,
-            categoryId: 10,
-            categoryName: "Informasi",
-            timestamp: new Date(),
-            createdAt: new Date(),
-            createdBy: adminPartner._id
-        };
-
-        const updateTask = Notifications.insert(newDataSave);
-
-        return Tasks.update(
+        const idTask = Tasks.update(
             { _id: id },
             { $set: dataSave, $push: {timeline: timeline} }
         );
+        
+        // Notification
+        const dataNotif = updatedMembers
+        .map(x => ({
+            member_id: x.id,
+            member_name: x.name,
+            member_email: x.email,
+        }))
+        .filter(notif => notif.member_id !== adminPartner.profileId);
+
+        for (let index = 0; index < dataNotif.length; index++) {
+            const element = dataNotif[index];
+            const newDataSave = { 
+              timestamp: new Date(),
+              senderId: adminPartner.profileId,
+              receiverId: element.member_id,
+              message: `Ada perubahan data atau status pada tugas ${nama_tasks}`,
+              categoryId: 20,
+              categoryName: "Task",
+              createdAt: new Date(),
+              createdBy: adminPartner.profileId,
+              actionLink: `/tasks/detail/${id}`
+            };
+            Notifications.insert(newDataSave);
+        }
+
+        return idTask
     },
     "tasks.getStatus"() {
         return Status.find({type: "task"}).fetch();

@@ -81,7 +81,24 @@ Meteor.methods({
         data.createdAt = new Date();
         data.createdBy = relatedEmployee._id;
         data.createdByName = relatedEmployee.full_name;
-        return Tickets.insert(data);
+        const idTicket = Tickets.insert(data);
+        for (let index = 0; index < data.workers.length; index++) {
+            const element = data.workers[index];
+            const newDataSave = { 
+                timestamp: new Date(),
+                senderId: relatedEmployee._id,
+                receiverId: element._id,
+                message: `Anda di assign ke dalam tiket ${data.title}`,
+                categoryId: 30,
+                categoryName: "Ticket",
+                createdAt: new Date(),
+                createdBy: element._id,
+                actionLink: `/tickets/detail/${idTicket._str}`
+            };
+            Notifications.insert(newDataSave);
+        }
+        return idTicket
+        
     },
 
     "tickets.editTicket"(id, data, timeline){
@@ -89,7 +106,31 @@ Meteor.methods({
         check(data, Object);
         check(timeline, Object)
         const objectId = new Meteor.Collection.ObjectID(id);
-        return Tickets.update({_id: objectId}, {$set: data, $push: {timeline: timeline}})
+        const thisUser = Meteor.userId();
+        const relatedUser = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+        const update = Tickets.update({_id: objectId}, {$set: data, $push: {timeline: timeline}})
+        const dataTicket = Tickets.findOne({_id: objectId})
+        if(dataTicket) {
+            for (let index = 0; index < dataTicket.workers.length; index++) {
+                const element = dataTicket.workers[index];
+                const newDataSave = { 
+                    timestamp: new Date(),
+                    senderId: relatedEmployee._id,
+                    receiverId: element._id,
+                    message: `Ada perubahan data atau status pada tiket ${dataTicket.title}`,
+                    categoryId: 30,
+                    categoryName: "Ticket",
+                    createdAt: new Date(),
+                    createdBy: element._id,
+                    actionLink: `/tickets/detail/${objectId._str}`
+                };
+                Notifications.insert(newDataSave);
+            }
+        }
+        return update
     },
 
     "tickets.delete"(id){
@@ -106,7 +147,26 @@ Meteor.methods({
         const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
         data.createdBy = thisUser;
         data.createdByName = relatedEmployee.full_name
-        return Tickets.update({_id: objectId}, {$push: {message: data}});
+        const update = Tickets.update({_id: objectId}, {$push: {message: data}});
+        const dataTicket = Tickets.findOne({_id: objectId})
+        if(dataTicket) {
+            for (let index = 0; index < dataTicket.workers.length; index++) {
+                const element = dataTicket.workers[index];
+                const newDataSave = { 
+                    timestamp: new Date(),
+                    senderId: relatedEmployee._id,
+                    receiverId: element._id,
+                    message: `Ada pesan baru pada tiket ${dataTicket.title}`,
+                    categoryId: 30,
+                    categoryName: "Ticket",
+                    createdAt: new Date(),
+                    createdBy: element._id,
+                    actionLink: `/tickets/detail/${objectId._str}`
+                };
+                Notifications.insert(newDataSave);
+            }
+        }
+        return update
     },
 
     "fileName.getAll" () {

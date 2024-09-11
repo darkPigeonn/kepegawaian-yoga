@@ -740,7 +740,7 @@
                     <label class="fw-bold">Status Tugas</label>
                     <select id="input_status" class="form-select">
                         {{#each status}}
-                            {{#if equals tasks.status id}}
+                            {{#if equals tasks.status label}}
                             <option value="{{id}}" selected>{{label}}</option>
                             {{else}}
                             <option value="{{id}}">{{label}}</option>
