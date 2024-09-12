@@ -6,6 +6,7 @@ import  generatePassword  from 'generate-password';
 import { Departement } from "../departement/departement";
 // import { ObjectId } from 'mongodb';
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
+import { sendEmail } from "../mailgun.js";
 
 Meteor.methods({
     "employee.createApp"(dataSend, idEmployee){
@@ -683,14 +684,46 @@ Meteor.methods({
   },
   "employee.sendInfo"(id){
     check(id, String);
-    const thisUser = Meteor.users.findOne({_id : thisUser._id});
+    const thisUser = Meteor.users.findOne({ _id: this.userId});
 
     if(!thisUser){
       throw new Meteor.Error(412, "Data User tidak ditemukan")
     }
 
+    const thisEmployee = Employee.findOne({_id: id});
+
     const subject = 'Informasi Akun IMAVI';
-    const message = `<p>Informasi Akun IMAVI</p>. Silahkaan`
+    const message = `<body>
+    <p>Dear ${ thisEmployee.full_name },</p>
+    <p>Kami berharap Anda dalam keadaan baik.</p>
+    <p>
+        Kami ingin memberitahukan bahwa data masuk Anda telah tercatat dengan baik di sistem kami.
+        Untuk memudahkan akses dan kelancaran operasional, kami telah menyiapkan aplikasi yang dapat Anda unduh.
+    </p>
+    <p>
+        Silakan mengunduh aplikasi melalui tautan berikut:
+        <a href="https://drive.google.com/file/d/1m82oaJ6fQuZ7z292ClskTlAUp9iCRD2K/view?usp=drive_link">Klik Disini</a>.
+    </p>
+    <p>
+        Jika anda pengguna selain android silahkan masuk ke web ini:
+        <a href="https://libraria.providei.org/">Klik Disini</a>.
+    </p>
+    <p>
+      Untuk login silahkan menggunakan alamat email anda dan password gabungan tanggal lahir anda dengan nama IMAVI. Contoh 'imavi.01012000'
+    </p>
+    <p>
+        Jika Anda mengalami kesulitan dalam proses unduhan atau pemasangan aplikasi,
+        jangan ragu untuk menghubungi tim IT kami di
+        <a href="mailto:it@imavi.org">it@imavi.org</a>
+    </p>
+    <p>Terima kasih atas perhatian dan kerjasamanya.</p>
+    <p>Best regards,</p>
+    <p>Centrum Carlo Acutis<br>
+    INSTITUT TEOLOGI YOHANES MARIA VIANNEY</p>
+</body>`
+
+      sendEmail(thisEmployee.email_address, subject, message);
+      return true
   }
 
   // "employee.getMutasi"(id){

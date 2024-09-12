@@ -812,6 +812,7 @@ Template.employee_create.events({
       const id = FlowRouter.getParam("_id");
       Meteor.call("employee.sendInfo", id, function(error, result){
         if(result){
+          successAlert('Berhasil')
           location.reload();
         }
         else{
