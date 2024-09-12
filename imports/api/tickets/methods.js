@@ -77,13 +77,22 @@ Meteor.methods({
     const thePage = Array.from({
       length: count % pagination === 0 ? Math.floor(count / pagination) : Math.floor(count / pagination) + 1
     }, (v, i) => i + 1);
-    const filteredItems = Tickets.find(data, {
+    let filteredItems = Tickets.find(data, {
       limit: pagination,
       skip: pagination * (page - 1),
       sort: {
         createdAt: -1
       }
     }).fetch();
+    const thisUser = Meteor.userId()
+    const relatedUser = Meteor.users.findOne({
+        _id: thisUser,
+    });
+    const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+    filteredItems = filteredItems.map(element => {
+        element.isOwned = element.createdBy === relatedEmployee._id ? 1 : 0;
+        return element;
+    });
     return {
       data: filteredItems,
       page: thePage
