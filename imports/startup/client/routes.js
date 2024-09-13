@@ -361,6 +361,12 @@ FlowRouter.route("/connectEmployeeAppUser", {
     this.render("App_body", "connectEmployeeAppUser");
   },
 });
+FlowRouter.route("/addEmployeeAppProfile", {
+  name: "addEmployeeAppProfile",
+  action() {
+    this.render("App_body", "addEmployeeAppProfile");
+  }
+})
 
 //DOCUMENTS
 FlowRouter.route("/documents", {

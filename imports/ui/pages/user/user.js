@@ -574,3 +574,117 @@ Template.connectEmployeeAppUser.events({
     })
   }
 })
+
+Template.addEmployeeAppProfile.onCreated(function() {
+  const self = this;
+  startSelect2()
+  self.dataAppProfile = new ReactiveVar([]);
+  self.dataConnect = new ReactiveVar([]);
+
+  Meteor.call("users.getAppProfiles", function (error, result) { 
+    if(result){
+      self.dataAppProfile.set(result)
+    }
+    else{
+      console.log(error);
+    }
+  })
+})
+
+Template.addEmployeeAppProfile.helpers({
+  dataAppProfile() {
+    return Template.instance().dataAppProfile.get();
+  },
+  dataConnect() {
+    return Template.instance().dataConnect.get();
+  }
+})
+
+Template.addEmployeeAppProfile.events({
+  "click #tambah"(e, t) {
+    const dataAppProfile = $("#input_appProfile").val();
+    const selectedOptions = $("#input_appProfile option:selected");
+    const selectedEmails = selectedOptions.map(function() {
+      return $(this).text().split('/')[0].trim(); // Mendapatkan email_address
+    }).get();
+    const selectedName = selectedOptions.map(function() {
+      return $(this).text().split('/')[1].trim(); // Mendapatkan nama
+    }).get();
+    
+    let dataConnectArr = [];
+    for (let index = 0; index < dataAppProfile.length; index++) {
+      const element = dataAppProfile[index];
+      const objek = {
+        idAppProfile : element,
+        emailAppProfile: selectedEmails[index],
+        nameAppProfile: selectedName[index]
+      }
+      dataConnectArr.push(objek);
+    }
+    t.dataConnect.set(dataConnectArr)
+  },
+  "click .btn-remove"(e,t) {
+    e.preventDefault()
+    const id = $(e.target).attr("milik");
+    let daftarConnect = t.dataConnect.get();
+    daftarConnect = daftarConnect.filter(item => item.idAppProfile !== id);
+    t.dataConnect.set(daftarConnect);
+  },
+  "click #btn-save"(e, t) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Konfirmasi Buat Data Pegawai",
+      text: "Apakah anda yakin melakukan membuat data pegawai dari daftar user pada tabel?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        Swal.close()
+        Swal.showLoading()
+        const data = t.dataConnect.get();
+        Meteor.call("users.createEmployeeByAppProfile", data, function (error, result) {  
+          if(result) {
+            if(result.dataKembar && result.insertEmployee == undefined) {
+              const names = result.dataKembar.map(item => `${item.name} (${item.email})`).join(', ');
+              Swal.fire({
+                title: "Data sudah ada",
+                text: `Data pegawai yang dibuat sudah ada: ${names}`,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Refresh halaman setelah pengguna menekan OK
+                  location.reload();
+                }
+              });
+            }
+            else if(result.dataKembar && result.insertEmployee != undefined) {
+              const names = result.dataKembar.map(item => `${item.name} (${item.email})`).join(', ');
+              Swal.fire({
+                title: "Berhasil",
+                text: `Data berhasil dibuat, ada data sudah pernah dibuat: ${names}`,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Refresh halaman setelah pengguna menekan OK
+                  location.reload();
+                }
+              });
+            }
+            else {
+              successAlert("Data pegawai berhasil dibuat")
+              location.reload();
+            }
+          }
+          else{
+            console.log(error);
+            failAlert(error);
+          }
+        })
+      }
+    })
+  }
+})

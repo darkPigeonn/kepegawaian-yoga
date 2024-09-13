@@ -8,6 +8,8 @@ import moment from "moment";
 import { Employee } from "../employee/employee";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import  generatePassword  from 'generate-password';
+import { ConfigAttendanceUser, MonthlyAttendance, Permits, StaffsAttendance } from "../attendance/attendance.js";
+import { Salaries } from "../salaries/salaries.js";
 Meteor.methods({
     "users.getAll"(){
         let partnerCode;
@@ -287,5 +289,183 @@ Meteor.methods({
         else {
             return "success"
         }
+    },
+
+    "users.getAppProfiles"(){
+        let partnerCode;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        partnerCode = adminPartner.partners[0];
+        return AppProfiles.find({outlets: partnerCode}).fetch()       
+    },
+
+    "users.createEmployeeByAppProfile"(data) {
+        const arrDataFounded = [];
+        const thisUser = Meteor.userId()
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        let insertEmployee;
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            let id = element.idAppProfile;
+            id = new Meteor.Collection.ObjectID(id)
+            const dataAppProfile = AppProfiles.findOne({_id: id})
+            const cekPegawai = Employee.findOne({oldIdProfile: id.toHexString()})
+            if(!cekPegawai) {
+                console.log("data pegawai tidak ditemukan");
+                // insert data pegawai
+                const dataSave = {
+                    full_name: dataAppProfile.fullName ?? dataAppProfile.fullname ?? "",
+                    identification_number: null,
+                    place_of_birth: null,
+                    dob: null,
+                    gender: null,
+                    address: null,
+                    phone_number: dataAppProfile.phoneNumber,
+                    email_address: dataAppProfile.email,
+                    job_position: dataAppProfile.jabatan,
+                    department_unit: null,
+                    departmentId: null,
+                    start_date: null,
+                    employment_status: null,
+                    base_salary: null,
+                    allowances: null,
+                    deductions: null,
+                    highest_education: null,
+                    education_institution: null,
+                    major_in_highest_education: null,
+                    academic_degree: null,
+                    previous_work_experience: null,
+                    marital_status: null,
+                    number_of_children: null,
+                    emergency_contact_name: null,
+                    emergency_contact_phone: null,
+                    accountNumber: null,
+                    accountNumberBank: null,
+                    accountNumberName: null,
+                    golongan: null,
+                    partnerCode: adminPartner.outlets[0],
+                    linkGambar: null,
+                    status: 10, //10: Aktif, 90: Keluar, 30: pindah departemen
+                    statusDelete: 0, //0: tidak soft delete, 1: soft deleted
+                    createdAt: new Date(),
+                    createdBy: thisUser,
+                    oldIdProfile: id.toHexString(),
+                    historyMutasi: null
+                };
+                insertEmployee = Employee.insert(dataSave)
+                console.log("Insert data pegawai selesai");
+
+                const dataAppUser = AppUsers.findOne({profileId: id.toHexString()})
+                if(dataAppUser) {
+                    AppUsers.update({profileId: id.toHexString()}, {
+                        $set: {
+                            profileId: insertEmployee,
+                            oldIdProfile: id.toHexString()
+                        }
+                    })
+                }
+
+                // update data absensi
+                    // update data absensi harian pegawai
+                const dataDailyAttendance = StaffsAttendance.find({userId: id.toHexString()}).fetch()
+                
+                if(dataDailyAttendance.length > 0) {
+                    dataDailyAttendance.forEach(item => {
+                        StaffsAttendance.update({_id: item._id}, {
+                            $set: {
+                                userId: insertEmployee,
+                                isUpdated: true
+                            }
+                        })
+                    })
+                    console.log("Update data absensi harian pegawai selesai");
+                }
+
+                    // update data config attendance pegawai
+                const dataConfigAttendance = ConfigAttendanceUser.findOne({userId: id.toHexString()})
+                if(dataConfigAttendance) {
+                    ConfigAttendanceUser.update({_id: dataConfigAttendance._id}, {
+                        $set: {
+                            userId: insertEmployee,
+                            isUpdated: true
+                        }
+                    })
+                    
+                    console.log("Update data konfig absensi pegawai selesai");
+                }
+
+                    // update data monthly attendance pegawai
+                const dataRekapMonthly = MonthlyAttendance.find({"details.userId": id.toHexString()}).fetch()
+                if(dataRekapMonthly.length > 0) {
+                    // dataRekapMonthly.forEach(item => {
+                    //     MonthlyAttendance.update(
+                    //       { _id: item._id, "details.userId": id }, // Cari dokumen yang cocok
+                    //       { $set: { "details.$.userId": insertEmployee }}
+                    //     );
+                    // });
+                    MonthlyAttendance.update(
+                        { "details.userId": id.toHexString() }, // Cari dokumen yang cocok
+                        { $set: { "details.$.userId": insertEmployee }},
+                        { multi: true } 
+                    );
+                    console.log("Update data rekap absensi bulanan selesai");
+                }
+
+                // update data ijin
+                const dataPermits = Permits.find({creatorId: id.toHexString()}).fetch();
+                if(dataPermits.length > 0) {
+                    // dataPermits.forEach(item => {
+                    //     Permits.update({creatorId: id}, {
+                    //         $set: {
+                    //             creatorId: insertEmployee,
+                    //             isUpdated: true
+                    //         }
+                    //     })
+                    // })
+                    Permits.update({creatorId: id},
+                        {
+                            $set: {
+                                creatorId: insertEmployee,
+                                isUpdated: true
+                            }
+                        },
+                        { multi: true }
+                    )
+                }
+
+                // update data slip gaji
+                const dataSlipGaji = Salaries.find({employeeId: id.toHexString()}).fetch()
+                if(dataSlipGaji.length > 0) {
+                    Salaries.update({employeeId: id}, {
+                        $set: {
+                            employeeId: insertEmployee,
+                            isUpdated: true
+                        }
+                    },
+                    { multi: true });
+                    console.log("Update data slip gaji selesai"); 
+                }
+            }
+            else {
+                const dataPush = {
+                    name: element.nameAppProfile,
+                    email: element.emailAppProfile
+                }
+                arrDataFounded.push(dataPush)
+            }
+            
+        }
+
+        if(arrDataFounded.length == 0) {
+            return {insertEmployee}
+        }
+        else {
+            return {insertEmployee, dataKembar: arrDataFounded}
+        }
+        
     }
 })

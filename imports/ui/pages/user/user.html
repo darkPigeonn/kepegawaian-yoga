@@ -5,7 +5,8 @@
         <div class="mt-5">
             <div class="d-flex justify-content-end mb-2">
                 <a href="/createUser" class="btn btn-primary mr-2">+ Tambah</a>
-                <a href="/connectEmployeeAppUser" class="btn btn-primary">Hubungkan Data Pegawai</a>
+                <a href="/connectEmployeeAppUser" class="btn btn-primary mr-2">Hubungkan Data Pegawai</a>
+                <a href="/addEmployeeAppProfile" class="btn btn-primary">Buat Data Pegawai</a>
             </div>
         </div>
         <div class="d-lg-block table-responsive">
@@ -364,6 +365,69 @@
                                         <td>
                                             <button class="btn btn-danger btn-remove" posisi={{@index}}>
                                                 <i class="fa fa-trash btn-remove" posisi={{@index}}></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    {{/if}}
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="btn-save">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="addEmployeeAppProfile">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Buat Data Pegawai Dari App Profile</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">App Profile</label>
+                    <select id="input_appProfile" class="form-control select2" style="max-width: auto;" multiple>
+                        {{#each dataAppProfile}}
+                            <option value="{{toMeteorId _id}}">{{email}} / {{ fullName }}</option>
+                        {{/each}}
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="tambah">Tambah</button>
+                </div>
+                <br>
+
+                    {{#if dataConnect}}
+                        <h4>Daftar Migrasi ID</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Nomor</th>
+                                    <th>Email App Profile</th>
+                                    <th>Nama App Profile</th>
+                                    <th>Aksi</th>
+                                </thead>
+                                <tbody>
+                                    {{#each i in dataConnect}}
+                                    <tr>
+                                        <td>
+                                            {{setTableNumber @index}}
+                                        </td>
+                                        <td>
+                                            {{i.emailAppProfile}}
+                                        </td>
+                                        <td>
+                                            {{i.nameAppProfile}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-remove" milik={{i.idAppProfile}}>
+                                                <i class="fa fa-trash btn-remove" milik={{i.idAppProfile}}></i>
                                             </button>
                                         </td>
                                     </tr>
