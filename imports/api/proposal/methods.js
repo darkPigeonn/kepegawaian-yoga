@@ -153,6 +153,7 @@ Meteor.methods({
   "createProposal"(data, tipeKirim) {
     check(data, Object);
     let {name,
+      proposalNumber,
       backgroundsDescription,
       purposeDescription,
       timeline,

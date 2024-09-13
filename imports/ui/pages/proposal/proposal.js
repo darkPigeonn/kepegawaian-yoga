@@ -615,6 +615,7 @@ Template.formProposal.events({
                 // }
         
                 const name = $('#name').val();
+                const proposalNumber = $('#proposalNumber').val();
                 const backgroundsDescription = t.editorBackground.get().getData();
                 const purposeDescription = t.editorPurpose.get().getData();
                 const timeline = t.editorTimeline.get().getData();
@@ -635,6 +636,7 @@ Template.formProposal.events({
         
                 const data = {
                     name,
+                    proposalNumber,
                     backgroundsDescription,
                     purposeDescription,
                     timeline,
@@ -720,6 +722,7 @@ Template.formProposal.onRendered(function () {
             }
             if (result) {
                 $('#name').val(result.name);
+                $('#proposalNumber').val(result.proposalNumber);
                 // $('#categoryProposal').val(result.dispositionId)
                 context.optionsNeeds.content = result.needsDescription;
                 context.optionsBackground.content = result.backgroundsDescription;
