@@ -5,6 +5,7 @@ import { Notifications } from "../notification/notification";
 import { AppProfiles, AppUsers } from "../collections-profiles.js";
 import { check } from "meteor/check";
 import moment from "moment";
+import { Tickets } from "../tickets/tickets.js";
 // import { ObjectId } from 'mongodb';
 
 Meteor.methods({
@@ -420,7 +421,7 @@ Meteor.methods({
             runNotif = false
         }
         if(runNotif == false) {
-            return insertNotif
+            return idTask
         }
         else {
             let postURL =
@@ -518,6 +519,115 @@ Meteor.methods({
     },
     "tasks.getStatus"() {
         return Status.find({type: "task"}).fetch();
+    },
+    "task.reassignment"(data) {
+        // Untuk sekarang reassignment tugas berpengaruh ke project yang dipegang.
+        let {employeeMoveOut, employeeMoveIn, type} = data;
+        const dataEmployeeMoveIn = Employee.findOne({_id: employeeMoveIn});
+        const nameEmployee = dataEmployeeMoveIn.full_name ?? "-";
+        const emailEmployee = dataEmployeeMoveIn.email_address ?? "-";
+        let dataTask;
+        // type 1 = mengubah tugas selain yang sudah selesai atau dibatalkan
+        if(type == "1") {
+            dataTask = Tasks.find({"members.id": employeeMoveOut, status: { $in: [0, 30, 90] }}).fetch();
+        } else if(type == "2") {
+            dataTask = Tasks.find({"members.id": employeeMoveOut, status: { $in: [0, 30, 90, 60, 99] }}).fetch();
+        }
+
+        for (let index = 0; index < dataTask.length; index++) {
+            const element = dataTask[index];
+            const employeeExistsInTask = element.members.some(member => member.id === employeeMoveIn);
+            if (!employeeExistsInTask) {
+                // Jika employeeMoveIn belum ada, tambahkan ke members di Tasks
+                Tasks.update(
+                    { _id: element._id }, // cari task berdasarkan ID
+                    { $push: { members: { id: employeeMoveIn, name: nameEmployee, email: emailEmployee } } }
+                );
+            }
+            if (element.id_project !== "umum") {
+                const project = Projects.findOne({ _id: element.id_project });
+                if(project) {
+                    // Cek apakah employeeMoveIn sudah ada di members.id dalam Projects
+                    const employeeExistsInProject = project.members.some(member => member.id === employeeMoveIn);
+                    if (!employeeExistsInProject) {
+                        // Jika belum ada, tambahkan ke members di Projects
+                        Projects.update(
+                            { _id: element.id_project }, // update project berdasarkan idProject
+                            { $push: { members: { id: employeeMoveIn, name: nameEmployee, email: emailEmployee } } }
+                        );
+                    }
+                }
+            }
+            if (element.idTicket) {
+                // Konversi idTicket ke ObjectId untuk query di tickets
+                const ticketId = new Mongo.ObjectID(element.idTicket);
+                const ticket = Tickets.findOne({ _id: ticketId });
+
+                if (ticket) {
+                    // Cek apakah employeeMoveIn sudah ada di tickets.workers._id
+                    const employeeExistsInTicket = ticket.workers.some(worker => worker._id === employeeMoveIn);
+                    
+                    if (!employeeExistsInTicket) {
+                        // Jika belum ada, tambahkan ke workers di Tickets
+                        Tickets.update(
+                            { _id: ticketId }, // update ticket berdasarkan _id
+                            { $push: { workers: { _id: employeeMoveIn, workerName: nameEmployee } } }
+                        );
+                    }
+                }
+            }
+        }
+
+        // dataTask.forEach(task => {
+        //     // Cek apakah employeeMoveIn sudah ada di members.id dalam Tasks
+        //     const employeeExistsInTask = task.members.some(member => member.id === employeeMoveIn);
+            
+        //     if (!employeeExistsInTask) {
+        //         // Jika employeeMoveIn belum ada, tambahkan ke members di Tasks
+        //         Tasks.update(
+        //             { _id: task._id }, // cari task berdasarkan ID
+        //             { $push: { members: { id: employeeMoveIn, name: nameEmployee, email: emailEmployee } } }
+        //         );
+        //     }
+
+        //     // Jika idProject tidak sama dengan "umum", cek juga di Projects
+        //     if (task.idProject !== "umum") {
+        //         const project = Projects.findOne({ _id: task.idProject });
+        //         if(project) {
+        //             // Cek apakah employeeMoveIn sudah ada di members.id dalam Projects
+        //             const employeeExistsInProject = project.members.some(member => member.id === employeeMoveIn);
+        //             if (!employeeExistsInProject) {
+        //                 // Jika belum ada, tambahkan ke members di Projects
+        //                 Projects.update(
+        //                     { _id: task.idProject }, // update project berdasarkan idProject
+        //                     { $push: { members: { id: employeeMoveIn, name: nameEmployee, email: emailEmployee } } }
+        //                 );
+        //             }
+        //         }
+        //     }
+
+        //     // Cek apakah task memiliki idTicket
+        //     if (task.idTicket) {
+        //         // Konversi idTicket ke ObjectId untuk query di tickets
+        //         const ticketId = new Mongo.ObjectID(task.idTicket);
+        //         const ticket = Tickets.findOne({ _id: ticketId });
+
+        //         if (ticket) {
+        //             // Cek apakah employeeMoveIn sudah ada di tickets.workers._id
+        //             const employeeExistsInTicket = ticket.workers.some(worker => worker._id === employeeMoveIn);
+                    
+        //             if (!employeeExistsInTicket) {
+        //                 // Jika belum ada, tambahkan ke workers di Tickets
+        //                 Tickets.update(
+        //                     { _id: ticketId }, // update ticket berdasarkan _id
+        //                     { $push: { workers: { _id: employeeMoveIn, workerName: nameEmployee } } }
+        //                 );
+        //             }
+        //         }
+        //     }
+        // });
+        
+        return {code: 200, message: "Penugasan Berhasil Diubah"}
     }
 
 })

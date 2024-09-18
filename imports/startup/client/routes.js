@@ -235,6 +235,12 @@ FlowRouter.route("/tasks/detail/:_id/members", {
     this.render("App_body", "tasks_members");
   },
 });
+FlowRouter.route("/tasks/reAssignTask", {
+  name: "reAssignTask",
+  action() {
+    this.render("App_body", "reAssignTask")
+  }
+})
 
 // Presensi
 FlowRouter.route("/presensi", {

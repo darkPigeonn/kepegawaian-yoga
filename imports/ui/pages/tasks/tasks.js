@@ -614,6 +614,72 @@ Template.tasks_members.events({
     }
 });
 
+Template.reAssignTask.onCreated(function (){
+    const self = this;
+    self.employee = new ReactiveVar();
+    Meteor.call("employee.getAll", function(error, result) {
+        if(result) {
+            self.employee.set(result)
+        }
+        else {
+            console.log(error);
+        }
+    })
+})
+
+Template.reAssignTask.helpers({
+    employee() {
+        return Template.instance().employee.get();
+    }
+})
+
+Template.reAssignTask.events({
+    "click #btn_save"(e, t) {
+        e.preventDefault();
+        const employeeMoveOut = $("#choose_employee_moveout").val();
+        const employeeMoveIn = $("#choose_employee_movein").val();
+        const type = $("#select-type").val()
+        console.log(employeeMoveOut, employeeMoveIn, type);
+        if(type == "0" || employeeMoveIn == "0" || employeeMoveOut == "0") {
+            console.log("masuk sini");
+            Swal.fire({
+                title: "Gagal",
+                text: "Semua field wajib diisi",
+                showConfirmButton: true,
+                allowOutsideClick: true,
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Konfirmasi",
+                text: "Apakah anda ingin menyimpan data ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Simpan",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if(result.isConfirmed){
+                    const data = {
+                        employeeMoveOut,
+                        employeeMoveIn,
+                        type
+                    }
+                    Meteor.call("task.reassignment", data, function (error, result) {
+                        if(result) {
+                            successAlert("Berhasil")
+                            location.reload();
+                        }
+                        else {
+                            console.log(error);
+                        }
+                    })
+                }
+            })
+        }
+        
+    }
+})
+
 // startSelect2 = function () {
 //     setTimeout(() => {
 //       $(".select2").select2();

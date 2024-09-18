@@ -23,7 +23,9 @@
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                                     </svg>
                                 </button>
-        
+                                <div class="my-auto">
+                                    <a href="/tasks/reAssignTask" class="btn btn-primary">Penugasan Ulang</a>
+                                </div>
                                 <div class="my-auto">
                                     <a href="/tasks/create/umum" class="btn btn-primary">+ Tambah Tugas</a>
                                 </div>
@@ -144,7 +146,9 @@
                                         <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z"/>
                                     </svg>
                                 </button>
-        
+                                <div class="my-auto">
+                                    <a href="/tasks/reAssignTask" class="btn btn-sm btn-primary">Penugasan Ulang</a>
+                                </div>
                                 <div class="my-auto">
                                     <a href="/tasks/create/umum" class="btn btn-sm btn-primary">+ Tambah Tugas</a>
                                 </div>
@@ -1632,4 +1636,48 @@
             }
         }
     </style>
+</template>
+
+<template name="reAssignTask">
+    <div class="container">
+        <div class="title-page mt-3">
+            <h3>Penugasan Ulang Tugas</h3>
+        </div>
+
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        
+        <div class="mt-2">
+            <form>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Pilih Karyawan Yang Akan Dipindahkan</label>
+                    <select id="choose_employee_moveout" class="form-select">
+                        <option value="0">Pilih Karyawan</option>
+                        {{#each employee}}
+                            <option value="{{_id}}">{{full_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Pilih Karyawan Yang Akan Ditugaskan</label>
+                    <select id="choose_employee_movein" class="form-select">
+                        <option value="0">Pilih Karyawan</option>
+                        {{#each employee}}
+                            <option value="{{_id}}">{{full_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Pilih Tipe Pemindahan Tugas</label>
+                    <select id="select-type" class="form-select">
+                        <option value="0">Pilih Tipe</option>
+                        <option value="1">Semua Tugas Yang Sedang Berjalan</option>
+                        <option value="2">Semua Tugas Yang Sedang atau Sudah Selesai Berjalan</option>
+                    </select>
+                </div>
+                <div class="d-grid gap-2 my-3">
+                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
