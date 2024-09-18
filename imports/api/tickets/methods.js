@@ -89,6 +89,12 @@ Meteor.methods({
         _id: thisUser,
     });
     const relatedEmployee = Employee.findOne({_id: relatedUser.profileId});
+    if(relatedUser.roles[0] == "admin" || relatedUser.roles[0] == "chief") {
+        return {
+            data: filteredItems,
+            page: thePage
+        }
+    }
     filteredItems = filteredItems.map(element => {
         element.isOwned = element.createdBy === relatedEmployee._id ? 1 : 0;
         return element;

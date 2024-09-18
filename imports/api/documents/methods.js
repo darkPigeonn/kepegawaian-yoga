@@ -961,5 +961,76 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(412, "Unggah File Arsip Gagal");
     }
+  },
+
+  "warningLetter.getAll"() {
+    const data = Letters.find({
+      partner: "imavi"
+    }).fetch();
+    return data
+  },
+  "warningLetter.create"(data) {
+    let {name, description, date, employeeId, type, links} = data;
+    const tanggal = new Date(date);
+    delete data.date;
+    data.date = tanggal
+    let noSuratFinal;
+    const currentYear = new Date().getFullYear();
+    const currentMonth = getCurrentMonthInRoman();
+    // Bila beda year, nomor surat ulang dari 001
+    let startOfYear = new Date(currentYear, 0, 1); // January 1st of the current year
+    let endOfYear = new Date(currentYear + 1, 0, 1); // January 1st of the next year
+    let dataSurat = Letters.findOne({
+      partner: "imavi",
+      createdAt: {
+        $gte: startOfYear,
+        $lt: endOfYear
+      }
+    }, {
+      sort: {createdAt: -1}
+    });
+
+    let noUrut;
+    if(!dataSurat) {
+      noUrut = "001"
+    }
+    else {
+      noUrut = dataSurat.letterNumber.split('/')[0];
+      noUrut = parseInt(noUrut) + 1;
+    }
+
+    const formattedCount = noUrut.toString().padStart(3, '0');
+    noSuratFinal = `${formattedCount}/${currentMonth}/${currentYear}/${type}`
+    data.letterNumber = noSuratFinal
+    const thisUser = Meteor.userId();
+    const dataUser = Meteor.users.findOne({
+        _id: thisUser,
+    });
+    data.partner = "imavi";
+    data.createdAt = new Date();
+    data.createdBy = Meteor.userId();
+    data.createdByName = dataUser.fullname ?? dataUser.fullName ?? "-"
+    return Letters.insert(data);
+  },
+  "warningLetter.details"(id) {
+    return Letters.findOne({_id: id})
+  },
+  "warningLetter.edit"(id, data) {
+    let {name, description, date, employeeId, links} = data;
+    const tanggal = new Date(date);
+    delete data.date;
+    data.date = tanggal
+    return Letters.update({_id: id}, {
+      $set: data
+    })
   }
 });
+
+function getCurrentMonthInRoman() {
+  const monthsInRoman = [
+    "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"
+  ];
+  
+  const currentMonthIndex = new Date().getMonth(); // Mendapatkan bulan saat ini (0-11)
+  return monthsInRoman[currentMonthIndex];
+}

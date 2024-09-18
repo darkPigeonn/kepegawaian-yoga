@@ -2141,6 +2141,148 @@
     </style>
 </template>  
 
+<template name="listWarningLetters">
+    <div class="container">
+        <h2>Surat Peringatan</h2>
+        {{#if isInRole "chief"}}
+            <div class="d-flex justify-content-end mb-2">
+                <a href="/warningLetters/create" class="btn btn-primary">+ Tambah</a>
+            </div>
+        {{/if}}
+        <div class="d-lg-block table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nomor Surat</th>
+                        <th scope="col">Judul</th>
+                        <th scope="col">Tanggal Terbit</th>
+                        <th scope="col">Berkas</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each dataSp}}
+                        <tr>
+                            <td>{{letterNumber}}</td>
+                            <td>name</td>
+                            <td>{{formatHRDate date}}</td>
+                            <td>
+                                {{#if links}}
+                                    <a href="https://drive.google.com/viewerng/viewer?url={{links}}" class="pdf-link" style="font-size: 1.5em;">
+                                        <i class="fas fa-file-word"></i>
+                                    </a>
+                                {{else}}
+                                    <i class="fas fa-file-word" style="font-size: 1.5em; color: gray;"></i>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <a href="/warningLetters/detail/{{_id}}">
+                                    <button class="btn btn-primary" type="button" id="btn_details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<template name="createWarningLetters">
+    <div class="container">
+        <div class="title-page">
+            <h3> Tambah Surat Peringatan </h3>
+        </div>
+        <form>
+            <div class="form-group">
+                <label>Nama Surat</label>
+                <input type="text" id="input_name" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label>Keterangan</label><br>
+                <textarea id="description" style="width: 100%;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Tanggal Surat Terbit</label>
+                <input type="date" id="input_tanggal" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Pegawai</label>
+                <select class="form-control" id="select-employee">
+                    <option value="0">Pilih Pegawai</option>
+                    {{#each employee}}
+                    <option value={{_id}}>{{full_name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <br>
+            {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+            <!-- <button type="button" class="btn btn-primary" onclick="previewPDF()">Preview</button> -->
+            <br><br>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+            </div>
+        </form>    
+    </div>
+</template>
+
+<template name="detailWarningLetters">
+    <div class="container">
+        <div class="section-title-page">
+            <h3>Surat Keluar</h3>
+        </div>
+        <div class="section-content-page">
+            <div class="page">
+                <div class="form-group">
+                    <label for="">Nomor Surat</label>
+                    <input type="text" id="letterNumber" class="form-control" value="{{dataSp.letterNumber}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Nama Surat</label>
+                    <input type="text" id="input_name" class="form-control" required  value="{{dataSp.name}}"/>
+                </div>
+                <div class="form-group">
+                    <label>Keterangan</label><br>
+                    <textarea id="description" style="width: 100%;" value="{{dataSp.description}}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Surat Terbit</label>
+                    <input type="date" id="input_tanggal" class="form-control" value="{{dateToHTML dataSp.date}}"/>
+                </div>
+                <div class="form-group">
+                    <label>Pegawai</label>
+                    <select class="form-control" id="select-employee">
+                        <option value="0">Pilih Pegawai</option>
+                        {{#each employee}}
+                            {{#if equals dataSp.employeeId _id}}
+                                <option value={{_id}} selected>{{full_name}}</option>
+                            {{else}}
+                                <option value={{_id}}>{{full_name}}</option>
+                            {{/if}}
+                        {{/each}}
+                    </select>
+                </div>
+                {{> inputMultipleFilesSurat label="Pilih File Surat" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+
+                {{#if dataSp.links}}
+                    {{#each dataSp.links}}
+                        <h3>Bila preview surat tidak tampil, silahkan reload halaman ini atau unduh file dengan tombol unduh</h3>
+                        <iframe src="https://docs.google.com/gview?url={{link}}&embedded=true" width="100%" height="500" style="border: none;"></iframe>
+                        <a href="{{link}}" class="btn btn-primary" download>
+                            <i class="fas fa-download"></i> Unduh
+                        </a>
+                    {{/each}}
+                    <br><br>
+                {{/if}}
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="submit">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 
 <template name="timelineWorkProgram">
     <div class="box">
@@ -2325,7 +2467,7 @@
     </style>
 </template>
 
-  <template name="inputMultipleFilesSurat">
+<template name="inputMultipleFilesSurat">
 	<div class="form-group">
 	  <label for="">{{label}}</label>
 	  <div class="input-file-wrapper">

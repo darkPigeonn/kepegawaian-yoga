@@ -1465,6 +1465,347 @@ Template.timelineWorkProgram.helpers({
   }
 });
 
+Template.listWarningLetters.onCreated(function () {
+  const self = this;
+  self.dataSp = new ReactiveVar([]);
+  Meteor.call("warningLetter.getAll", function(error, result) {
+    if(result) {
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
+        if(element.links.length > 0) {
+          element.links = element.links[0].link
+        }
+      }
+      self.dataSp.set(result)
+    } 
+    else{
+      console.log(error);
+    }
+  })
+})
+
+Template.listWarningLetters.helpers({
+  dataSp() {
+    return Template.instance().dataSp.get();
+  }
+})
+
+Template.createWarningLetters.onCreated(function () {
+  const self = this;
+  self.buktiSurat = new ReactiveVar([]);
+  self.employee = new ReactiveVar();
+  Meteor.call("employee.getAll", function (error, result) {
+    if(result) {
+      self.employee.set(result)
+    }
+    else {
+      console.log(error);
+    }
+  })
+});
+
+Template.createWarningLetters.helpers({
+  buktiSurat() {
+    return Template.instance().buktiSurat.get();
+  },
+  employee() {
+    return Template.instance().employee.get();
+  }
+});
+
+Template.createWarningLetters.events({
+  "change #buktiSurat": function (e, t) {
+    const buktiSurat = t.buktiSurat.get();
+    const files = $("#buktiSurat").prop("files");
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      if (file) {
+        const reader = new FileReader();
+        const body = {
+          file: file,
+        };
+        reader.addEventListener("load", function () {
+          body.src = this.result;
+          if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
+            $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
+              "href",
+              this.result
+            );
+          }
+        });
+        reader.readAsDataURL(file);
+        buktiSurat.push(body);
+        t.buktiSurat.set(buktiSurat);
+      }
+    }
+  },
+  "click .remove-buktiSurat": function (e, t) {
+    e.preventDefault();
+    const index = $(e.target).attr("milik");
+    const buktiSurat = t.buktiSurat.get();
+    buktiSurat.splice(parseInt(index), 1);
+    t.buktiSurat.set(buktiSurat);
+  },
+  "click #btn_save"(e, t) {
+    e.preventDefault();
+    const files = t.buktiSurat.get();
+    const name = $("#input_name").val();
+    const description = $("#description").val();
+    const date = $("#input_tanggal").val();
+    const employeeId = $("#select-employee").val();
+    if(employeeId == 0) {
+      Swal.fire({
+        title: "Gagal",
+        text: "Silahkan pilih pegawai terlebih dahulu",
+        showConfirmButton: true,
+        allowOutsideClick: true,
+      });
+    }
+    else {
+      const thisForm = {};
+      thisForm[files] = [];
+      Swal.fire({
+        title: "Konfirmasi",
+        text: "Apakah anda ingin menyimpan data ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Simpan",
+        cancelButtonText: "Batal"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Loading...",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+  
+          for (let index = 0; index < files.length; index++) {
+            const fileName = files[index].file.name;
+            const uploadData = {
+              fileName: "kepegawaian/surat-peringatan/" + fileName,
+              type: "image/png",
+              Body: files[index].file
+            }
+            const linkUpload = await uploadFiles(uploadData);
+            thisForm[files].push(
+            {
+              name: files[index].file.name,
+              link: linkUpload
+            });
+          }
+          const linksBukti = thisForm[files];
+          const data = {
+            name,
+            description,
+            date,
+            employeeId,
+            type: "SP",
+            links: linksBukti
+          }
+          Meteor.call(
+            "warningLetter.create",
+            data,
+            function (error, result) {
+              if (result) {
+                Swal.close();
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Surat Peringatan berhasil dibuat",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                location.reload();
+                history.back();
+              } else {
+                console.log(error);
+                Swal.close();
+                Swal.fire({
+                  title: "Gagal",
+                  text: error.reason,
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+            }
+          );
+        }
+      })
+    }
+    
+  }
+})
+
+Template.detailWarningLetters.onCreated(function() {
+  const self = this;
+  self.buktiSurat = new ReactiveVar([]);
+  self.dataSp = new ReactiveVar();
+  const id = FlowRouter.current().params._id;
+  self.employee = new ReactiveVar();
+  Meteor.call("employee.getAll", function (error, result) {
+    if(result) {
+      self.employee.set(result)
+    }
+    else {
+      console.log(error);
+    }
+  })
+  Meteor.call("warningLetter.details", id, function (error, result) {
+    if(result) {
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
+        if(element.links.length > 0) {
+          element.links = element.links[0].link
+        }
+      }
+      self.dataSp.set(result);
+    }
+    else {
+      console.log(error);
+    }
+  })
+})
+
+Template.detailWarningLetters.helpers({
+  dataSp() {
+    return Template.instance().dataSp.get();
+  },
+  employee() {
+    return Template.instance().employee.get();
+  },
+  buktiSurat() {
+    return Template.instance().buktiSurat.get();
+  }
+})
+
+Template.detailWarningLetters.events({
+  "change #buktiSurat": function (e, t) {
+    const buktiSurat = t.buktiSurat.get();
+    const files = $("#buktiSurat").prop("files");
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      if (file) {
+        const reader = new FileReader();
+        const body = {
+          file: file,
+        };
+        reader.addEventListener("load", function () {
+          body.src = this.result;
+          if (file.type != ".pdf" || file.type != ".docx" || file.type != ".doc") {
+            $(`#buktiSurat-${buktiSurat.length - 1}`).attr(
+              "href",
+              this.result
+            );
+          }
+        });
+        reader.readAsDataURL(file);
+        buktiSurat.push(body);
+        t.buktiSurat.set(buktiSurat);
+      }
+    }
+  },
+  "click .remove-buktiSurat": function (e, t) {
+    e.preventDefault();
+    const index = $(e.target).attr("milik");
+    const buktiSurat = t.buktiSurat.get();
+    buktiSurat.splice(parseInt(index), 1);
+    t.buktiSurat.set(buktiSurat);
+  },
+  "click #submit"(e, t) {
+    e.preventDefault();
+    const files = t.buktiSurat.get();
+    const name = $("#input_name").val();
+    const description = $("#description").val();
+    const date = $("#input_tanggal").val();
+    const employeeId = $("#select-employee").val();
+    const id = FlowRouter.current().params._id;
+    if(employeeId == 0) {
+      Swal.fire({
+        title: "Gagal",
+        text: "Silahkan pilih pegawai terlebih dahulu",
+        showConfirmButton: true,
+        allowOutsideClick: true,
+      });
+    }
+    else {
+      const thisForm = {};
+      thisForm[files] = [];
+      Swal.fire({
+        title: "Konfirmasi",
+        text: "Apakah anda ingin menyimpan data ini?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Simpan",
+        cancelButtonText: "Batal"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Loading...",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+  
+          for (let index = 0; index < files.length; index++) {
+            const fileName = files[index].file.name;
+            const uploadData = {
+              fileName: "kepegawaian/surat-peringatan/" + fileName,
+              type: "image/png",
+              Body: files[index].file
+            }
+            const linkUpload = await uploadFiles(uploadData);
+            thisForm[files].push(
+            {
+              name: files[index].file.name,
+              link: linkUpload
+            });
+          }
+          const linksBukti = thisForm[files];
+          const data = {
+            name,
+            description,
+            date,
+            employeeId,
+            links: linksBukti
+          }
+          Meteor.call(
+            "warningLetter.edit", 
+            id,
+            data,
+            function (error, result) {
+              if (result) {
+                Swal.close();
+                Swal.fire({
+                  title: "Berhasil",
+                  text: "Surat Peringatan berhasil diubah",
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+                location.reload();
+                history.back();
+              } else {
+                console.log(error);
+                Swal.close();
+                Swal.fire({
+                  title: "Gagal",
+                  text: error.reason,
+                  showConfirmButton: true,
+                  allowOutsideClick: true,
+                });
+              }
+            }
+          );
+        }
+      })
+    }
+    
+  }
+})
+
 // Template.letterKopTemplate.onCreated(function (){
 //   const self = this;
 //   self.thisUser = new ReactiveVar();

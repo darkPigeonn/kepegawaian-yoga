@@ -587,3 +587,21 @@ FlowRouter.route("/permits", {
     this.render("App_body", "listPermits");
   },
 });
+FlowRouter.route("/warningLetters", {
+  name: "listWarningLetters",
+  action() {
+    this.render("App_body", "listWarningLetters")
+  }
+})
+FlowRouter.route("/warningLetters/create", {
+  name: "createWarningLetters",
+  action() {
+    this.render("App_body", "createWarningLetters")
+  }
+})
+FlowRouter.route("/warningLetters/detail/:_id", {
+  name: "detailWarningLetters",
+  action() {
+    this.render("App_body", "detailWarningLetters")
+  }
+})
