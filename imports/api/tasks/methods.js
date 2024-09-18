@@ -67,7 +67,7 @@ Meteor.methods({
             _id: thisUser,
         });
         // ADMIN DAPAT MELIHAT SEMUA TASK YANG ADA
-        if(relatedUser.roles[0] == "admin"){
+        if(relatedUser.roles[0] == "admin" || relatedUser.roles[0] == "chief"){
             const findTasks = Tasks.find({partner: relatedUser.partners[0]}).fetch();
 
             for (let index = 0; index < findTasks.length; index++) {

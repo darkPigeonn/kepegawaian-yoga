@@ -14,7 +14,7 @@ Meteor.methods({
       });
   
       const userRoles = relatedUser.roles || [];
-      const checkRoles = ["admin", "super-admin"];
+      const checkRoles = ["admin", "super-admin", "chief"];
       const isAdmin = userRoles.some(role => checkRoles.includes(role));
 
       let findProjects;
