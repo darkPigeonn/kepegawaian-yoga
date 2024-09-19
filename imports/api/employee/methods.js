@@ -147,14 +147,14 @@ Meteor.methods({
       return Employee.find({statusDelete: 1, partnerCode : partnerCode}).fetch();
     },
     async "employee.insert"(data) {
-      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,department_unit,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,accountNumberBank,accountNumberName,linkGambar,golongan } = data
+      let { full_name,identification_number,place_of_birth,dob,gender,address,phone_number,email_address,job_position,departmentId,start_date,employment_status,base_salary,allowances,deductions,highest_education,education_institution,major_in_highest_education,academic_degree,previous_work_experience,marital_status,number_of_children,emergency_contact_name,emergency_contact_phone,accountNumber,accountNumberBank,accountNumberName,linkGambar,golongan } = data
       check(full_name, String);
       check(identification_number, String);
       check(gender, String);
       check(address, String);
       check(email_address, String);
       check(job_position, String);
-      check(department_unit, String);
+      check(departmentId, String);
       check(employment_status, String);
       check(highest_education, String);
       check(education_institution, String);
@@ -180,7 +180,7 @@ Meteor.methods({
       partnerCode = adminPartner.partners[0];
       createdBy = adminPartner.fullname;
 
-      const dataDepartment = Departement.findOne({_id: department_unit});
+      const dataDepartment = Departement.findOne({_id: departmentId});
       let name;
       if(dataDepartment) {
         name = dataDepartment.name
@@ -197,7 +197,7 @@ Meteor.methods({
         email_address,
         job_position,
         department_unit: name,
-        departmentId: department_unit,
+        departmentId,
         start_date,
         employment_status,
         base_salary,
@@ -224,12 +224,12 @@ Meteor.methods({
         createdBy: createdBy,
         historyMutasi: [
           {
-            name: department_unit,
+            name: dataSave.department_unit,
             timestamp: new Date()
           }
         ]
       };
-      return await Employee.insert(dataSave);
+      return Employee.insert(dataSave);
     },
 
     async "employee.insertCSV"(data) {

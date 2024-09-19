@@ -1,0 +1,141 @@
+<template name="listAnnouncements">
+    <div class="container">
+        <h2>Pengumuman</h2>
+        <div class="d-flex justify-content-end mb-2">
+            <a href="/announcements/create" class="btn btn-primary">+ Tambah</a>
+        </div>
+
+        {{#each dataAnnouncements}}
+            <div id="announcementList">
+                <!-- Contoh Pengumuman -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title" style="text-transform: capitalize;">{{title}}</h4>
+                        <p class="card-text">
+                        <small class="text-muted">Author: {{author}}</small><br>
+                        <small class="text-muted">Publish Date: {{formatHRDate publishDate}}</small>
+                        </p>
+                        <a href="/announcements/detail/123" class="btn btn-primary">Lihat Detail</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</template>
+
+<template name="createAnnouncements">
+    <div class="container">
+        <div class="title-page mt-3">
+            <h3>Tambah Pengumuman Baru</h3>
+        </div>
+
+        <hr class="my-3" style="border: 1px solid lightgray;">
+        
+        <div class="mt-2">
+            <form>
+                <div class="form-group mb-3">
+                    <label class="fw-bold">Judul Pengumuman</label>
+                    <input type="text" id="title" class="form-control" required/>
+                </div>
+                {{#if isInRole "admin, chief"}}
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Tujuan Pengumuman</label>
+                        <select class="form-control" id="select-type">
+                            <option value="0">Pilih Tujuan</option>
+                            <option value="1">Semua</option>
+                            <option value="2">Departemen</option>
+                            <option value="3">Proyek</option>
+                        </select>
+                    </div>
+                    {{#if equals type 2}}
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Pilih Departemen</label>
+                            <select id="select-department" class="form-control select2" multiple>
+                                {{#each department}}
+                                    <option value="{{_id}}">{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{#if equals type 3}}
+                        <div class="form-group mb-3">
+                            <label class="fw-bold">Pilih Proyek</label>
+                            <select id="select-project" class="form-control select2" multiple>
+                                {{#each project}}
+                                    <option value="{{_id}}">{{nama_project}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                {{/if}}
+                {{#if isInRole "staff"}}
+                    <div class="form-gorup mb-3">
+                        <label class="fw-bold">Pilih Proyek</label>
+                        <select id="select-project" class="form-control select2" multiple>
+                            {{#each project}}
+                                <option value="{{_id}}">{{nama_project}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                {{/if}}
+                <div class="form-group mb-3">
+                    <label for="" class="fw-bold">Konten</label>
+                    <!-- The toolbar will be rendered in this container. -->
+                    <div id="toolbar-containerContent"></div>
+
+                    <!-- This container will become the editable. -->
+                    <div id="editorContent" class="toolbar-containerContent"
+                        style="background-color: white;color: black;">
+                    </div>
+                </div>
+                <div class="form-gorup mb-3">
+                    <label class="fw-bold">Tanggal Publish</label>
+                    <input type="date" id="publishDate" class="form-control">
+                </div>
+                <div class="form-gorup mb-3">
+                    <label class="fw-bold">Tanggal Selesai</label>
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+                {{> inputMultipleFilesPengumuman label="Pilih Berkas Tambahan" id="buktiSurat" files=buktiSurat buttonLabel="Upload"}}
+                <div class="d-grid gap-2 my-3">
+                    <button class="btn btn-primary" type="submit" id="btn_save">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+
+<template name="inputMultipleFilesPengumuman">
+	<div class="form-group">
+	  <label for="" class="fw-bold">{{label}}</label>
+	  <div class="input-file-wrapper">
+		<input type="file" id="{{id}}" class="{{id}} mt-3 hide hidden d-none" name="filename"
+		  accept=".png, .jpg, .jpeg, .pdf" multiple>
+		<label class="btn btn-primary"
+		  for="{{ id }}">{{#if buttonLabel }}{{ buttonLabel}}{{else}}{{ label }}{{/if}}</label>
+	  </div>
+	  <div class="d-flex flex-row">
+		{{#each file in files}}
+            {{#if equals file.type 'image/png'}}
+                <div class="uploaded-image mr-2">
+                <img src="{{file.src}}">
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{else}}
+                <div class="uploaded-image mr-2">
+                <a download id="{{id}}-{{@index}}" href="{{file.src}}" target="_blank">
+                    <i class="fa fa-file"></i>
+                    <p class="file-name">{{file.file.name}}</p>
+                </a>
+                <button class="btn btn-danger remove-image remove-{{id}}" milik="{{@index}}">
+                    <i class="fa fa-trash" milik="{{@index}}"></i>
+                </button>
+                </div>
+            {{/if}}
+		{{/each}}
+	  </div>
+	</div>
+</template>

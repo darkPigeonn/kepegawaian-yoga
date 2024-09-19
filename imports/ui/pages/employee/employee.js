@@ -378,7 +378,7 @@ Template.employee_create.events({
   },
   async "click #btn_save"(e, t) {
     e.preventDefault();
-
+    
     const full_name = $("#input_fullName").val();
     const identification_number = $("#input_identificationNumber").val();
     const place_of_birth = $("#input_placeOfBirth").val();
@@ -389,6 +389,7 @@ Template.employee_create.events({
     const email_address = $("#input_email").val();
     const job_position = $("#input_jobPosition").val();
     const department_unit = $("#input_departementUnit").val();
+    const selectedName = $("#input_departementUnit option:selected").text();
     let start_date = $("#input_startDate").val();
     const employment_status = $("#input_employmentStatus").val();
     const base_salary = convert2number($("#input_baseSalery").val());
@@ -494,7 +495,6 @@ Template.employee_create.events({
       phone_number,
       email_address,
       job_position,
-      department_unit: selectedName,
       departmentId: department_unit,
       start_date,
       employment_status,

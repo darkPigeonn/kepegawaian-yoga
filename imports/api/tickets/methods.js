@@ -138,7 +138,7 @@ Meteor.methods({
                 categoryId: 30,
                 categoryName: "Ticket",
                 createdAt: new Date(),
-                createdBy: element._id,
+                createdBy: relatedEmployee._id,
                 actionLink: `/tickets/detail/${idTicket._str}`
             };
             Notifications.insert(newDataSave);
@@ -170,7 +170,7 @@ Meteor.methods({
                     categoryId: 30,
                     categoryName: "Ticket",
                     createdAt: new Date(),
-                    createdBy: element._id,
+                    createdBy: relatedEmployee._id,
                     actionLink: `/tickets/detail/${objectId._str}`
                 };
                 Notifications.insert(newDataSave);
@@ -206,7 +206,7 @@ Meteor.methods({
                     categoryId: 30,
                     categoryName: "Ticket",
                     createdAt: new Date(),
-                    createdBy: element._id,
+                    createdBy: relatedEmployee._id,
                     actionLink: `/tickets/detail/${objectId._str}`
                 };
                 Notifications.insert(newDataSave);

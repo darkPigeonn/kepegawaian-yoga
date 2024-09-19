@@ -17,6 +17,7 @@ import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/payroll/payroll.js";
+import "../../ui/pages/announcement/announcement.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -609,5 +610,20 @@ FlowRouter.route("/warningLetters/detail/:_id", {
   name: "detailWarningLetters",
   action() {
     this.render("App_body", "detailWarningLetters")
+  }
+})
+
+// Pengumuman / Announcement
+FlowRouter.route("/announcements", {
+  name: "listAnnouncements",
+  action() {
+    this.render("App_body", "listAnnouncements")
+  }
+})
+
+FlowRouter.route("/announcements/create", {
+  name: "createAnnouncements",
+  action() {
+    this.render("App_body", "createAnnouncements")
   }
 })
