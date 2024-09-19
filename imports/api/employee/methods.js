@@ -224,7 +224,7 @@ Meteor.methods({
         createdBy: createdBy,
         historyMutasi: [
           {
-            name: dataSave.department_unit,
+            name: name,
             timestamp: new Date()
           }
         ]
