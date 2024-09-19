@@ -19,12 +19,30 @@ Meteor.methods({
             return Announcements.find().fetch();
         }
         const currentDate = new Date();
-
+        const relatedEmployee = Employee.findOne({_id: adminPartner.profileId})
+        const departmentId = relatedEmployee.departmentId ?? "";
+        const projects = Projects.find({"members.id": relatedEmployee._id}).fetch()
+        let arrProjects = [];
+        for (let index = 0; index < projects.length; index++) {
+            const element = projects[index];
+            arrProjects.push(element._id)
+        }
+        console.log(arrProjects);
+        
         const announcements = Announcements.find({
-            publishDate: { $lte: currentDate }, 
-            endDate: { $gte: currentDate }
+            $and: [
+                { publishDate: { $lte: currentDate } },  // publishDate <= currentDate
+                { endDate: { $gte: currentDate } },      // endDate >= currentDate
+                {
+                    $or: [
+                        { type: 1 },                            // Pengumuman dengan type = 1
+                        { departmentId: departmentId },         // Pengumuman yang terhubung dengan departmentId
+                        { projectId: { $in: arrProjects } }     // Pengumuman yang terhubung dengan salah satu projectId
+                    ]
+                }
+            ]
         }, {
-            sort: { publishDate: -1 }
+            sort: { publishDate: -1 }  // Urutkan berdasarkan publishDate terbaru di awal
         }).fetch();
         return announcements;
     },
@@ -57,6 +75,7 @@ Meteor.methods({
                     endDate: dateEnd,
                     status: true,
                     links,
+                    type,
                     outlets: "imavi",
                     createdAt: new Date(),
                     createdBy: adminPartner._id
@@ -102,6 +121,7 @@ Meteor.methods({
                         status: true,
                         links,
                         projectId: element,
+                        type,
                         outlets: "imavi",
                         createdAt: new Date(),
                         createdBy: adminPartner._id
@@ -143,7 +163,8 @@ Meteor.methods({
                         endDate: dateEnd,
                         status: true,
                         links,
-                        projectId: element,
+                        departmentId: element,
+                        type,
                         outlets: "imavi",
                         createdAt: new Date(),
                         createdBy: adminPartner._id
@@ -187,6 +208,7 @@ Meteor.methods({
                     status: true,
                     links,
                     projectId: element,
+                    type: 3,
                     outlets: "imavi",
                     createdAt: new Date(),
                     createdBy: relatedEmployee._id
