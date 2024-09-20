@@ -16,7 +16,12 @@ Meteor.methods({
             _id: thisUser,
         });
         if(adminPartner.roles[0] == "admin" || adminPartner.roles[0] == "chief") {
-            return Announcements.find().fetch();
+            const data = Announcements.find().fetch();
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                element.isEdit = true;
+            }
+            return data
         }
         const currentDate = new Date();
         const relatedEmployee = Employee.findOne({_id: adminPartner.profileId})
@@ -27,8 +32,6 @@ Meteor.methods({
             const element = projects[index];
             arrProjects.push(element._id)
         }
-        console.log(arrProjects);
-        
         const announcements = Announcements.find({
             $and: [
                 { publishDate: { $lte: currentDate } },  // publishDate <= currentDate
@@ -44,6 +47,12 @@ Meteor.methods({
         }, {
             sort: { publishDate: -1 }  // Urutkan berdasarkan publishDate terbaru di awal
         }).fetch();
+        for (let index = 0; index < announcements.length; index++) {
+            const element = announcements[index];
+            if(element.createdBy == relatedEmployee._id) {
+                element.isEdit = true
+            }
+        }
         return announcements;
     },
     "announcement.create"(data) {
@@ -57,7 +66,7 @@ Meteor.methods({
         let dateEnd = new Date(endDate);
         datePublish.setUTCDate(datePublish.getUTCDate() - 1);
         datePublish.setUTCHours(17, 0, 0, 0);
-        dateEnd.setUTCHours(17, 0, 0, 0);
+        dateEnd.setUTCHours(16, 59, 59, 999);
         type = parseInt(type)
         if(adminPartner.roles[0] == "admin" || adminPartner.roles[0] == "chief") {
             if(type == 1) {
@@ -238,5 +247,178 @@ Meteor.methods({
             }
             return true
         }
+    },
+    "announcement.edit"(data, id) {
+        check(id, String)
+        let {title, idProject, idDepartment, content, publishDate, endDate, links, type} = data;
+        const thisUser = Meteor.userId();
+        const adminPartner = Meteor.users.findOne({
+            _id: thisUser,
+        });
+        const relatedEmployee = Employee.findOne({_id: adminPartner.profileId});
+        let datePublish = new Date(publishDate);
+        let dateEnd = new Date(endDate);
+        datePublish.setUTCDate(datePublish.getUTCDate() - 1);
+        datePublish.setUTCHours(17, 0, 0, 0);
+        dateEnd.setUTCHours(16, 59, 59, 999);
+        type = parseInt(type)
+        if(adminPartner.roles[0] == "admin" || adminPartner.roles[0] == "chief") {
+            if(type == 1) {
+                const slug = slugify(title, {
+                    lower: true,
+                    strict: true,
+                });
+                const dataSave = {
+                    title,
+                    slug,
+                    content,
+                    publishDate: datePublish,
+                    endDate: dateEnd,
+                    type: 1,
+                    links,
+                }
+                const insert = Announcements.update({_id: id}, {$set: dataSave})
+                let partnerCode;
+                if(adminPartner.partners){
+                    partnerCode = adminPartner.partners[0];
+                  }
+                const dataEmployee = Employee.find({status: 10, statusDelete: 0, partnerCode: partnerCode }).fetch();
+                for (let index = 0; index < dataEmployee.length; index++) {
+                    const element = dataEmployee[index];
+                    const dataNotification = {
+                        timestamp: new Date(),
+                        senderId: adminPartner._id,
+                        receiverId: element._id,
+                        message: `Terdapat perubahan pada pengumuman`,
+                        categoryId: 40,
+                        categoryName: "Announcement",
+                        createdAt: new Date(),
+                        createdBy: adminPartner._id,
+                        actionLink: `/announcements/detail/${insert}`
+                    }
+                    Notifications.insert(dataNotification)
+                }
+                return true
+            }
+            else if(type == 3) {
+                const slug = slugify(title, {
+                    lower: true,
+                    strict: true,
+                });
+                for (let index = 0; index < idProject.length; index++) {
+                    const element = idProject[index];
+                    const dataSave = {
+                        title,
+                        slug,
+                        content,
+                        publishDate: datePublish,
+                        endDate: dateEnd,
+                        links,
+                        projectId: element,
+                        type: 3
+                    }
+                    const insert = Announcements.update({_id: id}, {$set: dataSave})
+                    const dataProject = Projects.findOne({_id: element})
+                    for (let j = 0; j < dataProject.members.length; j++) {
+                        const element = dataProject.members[j];
+                        const dataNotification = {
+                            timestamp: new Date(),
+                            senderId: adminPartner._id,
+                            receiverId: element.id,
+                            message: `Terdapat perubahan pada pengumuman`,
+                            categoryId: 40,
+                            categoryName: "Announcement",
+                            createdAt: new Date(),
+                            createdBy: adminPartner._id,
+                            actionLink: `/announcements/detail/${insert}`
+                        }
+                        Notifications.insert(dataNotification)
+                    }
+                }
+                return true
+            }
+            else if(type == 2) {
+                const slug = slugify(title, {
+                    lower: true,
+                    strict: true,
+                });
+                for (let index = 0; index < idDepartment.length; index++) {
+                    const element = idDepartment[index];
+                    const dataSave = {
+                        title,
+                        slug,
+                        content,
+                        publishDate: datePublish,
+                        endDate: dateEnd,
+                        links,
+                        departmentId: element,
+                        type: 2
+                    }
+                    const insert = Announcements.update({_id: id}, {$set: dataSave})
+                    const dataMemberDepartment = Employee.find({departmentId: element})
+                    for (let j = 0; j < dataMemberDepartment.length; j++) {
+                        const element = dataMemberDepartment[j];
+                        const dataNotification = {
+                            timestamp: new Date(),
+                            senderId: adminPartner._id,
+                            receiverId: element._id,
+                            message: `Terdapat perubahan pada pengumuman`,
+                            categoryId: 40,
+                            categoryName: "Announcement",
+                            createdAt: new Date(),
+                            createdBy: adminPartner._id,
+                            actionLink: `/announcements/detail/${insert}`
+                        }
+                        Notifications.insert(dataNotification)
+                    }
+                }
+                return true
+            }
+        }
+        else if(adminPartner.roles[0] == "staff") {
+            const slug = slugify(title, {
+                lower: true,
+                strict: true,
+            });
+            for (let index = 0; index < idProject.length; index++) {
+                const element = idProject[index];
+                const dataSave = {
+                    title,
+                    slug,
+                    content,
+                    publishDate: datePublish,
+                    endDate: dateEnd,
+                    links,
+                    projectId: element,
+                    type: 3
+                }
+                const insert = Announcements.update({_id: id}, {$set: dataSave})
+                const dataProject = Projects.findOne({_id: element})
+                for (let j = 0; j < dataProject.members.length; j++) {
+                    const element = dataProject.members[j];
+                    if(element.id == relatedEmployee._id) {
+                        continue
+                    }
+                    else {
+                        const dataNotification = {
+                            timestamp: new Date(),
+                            senderId: relatedEmployee._id,
+                            receiverId: element.id,
+                            message: `Terdapat perubahan pada pengumuman`,
+                            categoryId: 40,
+                            categoryName: "Announcement",
+                            createdAt: new Date(),
+                            createdBy: relatedEmployee._id,
+                            actionLink: `/announcements/detail/${insert}`
+                        }
+                        Notifications.insert(dataNotification)
+                    }
+                }
+            }
+            return true
+        }
+    },
+    "announcement.getDetail"(id) {
+        return Announcements.findOne({_id:id})
     }
 })

@@ -627,3 +627,17 @@ FlowRouter.route("/announcements/create", {
     this.render("App_body", "createAnnouncements")
   }
 })
+
+FlowRouter.route("/announcements/detail/:id", {
+  name: "detailAnnouncements",
+  action() {
+    this.render("App_body", "detailAnnouncements")
+  }
+})
+
+FlowRouter.route("/announcements/edit/:id", {
+  name: "editAnnouncements",
+  action() {
+    this.render("App_body", "editAnnouncements")
+  }
+})
