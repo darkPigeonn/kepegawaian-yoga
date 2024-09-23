@@ -34,7 +34,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each myProposals}}
                         <tr>
@@ -56,28 +56,24 @@
                             </td>
                             <td>
                                 {{#if equals status -1}}
-                                <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat"
-                                    milik="{{_id}}">
+                                <a href="/proposal/edit/{{_id}}" class="btn btn-warning" id="btn-lihat" milik="{{_id}}">
                                     Edit</a>
                                 <button class="btn btn-primary" id="btn-kirim" milik="{{ _id }}">Kirim</button>
                                 {{else}}
-                                    <a href="/proposal/preview/{{_id}}" class="btn btn-warning"
-                                        milik="{{_id}}">
-                                        Lihat</a>
+                                <a href="/proposal/preview/{{_id}}" class="btn btn-warning" milik="{{_id}}">
+                                    Lihat</a>
                                 {{/if}}
                                 <!-- {{#if equals currentState.status 90}} -->
                                 {{#if equals status "90"}}
-                                    <a href="/proposal/edit/{{_id}}" class="btn btn-primary"
-                                        milik="{{_id}}">
-                                        Perbaiki</a>
+                                <a href="/proposal/edit/{{_id}}" class="btn btn-primary" milik="{{_id}}">
+                                    Perbaiki</a>
                                 {{/if}}
                                 {{#if equals status "60"}}
-                                    <a href="/proposal/print/{{_id}}" class="btn btn-primary"
-                                    milik="{{_id}}">
+                                <a href="/proposal/print/{{_id}}" class="btn btn-primary" milik="{{_id}}">
                                     Print</a>
                                 {{/if}}
                             </td>
-    
+
                         </tr>
                         {{/each}}
                     </tbody>
@@ -106,7 +102,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each incomingProposals}}
                         <tr>
@@ -129,12 +125,14 @@
                             <td>
                                 <!-- {{#if equals currentState.status "99"}} -->
                                 {{#if equals status "99"}}
-                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
-                                 {{ else }}
-                                 <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
+                                {{ else }}
+                                <a href="/proposal/preview/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
                                 {{/if}}
                             </td>
-    
+
                         </tr>
                         {{/each}}
                     </tbody>
@@ -163,7 +161,7 @@
                             Aksi
                         </th>
                     </thead>
-    
+
                     <tbody>
                         {{#each dataProposalHistory}}
                         <tr>
@@ -184,7 +182,8 @@
                                 {{statusDetail status}}
                             </td>
                             <td>
-                                <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat" milik="{{_id}}">Details</a>
+                                <a href="/proposal/view/{{_id}}" class="btn btn-primary" id="btn-lihat"
+                                    milik="{{_id}}">Details</a>
                             </td>
                         </tr>
                         {{/each}}
@@ -329,19 +328,19 @@
                 </thead>
                 <tbody>
                     {{#each i in daftarAlur}}
-                        <tr>
-                            <td>
-                                {{setTableNumber @index}}
-                            </td>
-                            <td>
-                                {{setJabatanFormat i}}
-                            </td>
-                            <!-- <td>
+                    <tr>
+                        <td>
+                            {{setTableNumber @index}}
+                        </td>
+                        <td>
+                            {{setJabatanFormat i}}
+                        </td>
+                        <!-- <td>
                                 <button class="btn btn-danger" id="btn-remove" milik={{i}}>
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td> -->
-                        </tr>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
@@ -425,13 +424,13 @@
 
         <div class="col-md-12">
             {{#if proposalData.note}}
-                <h4>Catatan</h4>
-                <div class="form mb-9" style="margin-bottom: 50px; background-color: red;padding: 12px;">
-                    {{#each proposalData.note}}
-                    <span style="color: white;">{{noteByName}} : </span>
-                    <span style="padding: 30px;color: white;">{{note}}</span>
-                    {{/each}}
-                </div>
+            <h4>Catatan</h4>
+            <div class="form mb-9" style="margin-bottom: 50px; background-color: red;padding: 12px;">
+                {{#each proposalData.note}}
+                <span style="color: white;">{{noteByName}} : </span>
+                <span style="padding: 30px;color: white;">{{note}}</span>
+                {{/each}}
+            </div>
             {{/if}}
             <div id="test" style="background-color: white;">
                 <page>
@@ -445,7 +444,8 @@
                                 <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                                     <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                                     <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                        Surabaya, Jawa Timur 60113</h6>
                                 </td>
                             </tr>
                         </table>
@@ -563,7 +563,7 @@
                                 <div class="col-md-6 text-center">
                                     Surabaya,{{formatHRDate proposalData.updateAt}}
                                     <br>
-                                    Staff 
+                                    Staff
                                     <!-- {{getDivisionName proposalData.divisionId}} -->
                                     <br><br><br>
                                     nama
@@ -580,54 +580,56 @@
                             </div>
 
                             {{#if isPodo}}
-                                
+
                             {{else}}
-                                {{#if equals proposalData.status "99"}}
-                                    
-                                {{else}}
-                                    <button class="btn btn-warning" id="btn-revisi">Revisi</button>
-                                    <button class="btn btn-primary" id="btn-approve" milik="{{proposalData._id}}">Setuju</button>
-                                    <button class="btn btn-danger" id="btn-disapprove" milik="{{proposalData._id}}">Tolak</button>
-                                {{/if}}                            
+                            {{#if equals proposalData.status "99"}}
+
+                            {{else}}
+                            <button class="btn btn-warning" id="btn-revisi">Revisi</button>
+                            <button class="btn btn-primary" id="btn-approve"
+                                milik="{{proposalData._id}}">Setuju</button>
+                            <button class="btn btn-danger" id="btn-disapprove"
+                                milik="{{proposalData._id}}">Tolak</button>
+                            {{/if}}
                             {{/if}}
 
                             <div class="mt-5">
 
                                 {{#if equals formSubmit 1}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label for="">Catatan Revisi : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="revisi-save">Simpan</button>
-                                        </div>
-
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label for="">Catatan Revisi : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="revisi-save">Simpan</button>
+                                    </div>
+
+                                </div>
                                 {{/if}}
                                 {{#if equals formSubmit 2}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label for="">Masukkan Keterangan : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="btn-proposal-setuju">Simpan</button>
-                                        </div>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label for="">Masukkan Keterangan : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="btn-proposal-setuju">Simpan</button>
+                                    </div>
+                                </div>
                                 {{/if}}
                                 {{#if equals formSubmit 3}}
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label for="">Masukkan Keterangan : </label>
-                                            <textarea type="text" id="note" class="form-control"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="btn btn-primary" id="btn-proposal-tolak">Simpan</button>
-                                        </div>
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label for="">Masukkan Keterangan : </label>
+                                        <textarea type="text" id="note" class="form-control"></textarea>
                                     </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="btn-proposal-tolak">Simpan</button>
+                                    </div>
+                                </div>
                                 {{/if}}
                             </div>
                         </section>
@@ -647,13 +649,13 @@
 
         <div class="col-md-12">
             {{#if proposalData.note}}
-                <h4>Catatan</h4>
-                <div class="form mb-9" style="margin-bottom: 50px; background-color: red;padding: 12px;">
-                    {{#each proposalData.note}}
-                    <span style="color: white;">{{noteByName}} : </span>
-                    <span style="padding: 30px;color: white;">{{note}}</span>
-                    {{/each}}
-                </div>
+            <h4>Catatan</h4>
+            <div class="form mb-9" style="margin-bottom: 50px; background-color: red;padding: 12px;">
+                {{#each proposalData.note}}
+                <span style="color: white;">{{noteByName}} : </span>
+                <span style="padding: 30px;color: white;">{{note}}</span>
+                {{/each}}
+            </div>
             {{/if}}
             <div id="test" style="background-color: white;">
                 <page>
@@ -667,7 +669,8 @@
                                 <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                                     <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                                     <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                                    <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                        Surabaya, Jawa Timur 60113</h6>
                                 </td>
                             </tr>
                         </table>
@@ -785,7 +788,7 @@
                                 <div class="col-md-6 text-center">
                                     Surabaya,{{formatHRDate proposalData.updateAt}}
                                     <br>
-                                    Staff 
+                                    Staff
                                     <!-- {{getDivisionName proposalData.divisionId}} -->
                                     <br><br><br>
                                     nama
@@ -829,7 +832,8 @@
                         <td style="font-size: 0.9em; font-family: serif;text-align: center; line-height: 1px;">
                             <h3 style="font-family: serif;">INSTITUTUM THEOLOGICUM</h3>
                             <h3 style="font-family: serif;">IOANNIS MARIAE VIANNEY SURABAYANUM</h3>
-                            <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo, Surabaya, Jawa Timur 60113</h6>
+                            <h6 style="font-family: serif;">Jl. Kalisari Selatan No.9, Kalisari, Kec. Mulyorejo,
+                                Surabaya, Jawa Timur 60113</h6>
                         </td>
                     </tr>
                 </table>
@@ -949,7 +953,7 @@
                         <div class="col-md-6 text-center">
                             Surabaya,{{formatHRDate proposalData.updateAt}}
                             <br>
-                            Staff 
+                            Staff
                             <!-- {{getDivisionName proposalData.divisionId}} -->
                             <br><br><br>
                             nama
@@ -967,14 +971,14 @@
 
 
 
-                <!--  {{/if}} -->
+                    <!--  {{/if}} -->
                 </section>
             </div>
 
         </body>
     </div>
     <!-- <div class="mt-5">
-        {{#if isInRole 'generalManager,admin,superadmin'}}
+        {{#if isInRoles 'generalManager,admin,superadmin'}}
         <button class="btn btn-warning" id="btn-revisi">Revisi</button>
         {{else if isInRole 'chief'}}
         {{#if equals proposalData.currentState.levelPosition 1}}

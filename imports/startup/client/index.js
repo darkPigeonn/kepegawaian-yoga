@@ -1,14 +1,13 @@
 // Import client startup through a single index entry point
 
-import './routes.js';
+import "./routes.js";
 import { S3, PutObjectCommand } from "@aws-sdk/client-s3";
 import Swal from "sweetalert2";
-import slugify from 'slugify';
+import slugify from "slugify";
 import DecoupledEditor from "../../../public/ckeditor/build/ckeditor";
 import moment from "moment/moment.js";
 import { Random } from "meteor/random";
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-
 
 isEmptyData = function (data) {
   let dataReturn = 0;
@@ -66,8 +65,8 @@ uploadFiles = async function (uploadData) {
     region: "sgp1",
     credentials: {
       accessKeyId: "JCF6N7HWI4BIHYE5QLMD",
-      secretAccessKey: "7aGiKWmNa/hy78c9SrYHPkoPwhjoSl4YGVM9PHuFL/Y"
-    }
+      secretAccessKey: "7aGiKWmNa/hy78c9SrYHPkoPwhjoSl4YGVM9PHuFL/Y",
+    },
   });
   let fileName;
   if (uploadData.fileLink) {
@@ -182,7 +181,7 @@ successAlert = function (message) {
     }
     Swal.fire(basicStyle(message, "success"));
     history.back();
-});
+  });
 
 failAlert = function (message) {
   if (typeof message === "object" && message !== null) {
@@ -196,48 +195,48 @@ function isNumber(value) {
 }
 
 function formatPhoneNumber(phoneNumber) {
-// Remove any non-digit characters from the phone number
-const cleanedNumber = phoneNumber.toString().replace(/\D/g, '');
+  // Remove any non-digit characters from the phone number
+  const cleanedNumber = phoneNumber.toString().replace(/\D/g, "");
 
-// Check if the number starts with '0', indicating it's a local number
-if (cleanedNumber.startsWith('0')) {
-  // Remove the leading '0' and prepend the country code '62'
-  const formattedNumber = '62' + cleanedNumber.slice(1);
-  return formattedNumber;
-}
+  // Check if the number starts with '0', indicating it's a local number
+  if (cleanedNumber.startsWith("0")) {
+    // Remove the leading '0' and prepend the country code '62'
+    const formattedNumber = "62" + cleanedNumber.slice(1);
+    return formattedNumber;
+  }
 
-// The number is already in international format, return as is
-return cleanedNumber;
+  // The number is already in international format, return as is
+  return cleanedNumber;
 }
 
 function formatRupiah(angka, prefix) {
-var number_string = angka.replace(/[^,\d]/g, "").toString(),
-  split = number_string.split(","),
-  sisa = split[0].length % 3,
-  rupiah = split[0].substr(0, sisa),
-  ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+  var number_string = angka.replace(/[^,\d]/g, "").toString(),
+    split = number_string.split(","),
+    sisa = split[0].length % 3,
+    rupiah = split[0].substr(0, sisa),
+    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-// tambahkan titik jika yang di input sudah menjadi angka ribuan
-if (ribuan) {
-  separator = sisa ? "." : "";
-  rupiah += separator + ribuan.join(".");
-}
+  // tambahkan titik jika yang di input sudah menjadi angka ribuan
+  if (ribuan) {
+    separator = sisa ? "." : "";
+    rupiah += separator + ribuan.join(".");
+  }
 
-rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-console.log(rupiah);
-return rupiah;
+  rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+  console.log(rupiah);
+  return rupiah;
 }
 
 function convert2number(data) {
-let temp = data.replace(/\./g, ''); // merubah . jadi ""
-return parseFloat(temp);
+  let temp = data.replace(/\./g, ""); // merubah . jadi ""
+  return parseFloat(temp);
 }
 
-export const startSelect2 = function() {
+export const startSelect2 = function () {
   setTimeout(() => {
-    $('.select2').select2();
-  }, 300)
-}
+    $(".select2").select2();
+  }, 300);
+};
 
 /* Tujuan:
 -Inisiasi WYSIWYG menggunakan CKEditor 5 DecoupledEditor
@@ -265,19 +264,22 @@ initEditor = async function (template, options) {
       templateField = options.templateField;
     }
   }
-  DecoupledEditor.create(document.querySelector("#" + editorEl),  {image: {
-    toolbar: [
-      "imageStyle:full",
-      "imageStyle:side",
-      "imageStyle:alignLeft",
-      "imageStyle:alignCenter",
-      "imageStyle:alignRight",
-      "|",
-      "imageStyle:sideLeft",
-      "|",
-      "imageTextAlternative",
-      "toggleImageCaption"
-    ]}})
+  DecoupledEditor.create(document.querySelector("#" + editorEl), {
+    image: {
+      toolbar: [
+        "imageStyle:full",
+        "imageStyle:side",
+        "imageStyle:alignLeft",
+        "imageStyle:alignCenter",
+        "imageStyle:alignRight",
+        "|",
+        "imageStyle:sideLeft",
+        "|",
+        "imageTextAlternative",
+        "toggleImageCaption",
+      ],
+    },
+  })
     .then((editor) => {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
         return new MyUploadAdapter(loader);
@@ -296,12 +298,12 @@ initEditor = async function (template, options) {
     });
 };
 
-initMultipleEditor = async function (id,template, options) {
+initMultipleEditor = async function (id, template, options) {
   /*     Deskripsi :
     Function ini akan memulai pembuatan WYSIWYG menggunakan Id Elemen yang disediakan
     dan menghasilkan editor yang disimpan di template.editor*/
-  let editorEl = "editor-"+id;
-  let toolbarEl = "toolbar-container-"+id;
+  let editorEl = "editor-" + id;
+  let toolbarEl = "toolbar-container-" + id;
   let content = "";
   let templateField = "editor";
   if (options) {
@@ -319,24 +321,27 @@ initMultipleEditor = async function (id,template, options) {
       templateField = options.templateField;
     }
   }
-  DecoupledEditor.create(document.querySelector("#" + editorEl),  {image: {
-    toolbar: [
-      "imageStyle:full",
-      "imageStyle:side",
-      "imageStyle:alignLeft", 
-      "imageStyle:alignCenter",
-      "imageStyle:alignRight",
-      "|",
-      "imageStyle:sideLeft",
-      "|",
-      "imageTextAlternative",
-      "toggleImageCaption"
-    ]}})
+  DecoupledEditor.create(document.querySelector("#" + editorEl), {
+    image: {
+      toolbar: [
+        "imageStyle:full",
+        "imageStyle:side",
+        "imageStyle:alignLeft",
+        "imageStyle:alignCenter",
+        "imageStyle:alignRight",
+        "|",
+        "imageStyle:sideLeft",
+        "|",
+        "imageTextAlternative",
+        "toggleImageCaption",
+      ],
+    },
+  })
     .then((editor) => {
       editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
         return new MyUploadAdapter(loader);
       };
-      
+
       // Jika .create-nya selesai maka akan menghasilkan editor di parameternya
       // Ini untuk toolbarnya yang seperti MS Word
       const toolbarContainer = document.querySelector("#" + toolbarEl);

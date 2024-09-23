@@ -1,0 +1,185 @@
+<template name="listPage">
+
+  {{#if isInRoles 'cmsPageList'}}
+  <div class="container">
+    <div class="page page-matkul-page">
+      <h1 class="page-title">Page</h1>
+      <section class="section-page-shoulders">
+        <div class="btn-group" role="group" aria-label="command control">
+          <!-- {{#if toogleAdd}}
+                  {{else}} -->
+          {{#if isInRoles 'cmsPageCreate'}}
+          <a class="btn btn-primary" id="buat-artikel" href="{{ pathFor route='createPage' }}"><i
+              class="fa fa-plus"></i><span>Tambah Page</span></a>
+          {{/if}}
+          <!-- {{/if}} -->
+        </div>
+      </section>
+      <section class="section-matkul-list">
+        <h2 class="section-title">Daftar Page</h2>
+        <table class="table table-bordered" style="margin-bottom: 1rem; margin-top:1rem;" id="mytable">
+          <thead>
+            <tr>
+              <th width="45%">Title</th>
+              <th width="35%">Kode</th>
+              <th width="20%">createdAt</th>
+              <th width="10%">Outlet</th>
+              <th width="10%">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each i in pages}}
+            <tr class="{{#if i.status}}{{else}}table-danger{{/if}}">
+              <td>{{ i.title }}</td>
+              <td>{{ i.code }}</td>
+              <td>{{ formatHRDate i.createdAt }}</td>
+              <td>{{ i.outlets }}</td>
+              {{#if isInRoles 'cmsPageEdit'}}
+              <td class="float-left">
+                <a class="btn toggle"><i class="fa fa-eye" status="{{i.status}}" milik="{{toMeteorId i._id}}"
+                    value="{{i.status}}"></i></a>
+                {{#if i.status}}<a class="btn btn-primary" href="{{ pathFor route='editPage' _id=(toMeteorId i._id) }}">
+                  <i class="fa fa-edit" milik="{{toMeteorId i._id}}"></i></a>{{/if}}
+              </td>
+              {{/if}}
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  {{else}}
+  {{> notAuthorized}}
+  {{/if}}
+</template>
+
+<template name="createPage">
+  {{#if isInRoles 'cmsPageCreate'}}
+  <div class="container">
+    <div id="summernote"></div>
+    <h1 class="page-title">Buat Page</h1>
+    <section class="">
+      <div class="form-group">
+        <label for="" class="text-left">Judul</label>
+        <input type="text" id="title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="" class="text-left">Kode</label>
+        <input type="text" id="code" class="form-control">
+      </div>
+      {{#if isInRoles 'superadmin'}}
+      <div class="form-group">
+        <label for="" class="text-left">Outlet</label>
+        {{#each outlets}}
+        <div class="form-check">
+          <input type="checkbox" name="" class="form-check-input outlet"
+            style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{i._id}}" value="{{code}}">
+          <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="form-group">
+        <label for="" class="text-left">Konten</label>
+        <!-- The toolbar will be rendered in this container. -->
+        <div id="toolbar-container"></div>
+
+        <!-- This container will become the editable. -->
+        <div id="editor" class="ckeditor-content">
+        </div>
+      </div>
+      {{> inputMultipleFiles
+          label="Gambar Page" id="documentFiles" files=documentFiles
+          buttonLabel="Unggah"}}
+    </section>
+    <section>
+      <button class="btn btn-primary" id="insert">Simpan</button>
+    </section>
+  </div>
+  {{else}}
+  {{> notAuthorized}}
+  {{/if}}
+</template>
+
+<template name="editPage">
+  {{#if isInRoles 'cmsPageEdit'}}
+  <div class="page">
+    <h1 class="page-title">Edit Page</h1>
+    <section class="">
+      <div class="form-group">
+        <label for="" class="text-left">Judul</label>
+        <input type="text" id="title" class="form-control" value="{{page.title}}">
+      </div>
+      <div class="form-group">
+        <label for="" class="text-left">Kode</label>
+        <input type="text" id="code" class="form-control" value="{{page.code}}">
+      </div>
+      {{#if isInRoles 'superadmin'}}
+      <div class="form-group">
+        <label for="" class="text-left">Outlet</label>
+        {{#each outlets}}
+        <div class="form-check">
+          <input type="checkbox" name="" class="form-check-input outlet"
+            style="margin-left: -1.25rem; margin-top: 0.3rem;" id="outlet-{{code}}" value="{{code}}">
+          <label for="outlet-{{code}}" class="form-check-label">{{name}} - {{code}}</label>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="form-group">
+        <label for="">Content</label>
+        <!-- The toolbar will be rendered in this container. -->
+        <div id="toolbar-container"></div>
+
+        <!-- This container will become the editable. -->
+        <div id="editor" class="ckeditor-content">
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <label for="inputDescription">Gambar Artikel</label>
+        <div class="uploading">
+          {{#with currentUpload}}
+          <p>Mengunggah <b>{{file.name}}</b>:</p>
+          <span id="progress">{{progress.get}}%</span>
+          {{else}}
+          <div>
+            <input class="hidden" id="uploadImage" type="file" />
+            <label class="btn btn-primary btn-lg" for="uploadImage">Unggah</label>
+          </div>
+          {{/with}}
+        </div>
+
+        {{#if imageFile }}
+        <div class="d-flex flex-wrap">
+          {{#with thisFile }}
+          <div class="uploaded-image m-2">
+            {{#if isImage }}
+            <a href="{{ link }}" class="fancybox image" data-fancybox="chronicle-files">
+              <img src="{{ link }}" alt="{{ name }}" class="thumbnail">
+            </a>
+            {{else}}
+            <a href="{{ link }}" class="btn btn-primary btn-lg" target="_blank" rel="noreferrer">
+              <i class="fa fa-file"></i>
+              <p>{{ name }}</p>
+            </a>
+            {{/if}}
+            <!-- pakai X, karena jika pakai icon dan meski sudah dikasih aria, malah iconnya yang kebaca eventnya -->
+            <button class="btn btn-danger remove-image" buttonData="{{_id}}">
+              X
+            </button>
+          </div>
+          {{/with}}
+        </div>
+        {{/if}}
+      </div>
+    </section>
+    <section>
+      <button class="btn btn-primary" id="save" milik="{{page._id}}">Simpan</button>
+    </section>
+  </div>
+  {{else}}
+  {{> notAuthorized}}
+  {{/if}}
+</template>

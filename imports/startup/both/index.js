@@ -33,7 +33,6 @@ isInRoles = function (roles) {
     _id: userId,
   });
   const userRoles = relatedUser.roles || [];
-  console.log(userRoles);
 
   if (!Array.isArray(roles)) {
     const rolesArray = roles.split(",").map((role) => role.trim());
