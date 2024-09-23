@@ -16,7 +16,7 @@ Meteor.methods({
             _id: thisUser,
         });
         if(adminPartner.roles[0] == "admin" || adminPartner.roles[0] == "chief") {
-            const data = Announcements.find().fetch();
+            const data = Announcements.find({outlets: "imavi"}).fetch();
             for (let index = 0; index < data.length; index++) {
                 const element = data[index];
                 element.isEdit = true;
