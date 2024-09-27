@@ -23,7 +23,7 @@ Template.staffsAttendancePage.onCreated(function () {
     code: 1,
   };
 
-//   const userId = Meteor.userId();
+  //   const userId = Meteor.userId();
   Meteor.call("staffsAttendance.inThisDay", function (error, result) {
     // console.log(result);
     if (result) {
@@ -116,7 +116,6 @@ Template.staffsAttendancePage.events({
           // console.log(result);
           t.dataPresensi.set(result);
           t.viewMode.set(1);
-
         } else {
           console.log(error);
         }
@@ -150,9 +149,7 @@ Template.staffsAttendancePage.events({
         }
       );
     }
-
-  }
-
+  },
 });
 
 Template.rekapAttendancePage.onCreated(function () {
@@ -181,7 +178,7 @@ Template.rekapAttendancePage.helpers({
   },
   choosedPartner() {
     return Template.instance().choosedPartner.get();
-  }
+  },
 });
 Template.rekapAttendancePage.events({
   "change #selected-date-start"(e, t) {
@@ -195,23 +192,28 @@ Template.rekapAttendancePage.events({
     if (totalLibur == "") {
       alert("Isi form dahulu !");
       return false;
-    }
-    else {
-        Meteor.call("staffsAttendance.rekap", totalLibur, template.startDate.get(), template.endDate.get(),function (error, result) {
-            if (result) {
-                template.dataRekap.set(result);
-                console.log(template.dataRekap.get());
+    } else {
+      Meteor.call(
+        "staffsAttendance.rekap",
+        totalLibur,
+        template.startDate.get(),
+        template.endDate.get(),
+        function (error, result) {
+          if (result) {
+            template.dataRekap.set(result);
+            console.log(template.dataRekap.get());
             //   DataTable(window, $);
             //     setTimeout(() => {
             //       $("#table-rekap").dataTable();
             //     }, 1000);
-            }
-        });
+          }
+        }
+      );
     }
   },
   "change #selectUnitForm"(e, t) {
     t.choosedPartner.set(e.target.value);
-  }
+  },
 });
 
 Template.historyAttendance.onCreated(function () {
@@ -265,7 +267,7 @@ Template.historyAttendance.helpers({
   },
   currentMonth() {
     return Template.instance().selectedMonth.get();
-        },
+  },
   outletsUser() {
     return Template.instance().thisUserOutlets.get();
   },
@@ -364,68 +366,64 @@ Template.cetakRekap.onCreated(function () {
 
   const code = FlowRouter.current().params._code;
 
-
-  Meteor.call("staffsAttendance.getRekap",code,function (error, result) {
+  Meteor.call("staffsAttendance.getRekap", code, function (error, result) {
     // console.log(result);
-      if (result) {
+    if (result) {
       self.dataRekap.set(result);
-      }
-      else {
-        console.log(error);
-      }
+    } else {
+      console.log(error);
+    }
   });
 });
 Template.cetakRekap.helpers({
-    dataRekap: function () {
-        return Template.instance().dataRekap.get();
-    },
-    partners() {
-        return Template.instance().thisUserPartners.get();
-    },
+  dataRekap: function () {
+    return Template.instance().dataRekap.get();
+  },
+  partners() {
+    return Template.instance().thisUserPartners.get();
+  },
 });
 Template.cetakRekap.events({
+  "click #cetak-rekap"(e, t) {
+    document.title = "Rekap";
+    window.print();
+    var element = document.getElementById("table-rekap");
+    var opt = {
+      margin: 0.5,
+      filename: "hasilKhs.studentName" + ".pdf",
+      enableLinks: false,
+      image: {
+        type: "jpeg",
+        quality: 0.98,
+      },
+      html2canvas: {
+        scale: 2,
+      },
+      jsPDF: {
+        unit: "in",
+        format: "A4",
+        orientation: "landscape",
+      },
+      pagebreak: {
+        mode: ["avoid-all", "css", "legacy"],
+      },
+    };
 
-    "click #cetak-rekap"(e, t) {
-        document.title = "Rekap";
-        window.print()
-        var element = document.getElementById("table-rekap");
-        var opt = {
-          margin: 0.5,
-          filename: "hasilKhs.studentName" + ".pdf",
-          enableLinks: false,
-          image: {
-            type: "jpeg",
-            quality: 0.98
-          },
-          html2canvas: {
-            scale: 2
-          },
-          jsPDF: {
-            unit: "in",
-            format: "A4",
-            orientation: "landscape"
-          },
-          pagebreak: {
-            mode: ['avoid-all', 'css', 'legacy']
-        },
-        };
-
-        html2pdf()
-          .from(element)
-          .set(opt)
-          .toPdf()
-          .get("pdf")
-          .then(function (pdf) {
-            var totalPages = pdf.internal.getNumberOfPages();
-            for (var i = 1; i <= totalPages; i++) {
-              pdf.setPage(i);
-              pdf.setFontSize(10);
-              pdf.setTextColor(150);
-            }
-          })
-          .save();
-    },
-
+    html2pdf()
+      .from(element)
+      .set(opt)
+      .toPdf()
+      .get("pdf")
+      .then(function (pdf) {
+        var totalPages = pdf.internal.getNumberOfPages();
+        for (var i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setFontSize(10);
+          pdf.setTextColor(150);
+        }
+      })
+      .save();
+  },
 });
 
 Template.cetakRekapIndividu.onCreated(function () {
@@ -438,17 +436,20 @@ Template.cetakRekapIndividu.onCreated(function () {
   const code = FlowRouter.current().params._userId;
   const month = FlowRouter.current().params._month;
 
-
-  Meteor.call("staffsAttendance.getRekapByUser",code,month,function (error, result) {
-    // console.log(result)
-    if (result) {
-      self.dataRekap.set(result);
+  Meteor.call(
+    "staffsAttendance.getRekapByUser",
+    code,
+    month,
+    function (error, result) {
+      // console.log(result)
+      if (result) {
+        self.dataRekap.set(result);
+      } else {
+        alert("Data tidak ada!");
+        history.back();
+      }
     }
-    else {
-      alert("Data tidak ada!");
-      history.back();
-    }
-  });
+  );
 });
 Template.cetakRekapIndividu.helpers({
   dataRekap: function () {
@@ -459,10 +460,9 @@ Template.cetakRekapIndividu.helpers({
   },
 });
 Template.cetakRekapIndividu.events({
-
   "click #cetak-rekap"(e, t) {
     document.title = "Rekap";
-    window.print()
+    window.print();
     // var element = document.getElementById("table-rekap");
     // var opt = {
     //   margin: 0.5,
@@ -500,7 +500,6 @@ Template.cetakRekapIndividu.events({
     //   })
     //   .save();
   },
-
 });
 
 Template.configurasiList.onCreated(function () {
@@ -585,15 +584,14 @@ Template.configurasiList.helpers({
   statusOptionKaryawan() {
     return Template.instance().statusOptionKaryawan.get();
   },
-
 });
 Template.configurasiList.events({
-  "click #btn-test"(e, t){
-    e.preventDefault()
+  "click #btn-test"(e, t) {
+    e.preventDefault();
     console.log("masuk");
   },
   "click #btn-add-pair"(e, t) {
-    e.preventDefault()
+    e.preventDefault();
     const dataRow = t.schedulePairings.get();
     const selectedSchedules = $("#inputShiftPairings").val();
     const selectedEmployees = $("#inputEmployeesPairings").val();
@@ -666,114 +664,113 @@ Template.configurasiList.events({
     t.viewMode.set(viewMode);
   },
   "click #btn-save-clocks"(e, t) {
-      const name = $("#input-name-shift").val();
-      const clockIn = $("#input-clockIn").val();
-      const clockOut = $("#input-clockOut").val();
+    const name = $("#input-name-shift").val();
+    const clockIn = $("#input-clockIn").val();
+    const clockOut = $("#input-clockOut").val();
 
-      // console.log(name, clockIn, clockOut);
+    // console.log(name, clockIn, clockOut);
 
-      const postRoute = "create.clockShift";
+    const postRoute = "create.clockShift";
 
-      Meteor.call(postRoute, name, clockIn, clockOut, function (error, result) {
-        if (result) {
-          successAlert("Berhasil");
-          location.reload();
-        } else {
-          failAlert("Gagal");
-          console.log(error);
-        }
-      });
+    Meteor.call(postRoute, name, clockIn, clockOut, function (error, result) {
+      if (result) {
+        successAlert("Berhasil");
+        location.reload();
+      } else {
+        failAlert("Gagal");
+        console.log(error);
+      }
+    });
   },
   "change #inputShift"(e, t) {
-      const shift = e.target.value;
-      const day = $(e.target).attr("milik");
+    const shift = e.target.value;
+    const day = $(e.target).attr("milik");
 
-      const listDay = t.dayList.get();
-      // console.log(listDay);
-      const selectedDay = _.find(listDay, function (x) {
-        return x.code == day;
-      });
-      const selectedShift = _.find(t.clockList.get(), function (x) {
-        return x._id == shift;
-      });
+    const listDay = t.dayList.get();
+    // console.log(listDay);
+    const selectedDay = _.find(listDay, function (x) {
+      return x.code == day;
+    });
+    const selectedShift = _.find(t.clockList.get(), function (x) {
+      return x._id == shift;
+    });
 
-      selectedDay.shiftId = shift;
-      selectedDay.shiftName = selectedShift.name;
-      selectedDay.clockIn = selectedShift.clockIn;
-      selectedDay.clockOut = selectedShift.clockOut;
+    selectedDay.shiftId = shift;
+    selectedDay.shiftName = selectedShift.name;
+    selectedDay.clockIn = selectedShift.clockIn;
+    selectedDay.clockOut = selectedShift.clockOut;
 
-      t.dayList.set(listDay);
+    t.dayList.set(listDay);
   },
   "change #inputShiftEdit"(e, t) {
-      const shift = e.target.value;
-      const code = shift.split('-')
+    const shift = e.target.value;
+    const code = shift.split("-");
 
-      // console.log(code)
+    // console.log(code)
 
-      const listSchedule = t.scheduleList.get();
-      const thisSchedule = _.find(listSchedule, function (x) {
-        return x._id == code[0]
-      })
+    const listSchedule = t.scheduleList.get();
+    const thisSchedule = _.find(listSchedule, function (x) {
+      return x._id == code[0];
+    });
 
-      const thisSchedule2 = _.find(thisSchedule.schedule, function (x) {
-        return x.code == code[1]
-      })
-      const selectedShift = _.find(t.clockList.get(), function (x) {
-        return x._id == code[2];
-      });
+    const thisSchedule2 = _.find(thisSchedule.schedule, function (x) {
+      return x.code == code[1];
+    });
+    const selectedShift = _.find(t.clockList.get(), function (x) {
+      return x._id == code[2];
+    });
 
-      thisSchedule2.shiftId = selectedShift._id;
-      thisSchedule2.shiftName = selectedShift.name;
-      thisSchedule2.clockIn = selectedShift.clockIn;
-      thisSchedule2.clockOut = selectedShift.clockOut
-      // console.log(thisSchedule);
-      t.scheduleList.set(listSchedule)
+    thisSchedule2.shiftId = selectedShift._id;
+    thisSchedule2.shiftName = selectedShift.name;
+    thisSchedule2.clockIn = selectedShift.clockIn;
+    thisSchedule2.clockOut = selectedShift.clockOut;
+    // console.log(thisSchedule);
+    t.scheduleList.set(listSchedule);
   },
   "click #btn-save-schedule"(e, t) {
-      e.preventDefault();
-      const name = $("#input-name-jadwal-insert").val();
-      const listDay = t.dayList.get();
-      // console.log(name, listDay);
+    e.preventDefault();
+    const name = $("#input-name-jadwal-insert").val();
+    const listDay = t.dayList.get();
+    // console.log(name, listDay);
 
-      Meteor.call(
-        "create.scheduleAttendance",
-        name,
-        listDay,
-        function (error, result) {
-          // console.log(error, result);
-          if (result) {
-            successAlert("Tambah Jadwal Berhasil");
-            setTimeout(function() {
-              location.reload();
-            }, 200);
-          } else {
-            failAlert("Gagal");
-          }
+    Meteor.call(
+      "create.scheduleAttendance",
+      name,
+      listDay,
+      function (error, result) {
+        // console.log(error, result);
+        if (result) {
+          successAlert("Tambah Jadwal Berhasil");
+          setTimeout(function () {
+            location.reload();
+          }, 200);
+        } else {
+          failAlert("Gagal");
         }
-      );
+      }
+    );
   },
-  "click #btn-modal-edit"(e, t){
-      const shift = e.target.value;
-      const code = shift.split('-')
-      const id = $(e.target).attr("milik");
-      // console.log(id);
+  "click #btn-modal-edit"(e, t) {
+    const shift = e.target.value;
+    const code = shift.split("-");
+    const id = $(e.target).attr("milik");
+    // console.log(id);
 
+    const listSchedule = t.scheduleList.get();
+    const thisSchedule = _.find(listSchedule, function (x) {
+      return x._id == id;
+    });
 
-      const listSchedule = t.scheduleList.get();
-      const thisSchedule = _.find(listSchedule, function (x) {
-        return x._id == id
-      })
+    // console.log(listSchedule);
+    // console.log(thisSchedule);
 
-      // console.log(listSchedule);
-      // console.log(thisSchedule);
-
-      t.dayList.set(thisSchedule.schedule)
+    t.dayList.set(thisSchedule.schedule);
   },
-  "click #btn-save-edit-schedule"(e, t){
+  "click #btn-save-edit-schedule"(e, t) {
     e.preventDefault();
     const listDay = t.dayList.get();
-    const id = e.target.getAttribute('milik');
-    const name = $("#input-name-"+id).val();
+    const id = e.target.getAttribute("milik");
+    const name = $("#input-name-" + id).val();
     // console.log(listDay);
     Meteor.call(
       "update.scheduleAttendance",
@@ -783,7 +780,7 @@ Template.configurasiList.events({
       function (error, result) {
         if (result) {
           successAlert("Ubah Jadwal Berhasil");
-          setTimeout(function() {
+          setTimeout(function () {
             location.reload();
           }, 200);
         } else {
@@ -793,42 +790,49 @@ Template.configurasiList.events({
       }
     );
   },
-  "click #btn-modal-edit-shift"(e, t){
+  "click #btn-modal-edit-shift"(e, t) {
     // console.log("masuk");
     const shift = e.target.value;
-    const code = shift.split('-')
+    const code = shift.split("-");
     const id = $(e.target).attr("milik");
     // console.log(id);
 
-    Meteor.call("getById.clockShift", id, function (error, result){
+    Meteor.call("getById.clockShift", id, function (error, result) {
       // console.log(result, error);
       if (result) {
-        t.dataEditShift.set(result)
+        t.dataEditShift.set(result);
         console.log(t.dataEditShift.get());
       } else {
         console.log(error);
       }
     });
   },
-  "click #btn-save-edit-shift"(e, t){
+  "click #btn-save-edit-shift"(e, t) {
     e.preventDefault();
     const id = $(e.target).attr("milik");
     // console.log(id);
-    const nama = $("#input-name-shift-edit-"+id).val();
-    const jamMasuk = $("#input-clockIn-shift-edit-"+id).val();
-    const jamKeluar = $("#input-clockOut-shift-edit-"+id).val();
+    const nama = $("#input-name-shift-edit-" + id).val();
+    const jamMasuk = $("#input-clockIn-shift-edit-" + id).val();
+    const jamKeluar = $("#input-clockOut-shift-edit-" + id).val();
     // console.log(nama, jamMasuk, jamKeluar);
-    Meteor.call("update.clockShift", id, nama, jamMasuk, jamKeluar, function(error, result){
-      // console.log(error, result);
-      if(result){
-        successAlert("Ubah Data Shift Berhasil");
-        setTimeout(function() {
-          location.reload();
-        }, 200);
-      } else {
-        failAlert("Gagal");
+    Meteor.call(
+      "update.clockShift",
+      id,
+      nama,
+      jamMasuk,
+      jamKeluar,
+      function (error, result) {
+        // console.log(error, result);
+        if (result) {
+          successAlert("Ubah Data Shift Berhasil");
+          setTimeout(function () {
+            location.reload();
+          }, 200);
+        } else {
+          failAlert("Gagal");
+        }
       }
-    })
+    );
   },
   "click #btn-create-pairings"(e, t) {
     t.viewCreate.set(true);
@@ -858,71 +862,68 @@ Template.configurasiList.events({
     );
     t.schedulePairings.set(dataRow);
   },
-  "click #btn-hapus-jadwal"(e, t){
+  "click #btn-hapus-jadwal"(e, t) {
     e.preventDefault();
-    const id = e.target.getAttribute('milik');
+    const id = e.target.getAttribute("milik");
     Swal.fire({
       title: "Konfirmasi Delete",
       text: "Apakah anda yakin melakukan delete jadwal ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
-      cancelButtonText: "Batal"
+      cancelButtonText: "Batal",
     }).then((result) => {
-      if(result.isConfirmed){
-        Meteor.call("delete.scheduleAttendance", id, function (error, result){
+      if (result.isConfirmed) {
+        Meteor.call("delete.scheduleAttendance", id, function (error, result) {
           // console.log(result, error);
           if (result) {
             successAlert("Hapus Data Berhasil");
-            setTimeout(function() {
+            setTimeout(function () {
               location.reload();
             }, 200);
-
           } else {
             console.log(error);
             failAlert("Hapus Data Gagal!");
           }
-        })
+        });
       }
-    })
+    });
   },
-  "click #btn-hapus-shift"(e, t){
+  "click #btn-hapus-shift"(e, t) {
     e.preventDefault();
     console.log("masuk");
-    const id = e.target.getAttribute('milik');
+    const id = e.target.getAttribute("milik");
     Swal.fire({
       title: "Konfirmasi Delete",
       text: "Apakah anda yakin melakukan delete shift ini?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Hapus",
-      cancelButtonText: "Batal"
+      cancelButtonText: "Batal",
     }).then((result) => {
-      if(result.isConfirmed){
-        Meteor.call("delete.clockShift", id, function (error, result){
+      if (result.isConfirmed) {
+        Meteor.call("delete.clockShift", id, function (error, result) {
           // console.log(error,result);
           if (result) {
             successAlert("Hapus Data Berhasil");
-            setTimeout(function() {
+            setTimeout(function () {
               location.reload();
             }, 200);
-
           } else {
             console.log(error);
             failAlert("Hapus Data Gagal!");
           }
-        })
+        });
       }
     });
-
   },
-  "click #inputEmployeesPairings" (e, t){
+  "click #inputEmployeesPairings"(e, t) {
     const statusUnit = "Disabled";
     const statusKaryawan = "";
     t.statusOptionUnit.set(statusUnit);
     t.statusOptionKaryawan.set(statusKaryawan);
   },
-  "click #selectUnitForm" (e, t){
+  "click #selectUnitForm"(e, t) {
     const statusUnit = "";
     const statusKaryawan = "Disabled";
     t.statusOptionUnit.set(statusUnit);
@@ -955,7 +956,7 @@ Template.detailWfh.onCreated(function () {
   const self = this;
   const id = Router.current().params._id;
 
-  self.detailWfh = new ReactiveVar()
+  self.detailWfh = new ReactiveVar();
 
   Meteor.call("staffsAttendance.getById", id, function (error, result) {
     if (result) {
@@ -964,20 +965,19 @@ Template.detailWfh.onCreated(function () {
     } else {
       console.log(error);
     }
-  })
-})
+  });
+});
 Template.detailWfh.helpers({
   detailWfh() {
     return Template.instance().detailWfh.get();
-  }
-})
+  },
+});
 
 startSelect2 = function () {
   setTimeout(() => {
     $(".select2").select2();
   }, 300);
 };
-
 
 // Template.detailAttendance.onCreated(function () {
 //   const self = this;
@@ -1006,7 +1006,6 @@ startSelect2 = function () {
 //   }
 // })
 
-
 // Template.modalShowEdit.events({
 //   "click #btn-modal-edit"(e, t) {
 //     // startSelect2()
@@ -1031,21 +1030,21 @@ Template.listPermits.helpers({
   },
 });
 Template.listPermits.events({
-  'click #btn-search'(e,t){
-    e.preventDefault()
+  "click #btn-search"(e, t) {
+    e.preventDefault();
 
     const selectPeriod = $("#select-period").val();
 
-    Meteor.call('getPermit.byMonth', selectPeriod, function(error, result){
-      if(result){
+    Meteor.call("getPermit.byMonth", selectPeriod, function (error, result) {
+      if (result) {
         console.log(result);
-        t.dataPermit.set(result)
-      }else{
-        console.log(error)
+        t.dataPermit.set(result);
+      } else {
+        console.log(error);
       }
-    })
+    });
   },
-  'click .btn-approve'(e,t){
+  "click .btn-approve"(e, t) {
     e.preventDefault();
 
     const id = $(e.target).attr("milik");
@@ -1056,23 +1055,23 @@ Template.listPermits.events({
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
-      cancelButtonText: "Batal"
+      cancelButtonText: "Batal",
     }).then((result) => {
-      if(result.isConfirmed){
-        Meteor.call('approvePermit', id, function(error, result){
-          if(result){ successAlert("Approve Permit Berhasil");
-            setTimeout(function() {
+      if (result.isConfirmed) {
+        Meteor.call("approvePermit", id, function (error, result) {
+          if (result) {
+            successAlert("Approve Permit Berhasil");
+            setTimeout(function () {
               location.reload();
-            }, 200);          }else{
+            }, 200);
+          } else {
             failAlert("Approve Permit Gagal!");
           }
-        })
+        });
       }
-    })
-
-
+    });
   },
-  'click .btn-reject'(e,t){
+  "click .btn-reject"(e, t) {
     e.preventDefault();
 
     const id = $(e.target).attr("milik");
@@ -1083,30 +1082,28 @@ Template.listPermits.events({
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya",
-      cancelButtonText: "Batal"
+      cancelButtonText: "Batal",
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         Swal.fire({
           title: "Alasan Tolak",
-          input : 'text',
+          input: "text",
           preConfirm: (text) => {
-            if(text){
-              Meteor.call('rejectPermit', id, text, function(error, result){
-                if(result){
+            if (text) {
+              Meteor.call("rejectPermit", id, text, function (error, result) {
+                if (result) {
                   successAlert("Reject Permit Berhasil");
-                  setTimeout(function() {
+                  setTimeout(function () {
                     location.reload();
                   }, 200);
-                }else{
+                } else {
                   failAlert("Reject Permit Gagal!");
                 }
-              })
+              });
             }
-          }
-        })
+          },
+        });
       }
-    })
-
-
+    });
   },
 });
