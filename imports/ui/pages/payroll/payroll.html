@@ -61,7 +61,7 @@
                         <a href="/payroll/create" class="btn btn-primary">+ Tambah</a>
                     </div>
                 {{/if}}
-            </div>    
+            </div>
             <div class="d-lg-block table-responsive">
                 <table class="table">
                     <thead>
@@ -219,7 +219,7 @@
                     {{/each}}
                 </ul>
                 <p><strong>Total Salary:</strong> {{formatRp dataSalarie.totalSalary}}</p>
-                <p><strong>Status Slip Gaji:</strong> 
+                <p><strong>Status Slip Gaji:</strong>
                     {{#if equals dataSalarie.status 10}}
                         Terbuat
                     {{/if}}
@@ -249,7 +249,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{i.link}}" download style="display: inline-flex; align-items: center; text-decoration: none;">
-                                                    <i class="fas fa-download fa-fw" style="font-size: 1.2em; margin-right: 5px;"></i> 
+                                                    <i class="fas fa-download fa-fw" style="font-size: 1.2em; margin-right: 5px;"></i>
                                                     Download
                                                 </a>
                                             </td>
@@ -292,7 +292,7 @@
                     {{/if}}
                     <button class="btn btn-primary mt-2" id="btn-send">Ajukan</button>
                 {{/if}}
-            {{/if}}  
+            {{/if}}
         </div>
     </div>
 </template>
@@ -313,7 +313,7 @@
                     <div class="form-group">
                         <label for="">Pilih Bulan Peruntukan</label><br>
                         <input type="month" class="form-control" id="monthYear" {{isMonthDisabled}}/>
-                        
+
                     </div>
                     <div class="form-group">
                         <label for="">Pilih Karyawan</label>
@@ -621,7 +621,7 @@
         </div>
     {{else}}
         <h3>Anda tidak memiliki akses</h3>
-    {{/if}} 
+    {{/if}}
 </template>
 
 <template name="requestActionPayroll">
@@ -659,14 +659,14 @@
                         <td>
                             {{#if equals i.isAction true}}
                                 <button class="btn btn-primary btn-action" milik="accept" id="{{i._id}}">
-                                <i class="fa fa-check"></i> 
+                                <i class="fa fa-check"></i>
                                 </button>
                                 <button class="btn btn-danger btn-action" milik="decline" id="{{i._id}}">
                                     <i class="fa fa-times"></i>
                                 </button>
                             {{else}}
                                 <button class="btn btn-primary btn-action" milik="accept" disabled>
-                                    <i class="fa fa-check btn-action" milik="accept" disabled></i> 
+                                    <i class="fa fa-check btn-action" milik="accept" disabled></i>
                                     </button>
                                     <button class="btn btn-danger btn-action" milik="decline" disabled>
                                         <i class="fa fa-times btn-action" milik="decline" disabled></i>
