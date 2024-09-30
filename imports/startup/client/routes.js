@@ -127,13 +127,13 @@ FlowRouter.route("/prayers-group/list", {
   },
 });
 FlowRouter.route("/prayers-group/create", {
-  name: "prayer group create",
+  name: "createPrayersGroup",
   action() {
     this.render("App_body", "createPrayersGroup");
   },
 });
 FlowRouter.route("/prayers-group/edit/:_id", {
-  name: "prayer group edit",
+  name: "editPrayersGroup",
   action() {
     this.render("App_body", "editPrayersGroup");
   },

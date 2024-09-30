@@ -1,9 +1,9 @@
 <template name="listPrayer">
     <div class="container page page-matkul-page mt-3">
-        <label style="color: blue; margin: 0;"> 
-            <a href="/prayers/list"> 
+        <label style="color: blue; margin: 0;">
+            <a href="/prayers/list">
                 Doa
-            </a> 
+            </a>
             /
         </label>
         <!-- <div class="d-flex align-items-center justify-content-between">
@@ -69,7 +69,7 @@
                   <div class="dropdown-menu" aria-labelledby="adminMenu" style="max-width: 200px;">
                       {{#if isInRoles 'cmsNewsCreate'}}
                         <a class="dropdown-item" id="buat-artikel" href="/prayers/create">
-                            <i class="fa fa-plus"></i> 
+                            <i class="fa fa-plus"></i>
                             <span>Buat Doa</span>
                         </a>
                       {{/if}}
@@ -125,7 +125,7 @@
                                             <a class="btn btn-primary btn-sm btn-edit"
                                                 href="/prayers/edit/{{toMeteorId i._id}}">
                                                 <i class="fa fa-edit" milik="{{i._id}}"></i>
-                                            </a>                                        
+                                            </a>
                                         {{/if}}
                                         <a href="/articles/evaluation/{{toMeteorId i._id}}" class="btn btn-primary btn-sm text-white">
                                             Evaluasi
@@ -151,19 +151,19 @@
             height: 100vh;
             overflow-y: auto;
         }
-    
+
         .text-orange {
             color: orange;
         }
-    
+
         .mobile-div{
             display: none;
         }
-    
+
         .desktop-div{
             display: block;
         }
-    
+
         @media (max-width: 1040px) {
             .desktop-div {
                 display: none;
@@ -172,7 +172,7 @@
                 display: block;
             }
         }
-    
+
         @media only screen and (max-width: 600px) {
             .desktop-div {
                 display: none;
@@ -180,25 +180,25 @@
             .mobile-div {
                 display: block;
             }
-    
+
         }
       </style>
 </template>
 
 <template name="createPrayer">
     <div class="container page my-3">
-        <label style="color: blue; margin: 0;"> 
-            <a href="/prayers/list" class="text-secondary"> 
+        <label style="color: blue; margin: 0;">
+            <a href="/prayers/list" class="text-secondary">
                 Doa
-            </a> 
+            </a>
             /
-            <a href="/prayers/create"> 
+            <a href="/prayers/create">
                 Tambah
-            </a> 
+            </a>
         </label>
         <h3 class="page-title mt-3">Tambah Doa</h3>
         <hr class="my-3" style="border: 1px solid lightgray;">
-        
+
         {{>formPrayer submitType=1}}
     </div>
 
@@ -206,14 +206,14 @@
 
 <template name="editPrayer">
     <div class="container page my-3">
-        <label style="color: blue; margin: 0;"> 
-            <a href="/prayers/list" class="text-secondary"> 
+        <label style="color: blue; margin: 0;">
+            <a href="/prayers/list" class="text-secondary">
                 Doa
-            </a> 
+            </a>
             /
-            <a href="#"> 
+            <a href="#">
                 Ubah
-            </a> 
+            </a>
         </label>
         <h3 class="page-title mt-3">Ubah Doa</h3>
         <hr class="my-3" style="border: 1px solid lightgray;">
@@ -236,7 +236,7 @@
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2">
-            <div class="col form-group">            
+            <div class="col form-group">
                 <label for="" class="text-left fw-bold">Author</label>
                 <input type="text" id="author" class="form-control">
             </div>
@@ -245,6 +245,7 @@
                 <input type="text" id="excerpt" class="form-control">
             </div>
         </div>
+
 
         {{#if isInRoles 'superadmin'}}
             <div class="form-group">
@@ -262,34 +263,38 @@
                 </div>
             </div>
         {{/if}}
-        {{#if categories}}
-        <div class="form-group">
-            <label class="text-left fw-bold">Kategori</label>
+        <!-- {{#if categories}} -->
+        <div class="form-group row">
+            <div class="col-6">
+                <label class="text-left fw-bold">Kategori</label>
 
-            <select class="select2 form-control" id="category">
-                <option>Pilih Kategori</option>
-                {{#each categories}}
-                    <option value="{{name}}">{{name}}</option>
-                {{/each}}
-            </select>
+                <select class="select2 form-control" id="category">
+                    <option>Pilih Kategori</option>
+                    {{#each categories}}
+                        <option value="{{name}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="text-left fw-bold">Bahasa</label>
+
+                <select class="select2 form-control" id="select-language">
+                    <option>Pilih Bahasa</option>
+                    {{#each languages}}
+                        <option value="{{id}}-{{name}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
         </div>
-        {{/if}}
-        <div class="form-group">
-            <label class="text-left fw-bold">Bahasa</label>
-
-            <select class="select2 form-control" id="select-language">
-                <option>Pilih Bahasa</option>
-                {{#each languages}}
-                    <option value="{{id}}-{{name}}">{{name}}</option>
+        <!-- {{/if}} -->
+        <div class="form-grup">
+            <label class="fw-bold">Group Doa</label>
+            <select class="select2 form-control" id="select-prayers-group">
+                <option>Pilih Grup Doa</option>
+                {{#each groupPrayers}}
+                    <option value="{{_id}}">{{name}}</option>
                 {{/each}}
             </select>
-            <ul class="list-group">
-                {{#if pushedLanguage }}
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="name">{{pushedLanguage.name}}</span>
-                  </li>
-                {{/if}}
-              </ul>
         </div>
         <div class="form-group">
             <label class="fw-bold">Tanggal Publish</label>
@@ -325,14 +330,14 @@
 
 <template name="uploadPrayer">
     <div class="page page-matkul-page container my-3">
-        <label style="color: blue; margin: 0;"> 
-            <a href="/prayers/list" class="text-secondary"> 
+        <label style="color: blue; margin: 0;">
+            <a href="/prayers/list" class="text-secondary">
                 Doa
-            </a> 
+            </a>
             /
-            <a href="#"> 
+            <a href="#">
                 Upload
-            </a> 
+            </a>
         </label>
         <h3 class="page-title mt-3">Upload Doa</h3>
         <input type="file" id="input-upload" />
@@ -374,8 +379,8 @@
 
 <template name="listPrayersGroup">
     <div class="page page-matkul-page container my-3">
-        <label style="color: blue; margin: 0;"> 
-            <a href="/prayers-group/list"> 
+        <label style="color: blue; margin: 0;">
+            <a href="/prayers-group/list">
                 Grup Doa
             </a>
             /
@@ -395,27 +400,26 @@
                 <thead>
                     <tr>
                         <th width="30%">Nama</th>
-                        <th width="20%">Daftar Doa</th>
                         <th>Slug</th>
-                        <th>Outlets</th>
                         <th width="25%">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each i in articles}}
+                    {{#each articles}}
                         <tr>
-                            <td>{{ i.name }}</td>
-                            <!-- <td>{{ formatHRDate i.publishDate }}</td>
-                            <td>{{ i.outlets }}</td> -->
-                            <td>{{ formatCommaArrayOfObject i.prayers}}</td>
-                            <td>{{ i.slug }}</td>
-                            <td>{{ i.outlets }}</td>
+                            <td>{{ name }}</td>
+                            <!-- <td>{{ formatHRDate publishDate }}</td>
+                            <td>{{ outlets }}</td> -->
+                            <!-- <td>{{  prayers}}</td> -->
+                            <td>{{ slug }}</td>
+                            <!-- <td>{{ outlets }}</td> -->
                             <td>
-                                <a class="btn btn-primary btn-edit"
-                                    href="{{ pathFor route='editPrayersGroup' _id=(toMeteorId i._id) }}">
-                                    <i class="fa fa-edit" milik="{{i._id}}"></i>
+
+                                <a class="btn btn-primary"
+                                    href="{{ pathFor route='editPrayersGroup' _id=_id }}">
+                                    <i class="fa fa-edit" milik="{{_id}}"></i>
                                 </a>
-                                <a class="btn btn-primary toggle-featured">
+                                <!-- <a class="btn btn-primary toggle-featured">
                                     <i aria-hidden="true" id="{{ toMeteorId i._id}}"
                                         class="fa fa-star {{#if i.featured}}text-orange{{else}}text-white{{/if}}"
                                         status="{{i.featured}}" milik="{{ toMeteorId i._id}}"
@@ -424,7 +428,7 @@
                                 </a>
                                 <a class="btn btn-primary delete-prayers" id="{{toMeteorId i._id}}">
                                     <i class="fa fa-trash delete-prayers text-white" id="{{toMeteorId i._id}}"></i>
-                                </a>
+                                </a> -->
                             </td>
                         </tr>
                     {{/each}}
@@ -476,7 +480,7 @@
         {{/if}}
         <div class="form-group">
             <label class="text-left">Doa</label>
-            <select class="select2 form-control" id="select-prayers">
+            <select class="form-control" id="select-prayers">
                 <option>Pilih Doa</option>
                 {{#each prayers}}
                     <option value="{{toMeteorId _id}}">{{title}}</option>
@@ -493,9 +497,9 @@
                             {{ title }}
                         </div>
                         <div class="flex-shrink-0">
-                            <button class="btn btn-danger delete-prayer" data-milik="{{toMeteorId _id}}"><i class="fa fa-trash" data-milik="{{_id}}"></i></button>
+                            <button class="btn btn-danger delete-prayer" data-milik="{{toMeteorId _id}}"><i class="fa fa-trash" data-milik="{{toMeteorId _id}}"></i></button>
                         </div>
-                    </div>     
+                    </div>
                 {{/each}}
                 </ul>
             </div>

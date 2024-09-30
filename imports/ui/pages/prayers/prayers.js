@@ -86,7 +86,7 @@ Template.listPrayer.events({
           .removeClass("text-white")
           .addClass("text-orange");
         $("#" + milik).val(true);
-      } 
+      }
       else {
         $("#" + milik).removeAttr("status");
         $("#" + milik).removeAttr("value");
@@ -167,6 +167,17 @@ Template.formPrayer.onCreated(function () {
       self.categories.set(result);
     }
   });
+
+  self.groupPrayers = new ReactiveVar();
+  Meteor.call("getPrayersGroups", function (error, result) {
+    if (error) {
+      failAlert(error);
+    } else {
+      console.log(result);
+
+      self.groupPrayers.set(result);
+    }
+  });
 });
 Template.formPrayer.onRendered(function () {
   const context = Template.instance();
@@ -229,6 +240,9 @@ Template.formPrayer.onRendered(function () {
   }
 });
 Template.formPrayer.helpers({
+  groupPrayers() {
+    return Template.instance().groupPrayers.get();
+  },
   languages(){
     return Template.instance().languages.get()
   },
@@ -306,7 +320,9 @@ Template.formPrayer.events({
       if (result) {
         const article = t.articles.get();
         const paymentFile = $("#paymentFile").prop("files");
-        const language = t.pushedLanguage.get()
+        const language = $("#category").val()
+        const languageId = language.split("-")[0]
+        const languageName = language.split("-")[1]
         const slug = result;
         let author = $("#author").val();
         const publishDate = new Date($("#publish-date").val());
@@ -314,6 +330,7 @@ Template.formPrayer.events({
         const excerpt = $("#excerpt").val();
         const category = $("#category").val();
         const outlets = [];
+        const groupId = $("#select-prayers-group").val();
         $(".outlet").each(function (index, element) {
           if ($(element).is(":checked")) {
             outlets.push($(element).val());
@@ -339,8 +356,8 @@ Template.formPrayer.events({
                 author,
                 publishDate,
                 content,
-                languageId: language.id,
-                languageName: language.name,
+                languageId,
+                languageName,
                 // contentPaskah: content,
                 category,
                 status: true,
@@ -348,6 +365,7 @@ Template.formPrayer.events({
                 createdAt: new Date(),
                 createdBy: Meteor.userId(),
                 slug,
+                groupId
               };
               if (t.imageFile.get()) {
                 data.imageLink = t.imageDir.get().link();
@@ -358,26 +376,25 @@ Template.formPrayer.events({
               if (submitType === 2) {
                 postRoute = "updatePrayer";
                 data.id = FlowRouter.current().params._id;
-                // if (paymentFile[0]) {
-                //     // console.log(article)
-                //     const uploadData = {
-                //         type: 'prayers',
-                //         fileLink: article.imageLink,
-                //         Body: paymentFile[0]
-                //     };
-                //     console.log(uploadData)
-                //     const fileLink = await uploadFiles(uploadData)
-                //     data.imageLink = fileLink
-                // }
+                if (paymentFile[0]) {
+                    // console.log(article)
+                    const uploadData = {
+                        type: 'prayers',
+                        fileLink: article.imageLink,
+                        Body: paymentFile[0]
+                    };
+                    const fileLink = await uploadFiles(uploadData)
+                    data.imageLink = fileLink
+                }
               } else {
-                // if (paymentFile[0]) {
-                //     const uploadData = {
-                //         type: 'prayers',
-                //         Body: paymentFile[0]
-                //     };
-                //     const fileLink = await uploadFiles(uploadData)
-                //     data.imageLink = fileLink
-                // }
+                if (paymentFile[0]) {
+                    const uploadData = {
+                        type: 'prayers',
+                        Body: paymentFile[0]
+                    };
+                    const fileLink = await uploadFiles(uploadData)
+                    data.imageLink = fileLink
+                }
               }
               //   console.log(data);
               Meteor.call(postRoute, data, function (err, res) {
@@ -434,18 +451,13 @@ Template.listPrayersGroup.onRendered(function () {
   }, 500);
   const userId = Meteor.userId();
   const self = this;
-  Meteor.call("users-detail", userId, function (err, res) {
-    if (err) {
-      failAlert(err);
+  Meteor.call("getPrayersGroups", function (error, result) {
+    if (error) {
+      failAlert(error);
     } else {
-      const outlets = res.outlets;
-      Meteor.call("getPrayersGroups", outlets, function (error, result) {
-        if (error) {
-          failAlert(error);
-        } else {
-          self.articles.set(result);
-        }
-      });
+      console.log(result);
+
+      self.articles.set(result);
     }
   });
 });
@@ -565,12 +577,12 @@ Template.formPrayersGroup.onCreated(function () {
   self.prayers = new ReactiveVar();
   Meteor.call("getPrayers", function (error, result) {
     if (result) {
-      _.each(result, function (e, index){
-        e._id = e._id.toHexString()
-      })
+
       self.prayers.set(result);
     }
   });
+
+
 });
 Template.formPrayersGroup.onRendered(function () {
   const context = Template.instance();
@@ -578,7 +590,7 @@ Template.formPrayersGroup.onRendered(function () {
     $(".select2").select2({
       width: "100%",
     });
-  }, 100);
+  }, 500);
   if (this.submitType.get() === 2) {
     const id = FlowRouter.current().params._id;
     const self = this;
@@ -622,6 +634,9 @@ Template.formPrayersGroup.helpers({
   pushedPrayers(){
     return Template.instance().pushedPrayers.get()
   },
+  groupPrayers() {
+    return Template.instance().groupPrayers.get();
+  },
   outlets() {
     return Template.instance().outlets.get();
   },
@@ -653,19 +668,21 @@ Template.formPrayersGroup.helpers({
 Template.formPrayersGroup.events({
   "change #select-prayers" : function (e, t){
     const pushedPrayers = t.pushedPrayers.get()
-    console.log(pushedPrayers)
+
     const checkedPushedPrayers = pushedPrayers.find(element => element._id === e.target.value )
     if (checkedPushedPrayers){
       failAlert("Doa sudah ada!")
     } else {
-      const selectedPrayer = t.prayers.get().find(element=> element._id === e.target.value)
+      const selectedPrayer = t.prayers.get().find(element=> element._id.toHexString() === e.target.value)
       pushedPrayers.push(selectedPrayer)
       t.pushedPrayers.set(pushedPrayers)
     }
   },
   "click .delete-prayer" : function (e, t){
     const milik = $(e.target).data("milik")
-    const pushedPrayers = t.pushedPrayers.get().filter(element => element._id !== milik)
+    console.log(milik);
+
+    const pushedPrayers = t.pushedPrayers.get().filter(element => element._id.toHexString() !== milik)
     t.pushedPrayers.set(pushedPrayers)
   },
   "change #paymentFile": function (e, t) {
@@ -715,7 +732,7 @@ Template.formPrayersGroup.events({
             if (outlets.length < 1) {
               outlets.push(outletCode);
             }
-            
+
             if (outlets.length > 0) {
               const slug = result;
               const data = {
@@ -797,7 +814,7 @@ Template.uploadPrayer.events({
     Meteor.call("uploadPrayer", t.dataUploads.get(), function (error, result) {
       if (result) {
         successAlert("Berhasil!");
-      } 
+      }
       else {
         failAlert(error);
         // console.log("error");

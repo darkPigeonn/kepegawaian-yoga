@@ -37,20 +37,20 @@ Meteor.methods({
       },
       'uploadPrayer' : async function (data) {
         check(data, Array);
-  
+
         let checkSuccess = 0;
         for (let index = 0; index < data.length; index++) {
           const element = data[index];
-  
+
           //cek title untuk slug
           const title = element.title;
           const slug = slugify(title, {
             lower:true,
             strict: true,
           })
-  
+
           const outlets = ['keuskupanSby','imavi'];
-  
+
           const dataSave = {
             'title' : title,
             'slug' : slug,
@@ -66,14 +66,14 @@ Meteor.methods({
             'referensi' : element.sumber,
             'status' : true,
           }
-  
+
           const insert  = await Prayers.insert(dataSave);
-  
+
           if (insert) {
             checkSuccess += 1;
           }
         }
-  
+
         if (checkSuccess == data.length) {
           return true
         } else {
@@ -81,7 +81,7 @@ Meteor.methods({
         }
       },
       'updatePrayer':function (data) {
-  
+
         // karena ada input outlet dari form maka perlu dicek juga
         // checkOutletByInput(data.outlets)
         // memeriksa apakah diizinkan untuk update outlet ini berdasarkan
@@ -130,18 +130,32 @@ Meteor.methods({
         });
       },
       'getPrayers': function(){
-        return Prayers.find().fetch();
+        return Prayers.find({},{
+          fields:{
+            _id : 1,
+            title : 1,
+            slug : 1,
+            publishDate : 1,
+            author : 1,
+            status : 1,
+          }
+        }).fetch();
       },
-      'getPrayersGroups': function(userOutlets){
-        const $in = [];
-        if (userOutlets) {
-          userOutlets.forEach((element) => {
-            $in.push(element);
-          });
+      'getPrayersGroups': function(){
+
+
+        const thisUser = Meteor.users.findOne({_id : this.userId})
+        if (!thisUser) {
+          throw new Meteor.Error(404, "Failed");
         }
-        return PrayersGroup.find({
-          outlets: { $in },
-        }).fetch();      
+        return PrayersGroup.find({},{
+          fields:{
+            _id : 1,
+            name : 1,
+            slug : 1,
+
+          }
+        }).fetch();
       },
       'getPrayersGroupById': function(_id){
         return PrayersGroup.findOne({_id});
