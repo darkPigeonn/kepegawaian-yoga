@@ -25,3 +25,5 @@ import "../../api/evaluations/methods.js";
 import "../../api/keuskupan/methods.js";
 import "../../api/alma-v1/db/collections-songs.js";
 // import "../../api/assets/methods.js";
+
+import "../../api/lms/methods.js";

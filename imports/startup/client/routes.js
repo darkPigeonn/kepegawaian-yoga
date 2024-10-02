@@ -15,6 +15,7 @@ import "../../ui/pages/evaluations/evaluation.js";
 import "../../ui/pages/proposal/proposal.js";
 import "../../ui/pages/employees/employees.js";
 import "../../ui/pages/pages/pages.js";
+import "../../ui/pages/lms/lms.js"
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -213,3 +214,19 @@ FlowRouter.route("/pages/createPage", {
     this.render("App_body", "createPage");
   },
 });
+
+
+FlowRouter.route("/lms/list",{
+  name : "lmsPage",
+
+  action(){
+    this.render("App_body","lmsPage")
+  }
+})
+FlowRouter.route("/lms/edit/:_id",{
+  name : "lmsEdit",
+
+  action(){
+    this.render("App_body","lmsEdit")
+  }
+})

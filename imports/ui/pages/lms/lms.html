@@ -1,0 +1,95 @@
+<template name="lmsPage">
+    <div class="container">
+        <div class="title-page">
+            <h3>Learning Management System</h3>
+        </div>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+
+        <table class="table table-bordered">
+            <thead>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Pengampu</th>
+                <th>Aksi</th>
+            </thead>
+            <tbody>
+                {{#each dataLms}}
+                    <tr>
+                        <td>{{nomorUrut @index}}</td>
+                        <td>{{name}}</td>
+                        <td>{{instructorName}}</td>
+                        <td>
+                            <a href="/lms/edit/{{toMeteorId _id}}">Ubah</a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="lmsEdit">
+    <div class="container">
+        <div class="title-page">
+            <h3>Learning Management System</h3>
+        </div>
+        <hr class="my-3" style="border: 1px solid lightgray;">
+
+        <form id="lms-form">
+            <div class="form-group">
+                <label for="name">Nama</label>
+                <input type="text" class="form-control" id="name" value={{lmsData.name}}>
+            </div>
+            <div class="form-group">
+                <label for="instructorName">Pengampu</label>
+                <input type="text" class="form-control" id="instructorName" value={{lmsData.instructorName}}>
+            </div>
+            <div class="form-group">
+                <label for="description">Deskripsi</label>
+                <div id="toolbar-container"></div>
+                <div id="editor" class="ckeditor-content mb-3">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="link">Harga</label>
+                <input type="text" class="form-control" id="price" value={{lmsData.price}}>
+            </div>
+
+            <h3>Sesi</h3>
+            <div class="form-group">
+                <label for="nameSession">Name</label>
+                <input type="text" class="form-control" id="nameSession">
+            </div>
+            <div class="form-group">
+                <label for="descriptionSession">Deskripsi</label>
+                <input type="text" class="form-control" id="descriptionSession">
+            </div>
+            <button class="btn btn-primary" id="add-session">+ Tambah Sesi</button>
+            <div class="form-group">
+                <label for="descriptionSession">Deskripsi</label>
+                <div id="toolbar-container2"></div>
+                <div id="editor2" class="ckeditor-content mb-3"></div>
+            </div>
+            <div class="form-group">
+                <label for="videoUrlSession">Link Video</label>
+                <input type="text" class="form-control" id="videoUrlSession">
+            </div>
+            <button class="btn btn-primary" id="add-session">+ Tambah Sesi</button>
+            {{#each lmsData.sessions}}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ name }}</h5>
+                    <p class="card-text">Deskripsi: {{{ description }}}</p>
+                    <!-- Displaying YouTube video preview -->
+                    <p class="card-text">
+                        <strong>Video Preview:</strong>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{getYoutubeId(videoUrl)}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </p>
+                </div>
+            </div>
+            {{/each}}
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</template>
