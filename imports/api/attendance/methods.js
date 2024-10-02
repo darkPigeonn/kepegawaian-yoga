@@ -25,6 +25,8 @@ Meteor.methods({
   },
   "staffsAttendance.inThisMonth"(userId, startDate, endDate) {
     check(userId, String);
+    console.log(userId);
+
 
     if (!startDate && !endDate) {
       startDate = moment().startOf("month");
@@ -42,18 +44,17 @@ Meteor.methods({
       },
     }).fetch();
 
-    // console.log(dataStaffsAttendance);
+    console.log(dataStaffsAttendance);
 
     const dataReturn = [];
     //find user profile
     _.each(dataStaffsAttendance, function (x) {
-      const userObjecId = new Mongo.Collection.ObjectID(x.userId);
-      const userProfile = AppProfiles.findOne({
-        _id: userObjecId,
+      const userProfile = Employee.findOne({
+        _id: x.userId,
       });
 
-      x.fullName = userProfile.fullName;
-      x.jabatan = userProfile.jabatan;
+      x.fullName = userProfile?.fullName ?? userProfile?.full_name;
+      x.jabatan = userProfile.job_position;
 
       dataReturn.push(x);
     });
@@ -156,17 +157,16 @@ Meteor.methods({
       _id: objectId,
     });
 
-    // const thisUser = await AppProfiles.findOne({
-    //     "_id" : new Meteor.Collection.ObjectID(thisPresensi.userId)
-    // })
-
     const thisUser = await Employee.findOne({
-      _id: id,
+      _id: thisPresensi.userId,
     });
+
+    console.log(thisPresensi);
 
     thisPresensi.fullName = thisUser.full_name;
     thisPresensi.jabatan = thisUser.job_position;
     thisPresensi.outlets = thisUser.outlets;
+    thisPresensi.imageLink = thisUser.linkGambar
 
     return thisPresensi;
   },
@@ -664,6 +664,7 @@ Meteor.methods({
       outlets: { $in: thisUser.outlets },
     }).fetch();
 
+
     const employeeIds = employee.map((emp) => emp._id);
 
     const thisStartMonth = moment().utcOffset("+07:00").startOf("month");
@@ -677,7 +678,7 @@ Meteor.methods({
     const thisStartLastMonth = moment().utcOffset("+07:00").startOf("month");
     const thisEndLastMonth = moment().utcOffset("+07:00").endOf("month");
 
-    const permits = Permits.find(
+    let permits = Permits.find(
       {
         createdAt: {
           $gte: new Date(thisStartLastMonth),
@@ -689,6 +690,11 @@ Meteor.methods({
       },
       { sort: { createdAt: -1 } }
     ).fetch();
+
+    permits = permits.map(item => {
+      return {...item, fullName : item.creatorName}
+    })
+
 
     return permits;
   },

@@ -646,100 +646,109 @@
 
 <template name="detailWfh">
     <div class="page">
-        <div class="row">
-            <div class="col-xl-12 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h1 class="page-title">Detail WFH</h1>
-                        <ul>
-                            <li class="list-group-item text-center">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="page-title">Detail WFH</h1>
+                    <div class="row">
+                        <h4>{{ detailWfh.fullName }} - {{ detailWfh.jabatan }} </h4>
+                        <div class="col-3">
+                            <img alt="No Image Found" id="profile" src="{{detailWfh.imageLink}}" height="300" width="300" />
+                        </div>
+                        <div class="col-9">
+                            <ul>
+                                <li class="list-group-item text-center">
 
-                                <h4>{{ detailWfh.fullName }} - {{ detailWfh.jabatan }} </h4>
-                                <img alt="No Image Found" id="profile" src="test" height="300" width="300" />
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tr>
-                                            <td>
-                                                Jam Masuk
-                                            </td>
 
-                                            <td>
-                                                {{formatTime detailWfh.checkIn}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Jam Keluar
-                                            </td>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tr>
+                                                <td>
+                                                    Jam Masuk
+                                                </td>
 
-                                            <td>
-                                                {{formatTime detailWfh.checkOut}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Lokasi Presensi Masuk
-                                            </td>
+                                                <td>
+                                                    {{formatTime detailWfh.checkIn}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Jam Keluar
+                                                </td>
 
-                                            <td>
-                                                {{detailWfh.detailCheckIn.locationNote}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Keterangan
-                                            </td>
+                                                <td>
+                                                    {{formatTime detailWfh.checkOut}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Lokasi Presensi Masuk
+                                                </td>
 
-                                            <td>
-                                                {{detailWfh.detailCheckIn.note}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Foto Presensi Masuk
-                                            </td>
-
-                                            <td>
-                                                <img width="150" src="{{detailWfh.detailCheckIn.images}}" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Lokasi Presensi Keluar
-                                            </td>
-
-                                            <td>
-                                                {{detailWfh.detailCheckOut.locationNote}}
-                                                <a class="btn btn-primary"
-                                                    href="https://maps.google.com/?q={{ detailWfh.detailCheckOut.location.latitude }},{{ detailWfh.detailCheckOut.location.longitude }}"
+                                                <td>
+                                                    <a class="btn btn-primary"
+                                                    href="https://maps.google.com/?q={{ detailWfh.detailCheckIn.location.latitude }},{{ detailWfh.detailCheckIn.location.longitude }}"
                                                     target="_blank"><i class="fa fa-map"></i> Lihat di Google Map</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Keterangan Presensi Keluar
-                                            </td>
+                                                    {{detailWfh.detailCheckIn.locationNote}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Keterangan
+                                                </td>
 
-                                            <td>
-                                                {{detailWfh.detailCheckOut.note}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Foto Presensi Keluar
-                                            </td>
+                                                <td>
+                                                    {{detailWfh.detailCheckIn.note}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Foto Presensi Masuk
+                                                </td>
 
-                                            <td>
-                                                <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                                                <td>
+                                                    <img width="150" src="{{detailWfh.detailCheckIn.image}}" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Lokasi Presensi Keluar
+                                                </td>
+
+                                                <td>
+                                                    {{detailWfh.detailCheckOut.locationNote}}
+                                                    <a class="btn btn-primary"
+                                                        href="https://maps.google.com/?q={{ detailWfh.detailCheckOut.location.latitude }},{{ detailWfh.detailCheckOut.location.longitude }}"
+                                                        target="_blank"><i class="fa fa-map"></i> Lihat di Google Map</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Keterangan Presensi Keluar
+                                                </td>
+
+                                                <td>
+                                                    {{detailWfh.detailCheckOut.note}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Foto Presensi Keluar
+                                                </td>
+
+                                                <td>
+                                                    <img width="150" src="{{detailWfh.detailCheckOut.images}}" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
 
 
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -1234,7 +1243,9 @@
                                         </td>
 
                                         <td>
-                                            {{fullName}} <span class="badge badge-info"> {{type}}</span> <span class="badge badge-{{#if equals status 60}}success{{else}}{{#if equals status 90}}danger{{else}}warning{{/if}}{{/if}}">
+                                            {{fullName}}
+                                            <br>
+                                            <span class="badge badge-info"> {{type}}</span> <span class="badge badge-{{#if equals status 60}}success{{else}}{{#if equals status 90}}danger{{else}}warning{{/if}}{{/if}}">
                                                 {{statusPermit status}}
                                             </span>
                                         </td>

@@ -6,6 +6,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 
 Template.staffsAttendancePage.onCreated(function () {
+  Swal.showLoading()
   const self = this;
 
   self.dataPresensi = new ReactiveVar();
@@ -28,6 +29,7 @@ Template.staffsAttendancePage.onCreated(function () {
     // console.log(result);
     if (result) {
       self.dataPresensi.set(result);
+      Swal.close()
     }
   });
   Meteor.call("getPartnersUser", function (error, result) {
@@ -105,6 +107,7 @@ Template.staffsAttendancePage.events({
   },
   "click #detailsView": function (e, t) {
     const idUser = $(e.target).attr("milik");
+    Swal.showLoading()
     t.selectedEmployees.set(idUser);
     Meteor.call(
       "staffsAttendance.inThisMonth",
@@ -113,9 +116,10 @@ Template.staffsAttendancePage.events({
         // console.log("a");
         if (result) {
           // getFireImage("staffs/" + idUser, "profile");
-          // console.log(result);
+          console.log(result);
           t.dataPresensi.set(result);
           t.viewMode.set(1);
+          Swal.close()
         } else {
           console.log(error);
         }
@@ -954,7 +958,7 @@ Template.configurasiDetails.helpers({
 });
 Template.detailWfh.onCreated(function () {
   const self = this;
-  const id = Router.current().params._id;
+  const id = FlowRouter.getParam("_id");
 
   self.detailWfh = new ReactiveVar();
 
