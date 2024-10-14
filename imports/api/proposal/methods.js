@@ -3,11 +3,11 @@ import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
 // import { ObjectId } from 'mongodb';
-import _, { result } from 'underscore'
+import _, { result } from "underscore";
 
 Meteor.methods({
-  "proposal.createKosong"(){
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+  "proposal.createKosong"() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     // console.log(thisUser);
     return Proposals.insert({
       status: -1,
@@ -16,51 +16,50 @@ Meteor.methods({
       partners: thisUser.partners[0],
     });
   },
-  async "getProposals"() {
+  async getProposals() {
     let partnerCode;
     const thisUser = Meteor.userId();
     const adminPartner = Meteor.users.findOne({
       _id: thisUser,
-      });
+    });
     partnerCode = adminPartner.partners[0];
-    const data = Proposals.find({partners: partnerCode}).fetch();
-    const promise = data.map(async function (x) {  
-      const thisUser = await Meteor.users.findOne({_id: x.createdBy})
-      x.createdByName = thisUser.fullname
-      return x
-    })
-    const result = await Promise.all(promise)
+    const data = Proposals.find({ partners: partnerCode }).fetch();
+    const promise = data.map(async function (x) {
+      const thisUser = await Meteor.users.findOne({ _id: x.createdBy });
+      x.createdByName = thisUser.fullname;
+      return x;
+    });
+    const result = await Promise.all(promise);
     // console.log(result);
     return result;
   },
-  "myProposals"() {
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+  myProposals() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     // console.log(thisUser);
     const data = Proposals.find({
       createdBy: thisUser._id,
     }).fetch();
     // console.log(data);
     return data.map((x) => {
-      x.createdByName = thisUser.fullname
-      return x
+      x.createdByName = thisUser.fullname;
+      return x;
     });
   },
-  async "getProposalById"(id, code) {
+  async getProposalById(id, code) {
     let dataProposal = Proposals.findOne({
       _id: id,
     });
 
     // get fullname use createdBy
-    const owner = Meteor.users.findOne({_id: dataProposal.createdBy})
-    dataProposal.fullname = owner.fullname
+    const owner = Meteor.users.findOne({ _id: dataProposal.createdBy });
+    dataProposal.fullname = owner.fullname;
     // isChief dari get user
-    if(owner.roles.includes("chief")) {
-      dataProposal.isChief = true
-    }
-    else dataProposal.isChief = false
+    if (owner.roles.includes("chief")) {
+      dataProposal.isChief = true;
+    } else dataProposal.isChief = false;
     // isPodo dari this current user = proposal owner
-    if(this.userId == dataProposal.createdBy) dataProposal.isPodo = true
-    else dataProposal.isPodo = false
+    if (this.userId == dataProposal.createdBy) dataProposal.isPodo = true;
+    else dataProposal.isPodo = false;
     return dataProposal;
   },
   //kirim pakai role
@@ -80,7 +79,7 @@ Meteor.methods({
   //   let currentJabatan;
   //   const thisUser = Meteor.users.findOne({_id: this.userId});
   //   // console.log(thisUser.roles[0]);
-    
+
   //   alur.splice(0,0, thisUser.roles[0]);
   //   // console.log(alur);
 
@@ -99,7 +98,7 @@ Meteor.methods({
   //   //   currentOrder = dataAlurObject[0].order;
   //   //   currentJabatan = dataAlurObject[0].jabatan
   //   // }
-  
+
   //   // data.currentOrder = currentOrder;
   //   // data.currentJabatan = currentJabatan;
   //   // data.alur = dataAlurObject;
@@ -108,7 +107,7 @@ Meteor.methods({
   //       currentOrder = dataAlurObject[1].order;
   //       currentJabatan = dataAlurObject[1].role
   //     }
-    
+
   //     data.currentOrder = currentOrder;
   //     data.currentJabatan = currentJabatan;
   //     data.flows = dataAlurObject;
@@ -150,9 +149,10 @@ Meteor.methods({
   // },
 
   //kirim pakai user
-  "createProposal"(data, tipeKirim) {
+  createProposal(data, tipeKirim) {
     check(data, Object);
-    let {name,
+    let {
+      name,
       proposalNumber,
       backgroundsDescription,
       purposeDescription,
@@ -160,32 +160,33 @@ Meteor.methods({
       fundingRequirementDescription,
       closeDescription,
       alur,
-      status} = data;
-      // console.log(data);
+      status,
+    } = data;
+    // console.log(data);
     let dataAlurObject = [];
     let currentOrder;
     let currentUsername;
-    const thisUser = Meteor.users.findOne({_id: this.userId});
-    alur.unshift(thisUser.username)
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
+    alur.unshift(thisUser.username);
     console.log(alur);
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
       // console.log(element);
       let dataAlur = {
-        order: index+1,
+        order: index + 1,
         username: alur[index],
-        analisis: ""
-      }
-      dataAlurObject.push(dataAlur)
+        analisis: "",
+      };
+      dataAlurObject.push(dataAlur);
     }
     console.log(dataAlurObject);
 
-    if(data.status == 0){
+    if (data.status == 0) {
       for (let index = 0; index < dataAlurObject.length; index++) {
         currentOrder = dataAlurObject[1].order;
-        currentUsername = dataAlurObject[1].currentUsername
+        currentUsername = dataAlurObject[1].currentUsername;
       }
-    
+
       data.currentOrder = currentOrder;
       data.currentUsername = currentUsername;
       data.flows = dataAlurObject;
@@ -197,11 +198,10 @@ Meteor.methods({
         },
       ];
       // data.currentState.status = 0;
-    }
-    else{
+    } else {
       for (let index = 0; index < dataAlurObject.length; index++) {
         currentOrder = dataAlurObject[0].order;
-        currentUsername = dataAlurObject[0].username
+        currentUsername = dataAlurObject[0].username;
       }
       data.currentOrder = currentOrder;
       data.currentUsername = currentUsername;
@@ -213,7 +213,7 @@ Meteor.methods({
           createdAt: new Date(),
         },
       ];
-      delete data.alur
+      delete data.alur;
     }
     // console.log("Data",data.status);
     return Proposals.update(
@@ -226,7 +226,7 @@ Meteor.methods({
     );
   },
 
-  "editProposal"(data) {
+  editProposal(data) {
     check(data, Object);
 
     const id = data.id;
@@ -353,7 +353,7 @@ Meteor.methods({
   //proposal ditolak (roles)
   async "update.statusProposalTolak"(data) {
     check(data, Object);
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     const role = thisUser.roles;
     // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
@@ -368,17 +368,19 @@ Meteor.methods({
     };
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
-      if(role == element.role){
+      if (role == element.role) {
         const dataLogs = {
           activity: "Proposal Declined",
           createdBy: Meteor.userId(),
           createdAt: new Date(),
-        }
-        await Proposals.update({_id: data.proposalId, "flows.role":element.role},
-        {
-            $set: {"flows.$.analisis": data.dispositionContent, status: 99},
-            $push: {logs: dataLogs}
-        });
+        };
+        await Proposals.update(
+          { _id: data.proposalId, "flows.role": element.role },
+          {
+            $set: { "flows.$.analisis": data.dispositionContent, status: 99 },
+            $push: { logs: dataLogs },
+          }
+        );
         return Proposals.update(
           {
             _id: data.proposalId,
@@ -456,15 +458,14 @@ Meteor.methods({
   //               $push: {logs: dataLogs}
   //           });
   //       }
-        
+
   //   }
   // },
-
 
   //proposal diterima oleh reviewer (per user)
   async "update.statusProposal"(data) {
     check(data, Object);
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     const username = thisUser.username;
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
     const alur = dataProposalByID.flows;
@@ -475,20 +476,27 @@ Meteor.methods({
     };
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
-      const alurNext = alur[index+1];
+      const alurNext = alur[index + 1];
       // console.log(element.order, element.jabatan);
       //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
-      if(index === alur.length - 1){
+      if (index === alur.length - 1) {
         const dataLogs = {
           activity: "Review of the proposal is finished and accepted",
           createdBy: Meteor.userId(),
           createdAt: new Date(),
-        }
-        await Proposals.update({_id: data.proposalId, "flows.username":element.username},
-        {
-            $set: {"alur.$.analisis": data.dispositionContent, currentOrder: "99", currentUsername: "Review Selesai", status: 60},
-            $push: {logs: dataLogs}
-          });
+        };
+        await Proposals.update(
+          { _id: data.proposalId, "flows.username": element.username },
+          {
+            $set: {
+              "alur.$.analisis": data.dispositionContent,
+              currentOrder: "99",
+              currentUsername: "Review Selesai",
+              status: 60,
+            },
+            $push: { logs: dataLogs },
+          }
+        );
         return Proposals.update(
           {
             _id: data.proposalId,
@@ -506,38 +514,44 @@ Meteor.methods({
             },
           }
         );
-      }
-      else {
-          if(username == element.username){
-              const value = index+2;
-              const currentOrder = value.toString();
-              const dataLogs = {
-                activity: "Proposal Accepted",
-                createdBy: Meteor.userId(),
-                createdAt: new Date(),
-              }
-              await Proposals.update({_id: data.proposalId, "flows.username":element.username},
-              {
-                  $set: {"flows.$.analisis": data.dispositionContent, currentOrder: currentOrder, currentUsername: alurNext.username, status: 1},
-                  $push: {logs: dataLogs}
-              });
-              return Proposals.update(
-                {
-                  _id: data.proposalId,
-                },
-                {
-                  $set: {
-                    updateBy: thisUser._id,
-                    updateAt: new Date(),
-                    "currentState.note": data.dispositionContent,
-                    "currentState.updatedAt": new Date(),
-                  },
-                  $addToSet: {
-                    note,
-                  },
-                }
-              );
-          }
+      } else {
+        if (username == element.username) {
+          const value = index + 2;
+          const currentOrder = value.toString();
+          const dataLogs = {
+            activity: "Proposal Accepted",
+            createdBy: Meteor.userId(),
+            createdAt: new Date(),
+          };
+          await Proposals.update(
+            { _id: data.proposalId, "flows.username": element.username },
+            {
+              $set: {
+                "flows.$.analisis": data.dispositionContent,
+                currentOrder: currentOrder,
+                currentUsername: alurNext.username,
+                status: 1,
+              },
+              $push: { logs: dataLogs },
+            }
+          );
+          return Proposals.update(
+            {
+              _id: data.proposalId,
+            },
+            {
+              $set: {
+                updateBy: thisUser._id,
+                updateAt: new Date(),
+                "currentState.note": data.dispositionContent,
+                "currentState.updatedAt": new Date(),
+              },
+              $addToSet: {
+                note,
+              },
+            }
+          );
+        }
       }
     }
   },
@@ -567,38 +581,44 @@ Meteor.methods({
         },
         $addToSet: {
           note,
-        }
+        },
       }
     );
 
     //kembalikan ke awal
     const dataProposalByID = Proposals.findOne({ _id: data.letterId });
-    const dataUser = Meteor.users.findOne({_id:currentUser._id});
+    const dataUser = Meteor.users.findOne({ _id: currentUser._id });
     const usernameUser = dataUser.username;
     const alur = dataProposalByID.flows;
     const dataLogs = {
       activity: "Proposal Revision",
       createdBy: Meteor.userId(),
       createdAt: new Date(),
-    }
+    };
     for (let index = 0; index < alur.length; index++) {
-        const element = alur[index];
-        //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
-        if(usernameUser == element.username){
-            return Proposals.update({_id: data.letterId, "flows.username":element.username},
-            {
-                $set: {"alur.$.analisis": data.note, currentOrder: "1", currentUsername: alur[0].username, status: 90},
-                $push: {logs: dataLogs}
-            });
-        }
-        
+      const element = alur[index];
+      //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
+      if (usernameUser == element.username) {
+        return Proposals.update(
+          { _id: data.letterId, "flows.username": element.username },
+          {
+            $set: {
+              "alur.$.analisis": data.note,
+              currentOrder: "1",
+              currentUsername: alur[0].username,
+              status: 90,
+            },
+            $push: { logs: dataLogs },
+          }
+        );
+      }
     }
   },
 
   //proposal ditolak (per user)
   async "update.statusProposalTolak"(data) {
     check(data, Object);
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     const username = thisUser.username;
     // console.log(role);
     const dataProposalByID = Proposals.findOne({ _id: data.proposalId });
@@ -613,17 +633,19 @@ Meteor.methods({
     };
     for (let index = 0; index < alur.length; index++) {
       const element = alur[index];
-      if(username == element.username){
+      if (username == element.username) {
         const dataLogs = {
           activity: "Proposal Declined",
           createdBy: Meteor.userId(),
           createdAt: new Date(),
-        }
-        await Proposals.update({_id: data.proposalId, "flows.username":element.username},
-        {
-            $set: {"flows.$.analisis": data.dispositionContent, status: 99},
-            $push: {logs: dataLogs}
-        });
+        };
+        await Proposals.update(
+          { _id: data.proposalId, "flows.username": element.username },
+          {
+            $set: { "flows.$.analisis": data.dispositionContent, status: 99 },
+            $push: { logs: dataLogs },
+          }
+        );
         return Proposals.update(
           {
             _id: data.proposalId,
@@ -697,11 +719,11 @@ Meteor.methods({
   //     //console.log(error);
   //     return error
   //   }
-    
+
   // },
 
   //kirim proposal dari pembuat (versi user)
-  "sentProposal"(data, idUser) {
+  sentProposal(data, idUser) {
     try {
       check(data, Object);
       const thisProposal = Proposals.findOne({
@@ -712,45 +734,49 @@ Meteor.methods({
       if (checkValue) {
         throw new Meteor.Error(404, "Ada data yang belum terisi");
       }
-      const dataUser = Meteor.users.findOne({_id:idUser});
+      const dataUser = Meteor.users.findOne({ _id: idUser });
       const usernameUser = dataUser.username;
       const alur = thisProposal.flows;
       for (let index = 0; index < alur.length; index++) {
         const element = alur[index];
-        const alurNext = alur[index+1];
+        const alurNext = alur[index + 1];
         // console.log(element.order, element.jabatan);
         //pengecekan apakah alur sudah selesai atau belum, bila sudah maka update statusSelesai
-        if(index === alur.length - 1){
+        if (index === alur.length - 1) {
           // return Document.update({_id: id, "alur.jabatan":element.jabatan},
           //   {
           //       $set: {"alur.$.analisis": dataReview, currentOrder: "99", currentJabatan: "Review Selesai"}
           //   });
-        }
-        else {
-            if(usernameUser == element.username){
-              const value = index+2;
-              const currentOrder = value.toString();
-              const dataLogs = {
-                activity: "Proposal Sended",
-                createdBy: Meteor.userId(),
-                createdAt: new Date(),
-              }
-              const cek = Proposals.update({_id: data.proposalId},
+        } else {
+          if (usernameUser == element.username) {
+            const value = index + 2;
+            const currentOrder = value.toString();
+            const dataLogs = {
+              activity: "Proposal Sended",
+              createdBy: Meteor.userId(),
+              createdAt: new Date(),
+            };
+            const cek = Proposals.update(
+              { _id: data.proposalId },
               {
-                  $set: {currentOrder: currentOrder, currentUsername: alurNext.username, status: 0},
-                  $push: {logs: dataLogs}
-              });
-              console.log(cek);
-              return cek
-            }
+                $set: {
+                  currentOrder: currentOrder,
+                  currentUsername: alurNext.username,
+                  status: 0,
+                },
+                $push: { logs: dataLogs },
+              }
+            );
+            console.log(cek);
+            return cek;
+          }
         }
       }
-    // return Proposals.update({ _id: data.proposalId }, { $set: { status: 0 } });
+      // return Proposals.update({ _id: data.proposalId }, { $set: { status: 0 } });
     } catch (error) {
       //console.log(error);
-      return error
+      return error;
     }
-    
   },
 
   // punya roles
@@ -758,7 +784,7 @@ Meteor.methods({
   //   const thisUser = Meteor.users.findOne({_id: this.userId});
   //   const role = thisUser.roles[0];
   //   const data = Proposals.find({currentJabatan: role}).fetch();
-  //   const promise = data.map(async function (x) {  
+  //   const promise = data.map(async function (x) {
   //     const thisUser = await Meteor.users.findOne({_id: x.createdBy})
   //     x.createdByName = thisUser.fullname
   //     return x
@@ -769,49 +795,54 @@ Meteor.methods({
   // },
 
   //punya per user
-  async "incomingProposals"() {
-    const thisUser = Meteor.users.findOne({_id: this.userId});
+  async incomingProposals() {
+    const thisUser = Meteor.users.findOne({ _id: this.userId });
     const role = thisUser.roles[0];
-    const data = Proposals.find({currentUsername: thisUser.username}).fetch();  
-    const promise = data.map(async function (x) {  
-      const thisUser = Meteor.users.findOne({_id: x.createdBy})
-      x.createdByName = thisUser.fullname
-      return x
-    })
-    const result = await Promise.all(promise)
+    const data = Proposals.find({ currentUsername: thisUser.username }).fetch();
+
+    const promise = data.map(async function (x) {
+      const thisUser = Meteor.users.findOne({ _id: x.createdBy });
+      x.createdByName = thisUser.fullname;
+      return x;
+    });
+    const result = await Promise.all(promise);
     // console.log(data);
     return result;
   },
 
-  "employee.getDataUserProposal"(id){
+  "employee.getDataUserProposal"(id) {
     console.log(id);
-    const data = Meteor.users.findOne({_id:id});
-    const dataEmployee = Employee.findOne({_id: data.profileId})
-    return {username: data.username, roles: data.roles, full_name: dataEmployee.fullname}
+    const data = Meteor.users.findOne({ _id: id });
+    const dataEmployee = Employee.findOne({ _id: data.profileId });
+    return {
+      username: data.username,
+      roles: data.roles,
+      full_name: dataEmployee.fullname,
+    };
   },
 
-  "employee.getFullName"(id){
-    const data = Meteor.users.findOne({_id:id});
+  "employee.getFullName"(id) {
+    const data = Meteor.users.findOne({ _id: id });
     return data.fullname;
   },
 
-  "proposal.getHistoryByPengisi"(nama){
-    const data = Proposals.find({"note.noteByName": nama}).fetch();
+  "proposal.getHistoryByPengisi"(nama) {
+    const data = Proposals.find({ "note.noteByName": nama }).fetch();
     // console.log(data.length);
-    if(data.length != 0){
+    if (data.length != 0) {
       const pembuat = data[0].createdBy;
-      const thisUser = Meteor.users.findOne({_id: pembuat});
-      const dataFilter = data.filter((x) => {
-          return x.note.find((y) => y.note.length && y.noteByName == nama)
-      }).map((x) => {
-        x.createdByName = thisUser.fullname
-        return x
-      });
-      return dataFilter
-    }
-    else{
+      const thisUser = Meteor.users.findOne({ _id: pembuat });
+      const dataFilter = data
+        .filter((x) => {
+          return x.note.find((y) => y.note.length && y.noteByName == nama);
+        })
+        .map((x) => {
+          x.createdByName = thisUser.fullname;
+          return x;
+        });
+      return dataFilter;
+    } else {
       return;
     }
   },
-
 });

@@ -14,43 +14,46 @@
       padding: 5px;
       margin-bottom: 10px; */
     }
+
     .nav-item i {
-        font-size: 24px;
-        margin-right: 10px;
+      font-size: 24px;
+      margin-right: 10px;
     }
 
     .employees-section {
-        padding: 20px;
-        background-color: #f5f5f5;
+      padding: 20px;
+      background-color: #f5f5f5;
     }
 
     .employees-title {
-        font-size: 36px;
+      font-size: 36px;
     }
 
     .move-down {
-        margin-top: 10px;
+      margin-top: 10px;
     }
+
     .btn-more {
-        background-color: white;
-        color: #6666FF;
-        font-weight: bold;
+      background-color: white;
+      color: #6666FF;
+      font-weight: bold;
     }
 
     .btn-employee-transfer {
-        background-color: transparent;
-        color: #6666FF;
-        font-weight: bold;
+      background-color: transparent;
+      color: #6666FF;
+      font-weight: bold;
     }
+
     .btn-add-employee {
       background-color: #6666FF;
       color: white;
       font-weight: bold;
     }
-</style>
+  </style>
 
-<!-- Employees Section -->
-{{#if equals jabatanLogin "admin"}}
+  <!-- Employees Section -->
+  {{#if  isInRole "admin,adminPayroll"}}
   <div class="container-fluid employees-section">
     <div class="container">
       <div class="row">
@@ -60,7 +63,8 @@
         <div class="col-md-6 text-md-right">
           <div class="btn-group">
             <a href="/employees/create">
-              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-secondary move-down btn-add-employee" aria-haspopup="true"
+                aria-expanded="false">
                 Tambah Pegawai
               </button>
             </a>
@@ -73,7 +77,8 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="border rounded p-3 mt-2"> <!-- Add border and rounding styles -->
+        <div class="border rounded p-3 mt-2">
+          <!-- Add border and rounding styles -->
           <div class="row">
             <div class="col-md-2">
               <p>Ringkasan Periode</p>
@@ -93,7 +98,9 @@
               <h4>{{employeesKeluar.length}}</h4>
             </div>
             <div class="col-md-4 d-flex align-items-center">
-              <a href="/dashboard"><p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p></a>
+              <a href="/dashboard">
+                <p class="mb-0" style="font-size: 18px; color: #6666FF;">Lihat Details</p>
+              </a>
               <a href="/dashboard"><i class="fas fa-arrow-right ml-2" style="font-size: 18px; color: #6666FF;"></i></a>
             </div>
           </div>
@@ -102,38 +109,39 @@
     </div>
   </div>
 
-    <div class="content">
-      <hr>
-      <div class="container">
-        <div class="row">
-          <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <th>Posisi Pekerjaan</th>
-                    <th>Status Karyawan</th>
-                    <th>Tanggal Masuk</th>
-                </tr>
-            </thead>
-            <tbody>
-              {{#each employees}}
-                <tr>
-                  <td>
-                    <img src={{linkGambar}} style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;">
-                    {{full_name}}
-                  </td>
-                  <td> {{job_position}} </td>
-                  <td> {{employment_status}} </td>
-                  <td> {{formatHRDate start_date}} </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
+  <div class="content">
+    <hr>
+    <div class="container">
+      <div class="row">
+        <table id="example" class="table table-bordered dataTable" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Nama Karyawan</th>
+              <th>Posisi Pekerjaan</th>
+              <th>Status Karyawan</th>
+              <th>Tanggal Masuk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each employees}}
+            <tr>
+              <td>
+                <img src={{linkGambar}}
+                  style="width: 25px; height: 25px; border-radius: 100%; margin: auto; object-fit: cover;">
+                {{full_name}}
+              </td>
+              <td> {{job_position}} </td>
+              <td> {{employment_status}} </td>
+              <td> {{formatHRDate start_date}} </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   {{else}}
-   {{> home_employee}}
+  {{> home_employee}}
   {{/if}}
 
 </template>
