@@ -188,7 +188,7 @@ Template.registerHelper("statusDetail", function (data) {
       status = "Draft";
       break;
     case 1:
-      status = "Tersetujui";
+      status = "Menunggu Persetujuan";
       break;
     case 0:
       status = "Terkirim dan Sedang direview";
