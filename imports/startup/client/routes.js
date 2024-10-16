@@ -18,6 +18,8 @@ import "../../ui/pages/configuration/configuration.js";
 import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/payroll/payroll.js";
 import "../../ui/pages/announcement/announcement.js";
+import "../../ui/pages/evaluation/evaluation.js";
+import "../../ui/pages/reflection/reflection.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -639,5 +641,75 @@ FlowRouter.route("/announcements/edit/:id", {
   name: "editAnnouncements",
   action() {
     this.render("App_body", "editAnnouncements")
+  }
+})
+
+FlowRouter.route("/evaluation", {
+  name: "listEvaluation",
+  action() {
+    this.render("App_body", "listEvaluation")
+  }
+})
+
+FlowRouter.route("/evaluation/create", {
+  name: "createEvaluation",
+  action() {
+    this.render("App_body", "createEvaluation")
+  }
+})
+
+FlowRouter.route("/reflection", {
+  name: "listReflection",
+  action() {
+    this.render("App_body", "listReflection")
+  }
+})
+
+FlowRouter.route("/reflection/create", {
+  name: "createReflection",
+  action() {
+    this.render("App_body", "createReflection")
+  }
+})
+
+FlowRouter.route("/reflection/config", {
+  name: "configReflection",
+  action() {
+    this.render("App_body", "configReflection")
+  }
+})
+
+FlowRouter.route("/reflection/create/category", {
+  name: "createCategoryReflection",
+  action() {
+    this.render("App_body", "createCategoryReflection")
+  }
+})
+
+FlowRouter.route("/reflection/create/template", {
+  name: "createTemplateReflection",
+  action() {
+    this.render("App_body", "createTemplateReflection")
+  }
+})
+
+FlowRouter.route("/reflection/create/question", {
+  name: "createQuestionReflection",
+  action() {
+    this.render("App_body", "createQuestionReflection")
+  }
+})
+
+FlowRouter.route("/reflection/edit/template/:_id", {
+  name: "editTemplateReflection",
+  action() {
+    this.render("App_body", "editTemplateReflection")
+  }
+})
+
+FlowRouter.route("/reflection/detail/template/:_id", {
+  name: "detailTemplateReflection",
+  action() {
+    this.render("App_body", "detailTemplateReflection")
   }
 })

@@ -19,3 +19,5 @@ import "../../api/proposalReport/methods.js";
 import "../../api/announcement/methods.js";
 import "../../api/server/publications.js";
 import "../../api/attendance/publications.js";
+import "../../api/evaluations/methods.js";
+import "../../api/reflections/methods.js";
