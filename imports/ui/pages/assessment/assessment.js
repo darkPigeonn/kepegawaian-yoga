@@ -1,4 +1,4 @@
-import "./reflection.html";
+import "./assessment.html";
 import "../../components/card/card";
 import "../../components/tables/tables";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
@@ -13,25 +13,25 @@ import { HTTP } from 'meteor/http';
 Template.listReflection.onCreated(function () {
     const self = this;
 
-    self.reflection = new ReactiveVar();
+    self.assessment = new ReactiveVar();
 
 
 })
 
 Template.listReflection.helpers({
-    reflection() {
+    assessment() {
         return reflections.find();
     }
 })
 
-Template.configReflection.onCreated(function () {
+Template.configAssessment.onCreated(function () {
     const self = this;
-    
+
     self.config = new ReactiveVar();
     self.isOpen = new ReactiveVar(true);
     self.category = new ReactiveVar();
 
-    Meteor.call("reflection.getCategory", (error, result) => {
+    Meteor.call("assessment.getCategory", (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -40,8 +40,8 @@ Template.configReflection.onCreated(function () {
     })
 })
 
-Template.configReflection.helpers({
-    reflection() {
+Template.configAssessment.helpers({
+    assessment() {
         return Template.instance().config.get();
     },
     isOpen() {
@@ -52,12 +52,12 @@ Template.configReflection.helpers({
     }
 })
 
-Template.createCategoryReflection.onCreated(function () {
+Template.createCategoryAssessment.onCreated(function () {
     const self = this;
 
     self.category = new ReactiveVar();
 
-    Meteor.call("reflection.getCategory", (error, result) => {
+    Meteor.call("assessment.getCategory", (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -66,13 +66,13 @@ Template.createCategoryReflection.onCreated(function () {
     })
 })
 
-Template.createCategoryReflection.helpers({
+Template.createCategoryAssessment.helpers({
     category() {
         return Template.instance().category.get();
     }
 })
 
-Template.createCategoryReflection.events({
+Template.createCategoryAssessment.events({
     "click #createCategory"(e, t) {
         e.preventDefault();
         const name = t.find("#category").value;
@@ -85,7 +85,7 @@ Template.createCategoryReflection.events({
             cancelButtonText: "Tidak",
         }).then((result) => {
             if (result.isConfirmed) {
-                Meteor.call("reflection.createCategory", name, (error, result) => {
+                Meteor.call("assessment.createCategory", name, (error, result) => {
                     if (error) {
                         console.log(error);
                     } else {
@@ -99,28 +99,28 @@ Template.createCategoryReflection.events({
                         })
                         location.reload();
                     }
-                })          
+                })
             }
         })
     }
 })
 
-Template.createQuestionReflection.onCreated(function () {
+Template.createQuestionAssessment.onCreated(function () {
     const self = this;
 
     self.question = new ReactiveVar();
     self.viewMode = new ReactiveVar(1);
 
-    Meteor.call("reflection.getQuestion", (error, result) => {
+    Meteor.call("assessment.getQuestion", (error, result) => {
         if (error) {
             console.log(error);
         } else {
             self.question.set(result);
         }
-    })  
+    })
 })
 
-Template.createQuestionReflection.helpers({
+Template.createQuestionAssessment.helpers({
     question() {
         return Template.instance().question.get();
     },
@@ -129,7 +129,7 @@ Template.createQuestionReflection.helpers({
     }
 })
 
-Template.createQuestionReflection.events({
+Template.createQuestionAssessment.events({
     "click #saveQuestion"(e, t) {
         e.preventDefault();
         const question = t.find("#question").value;
@@ -142,7 +142,7 @@ Template.createQuestionReflection.events({
             cancelButtonText: "Tidak",
         }).then((result) => {
             if (result.isConfirmed) {
-                Meteor.call("reflection.createQuestion", question, (error, result) => {
+                Meteor.call("assessment.createQuestion", question, (error, result) => {
                     if (error) {
                         console.log(error);
                     } else {
@@ -168,7 +168,7 @@ Template.createQuestionReflection.events({
     }
 })
 
-Template.createTemplateReflection.onCreated(function () {
+Template.createTemplateAssessment.onCreated(function () {
     const self = this;
 
     self.template = new ReactiveVar();
@@ -176,16 +176,18 @@ Template.createTemplateReflection.onCreated(function () {
     self.category = new ReactiveVar();
     self.question = new ReactiveVar();
     self.temp = new ReactiveVar([]);
-    Meteor.call("reflection.getTemplate", (error, result) => {
+    self.isPilgan = new ReactiveVar(false);
+    self.answers = new ReactiveVar([]);
+    Meteor.call("assessment.getTemplate", (error, result) => {
         if (error) {
             console.log(error);
         } else {
             self.template.set(result);
             console.log(self.template.get());
-        } 
+        }
     })
 
-    Meteor.call("reflection.getCategory", (error, result) => {  
+    Meteor.call("assessment.getCategory", (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -193,16 +195,16 @@ Template.createTemplateReflection.onCreated(function () {
         }
     })
 
-    Meteor.call("reflection.getQuestion", (error, result) => {
+    Meteor.call("assessment.getQuestion", (error, result) => {
         if (error) {
             console.log(error);
         } else {
             self.question.set(result);
         }
-    })  
+    })
 })
 
-Template.createTemplateReflection.helpers({
+Template.createTemplateAssessment.helpers({
     template() {
         return Template.instance().template.get();
     },
@@ -217,10 +219,16 @@ Template.createTemplateReflection.helpers({
     },
     temp() {
         return Template.instance().temp.get();
+    },
+    isPilgan() {
+        return Template.instance().isPilgan.get();
+    },
+    answers() {
+        return Template.instance().answers.get();
     }
 })
 
-Template.createTemplateReflection.events({
+Template.createTemplateAssessment.events({
     "click #addTemplate"(e, t) {
         t.viewMode.set(2);
     },
@@ -240,7 +248,7 @@ Template.createTemplateReflection.events({
             questionId: question, // Atau tambahkan properti lain seperti questionId jika diperlukan
             questionText: questionText
         };
-        
+
         // Dapatkan data yang sudah ada di temp
         let temp = t.temp.get();
 
@@ -266,9 +274,9 @@ Template.createTemplateReflection.events({
         e.preventDefault();
         const questionId = $(e.target).attr("milik");
         const categoryId = $(e.target).attr("categoryId");
-        
+
         let temp = t.temp.get();
-        
+
         temp = temp.map(category => {
             if (category.categoryId === categoryId) {
                 return {
@@ -293,8 +301,8 @@ Template.createTemplateReflection.events({
             confirmButtonText: "Ya",
             cancelButtonText: "Tidak",
         }).then((result) => {
-            if (result.isConfirmed) {   
-                Meteor.call("reflection.createTemplate", templateName, temp, (error, result) => {
+            if (result.isConfirmed) {
+                Meteor.call("assessment.createTemplate", templateName, temp, (error, result) => {
                     if (error) {
                         console.log(error);
                         Swal.fire({
@@ -318,10 +326,23 @@ Template.createTemplateReflection.events({
                 })
             }
         })
+    },
+    "change #select-answer-type"(e, t) {
+        e.preventDefault();
+        const value = $(e.target).val();
+        t.isPilgan.set(value === "pilgan");
+    },
+    "click #addAnswer"(e, t) {
+        e.preventDefault();
+        const answer = t.find("#answer").value;
+        let answers = t.answers.get();
+        answers.push(answer);
+        t.answers.set(answers);
+        t.find("#answer").value = ""; // Clear input after adding
     }
 })
 
-Template.editTemplateReflection.onCreated(function () {
+Template.editTemplateAssessment.onCreated(function () {
     const self = this;
 
     self.template = new ReactiveVar();
@@ -331,7 +352,7 @@ Template.editTemplateReflection.onCreated(function () {
 
     const id = FlowRouter.getParam("_id");
 
-    Meteor.call("reflection.getCategory", (error, result) => {  
+    Meteor.call("assessment.getCategory", (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -339,7 +360,7 @@ Template.editTemplateReflection.onCreated(function () {
         }
     });
 
-    Meteor.call("reflection.getQuestion", (error, result) => {
+    Meteor.call("assessment.getQuestion", (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -347,17 +368,17 @@ Template.editTemplateReflection.onCreated(function () {
         }
     });
 
-    Meteor.call("reflection.getTemplateById", id, (error, result) => {
+    Meteor.call("assessment.getTemplateById", id, (error, result) => {
         if (error) {
             console.log(error);
         } else {
             self.template.set(result);
             self.temp.set(result.questions);
-        } 
-    });  
+        }
+    });
 });
 
-Template.editTemplateReflection.helpers({
+Template.editTemplateAssessment.helpers({
     template() {
         return Template.instance().template.get();
     },
@@ -372,7 +393,7 @@ Template.editTemplateReflection.helpers({
     }
 });
 
-Template.editTemplateReflection.events({
+Template.editTemplateAssessment.events({
     "click #addToTemp"(e, t) {
         e.preventDefault();
         const name = $("#templateName").val();
@@ -385,7 +406,7 @@ Template.editTemplateReflection.events({
             questionId: question,
             questionText: questionText
         };
-        
+
         let temp = t.temp.get();
 
         const categoryIndex = temp.findIndex(item => item.categoryId === category);
@@ -406,9 +427,9 @@ Template.editTemplateReflection.events({
         e.preventDefault();
         const questionId = $(e.target).attr("milik");
         const categoryId = $(e.target).attr("categoryId");
-        
+
         let temp = t.temp.get();
-        
+
         temp = temp.map(category => {
             if (category.categoryId === categoryId) {
                 return {
@@ -426,7 +447,7 @@ Template.editTemplateReflection.events({
         const temp = t.temp.get();
         const id = FlowRouter.getParam("_id");
         const templateName = $("#templateName").val();
-        
+
         Swal.fire({
             title: "Konfirmasi Ubah",
             text: "Apakah anda yakin mengubah template ini?",
@@ -435,8 +456,8 @@ Template.editTemplateReflection.events({
             confirmButtonText: "Ya",
             cancelButtonText: "Tidak",
         }).then((result) => {
-            if (result.isConfirmed) {   
-                Meteor.call("reflection.updateTemplate", id, templateName, temp, (error, result) => {
+            if (result.isConfirmed) {
+                Meteor.call("assessment.updateTemplate", id, templateName, temp, (error, result) => {
                     if (error) {
                         console.log(error);
                         Swal.fire({
@@ -455,7 +476,7 @@ Template.editTemplateReflection.events({
                             showConfirmButton: false,
                             timer: 1500
                         });
-                        FlowRouter.go('/reflection/create/template');
+                        FlowRouter.go('/assessment/create/template');
                     }
                 });
             }
@@ -463,14 +484,14 @@ Template.editTemplateReflection.events({
     }
 });
 
-Template.detailTemplateReflection.onCreated(function () {
+Template.detailTemplateAssessment.onCreated(function () {
     const self = this;
 
     self.template = new ReactiveVar();
 
     const id = FlowRouter.getParam("_id");
-    
-    Meteor.call("reflection.getTemplateById", id, (error, result) => {
+
+    Meteor.call("assessment.getTemplateById", id, (error, result) => {
         if (error) {
             console.log(error);
         } else {
@@ -479,7 +500,7 @@ Template.detailTemplateReflection.onCreated(function () {
     });
 })
 
-Template.detailTemplateReflection.helpers({
+Template.detailTemplateAssessment.helpers({
     template() {
         return Template.instance().template.get();
     }

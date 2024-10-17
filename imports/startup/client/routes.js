@@ -19,7 +19,7 @@ import "../../ui/pages/tickets/tickets.js";
 import "../../ui/pages/payroll/payroll.js";
 import "../../ui/pages/announcement/announcement.js";
 import "../../ui/pages/evaluation/evaluation.js";
-import "../../ui/pages/reflection/reflection.js";
+import "../../ui/pages/assessment/assessment.js";
 import { timers } from "jquery";
 // Set up all routes in the app
 FlowRouter.route("/", {
@@ -658,58 +658,58 @@ FlowRouter.route("/evaluation/create", {
   }
 })
 
-FlowRouter.route("/reflection", {
+FlowRouter.route("/assessment", {
   name: "listReflection",
   action() {
     this.render("App_body", "listReflection")
   }
 })
 
-FlowRouter.route("/reflection/create", {
+FlowRouter.route("/assessment/create", {
   name: "createReflection",
   action() {
     this.render("App_body", "createReflection")
   }
 })
 
-FlowRouter.route("/reflection/config", {
-  name: "configReflection",
+FlowRouter.route("/assessment/config", {
+  name: "configAssessment",
   action() {
-    this.render("App_body", "configReflection")
+    this.render("App_body", "configAssessment")
   }
 })
 
-FlowRouter.route("/reflection/create/category", {
-  name: "createCategoryReflection",
+FlowRouter.route("/assessment/create/category", {
+  name: "createCategoryAssessment",
   action() {
-    this.render("App_body", "createCategoryReflection")
+    this.render("App_body", "createCategoryAssessment")
   }
 })
 
-FlowRouter.route("/reflection/create/template", {
-  name: "createTemplateReflection",
+FlowRouter.route("/assessment/create/template", {
+  name: "createTemplateAssessment",
   action() {
-    this.render("App_body", "createTemplateReflection")
+    this.render("App_body", "createTemplateAssessment")
   }
 })
 
-FlowRouter.route("/reflection/create/question", {
-  name: "createQuestionReflection",
+FlowRouter.route("/assessment/create/question", {
+  name: "createQuestionAssessment",
   action() {
-    this.render("App_body", "createQuestionReflection")
+    this.render("App_body", "createQuestionAssessment")
   }
 })
 
-FlowRouter.route("/reflection/edit/template/:_id", {
-  name: "editTemplateReflection",
+FlowRouter.route("/assessment/edit/template/:_id", {
+  name: "editTemplateAssessment",
   action() {
-    this.render("App_body", "editTemplateReflection")
+    this.render("App_body", "editTemplateAssessment")
   }
 })
 
-FlowRouter.route("/reflection/detail/template/:_id", {
-  name: "detailTemplateReflection",
+FlowRouter.route("/assessment/detail/template/:_id", {
+  name: "detailTemplateAssessment",
   action() {
-    this.render("App_body", "detailTemplateReflection")
+    this.render("App_body", "detailTemplateAssessment")
   }
 })

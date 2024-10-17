@@ -1,70 +1,70 @@
-import { Reflections, ConfigReflections, Category, Question, TemplateReflection } from "./reflections";
+import { Reflections, ConfigReflections, Category, Question, TemplateReflection } from "./assessments";
 import { check } from "meteor/check";
 import moment from "moment";
 import { Employee } from "../employee/employee";
 import _, { result } from 'underscore';
 
 Meteor.methods({
-    async "reflection.getConfig"() {
+    async "assessment.getConfig"() {
         return ConfigReflections.find().fetch();
     },
-    async "reflection.getCategory"() {
-        return Category.find({type: "reflection"}).fetch();
+    async "assessment.getCategory"() {
+        return Category.find({ type: "assessment" }).fetch();
     },
-    async "reflection.createCategory"(name) {
+    async "assessment.createCategory"(name) {
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
         const data = {
             name: name,
-            type: "reflection",
+            type: "assessment",
             createdBy: adminPartner.profileId,
             createdByName: adminPartner.fullname,
             createdAt: new Date()
         }
         return Category.insert(data);
     },
-    async "reflection.getQuestion"() {
-        return Question.find({type: "reflection"}).fetch();
+    async "assessment.getQuestion"() {
+        return Question.find({ type: "assessment" }).fetch();
     },
-    async "reflection.createQuestion"(question) {
+    async "assessment.createQuestion"(question) {
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
         const data = {
             content: question,
-            type: "reflection",
+            type: "assessment",
             createdBy: adminPartner.profileId,
             createdByName: adminPartner.fullname,
             createdAt: new Date()
         }
         return Question.insert(data);
     },
-    async "reflection.getTemplate"() {
+    async "assessment.getTemplate"() {
         return TemplateReflection.find().fetch();
     },
-    async "reflection.createTemplate"(name, data) {
+    async "assessment.createTemplate"(name, data) {
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
-        const categories = Category.find({type: "reflection"}).fetch();
+        const categories = Category.find({ type: "assessment" }).fetch();
         let dataQuestions = data.map(data => {
             // Cari nama kategori berdasarkan categoryId
             const category = categories.find(cat => cat._id === data.categoryId);
-          
+
             return {
-              categoryId: data.categoryId,
-              categoryName: category ? category.name : null, // Jika kategori tidak ditemukan, null
-              questions: data.questions.map(question => ({
-                questionId: question.questionId,
-                questionText: question.questionText
-              }))
+                categoryId: data.categoryId,
+                categoryName: category ? category.name : null, // Jika kategori tidak ditemukan, null
+                questions: data.questions.map(question => ({
+                    questionId: question.questionId,
+                    questionText: question.questionText
+                }))
             };
         });
-        
+
         const post = {
             name: name,
             questions: dataQuestions,
@@ -75,17 +75,17 @@ Meteor.methods({
         }
         return TemplateReflection.insert(post);
     },
-    async "reflection.getTemplateById"(id) {
-        return TemplateReflection.findOne({_id: id});
+    async "assessment.getTemplateById"(id) {
+        return TemplateReflection.findOne({ _id: id });
     },
-    async "reflection.updateTemplate"(id, name, data) {
+    async "assessment.updateTemplate"(id, name, data) {
         const thisUser = Meteor.userId();
         const adminPartner = Meteor.users.findOne({
             _id: thisUser,
         });
-        
-        const categories = Category.find({type: "reflection"}).fetch();
-        
+
+        const categories = Category.find({ type: "assessment" }).fetch();
+
         let dataQuestions = data.map(item => {
             const category = categories.find(cat => cat._id === item.categoryId);
             return {
@@ -97,13 +97,13 @@ Meteor.methods({
                 }))
             };
         });
-        
+
         const updateData = {
             name: name,
             questions: dataQuestions,
         };
-        
-        return TemplateReflection.update({_id: id}, {$set: updateData});
+
+        return TemplateReflection.update({ _id: id }, { $set: updateData });
     },
 })
 
